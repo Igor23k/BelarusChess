@@ -15,4 +15,15 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="noAccount">No account yet? Create one</string>
+    <string name="email">Email</string>
+    <string name="userName">Name</string>
+    <string name="userAddress">Address</string>
+    <string name="phoneNumber">Mobile Number</string>
+    <string name="renterPassword">Re-enter Password</string>
+    <string name="createAccount">Create Account</string>
+    <string name="isMember">Already a member? Login</string>
+    <string name="logo">Логотип</string>
 </resources>
