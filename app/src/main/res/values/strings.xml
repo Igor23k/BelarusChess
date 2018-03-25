@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BelarusCHess</string>
+    <string name="app_name">BelarusChess</string>
 
     <string name="followers_hint">Followers</string>
     <string name="following_hint">Following</string>

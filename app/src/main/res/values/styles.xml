@@ -68,5 +68,4 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>
-
 </resources>
