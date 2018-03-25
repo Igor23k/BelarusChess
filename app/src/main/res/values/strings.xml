@@ -12,4 +12,7 @@
     <string name="fa_heart_o">\uf08a</string>
     <string name="fa_retweet">\uf079</string>
     <string name="ion_search"></string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
