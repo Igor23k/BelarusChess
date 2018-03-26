@@ -58,10 +58,10 @@ public class AuthorizationActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        if (!validate()) {
+        /*if (!validate()) {
             onLoginFailed();
             return;
-        }
+        }*/
 
         _loginButton.setEnabled(false);
 
@@ -109,6 +109,9 @@ public class AuthorizationActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         finish();
+        Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        startActivityForResult(intent, REQUEST_SIGNUP);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public void onLoginFailed() {
