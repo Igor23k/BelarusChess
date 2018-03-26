@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Belarus Chess</string>
+
+    <string name="followers_hint">Подписчики</string>
+    <string name="following_hint">Подписан</string>
+
+    <string name="search_query_hint">Введите имя пользователя</string>
+    <string name="search_hint">поиск</string>
+    <string name="not_enough_symbols_msg">Пожалуйста, введите хотя бы один символ</string>
+    <string name="loading_error_msg">Ошибка во время загрузки</string>
+    <string name="fa_map_marker">\uf041</string>
+    <string name="fa_heart_o">\uf08a</string>
+    <string name="fa_retweet">\uf079</string>
+    <string name="ion_search"></string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Настройки</string>
+    <string name="password">Пароль</string>
+    <string name="login">Авторизоваться</string>
+    <string name="noAccount">Еще нет учетной записи? Создать</string>
+    <string name="email">Email</string>
+    <string name="userName">Имя</string>
+    <string name="userAddress">Адрес</string>
+    <string name="phoneNumber">Мобильный номер</string>
+    <string name="renterPassword">Повторный ввод пароля</string>
+    <string name="createAccount">Регистрация</string>
+    <string name="isMember">Уже зарегистрированы? Авторизоваться</string>
+    <string name="logo">Логотип</string>
+</resources>
