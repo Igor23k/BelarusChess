@@ -119,11 +119,11 @@ class UserInfoActivity : AppCompatActivity() {
     private fun getUser(): User {
         return User(
                 1L,
-                "http://i.imgur.com/DvpvklR.png",
-                "DevColibri",
-                "devcolibri",
+                "http://priscree.ru/img/f6334f93a90da8.jpg",
+                "Igor",
+                "Igor23k",
                 "Sample description",
-                "USA",
+                "Belarus",
                 42,
                 42
         )
