@@ -1,4 +1,4 @@
-package bobrchess.of.by.belaruschess.activity;
+package bobrchess.of.by.belaruschess.view.activity.impl;
 
 import android.content.Intent;
 import android.os.Bundle;

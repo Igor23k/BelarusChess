@@ -1,17 +1,21 @@
-package bobrchess.of.by.belaruschess.activity;
+package bobrchess.of.by.belaruschess.view.activity.impl;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import bobrchess.of.by.belaruschess.R;
+import bobrchess.of.by.belaruschess.dto.UserDTO;
+import bobrchess.of.by.belaruschess.util.Constants;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -60,10 +64,26 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    public void signup() {
-        Log.d(TAG, "Signup");
+    private class UserRegistrationTask extends AsyncTask<Void,Void, UserDTO> {
+        @Override
+        protected UserDTO doInBackground(Void... voids) {
+            RestTemplate template = new RestTemplate();
+            template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        if (!validate()) {
+            return template.getForObject(Constants.URL.GET_USERS, UserDTO.class);
+        }
+
+        @Override
+        protected void onPostExecute(UserDTO personDTO) {
+
+            System.out.println("ekk");
+        }
+    }
+
+
+    public void signup() {
+        /*Log.d(TAG, "Signup");
+        if (!validateUserData()) {
             onSignupFailed();
             return;
         }
@@ -80,7 +100,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
         String mobile = _mobileText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String password = passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
@@ -94,7 +114,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         // onSignupFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 3000);*/
+        new RegistrationActivity.UserRegistrationTask().execute();
     }
 
 
