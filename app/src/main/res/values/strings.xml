@@ -26,4 +26,5 @@
     <string name="createAccount">Create Account</string>
     <string name="isMember">Already a member? Login</string>
     <string name="logo">Logo</string>
+    <string name="please_wait">Please, wait …</string>
 </resources>
