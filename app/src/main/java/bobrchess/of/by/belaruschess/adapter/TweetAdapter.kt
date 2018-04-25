@@ -73,8 +73,8 @@ class TweetAdapter : RecyclerView.Adapter<TweetAdapter.TweetViewHolder>() {
         }
 
         fun bind(tweet: Tweet) {
-            nameTextView.text = tweet.user.name
-            nickTextView.text = tweet.user.nick
+            nameTextView.text = tweet.userTweet.name
+            nickTextView.text = tweet.userTweet.nick
             contentTextView.text = tweet.text
             retweetsTextView.text = tweet.retweetCount.toString()
             likesTextView.text = tweet.favoriteCount.toString()
@@ -82,7 +82,7 @@ class TweetAdapter : RecyclerView.Adapter<TweetAdapter.TweetViewHolder>() {
             val creationDateFormatted = getFormattedDate(tweet.creationDate)
             creationDateTextView.text = creationDateFormatted
 
-            Picasso.with(itemView.context).load(tweet.user.imageUrl).into(userImageView)
+            Picasso.with(itemView.context).load(tweet.userTweet.imageUrl).into(userImageView)
 
             val tweetPhotoUrl = tweet.imageUrl
             Picasso.with(itemView.context).load(tweetPhotoUrl).into(tweetImageView)

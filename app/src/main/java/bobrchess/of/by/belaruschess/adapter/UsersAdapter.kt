@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.colibritweet.pojo.User
+import bobrchess.of.by.colibritweet.pojo.UserTweet
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -15,7 +15,7 @@ import java.util.*
 // Унаследовали наш адаптер от RecyclerView.Adapter
 // Здесь же указали наш собственный ViewHolder, который предоставит нам доступ к View-компонентам
 class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adapter<UsersAdapter.UserViewHolder>() {
-    private val userList = ArrayList<User>()
+    private val userList = ArrayList<UserTweet>()
     private val onUserClickListener: OnUserClickListener
 
     init {
@@ -33,7 +33,7 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
         holder.bind(user)
     }
 
-    fun setItems(users: Collection<User>) {
+    fun setItems(users: Collection<UserTweet>) {
         userList.addAll(users)
         notifyDataSetChanged()
     }
@@ -63,7 +63,7 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
             }
         }
 
-        fun bind(user: User) {
+        fun bind(user: UserTweet) {
             nameTextView.text = user.name
             nickTextView.text = user.nick
             Picasso.with(itemView.context).load(user.imageUrl).into(userImageView)
@@ -71,6 +71,6 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
     }
 
     interface OnUserClickListener {
-        fun onUserClick(user: User)
+        fun onUserClick(user: UserTweet)
     }
 }
