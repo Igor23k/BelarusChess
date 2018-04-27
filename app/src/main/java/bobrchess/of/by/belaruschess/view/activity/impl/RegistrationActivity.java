@@ -1,7 +1,7 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,180 +10,152 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
-import bobrchess.of.by.belaruschess.util.Constants;
+import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
+import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl;
+import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity implements RegistrationContractView {
     private static final String TAG = "RegistrationActivity";
+    private static final int REGISTRATION_REQUEST = 1;
 
     @BindView(R.id.input_name)
-    EditText _nameText;
+    EditText nameText;
+
     @BindView(R.id.input_address)
-    EditText _addressText;
+    EditText addressText;
+
     @BindView(R.id.input_email)
-    EditText _emailText;
+    EditText emailText;
+
     @BindView(R.id.input_mobile)
-    EditText _mobileText;
+    EditText mobileText;
+
     @BindView(R.id.input_password)
-    EditText _passwordText;
+    EditText passwordText;
+
     @BindView(R.id.input_reEnterPassword)
-    EditText _reEnterPasswordText;
+    EditText reEnterPasswordText;
+
     @BindView(R.id.btn_signup)
-    Button _signupButton;
+    Button registrationButton;
+
     @BindView(R.id.link_login)
-    TextView _loginLink;
-    
+    TextView authorizationLink;
+
+    private ProgressDialog progressDialog;
+
+    private RegistrationPresenter presenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_authorization);
         ButterKnife.bind(this);
+        presenter = new RegistrationPresenterImpl();
+        presenter.attachView(this);
+        presenter.viewIsReady();
+        initButtonsListeners();
+    }
 
-        _signupButton.setOnClickListener(new View.OnClickListener() {
+    private void initButtonsListeners() {
+        registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup();
+                final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                presenter.registrate();
+                //progressDialog.dismiss();
             }
         });
 
-        _loginLink.setOnClickListener(new View.OnClickListener() {
+
+        authorizationLink.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(),AuthorizationActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                startActivityForResult(intent, REGISTRATION_REQUEST);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
     }
 
-    private class UserRegistrationTask extends AsyncTask<Void,Void, UserDTO> {
-        @Override
-        protected UserDTO doInBackground(Void... voids) {
-            RestTemplate template = new RestTemplate();
-            template.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
 
-            return template.getForObject(Constants.URL.GET_USERS, UserDTO.class);
-        }
-
-        @Override
-        protected void onPostExecute(UserDTO personDTO) {
-
-            System.out.println("ekk");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REGISTRATION_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                // TODO: Implement successful signup logic here
+                // By default we just finish the Activity and log them in automatically
+                this.finish();
+            }
         }
     }
 
-
-    public void signup() {
-        /*Log.d(TAG, "Signup");
-        if (!validateUserData()) {
-            onSignupFailed();
-            return;
-        }
-
-        _signupButton.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
-
-        String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
-        String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
-        String password = passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
-
-        // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);*/
-        new RegistrationActivity.UserRegistrationTask().execute();
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
-
-    public void onSignupSuccess() {
-        _signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
+    public void onLoginSuccess() {
+        enableButton();
         finish();
+        Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        startActivityForResult(intent, REGISTRATION_REQUEST);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
-        _signupButton.setEnabled(true);
+    public void onLoginFailed() {
+        registrationButton.setEnabled(true);
     }
 
-    public boolean validate() {
-        boolean valid = true;
+    public void showIncorrectEmailText() {
+        emailText.setError("enter a valid email address");
+    }
 
-        String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
-        String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
+    public void showIncorrectPasswordText() {
+        passwordText.setError("between 4 and 10 alphanumeric characters");
+    }
 
-        if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
-            valid = false;
-        } else {
-            _nameText.setError(null);
+    public void showToast(int resId) {
+        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showProgress() {
+        progressDialog = ProgressDialog.show(this, "", "Please, wait ..."/*R.string.please_wait*/);
+    }
+
+    public void hideProgress() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
+    }
 
-        if (address.isEmpty()) {
-            _addressText.setError("Enter Valid Address");
-            valid = false;
-        } else {
-            _addressText.setError(null);
-        }
+    @Override
+    public void enableButton() {
+        registrationButton.setEnabled(true);
+    }
 
+    @Override
+    public void disableButton() {
+        registrationButton.setEnabled(false);
+    }
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            _emailText.setError(null);
-        }
-
-        if (mobile.isEmpty() || mobile.length()!=10) {
-            _mobileText.setError("Enter Valid Mobile Number");
-            valid = false;
-        } else {
-            _mobileText.setError(null);
-        }
-
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            _passwordText.setError(null);
-        }
-
-        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-            _reEnterPasswordText.setError("Password Do not match");
-            valid = false;
-        } else {
-            _reEnterPasswordText.setError(null);
-        }
-
-        return valid;
+    public UserDTO getUserData() {
+        UserDTO userData = new UserDTO();
+        userData.setEmail(emailText.getText().toString());
+        userData.setPassword(passwordText.getText().toString());
+        return userData;
     }
 }

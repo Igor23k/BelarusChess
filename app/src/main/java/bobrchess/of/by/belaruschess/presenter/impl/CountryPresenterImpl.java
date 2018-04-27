@@ -1,29 +1,39 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import java.util.List;
+
+import bobrchess.of.by.belaruschess.dto.CountryDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectEmailException;
 import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
-import bobrchess.of.by.belaruschess.network.connection.UserConnection;
+import bobrchess.of.by.belaruschess.network.connection.CountryConnection;
 import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter;
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
+import bobrchess.of.by.belaruschess.presenter.CountryPresenter;
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackCountry;
 import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity;
 
 /**
  * Created by Igor on 11.04.2018.
  */
 
-public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPresenter {
+public class CountryPresenterImpl implements CallBackCountry, CountryPresenter {
 
     private AuthorizationActivity view;
-    private UserConnection userConnection;
+    private CountryConnection countryConnection;
 
-    public AuthorizationPresenterImpl() {
-        userConnection = new UserConnection();
-        userConnection.attachView(this);
+    public CountryPresenterImpl() {
+        countryConnection = new CountryConnection();
+        countryConnection.attachView(this);
     }
 
     @Override
-    public void onResponse(UserDTO userDTO) {
+    public void onResponse(CountryDTO countryDTO) {
+        view.hideProgress();
+        view.onLoginSuccess();
+    }
+
+    @Override
+    public void onResponse(List<CountryDTO> countryDTO) {
         view.hideProgress();
         view.onLoginSuccess();
     }
@@ -35,20 +45,11 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
     }
 
     @Override
-    public void authorizate() {
-        UserDTO userDTO = view.getUserData();
-        try {
-            validateUserData(userDTO);
-            view.disableButton();
-            view.showProgress();
-            userConnection.authorizate(userDTO.getEmail(), userDTO.getPassword());
-        } catch (IncorrectEmailException e) {
-            view.showIncorrectEmailText();
-            view.onLoginFailed();
-        } catch (IncorrectPasswordException e) {
-            view.showIncorrectPasswordText();
-            view.onLoginFailed();
-        }
+    public void getCountry(Integer id) {
+        view.disableButton();
+        view.showProgress();
+        countryConnection.getCountry(id);
+
     }
 
     private boolean validateUserData(UserDTO userDTO) throws IncorrectEmailException, IncorrectPasswordException {

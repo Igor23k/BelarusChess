@@ -19,13 +19,16 @@ class MatchDTO {
 
     var firstTeam: TournamentTeamDTO? = null
 
-    constructor(id: Int?, countPointsFirstTeam: Double?, countPointsSecondTeam: Double?, date: Date, tournamentDTO: TournamentDTO, firstTeam: TournamentTeamDTO) {
+    var secondTeam: TournamentTeamDTO? = null
+
+    constructor(id: Int?, countPointsFirstTeam: Double?, countPointsSecondTeam: Double?, date: Date, tournamentDTO: TournamentDTO, firstTeam: TournamentTeamDTO, secondTeam: TournamentTeamDTO) {
         this.id = id
         this.countPointsFirstTeam = countPointsFirstTeam
         this.countPointsSecondTeam = countPointsSecondTeam
         this.date = date
         this.tournament = tournamentDTO
         this.firstTeam = firstTeam
+        this.secondTeam = secondTeam
     }
 
     constructor() {}

@@ -20,16 +20,19 @@ import butterknife.ButterKnife;
 
 public class AuthorizationActivity extends AppCompatActivity implements AuthorizationContractView {
     private static final String TAG = "AuthorizationActivity";
-    private static final int REQUEST_SIGNUP = 0;
+    private static final int AUTHORIZATION_REQUEST = 0;
 
     @BindView(R.id.input_email)
     EditText emailText;
+
     @BindView(R.id.input_password)
     EditText passwordText;
+
     @BindView(R.id.btn_login)
     Button loginButton;
+
     @BindView(R.id.link_signup)
-    TextView signupLink;
+    TextView registrationLink;
 
     private ProgressDialog progressDialog;
 
@@ -53,19 +56,18 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
                 final ProgressDialog progressDialog = new ProgressDialog(AuthorizationActivity.this,
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
-                loginButton.setEnabled(false);
                 presenter.authorizate();
                 //progressDialog.dismiss();
             }
         });
 
 
-        signupLink.setOnClickListener(new View.OnClickListener() {
+        registrationLink.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
+                startActivityForResult(intent, AUTHORIZATION_REQUEST);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
@@ -80,7 +82,7 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
+        if (requestCode == AUTHORIZATION_REQUEST) {
             if (resultCode == RESULT_OK) {
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
@@ -95,15 +97,15 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
     }
 
     public void onLoginSuccess() {
-        loginButton.setEnabled(true);
+        enableButton();
         finish();
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
-        startActivityForResult(intent, REQUEST_SIGNUP);
+        startActivityForResult(intent, AUTHORIZATION_REQUEST);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public void onLoginFailed() {
-        loginButton.setEnabled(true);
+        enableButton();
     }
 
     public void showIncorrectEmailText(){
@@ -126,6 +128,16 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void enableButton() {
+        loginButton.setEnabled(true);
+    }
+
+    @Override
+    public void disableButton() {
+        loginButton.setEnabled(false);
     }
 
     public UserDTO getUserData() {

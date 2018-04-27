@@ -4,7 +4,7 @@ package bobrchess.of.by.belaruschess.view.activity;
  * Created by Igor on 22.04.2018.
  */
 
-public interface AuthorizationContractView {
+public interface RegistrationContractView {
     void showToast(int resId);
     void showProgress();
     void hideProgress();

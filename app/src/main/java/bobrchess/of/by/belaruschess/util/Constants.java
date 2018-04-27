@@ -6,8 +6,8 @@ package bobrchess.of.by.belaruschess.util;
 
 public class Constants {
     public static class URL {
-        public static final String HOST = "kek";
-       // public static final String HOST = "http://192.168.0.104:8080";
+        public static final String HOST = "http://192.168.0.106:8080";
+        //public static final String HOST = "https://api.github.com";
         public static final String GET_COUNTRIES = HOST + "country";
         public static final String GET_COUNTRY = HOST + "country/1";
         public static final String GET_USERS = HOST + "user";
