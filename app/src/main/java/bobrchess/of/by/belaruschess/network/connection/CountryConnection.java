@@ -1,7 +1,5 @@
 package bobrchess.of.by.belaruschess.network.connection;
 
-import android.renderscript.Int3;
-
 import bobrchess.of.by.belaruschess.App;
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackCountry;
@@ -25,6 +23,24 @@ public class CountryConnection {
                     callBack.onResponse(response.body());
                 }else {
                     //тут нужно блок экрана снимать и тд
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CountryDTO> call, Throwable t) {
+                callBack.onFailure(t);
+            }
+        });
+    }
+
+    public void addCountry(CountryDTO countryDTO) {
+        App.getAPI().addCountry(countryDTO).enqueue(new Callback<CountryDTO>() {
+            @Override
+            public void onResponse(Call<CountryDTO> call, Response<CountryDTO> response) {
+                if (response.isSuccessful()) {
+                    callBack.onResponse(response.body());
+                }else {
+                    callBack.onFailure(new Throwable());
                 }
             }
 

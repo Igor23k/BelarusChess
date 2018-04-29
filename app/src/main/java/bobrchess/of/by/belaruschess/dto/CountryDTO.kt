@@ -5,11 +5,8 @@ package bobrchess.of.by.belaruschess.dto
  */
 
 class CountryDTO {
-
     var id: Int? = null
-
     var name: String? = null
-
     var abbreviation: String? = null
 
     constructor(id: Int?, name: String, abbreviation: String) {

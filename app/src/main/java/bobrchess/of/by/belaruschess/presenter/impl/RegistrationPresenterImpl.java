@@ -43,7 +43,7 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
             validateUserData(userDTO);
             view.enableButton();
             view.showProgress();
-            userConnection.registrate(userDTO.getEmail(),userDTO.getPassword());
+            userConnection.registrate(userDTO);
         } catch (IncorrectEmailException e) {
             view.showIncorrectEmailText();
             view.onLoginFailed();

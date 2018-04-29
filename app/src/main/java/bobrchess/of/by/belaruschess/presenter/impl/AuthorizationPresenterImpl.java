@@ -41,7 +41,7 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
             validateUserData(userDTO);
             view.disableButton();
             view.showProgress();
-            userConnection.authorizate(userDTO.getEmail(), userDTO.getPassword());
+            userConnection.authorizate(userDTO);
         } catch (IncorrectEmailException e) {
             view.showIncorrectEmailText();
             view.onLoginFailed();

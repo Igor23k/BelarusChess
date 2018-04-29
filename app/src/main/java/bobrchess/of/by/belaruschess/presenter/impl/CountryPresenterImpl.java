@@ -7,7 +7,6 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectEmailException;
 import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
 import bobrchess.of.by.belaruschess.network.connection.CountryConnection;
-import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter;
 import bobrchess.of.by.belaruschess.presenter.CountryPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackCountry;
 import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity;

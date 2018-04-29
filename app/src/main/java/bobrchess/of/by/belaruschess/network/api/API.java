@@ -11,6 +11,7 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentTeamDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -31,20 +32,19 @@ public interface API {
 
     @POST("/rank")
     @FormUrlEncoded
-    Call<RankDTO> addRank(@Field("name") String name, @Field("abbreviation") String abbreviation);
+    Call<RankDTO> addRank(@Body RankDTO rankDTO);
 
-    //Country
-    @GET("/country/{id}")
+    //CountryDTO
+    @GET("/countryDTO/{id}")
     Call<CountryDTO> getCountry(@Path("id") int id);
 
     @GET("/countries")
     Call<List<CountryDTO>> getCountries();
 
-    @POST("/country")
-    @FormUrlEncoded
-    Call<CountryDTO> addCountry(@Field("name") String name, @Field("abbreviation") String abbreviation);
+    @POST("/countryDTO")
+    Call<CountryDTO> addCountry(@Body CountryDTO countryDTO);
 
-    //User
+    //UserLite
     @GET("/users")
     Call<List<UserDTO>> getUsers();
 
@@ -52,8 +52,10 @@ public interface API {
     Call<UserDTO> getUser(@Path("id") int id);
 
     @POST("/user")
-    @FormUrlEncoded
-    Call<UserDTO> authorizate(@Field("email") String email, @Field("password") String password);
+    Call<UserDTO> authorizate(@Body UserDTO userDTO);
+
+    @POST("/user")
+    Call<UserDTO> registrate(@Body UserDTO userDTO);
 
     //Tournament
     @GET("/tournament/{id}")
@@ -63,10 +65,7 @@ public interface API {
     Call<List<TournamentDTO>> getTournaments();
 
     @POST("/tournament")
-    @FormUrlEncoded
-    Call<TournamentDTO> addTournament(@Field("name") String name, @Field("startDate") Date startDate, @Field("finishDate") Date finishDate,
-                                   @Field("countPlayersInTeam") Integer countPlayersInTeam, @Field("placeId") Integer placeId,
-                                   @Field("refereeId") UserDTO refereeId);
+    Call<TournamentDTO> addTournament(@Body TournamentDTO tournamentDTO);
 
     //Game
     @GET("/game/{id}")
@@ -77,10 +76,7 @@ public interface API {
 
     @POST("/game")
     @FormUrlEncoded
-    Call<GameDTO> addGame(@Field("name") String name, @Field("countPointsFirstPlayer") Double countPointsFirstPlayer,
-                                      @Field("countPointsSecondPlayer") Double countPointsSecondPlayer,
-                                      @Field("matchId") Integer matchId, @Field("firstChessPlayer") UserDTO firstChessPlayer,
-                                      @Field("secondChessPlayer") UserDTO secondChessPlayer);
+    Call<GameDTO> addGame(@Body GameDTO gameDTO);
 
     //Match
     @GET("/match/{id}")
@@ -91,8 +87,5 @@ public interface API {
 
     @POST("/match")
     @FormUrlEncoded
-    Call<MatchDTO> addMatch(@Field("countPointsFirstTeam") Double countPointsFirstTeam,
-                          @Field("countPointsSecondTeam") Double countPointsSecondTeam,
-                          @Field("date") Date date, @Field("tournamentId") TournamentDTO tournament,
-                          @Field("firstTeamId") TournamentTeamDTO firstTeamId, @Field("secondTeamId") TournamentTeamDTO secondTeamId);
+    Call<MatchDTO> addMatch(@Body MatchDTO matchDTO);
 }

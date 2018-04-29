@@ -15,8 +15,8 @@ public class UserConnection {
 
     private CallBackUser callBack;
 
-    public void authorizate(String email, String password) {
-        App.getAPI().authorizate(email,password).enqueue(new Callback<UserDTO>() {
+    public void getUser(Integer id) {
+        App.getAPI().getUser(id).enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
@@ -31,8 +31,26 @@ public class UserConnection {
         });
     }
 
-    public void registrate(String email, String password) {
-        App.getAPI().authorizate(email,password).enqueue(new Callback<UserDTO>() {
+    public void authorizate(UserDTO userDTO) {
+        App.getAPI().authorizate(userDTO).enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if (response.isSuccessful()) {
+                    callBack.onResponse(response.body());
+                }else {
+                    callBack.onFailure(new Throwable());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                callBack.onFailure(t);
+            }
+        });
+    }
+
+    public void registrate(UserDTO userDTO) {
+        App.getAPI().registrate(userDTO).enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
