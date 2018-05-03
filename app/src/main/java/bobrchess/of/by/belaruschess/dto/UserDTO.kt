@@ -1,6 +1,6 @@
 package bobrchess.of.by.belaruschess.dto
 
-import java.util.Date
+import java.sql.Date
 
 /**
  * Created by Igor on 05.04.2018.
@@ -16,7 +16,7 @@ class UserDTO {
 
     var patronymic: String? = null
 
-    var birthdate: Date? = null
+    //var birthday: Date? = null
 
     var email: String? = null
 
@@ -30,12 +30,12 @@ class UserDTO {
 
     var coach: UserDTO? = null
 
-    constructor(id: Long?, name: String, surname: String, patronymic: String, birthdate: Date, email: String, password: String, rank: RankDTO, country: CountryDTO, rating: Int?, coach: UserDTO) {
+    constructor(id: Long?, name: String, surname: String, patronymic: String,/* birthdate: Date, */email: String, password: String, rank: RankDTO, country: CountryDTO, rating: Int?, coach: UserDTO) {
         this.id = id
         this.name = name
         this.surname = surname
         this.patronymic = patronymic
-        this.birthdate = birthdate
+        //this.birthday = birthdate
         this.email = email
         this.password = password
         this.rank = rank

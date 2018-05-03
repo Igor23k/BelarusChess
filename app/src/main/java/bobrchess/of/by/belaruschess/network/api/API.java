@@ -54,7 +54,7 @@ public interface API {
     @POST("/user")
     Call<UserDTO> authorizate(@Body UserDTO userDTO);
 
-    @POST("/user")
+    @POST("/addUser")
     Call<UserDTO> registrate(@Body UserDTO userDTO);
 
     //Tournament

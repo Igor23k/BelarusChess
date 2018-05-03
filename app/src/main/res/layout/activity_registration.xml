@@ -30,20 +30,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
+                android:text="Ihar"
                 android:hint="@string/userName" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Address Label -->
+        <!-- Surname Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_address"
+            <EditText android:id="@+id/input_surname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="@string/userAddress" />
+                android:inputType="textPersonName"
+                android:text="Kazlou"
+                android:hint="@string/userSurname" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Patronymic Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_patronymic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Sergeevich"
+                android:hint="@string/userPatronymic" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Rating Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="2000"
+                android:hint="@string/userRating" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -58,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
+                android:text="www.bk.ru@mail.ru"
                 android:hint="@string/email" />
         </android.support.design.widget.TextInputLayout>
 
@@ -72,6 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:text="345676678"
                 android:hint="@string/phoneNumber" />
         </android.support.design.widget.TextInputLayout>
 
@@ -85,6 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="qwerty"
                 android:hint="@string/password"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -98,6 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="qwerty"
                 android:hint="@string/renterPassword"/>
         </android.support.design.widget.TextInputLayout>
 

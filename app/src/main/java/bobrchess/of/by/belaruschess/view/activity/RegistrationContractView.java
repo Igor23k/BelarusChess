@@ -5,7 +5,7 @@ package bobrchess.of.by.belaruschess.view.activity;
  */
 
 public interface RegistrationContractView {
-    void showToast(int resId);
+    void showToast(Integer resId);
     void showProgress();
     void hideProgress();
     void enableButton();

@@ -8,6 +8,7 @@ import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
 import bobrchess.of.by.belaruschess.network.connection.UserConnection;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
+import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
 
 /**
@@ -31,14 +32,22 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
     }
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onAuthorizationFailure(Throwable t) {
         view.hideProgress();
+        view.showToast(t.getLocalizedMessage());
         view.onLoginFailed();
+    }
+    @Override
+    public void onConnectionError(Throwable t) {
+        view.hideProgress();
+        view.showToast(t.getMessage());
     }
 
     @Override
     public void registrate() {
+        view.disableButton();
         UserDTO userDTO = view.getUserData();
+        //userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
         try {
             validateUserData(userDTO);
             view.enableButton();
@@ -60,7 +69,7 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
         String surname = userDTO.getSurname();
         String patronymic = userDTO.getPatronymic();
         Integer rating = userDTO.getRating();
-        Date birthdate = userDTO.getBirthdate();
+      //  Date birthdate = userDTO.getBirthday();
 
         if (email == null || email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             throw new IncorrectEmailException("Incorrect email!");

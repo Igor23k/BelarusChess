@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +58,6 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
                 presenter.authorizate();
-                //progressDialog.dismiss();
             }
         });
 
@@ -108,6 +108,11 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
         enableButton();
     }
 
+    public void onConnectionError() {
+        enableButton();
+        showToast(R.string.connection_error);
+    }
+
     public void showIncorrectEmailText(){
         emailText.setError("enter a valid email address");
     }
@@ -116,8 +121,16 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
         passwordText.setError("between 4 and 10 alphanumeric characters");
     }
 
-    public void showToast(int resId) {
-        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
+    public void showToast(Integer resId) {
+        Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+    public void showToast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     public void showProgress() {

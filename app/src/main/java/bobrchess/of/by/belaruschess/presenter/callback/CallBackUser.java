@@ -10,5 +10,7 @@ import bobrchess.of.by.belaruschess.presenter.callback.CallBack;
 public interface CallBackUser extends CallBack {
     void onResponse(UserDTO userDTO);
 
-    void onFailure(Throwable t);
+    void onAuthorizationFailure(Throwable t);
+
+    void onConnectionError(Throwable t);
 }

@@ -1,6 +1,8 @@
 package bobrchess.of.by.belaruschess.network.connection;
 
 import bobrchess.of.by.belaruschess.App;
+import bobrchess.of.by.belaruschess.dto.CountryDTO;
+import bobrchess.of.by.belaruschess.dto.RankDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
 import retrofit2.Call;
@@ -26,7 +28,7 @@ public class UserConnection {
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                callBack.onFailure(t);
+                callBack.onAuthorizationFailure(t);
             }
         });
     }
@@ -36,15 +38,19 @@ public class UserConnection {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
-                    callBack.onResponse(response.body());
-                }else {
-                    callBack.onFailure(new Throwable());
+                    if (response.raw().code() == 200 && response.body() != null) {
+                        callBack.onResponse(response.body());
+                    }else {
+                        callBack.onAuthorizationFailure(new Throwable(response.raw().header("Error message")));
+                    }
+                } else {
+                    callBack.onAuthorizationFailure(new Throwable());
                 }
             }
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                callBack.onFailure(t);
+                callBack.onConnectionError(t);
             }
         });
     }
@@ -54,19 +60,44 @@ public class UserConnection {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
-                    callBack.onResponse(response.body());
+                    if (response.raw().code() == 200 && response.body() != null) {
+                        callBack.onResponse(response.body());
+                    }else {
+                        callBack.onAuthorizationFailure(new Throwable(response.raw().header("Error message")));
+                    }
+                } else {
+                    callBack.onAuthorizationFailure(new Throwable());
                 }
             }
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                callBack.onFailure(t);
+                callBack.onConnectionError(t);
             }
         });
     }
 
-
     public void attachView(CallBackUser callBack) {
         this.callBack = callBack;
+    }
+
+    UserDTO getTestUser() {
+        UserDTO userDTO = new UserDTO();
+        CountryDTO countryDTO = new CountryDTO();
+        countryDTO.setName("BELAR");
+        countryDTO.setAbbreviation("blr");
+        RankDTO rankDTO = new RankDTO();
+        rankDTO.setAbbreviation("kek");
+        rankDTO.setName("KEKER");
+        userDTO.setEmail("ww@dd.ek");
+        userDTO.setCountry(countryDTO);
+        userDTO.setRank(rankDTO);
+        userDTO.setName("Ihar");
+        userDTO.setSurname("Kazlou");
+        userDTO.setPatronymic("Sergeevich");
+        userDTO.setPassword("qwerty");
+        userDTO.setRating(2000);
+        //  userDTO.setBirthday(new Date(System.currentTimeMillis()));
+        return userDTO;
     }
 }

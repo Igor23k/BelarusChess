@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +26,14 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     @BindView(R.id.input_name)
     EditText nameText;
 
-    @BindView(R.id.input_address)
-    EditText addressText;
+    @BindView(R.id.input_surname)
+    EditText surnameText;
+
+    @BindView(R.id.input_patronymic)
+    EditText patronymicText;
+
+    @BindView(R.id.input_rating)
+    EditText ratingText;
 
     @BindView(R.id.input_email)
     EditText emailText;
@@ -53,7 +60,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authorization);
+        setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
         presenter = new RegistrationPresenterImpl();
         presenter.attachView(this);
@@ -69,7 +76,6 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
                 presenter.registrate();
-                //progressDialog.dismiss();
             }
         });
 
@@ -78,7 +84,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
                 startActivityForResult(intent, REGISTRATION_REQUEST);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -128,8 +134,16 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         passwordText.setError("between 4 and 10 alphanumeric characters");
     }
 
-    public void showToast(int resId) {
-        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
+    public void showToast(Integer resId) {
+        Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+    public void showToast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     public void showProgress() {
@@ -154,8 +168,12 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
     public UserDTO getUserData() {
         UserDTO userData = new UserDTO();
+        userData.setName(nameText.getText().toString());
+        userData.setSurname(surnameText.getText().toString());
+        userData.setPatronymic(patronymicText.getText().toString());
         userData.setEmail(emailText.getText().toString());
         userData.setPassword(passwordText.getText().toString());
+        userData.setRating(Integer.valueOf(ratingText.getText().toString()));
         return userData;
     }
 }

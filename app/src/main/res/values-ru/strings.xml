@@ -21,10 +21,15 @@
     <string name="email">Email</string>
     <string name="userName">Имя</string>
     <string name="userAddress">Адрес</string>
+    <string name="userRating">Рейтинг</string>
     <string name="phoneNumber">Мобильный номер</string>
     <string name="renterPassword">Повторный ввод пароля</string>
     <string name="createAccount">Регистрация</string>
     <string name="isMember">Уже зарегистрированы? Авторизоваться</string>
     <string name="logo">Логотип</string>
     <string name="please_wait">Пожалуйста, подождите ...</string>
+    <string name="connection_error">Ошибка соединения!</string>
+    <string name="incorrect_email">Неверный email!</string>
+    <string name="incorrect_password">Неверный пароль!</string>
+
 </resources>

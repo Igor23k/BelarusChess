@@ -29,13 +29,21 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
     }
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onAuthorizationFailure(Throwable t) {
         view.hideProgress();
+        view.showToast(t.getLocalizedMessage());
         view.onLoginFailed();
     }
 
     @Override
+    public void onConnectionError(Throwable t) {
+        view.hideProgress();
+        view.onConnectionError();
+    }
+
+    @Override
     public void authorizate() {
+        view.disableButton();
         UserDTO userDTO = view.getUserData();
         try {
             validateUserData(userDTO);
@@ -51,7 +59,7 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
         }
     }
 
-    private boolean validateUserData(UserDTO userDTO) throws IncorrectEmailException, IncorrectPasswordException {
+    private void validateUserData(UserDTO userDTO) throws IncorrectEmailException, IncorrectPasswordException {
         String email = userDTO.getEmail();
         String password = userDTO.getPassword();
 
@@ -61,8 +69,6 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
         if (password == null || password.isEmpty() || password.length() < 4 || password.length() > 10) {
             throw new IncorrectPasswordException("Incorrect password!");
         }
-
-        return true;
     }
 
     public void attachView(AuthorizationActivity activity) {
