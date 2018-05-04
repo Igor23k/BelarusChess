@@ -68,7 +68,7 @@ class UserInfoActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item!!.itemId == R.id.action_search) {
-            val intent = Intent(this, SearchUsersActivity::class.java)
+            val intent = Intent(this, SearchUserActivity::class.java)
             startActivity(intent)
         }
         return true
@@ -119,7 +119,7 @@ class UserInfoActivity : AppCompatActivity() {
     private fun getUser(): UserTweet {
         return UserTweet(
                 1L,
-                "http://priscree.ru/img/f6334f93a90da8.jpg",
+                "http://priscree.ru/img/5f1585e4e674e0.jpg",
                 "Igor",
                 "Igor23k",
                 "Sample description",

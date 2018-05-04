@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import java.util.List;
+
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectEmailException;
 import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
@@ -26,6 +28,11 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
     public void onResponse(UserDTO userDTO) {
         view.hideProgress();
         view.onLoginSuccess();
+    }
+
+    @Override
+    public void onResponse(List<UserDTO> usersDTO) {
+
     }
 
     @Override

@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchUsersActivity" >
+        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity" >
 
         </activity>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.UserInfoActivity">

@@ -13,6 +13,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
 import bobrchess.of.by.colibritweet.adapter.UsersAdapter
 import bobrchess.of.by.colibritweet.pojo.UserTweet
 import java.util.*
@@ -20,16 +23,17 @@ import java.util.*
 /**
  * Created by Igor on 25.03.2018.
  */
-class SearchUsersActivity : AppCompatActivity() {
+class SearchUserActivity : AppCompatActivity() {
     private var usersRecyclerView: RecyclerView? = null
     private var usersAdapter: UsersAdapter? = null
     private var toolbar: Toolbar? = null
     private var queryEditText: EditText? = null
     private var searchButton: Button? = null
+    private var presenter: SearchUserPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_users)
+        setContentView(R.layout.activity_search_user)
         initRecyclerView()
 
         toolbar = findViewById(R.id.toolbar)
@@ -40,7 +44,7 @@ class SearchUsersActivity : AppCompatActivity() {
 
         queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                searchUsers()
+                loadUsers()
                 return@OnEditorActionListener true
             }
             false
@@ -48,6 +52,9 @@ class SearchUsersActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        presenter = SearchUserPresenterImpl()
+        presenter!!.attachView(this)
+        presenter!!.viewIsReady()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -66,8 +73,8 @@ class SearchUsersActivity : AppCompatActivity() {
         usersRecyclerView!!.layoutManager = LinearLayoutManager(this)
 
         val onUserClickListener = object : UsersAdapter.OnUserClickListener {
-            override fun onUserClick(user: UserTweet) {
-                val intent = Intent(this@SearchUsersActivity, UserInfoActivity::class.java)
+            override fun onUserClick(user: UserDTO) {
+                val intent = Intent(this@SearchUserActivity, UserInfoActivity::class.java)
                 intent.putExtra(UserInfoActivity.USER_ID, user.id)
                 startActivity(intent)
             }
@@ -76,8 +83,16 @@ class SearchUsersActivity : AppCompatActivity() {
         usersRecyclerView!!.adapter = usersAdapter
     }
 
-    private fun searchUsers() {
-        val users = getUsers()
+    private fun loadUsers() {
+        val userDTO = presenter!!.getUsers()
+        /*val users = getUsers()
+        usersAdapter!!.clearItems()
+        usersAdapter!!.setItems(users)*/
+    }
+
+    private fun searchUsers() {}
+
+    fun showUsers(users : List<UserDTO>){
         usersAdapter!!.clearItems()
         usersAdapter!!.setItems(users)
     }

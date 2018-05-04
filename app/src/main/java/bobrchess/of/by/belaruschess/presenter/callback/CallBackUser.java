@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.presenter.callback;
 
+import java.util.List;
+
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBack;
 
@@ -9,6 +11,8 @@ import bobrchess.of.by.belaruschess.presenter.callback.CallBack;
 
 public interface CallBackUser extends CallBack {
     void onResponse(UserDTO userDTO);
+
+    void onResponse(List<UserDTO> usersDTO);
 
     void onAuthorizationFailure(Throwable t);
 

@@ -1,13 +1,13 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
-import java.util.Date;
+import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectEmailException;
 import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
 import bobrchess.of.by.belaruschess.network.connection.UserConnection;
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
 
@@ -32,11 +32,17 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
     }
 
     @Override
+    public void onResponse(List<UserDTO> usersDTO) {
+
+    }
+
+    @Override
     public void onAuthorizationFailure(Throwable t) {
         view.hideProgress();
         view.showToast(t.getLocalizedMessage());
         view.onLoginFailed();
     }
+
     @Override
     public void onConnectionError(Throwable t) {
         view.hideProgress();
@@ -47,9 +53,9 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
     public void registrate() {
         view.disableButton();
         UserDTO userDTO = view.getUserData();
-        //userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
         try {
             validateUserData(userDTO);
+            userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
             view.enableButton();
             view.showProgress();
             userConnection.registrate(userDTO);
@@ -69,7 +75,7 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
         String surname = userDTO.getSurname();
         String patronymic = userDTO.getPatronymic();
         Integer rating = userDTO.getRating();
-      //  Date birthdate = userDTO.getBirthday();
+        //  Date birthdate = userDTO.getBirthday();
 
         if (email == null || email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             throw new IncorrectEmailException("Incorrect email!");

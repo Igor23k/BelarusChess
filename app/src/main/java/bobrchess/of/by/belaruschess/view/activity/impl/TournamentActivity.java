@@ -4,21 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import bobrchess.of.by.belaruschess.R;
-import bobrchess.of.by.belaruschess.dto.UserDTO;
-import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter;
-import bobrchess.of.by.belaruschess.presenter.impl.AuthorizationPresenterImpl;
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl;
-import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView;
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView;
 import bobrchess.of.by.belaruschess.view.activity.TournamentPresenter;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TournamentActivity extends AppCompatActivity implements TournamentContractView {

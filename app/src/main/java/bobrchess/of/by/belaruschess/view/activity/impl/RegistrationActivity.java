@@ -15,11 +15,11 @@ import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl;
-import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
+import bobrchess.of.by.belaruschess.view.activity.AuthContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegistrationActivity extends AppCompatActivity implements RegistrationContractView {
+public class RegistrationActivity extends AppCompatActivity implements AuthContractView {
     private static final String TAG = "RegistrationActivity";
     private static final int REGISTRATION_REQUEST = 1;
 

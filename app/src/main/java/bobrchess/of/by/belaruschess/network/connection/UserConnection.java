@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.network.connection;
 
+import java.util.List;
+
 import bobrchess.of.by.belaruschess.App;
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
 import bobrchess.of.by.belaruschess.dto.RankDTO;
@@ -28,6 +30,22 @@ public class UserConnection {
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
+                callBack.onAuthorizationFailure(t);
+            }
+        });
+    }
+
+    public void getUsers() {
+        App.getAPI().getUsers().enqueue(new Callback<List<UserDTO>>() {
+            @Override
+            public void onResponse(Call<List<UserDTO>> call, Response<List<UserDTO>> response) {
+                if (response.isSuccessful()) {
+                    callBack.onResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserDTO>> call, Throwable t) {
                 callBack.onAuthorizationFailure(t);
             }
         });
