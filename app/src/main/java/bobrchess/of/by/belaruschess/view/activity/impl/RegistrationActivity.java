@@ -131,8 +131,10 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     private void putUserData(Intent intent, UserDTO userDTO) {
-        intent.putExtra("name1", "surname");
-        intent.putExtra("nafgchjme2", "name2");
+        intent.putExtra(USER_NAME_PARAMETER, userDTO.getName());
+        intent.putExtra(USER_SURNAME_PARAMETER, userDTO.getSurname());
+        intent.putExtra(USER_PATRONYMIC_PARAMETER, userDTO.getPatronymic());
+        intent.putExtra(USER_RATING_PARAMETER, userDTO.getRating());
 
     }
 
