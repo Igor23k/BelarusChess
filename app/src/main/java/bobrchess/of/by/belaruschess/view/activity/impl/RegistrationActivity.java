@@ -20,6 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_NAME_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_PATRONYMIC_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_RATING_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_SURNAME_PARAMETER;
 
 public class RegistrationActivity extends AppCompatActivity implements RegistrationContractView {
     private static final String TAG = "RegistrationActivity";
@@ -117,12 +121,19 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void onLoginSuccess(UserDTO userDTO) {
         enableButton();
         finish();
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        putUserData(intent, userDTO);
         startActivityForResult(intent, REGISTRATION_REQUEST);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    private void putUserData(Intent intent, UserDTO userDTO) {
+        intent.putExtra("name1", "surname");
+        intent.putExtra("nafgchjme2", "name2");
+
     }
 
     @Override

@@ -20,5 +20,17 @@ public class Constants {
     public static final String UNSUCCESSFUL_REQUEST = "Unsuccessful request!";
     public static final String ERROR_PARAMETER = "Error";
     public static final String EMPTY_STRING = "";
+    public static final String INCORRECT_EMAIL = "Incorrect email!";
+    public static final String INCORRECT_PASSWORD = "Incorrect password!";
+    public static final String INCORRECT_NAME = "Incorrect name!";
+    public static final String INCORRECT_SURNAME = "Incorrect surname!";
+    public static final String INCORRECT_PATRONYMIC = "Incorrect patronymic!";
+    public static final String INCORRECT_RATING = "Incorrect rating!";
+
+    public static final String USER_NAME_PARAMETER = "name";
+    public static final String USER_SURNAME_PARAMETER = "surname";
+    public static final String USER_RATING_PARAMETER = "rating";
+    public static final String USER_PATRONYMIC_PARAMETER = "patronymic";
+    public static final String USER_BIRTHDAY_PARAMETER = "birthday";
 
 }

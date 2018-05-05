@@ -27,7 +27,7 @@ public class AuthorizationPresenterImpl implements CallBackAuthorization, Author
     @Override
     public void onResponse(UserDTO userDTO) {
         view.hideProgress();
-        view.onLoginSuccess();
+        view.onLoginSuccess(userDTO);
     }
 
     @Override

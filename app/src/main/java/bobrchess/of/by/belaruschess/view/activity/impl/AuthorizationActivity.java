@@ -20,6 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_NAME_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_PATRONYMIC_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_RATING_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_SURNAME_PARAMETER;
 
 public class AuthorizationActivity extends AppCompatActivity implements AuthorizationContractView {
     private static final String TAG = "AuthorizationActivity";
@@ -99,12 +103,20 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void onLoginSuccess(UserDTO userDTO) {
         enableButton();
         finish();
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        putUserData(intent,userDTO);
         startActivityForResult(intent, AUTHORIZATION_REQUEST);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    private void putUserData(Intent intent, UserDTO userDTO) {
+        intent.putExtra(USER_NAME_PARAMETER, userDTO.getName());
+        intent.putExtra(USER_SURNAME_PARAMETER, userDTO.getSurname());
+        intent.putExtra(USER_PATRONYMIC_PARAMETER, userDTO.getPatronymic());
+        intent.putExtra(USER_RATING_PARAMETER, 1234);
     }
 
     @Override

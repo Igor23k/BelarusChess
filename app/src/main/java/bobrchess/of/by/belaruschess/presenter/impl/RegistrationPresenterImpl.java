@@ -9,6 +9,8 @@ import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
 
+import static bobrchess.of.by.belaruschess.util.Constants.*;
+
 /**
  * Created by Igor on 11.04.2018.
  */
@@ -27,7 +29,7 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
     @Override
     public void onResponse(UserDTO userDTO) {
         view.hideProgress();
-        view.onLoginSuccess();
+        view.onLoginSuccess(userDTO);
     }
 
     @Override
@@ -72,10 +74,10 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
         //  Date birthdate = userDTO.getBirthday();
 
         if (email == null || email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            throw new IncorrectEmailException("Incorrect email!");
+            throw new IncorrectEmailException(INCORRECT_EMAIL);
         }
-        if (password == null || password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            throw new IncorrectPasswordException("Incorrect password!");
+        if (password == null || password.isEmpty() || password.length() < 4) {
+            throw new IncorrectPasswordException(INCORRECT_PASSWORD);
         }
 
         return true;

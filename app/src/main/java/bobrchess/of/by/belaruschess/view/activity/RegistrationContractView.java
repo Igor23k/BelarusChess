@@ -12,7 +12,7 @@ public interface RegistrationContractView extends BaseContractView{
     void enableButton();
     void disableButton();
     void onLoginFailed();
-    void onLoginSuccess();
+    void onLoginSuccess(UserDTO userDTO);
     void onConnectionError();
     void showIncorrectEmailText();
     void showIncorrectPasswordText();

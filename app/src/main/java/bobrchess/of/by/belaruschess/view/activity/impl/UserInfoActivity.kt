@@ -11,6 +11,8 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.util.Constants.*
 import bobrchess.of.by.colibritweet.adapter.TweetAdapter
 import bobrchess.of.by.colibritweet.pojo.Tweet
 import bobrchess.of.by.colibritweet.pojo.UserTweet
@@ -35,6 +37,9 @@ class UserInfoActivity : AppCompatActivity() {
     private var tweetsRecyclerView: RecyclerView? = null
     private var tweetAdapter: TweetAdapter? = null
     private var toolbar: Toolbar? = null
+
+    private val user = UserDTO()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info)
@@ -49,7 +54,6 @@ class UserInfoActivity : AppCompatActivity() {
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
 
         loadUserInfo()
         initRecyclerView()
@@ -96,20 +100,28 @@ class UserInfoActivity : AppCompatActivity() {
 
     private fun loadUserInfo() {
         val user = getUser()
-        displayUserInfo(user)
+        createUser(intent)
+        displayUserInfo()
     }
 
-    private fun displayUserInfo(user: UserTweet) {
-        Picasso.with(this).load(user.imageUrl).into(userImageView)
-        nameTextView!!.text = user.name
-        nickTextView!!.text = user.nick
-        descriptionTextView!!.text = user.description
-        locationTextView!!.text = user.location
+    private fun createUser(intent: Intent?) {
+        user.name = intent!!.getStringExtra(USER_NAME_PARAMETER)
+        user.surname = intent.getStringExtra(USER_SURNAME_PARAMETER)
+        user.patronymic = intent.getStringExtra(USER_PATRONYMIC_PARAMETER)
+        user.rating = intent.getIntExtra(USER_RATING_PARAMETER,0)
+    }
 
-        val followingCount = user.followingCount.toString()
+    private fun displayUserInfo() {
+        Picasso.with(this).load("http://priscree.ru/img/5f1585e4e674e0.jpg").into(userImageView)
+        nameTextView!!.text = user.name
+        nickTextView!!.text = /*user.nick*/"Nickname"
+        descriptionTextView!!.text = "Description"
+        locationTextView!!.text = "Location"
+
+        val followingCount = "34"//user.followingCount.toString()
         followingCountTextView!!.text = followingCount
 
-        val followersCount = user.followersCount.toString()
+        val followersCount = "29"//user.followersCount.toString()
         followersCountTextView!!.text = followersCount
 
         supportActionBar!!.title = user.name

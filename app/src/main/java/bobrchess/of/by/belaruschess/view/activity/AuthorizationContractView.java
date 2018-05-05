@@ -14,7 +14,7 @@ public interface AuthorizationContractView extends BaseContractView{
     void showIncorrectEmailText();
     void showIncorrectPasswordText();
     void onLoginFailed();
-    void onLoginSuccess();
+    void onLoginSuccess(UserDTO userDTO);
     void onConnectionError();
     void showToast(Integer resId);
     void showToast(String message);
