@@ -7,7 +7,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity;
  */
 
 public interface AuthorizationPresenter {
-    void authorizate();
+    void authorization();
 
     void attachView(AuthorizationActivity activity);
 

@@ -15,11 +15,13 @@ import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl;
-import bobrchess.of.by.belaruschess.view.activity.AuthContractView;
+import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegistrationActivity extends AppCompatActivity implements AuthContractView {
+import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
+
+public class RegistrationActivity extends AppCompatActivity implements RegistrationContractView {
     private static final String TAG = "RegistrationActivity";
     private static final int REGISTRATION_REQUEST = 1;
 
@@ -38,8 +40,8 @@ public class RegistrationActivity extends AppCompatActivity implements AuthContr
     @BindView(R.id.e_email_input)
     EditText emailText;
 
-    @BindView(R.id.e_number_input)
-    EditText mobileText;
+    /*@BindView(R.id.e_number_input)
+    EditText mobileText;*/
 
     @BindView(R.id.e_password_input)
     EditText passwordText;
@@ -75,7 +77,7 @@ public class RegistrationActivity extends AppCompatActivity implements AuthContr
                 final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
-                presenter.registrate();
+                presenter.registration();
             }
         });
 
@@ -114,6 +116,7 @@ public class RegistrationActivity extends AppCompatActivity implements AuthContr
         moveTaskToBack(true);
     }
 
+    @Override
     public void onLoginSuccess() {
         enableButton();
         finish();
@@ -122,34 +125,47 @@ public class RegistrationActivity extends AppCompatActivity implements AuthContr
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
+    @Override
     public void onLoginFailed() {
         registrationButton.setEnabled(true);
     }
 
-    public void showIncorrectEmailText() {
-        emailText.setError("enter a valid email address");
-    }
-
-    public void showIncorrectPasswordText() {
-        passwordText.setError("between 4 and 10 alphanumeric characters");
-    }
-
+    @Override
     public void showToast(Integer resId) {
         Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
+    @Override
+    public void showIncorrectEmailText(){
+        emailText.setError(this.getString(R.string.incorrect_email));
+    }
+
+    @Override
+    public void showIncorrectPasswordText(){
+        passwordText.setError(this.getString(R.string.incorrect_password));
+    }
+
+    @Override
+    public void onConnectionError() {
+        enableButton();
+        showToast(R.string.connection_error);
+    }
+
+    @Override
     public void showToast(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
+    @Override
     public void showProgress() {
-        progressDialog = ProgressDialog.show(this, "", "Please, wait ..."/*R.string.please_wait*/);
+        progressDialog = ProgressDialog.show(this, EMPTY_STRING, "Please, wait ..."/*R.string.please_wait*/);
     }
 
+    @Override
     public void hideProgress() {
         if (progressDialog != null) {
             progressDialog.dismiss();
@@ -166,6 +182,7 @@ public class RegistrationActivity extends AppCompatActivity implements AuthContr
         registrationButton.setEnabled(false);
     }
 
+    @Override
     public UserDTO getUserData() {
         UserDTO userData = new UserDTO();
         userData.setName(nameText.getText().toString());

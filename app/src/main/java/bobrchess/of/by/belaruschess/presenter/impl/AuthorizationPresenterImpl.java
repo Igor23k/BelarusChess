@@ -1,38 +1,33 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
-import java.util.List;
-
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectEmailException;
 import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
-import bobrchess.of.by.belaruschess.network.connection.UserConnection;
+import bobrchess.of.by.belaruschess.network.connection.AuthorizationConnection;
 import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter;
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackAuthorization;
+import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity;
 
 /**
  * Created by Igor on 11.04.2018.
  */
 
-public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPresenter {
+public class AuthorizationPresenterImpl implements CallBackAuthorization, AuthorizationPresenter {
 
     private AuthorizationActivity view;
-    private UserConnection userConnection;
+    private AuthorizationConnection userConnection;
+    private Boolean viewIsReady = false;
 
     public AuthorizationPresenterImpl() {
-        userConnection = new UserConnection();
-        userConnection.attachView(this);
+        userConnection = new AuthorizationConnection();
+        userConnection.attachPresenter(this);
     }
 
     @Override
     public void onResponse(UserDTO userDTO) {
         view.hideProgress();
         view.onLoginSuccess();
-    }
-
-    @Override
-    public void onResponse(List<UserDTO> usersDTO) {
-
     }
 
     @Override
@@ -49,14 +44,15 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
     }
 
     @Override
-    public void authorizate() {
+    public void authorization() {
         view.disableButton();
         UserDTO userDTO = view.getUserData();
         try {
             validateUserData(userDTO);
+            userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
             view.disableButton();
             view.showProgress();
-            userConnection.authorizate(userDTO);
+            userConnection.authorization(userDTO);
         } catch (IncorrectEmailException e) {
             view.showIncorrectEmailText();
             view.onLoginFailed();
@@ -71,10 +67,10 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
         String password = userDTO.getPassword();
 
         if (email == null || email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            throw new IncorrectEmailException("Incorrect email!");
+            throw new IncorrectEmailException();
         }
-        if (password == null || password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            throw new IncorrectPasswordException("Incorrect password!");
+        if (password == null || password.isEmpty() || password.length() < 4) {
+            throw new IncorrectPasswordException();
         }
     }
 
@@ -87,6 +83,6 @@ public class AuthorizationPresenterImpl implements CallBackUser, AuthorizationPr
     }
 
     public void viewIsReady() {
-
+        viewIsReady = true;
     }
 }

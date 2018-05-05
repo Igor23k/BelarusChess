@@ -15,11 +15,13 @@ import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.AuthorizationPresenterImpl;
-import bobrchess.of.by.belaruschess.view.activity.AuthContractView;
+import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AuthorizationActivity extends AppCompatActivity implements AuthContractView {
+import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
+
+public class AuthorizationActivity extends AppCompatActivity implements AuthorizationContractView {
     private static final String TAG = "AuthorizationActivity";
     private static final int AUTHORIZATION_REQUEST = 0;
 
@@ -57,7 +59,7 @@ public class AuthorizationActivity extends AppCompatActivity implements AuthCont
                 final ProgressDialog progressDialog = new ProgressDialog(AuthorizationActivity.this,
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
-                presenter.authorizate();
+                presenter.authorization();
             }
         });
 
@@ -96,6 +98,7 @@ public class AuthorizationActivity extends AppCompatActivity implements AuthCont
         moveTaskToBack(true);
     }
 
+    @Override
     public void onLoginSuccess() {
         enableButton();
         finish();
@@ -104,39 +107,47 @@ public class AuthorizationActivity extends AppCompatActivity implements AuthCont
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
+    @Override
     public void onLoginFailed() {
         enableButton();
     }
 
+    @Override
     public void onConnectionError() {
         enableButton();
         showToast(R.string.connection_error);
     }
 
+    @Override
     public void showIncorrectEmailText(){
-        emailText.setError("enter a valid email address");
+        emailText.setError(this.getString(R.string.incorrect_email));
     }
 
+    @Override
     public void showIncorrectPasswordText(){
-        passwordText.setError("between 4 and 10 alphanumeric characters");
+        passwordText.setError(this.getString(R.string.incorrect_password));
     }
 
+    @Override
     public void showToast(Integer resId) {
         Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
+    @Override
     public void showToast(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
+    @Override
     public void showProgress() {
-        progressDialog = ProgressDialog.show(this, "", "Please, wait ..."/*R.string.please_wait*/);
+        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait));
     }
 
+    @Override
     public void hideProgress() {
         if (progressDialog != null) {
             progressDialog.dismiss();
@@ -153,6 +164,7 @@ public class AuthorizationActivity extends AppCompatActivity implements AuthCont
         loginButton.setEnabled(false);
     }
 
+    @Override
     public UserDTO getUserData() {
         UserDTO userData = new UserDTO();
         userData.setEmail(emailText.getText().toString());

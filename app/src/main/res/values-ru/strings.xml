@@ -29,7 +29,7 @@
     <string name="logo">Логотип</string>
     <string name="please_wait">Пожалуйста, подождите ...</string>
     <string name="connection_error">Ошибка соединения!</string>
-    <string name="incorrect_email">Неверный email!</string>
-    <string name="incorrect_password">Неверный пароль!</string>
+    <string name="incorrect_email">Неверный email! Пожалуйста, попробуйте еще раз.</string>
+    <string name="incorrect_password">Неверный пароль! Подалуйста, введите более 4 символов.</string>
 
 </resources>

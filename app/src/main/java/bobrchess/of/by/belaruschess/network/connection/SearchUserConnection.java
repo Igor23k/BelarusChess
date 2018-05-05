@@ -6,6 +6,8 @@ import java.util.List;
 
 import bobrchess.of.by.belaruschess.App;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
+import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter;
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,31 +20,9 @@ import static bobrchess.of.by.belaruschess.util.Constants.UNSUCCESSFUL_REQUEST;
  * Created by Igor on 11.04.2018.
  */
 
-public class UserConnection {
+public class SearchUserConnection {
 
-    private CallBackUser callBack;
-
-    public void getUser(Integer id) {
-        App.getAPI().getUser(id).enqueue(new Callback<UserDTO>() {
-            @Override
-            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-                if (response.isSuccessful()) {
-                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
-                        callBack.onResponse(response.body());
-                    } else {
-                        callBack.onConnectionError(new Throwable(response.raw().header(ERROR_PARAMETER)));
-                    }
-                } else {
-                    callBack.onConnectionError(new Throwable());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserDTO> call, Throwable t) {
-                callBack.onConnectionError(t);
-            }
-        });
-    }
+    private CallBackSearchUser callBack;
 
     public void getUsers() {
         App.getAPI().getUsers().enqueue(new Callback<List<UserDTO>>() {
@@ -66,7 +46,51 @@ public class UserConnection {
         });
     }
 
-    public void attachView(CallBackUser callBack) {
+    public void getUsers(Integer count) {
+        App.getAPI().getUsers(count).enqueue(new Callback<List<UserDTO>>() {
+            @Override
+            public void onResponse(Call<List<UserDTO>> call, Response<List<UserDTO>> response) {
+                if (response.isSuccessful()) {
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack.onResponse(response.body());
+                    } else {
+                        callBack.onConnectionError(new Throwable(response.raw().header(ERROR_PARAMETER)));
+                    }
+                } else {
+                    callBack.onConnectionError(new Throwable(UNSUCCESSFUL_REQUEST));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserDTO>> call, Throwable t) {
+                callBack.onConnectionError(t);
+            }
+        });
+    }
+
+    public void searchUsers(String text) {
+        App.getAPI().searchUsers(text).enqueue(new Callback<List<UserDTO>>() {
+            @Override
+            public void onResponse(Call<List<UserDTO>> call, Response<List<UserDTO>> response) {
+                if (response.isSuccessful()) {
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack.onResponse(response.body());
+                    } else {
+                        callBack.onConnectionError(new Throwable(response.raw().header(ERROR_PARAMETER)));
+                    }
+                } else {
+                    callBack.onConnectionError(new Throwable(UNSUCCESSFUL_REQUEST));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserDTO>> call, Throwable t) {
+                callBack.onConnectionError(t);
+            }
+        });
+    }
+
+    public void attachView(CallBackSearchUser callBack) {
         this.callBack = callBack;
     }
 }

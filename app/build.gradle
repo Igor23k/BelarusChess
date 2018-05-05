@@ -46,6 +46,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
     compile 'commons-codec:commons-codec:1.9'
+    compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
 
 }
 repositories {

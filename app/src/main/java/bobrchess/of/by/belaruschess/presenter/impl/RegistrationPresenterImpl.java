@@ -1,13 +1,11 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
-import java.util.List;
-
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectEmailException;
 import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
-import bobrchess.of.by.belaruschess.network.connection.UserConnection;
+import bobrchess.of.by.belaruschess.network.connection.RegistrationConnection;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser;
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
 
@@ -15,14 +13,15 @@ import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
  * Created by Igor on 11.04.2018.
  */
 
-public class RegistrationPresenterImpl implements CallBackUser, RegistrationPresenter {
+public class RegistrationPresenterImpl implements CallBackRegistration, RegistrationPresenter {
 
     private RegistrationActivity view;
-    private UserConnection userConnection;
+    private RegistrationConnection userConnection;
+    private Boolean viewIsReady = false;
 
     public RegistrationPresenterImpl() {
-        userConnection = new UserConnection();
-        userConnection.attachView(this);
+        userConnection = new RegistrationConnection();
+        userConnection.attachPresenter(this);
     }
 
     @Override
@@ -32,12 +31,7 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
     }
 
     @Override
-    public void onResponse(List<UserDTO> usersDTO) {
-
-    }
-
-    @Override
-    public void onAuthorizationFailure(Throwable t) {
+    public void onRegistrationFailure(Throwable t) {
         view.hideProgress();
         view.showToast(t.getLocalizedMessage());
         view.onLoginFailed();
@@ -50,7 +44,7 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
     }
 
     @Override
-    public void registrate() {
+    public void registration() {
         view.disableButton();
         UserDTO userDTO = view.getUserData();
         try {
@@ -58,7 +52,7 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
             userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
             view.enableButton();
             view.showProgress();
-            userConnection.registrate(userDTO);
+            userConnection.registration(userDTO);
         } catch (IncorrectEmailException e) {
             view.showIncorrectEmailText();
             view.onLoginFailed();
@@ -96,6 +90,6 @@ public class RegistrationPresenterImpl implements CallBackUser, RegistrationPres
     }
 
     public void viewIsReady() {
-
+        viewIsReady = true;
     }
 }

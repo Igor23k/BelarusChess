@@ -7,7 +7,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
  */
 
 public interface RegistrationPresenter {
-    void registrate();
+    void registration();
 
     void attachView(RegistrationActivity activity);
 

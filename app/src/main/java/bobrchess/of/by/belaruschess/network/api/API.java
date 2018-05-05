@@ -17,6 +17,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by Igor on 10.04.2018.
@@ -34,7 +35,7 @@ public interface API {
     @FormUrlEncoded
     Call<RankDTO> addRank(@Body RankDTO rankDTO);
 
-    //CountryDTO
+    //Country
     @GET("/countryDTO/{id}")
     Call<CountryDTO> getCountry(@Path("id") int id);
 
@@ -44,18 +45,25 @@ public interface API {
     @POST("/countryDTO")
     Call<CountryDTO> addCountry(@Body CountryDTO countryDTO);
 
-    //UserLite
-    @GET("/users")
+    //User
+
+    @GET("/allUsers")
     Call<List<UserDTO>> getUsers();
+
+    @GET("/users")
+    Call<List<UserDTO>> getUsers(@Query("count") int count);
+
+    @GET("/searchUsers")
+    Call<List<UserDTO>> searchUsers(@Query("text") String text);
 
     @GET("/user/{id}")
     Call<UserDTO> getUser(@Path("id") int id);
 
     @POST("/user")
-    Call<UserDTO> authorizate(@Body UserDTO userDTO);
+    Call<UserDTO> authorization(@Body UserDTO userDTO);
 
     @POST("/addUser")
-    Call<UserDTO> registrate(@Body UserDTO userDTO);
+    Call<UserDTO> registration(@Body UserDTO userDTO);
 
     //Tournament
     @GET("/tournament/{id}")

@@ -31,6 +31,6 @@
     <string name="logo">Logo</string>
     <string name="please_wait">Please, wait …</string>
     <string name="connection_error">Connection error!</string>
-    <string name="incorrect_email">Incorrect email!</string>
-    <string name="incorrect_password">Incorrect password!</string>
+    <string name="incorrect_email">Incorrect email! Please, try again.</string>
+    <string name="incorrect_password">Incorrect password! Please, enter more than 4 characters.</string>
 </resources>
