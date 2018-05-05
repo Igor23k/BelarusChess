@@ -23,16 +23,16 @@ public class AuthorizationActivity extends AppCompatActivity implements AuthCont
     private static final String TAG = "AuthorizationActivity";
     private static final int AUTHORIZATION_REQUEST = 0;
 
-    @BindView(R.id.input_email)
+    @BindView(R.id.e_email_input)
     EditText emailText;
 
-    @BindView(R.id.input_password)
+    @BindView(R.id.e_password_input)
     EditText passwordText;
 
-    @BindView(R.id.btn_login)
+    @BindView(R.id.b_authorization)
     Button loginButton;
 
-    @BindView(R.id.link_signup)
+    @BindView(R.id.t_link_registration)
     TextView registrationLink;
 
     private ProgressDialog progressDialog;

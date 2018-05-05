@@ -37,8 +37,8 @@ class SearchUserActivity : AppCompatActivity() {
         initRecyclerView()
 
         toolbar = findViewById(R.id.toolbar)
-        queryEditText = toolbar!!.findViewById(R.id.query_edit_text)
-        searchButton = toolbar!!.findViewById(R.id.search_button)
+        queryEditText = toolbar!!.findViewById(R.id.e_query_text)
+        searchButton = toolbar!!.findViewById(R.id.e_search_button)
 
         searchButton!!.setOnClickListener(View.OnClickListener { searchUsers() })
 

@@ -23,34 +23,34 @@ public class RegistrationActivity extends AppCompatActivity implements AuthContr
     private static final String TAG = "RegistrationActivity";
     private static final int REGISTRATION_REQUEST = 1;
 
-    @BindView(R.id.input_name)
+    @BindView(R.id.e_name_input)
     EditText nameText;
 
-    @BindView(R.id.input_surname)
+    @BindView(R.id.e_surname_input)
     EditText surnameText;
 
-    @BindView(R.id.input_patronymic)
+    @BindView(R.id.e_patronymic_input)
     EditText patronymicText;
 
-    @BindView(R.id.input_rating)
+    @BindView(R.id.e_rating_input)
     EditText ratingText;
 
-    @BindView(R.id.input_email)
+    @BindView(R.id.e_email_input)
     EditText emailText;
 
-    @BindView(R.id.input_mobile)
+    @BindView(R.id.e_number_input)
     EditText mobileText;
 
-    @BindView(R.id.input_password)
+    @BindView(R.id.e_password_input)
     EditText passwordText;
 
-    @BindView(R.id.input_reEnterPassword)
+    @BindView(R.id.e_reEnterPassword_input)
     EditText reEnterPasswordText;
 
-    @BindView(R.id.btn_signup)
+    @BindView(R.id.b_registration)
     Button registrationButton;
 
-    @BindView(R.id.link_login)
+    @BindView(R.id.t_link_authorization)
     TextView authorizationLink;
 
     private ProgressDialog progressDialog;

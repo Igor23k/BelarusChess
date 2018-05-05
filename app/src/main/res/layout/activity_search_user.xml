@@ -15,12 +15,12 @@
             android:padding="8dp">
 
             <EditText
-                android:id="@+id/query_edit_text"
+                android:id="@+id/e_query_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@+id/search_button"
+                android:layout_toStartOf="@+id/e_search_button"
                 android:background="@null"
                 android:maxLines="1"
                 android:imeOptions="actionSearch"
@@ -28,7 +28,7 @@
                 android:hint="@string/search_query_hint"/>
 
             <Button
-                android:id="@+id/search_button"
+                android:id="@+id/e_search_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="0dp"
