@@ -29,9 +29,11 @@ class UserInfoActivity : AppCompatActivity() {
 
     private var userImageView: ImageView? = null
     private var nameTextView: TextView? = null
+    private var surnameTextView: TextView? = null
     private var nickTextView: TextView? = null
     private var descriptionTextView: TextView? = null
     private var locationTextView: TextView? = null
+    private var ratingTextView: TextView? = null
     private var followingCountTextView: TextView? = null
     private var followersCountTextView: TextView? = null
     private var tweetsRecyclerView: RecyclerView? = null
@@ -46,9 +48,11 @@ class UserInfoActivity : AppCompatActivity() {
 
         userImageView = findViewById(R.id.user_image_view)
         nameTextView = findViewById(R.id.user_name_text_view)
-        nickTextView = findViewById(R.id.user_nick_text_view)
+        surnameTextView = findViewById(R.id.user_surname_text_view)
+        nickTextView = findViewById(R.id.user_rating_text_view)
         descriptionTextView = findViewById(R.id.user_description_text_view)
         locationTextView = findViewById(R.id.user_location_text_view)
+        ratingTextView = findViewById(R.id.user_rating_text_view)
         followingCountTextView = findViewById(R.id.following_count_text_view)
         followersCountTextView = findViewById(R.id.followers_count_text_view)
 
@@ -99,7 +103,6 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     private fun loadUserInfo() {
-        val user = getUser()
         createUser(intent)
         displayUserInfo()
     }
@@ -114,9 +117,11 @@ class UserInfoActivity : AppCompatActivity() {
     private fun displayUserInfo() {
         Picasso.with(this).load("http://priscree.ru/img/5f1585e4e674e0.jpg").into(userImageView)
         nameTextView!!.text = user.name
+        surnameTextView!!.text = user.surname
         nickTextView!!.text = /*user.nick*/"Nickname"
         descriptionTextView!!.text = "Description"
         locationTextView!!.text = "Location"
+        ratingTextView!!.text = user.rating.toString()
 
         val followingCount = "34"//user.followingCount.toString()
         followingCountTextView!!.text = followingCount
@@ -124,7 +129,7 @@ class UserInfoActivity : AppCompatActivity() {
         val followersCount = "29"//user.followersCount.toString()
         followersCountTextView!!.text = followersCount
 
-        supportActionBar!!.title = user.name
+        //supportActionBar!!.title = user.name
     }
 
 

@@ -116,7 +116,7 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
         intent.putExtra(USER_NAME_PARAMETER, userDTO.getName());
         intent.putExtra(USER_SURNAME_PARAMETER, userDTO.getSurname());
         intent.putExtra(USER_PATRONYMIC_PARAMETER, userDTO.getPatronymic());
-        intent.putExtra(USER_RATING_PARAMETER, 1234);
+        intent.putExtra(USER_RATING_PARAMETER, userDTO.getRating());
     }
 
     @Override

@@ -21,7 +21,7 @@
     <string name="email">Email</string>
     <string name="userName">Имя</string>
     <string name="userAddress">Адрес</string>
-    <string name="userRating">Рейтинг</string>
+    <string name="userRating">Рейтинг:</string>
     <string name="phoneNumber">Мобильный номер</string>
     <string name="renterPassword">Повторный ввод пароля</string>
     <string name="createAccount">Регистрация</string>
@@ -31,5 +31,8 @@
     <string name="connection_error">Ошибка соединения!</string>
     <string name="incorrect_email">Неверный email! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_password">Неверный пароль! Подалуйста, введите более 4 символов.</string>
-
+    <string name="nick">Ник</string>
+    <string name="description">Описание</string>
+    <string name="location">Местоположение</string>
+    <string name="userRating_number">1900</string>
 </resources>

@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.UserDTO
-import bobrchess.of.by.colibritweet.pojo.UserTweet
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -56,7 +55,7 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
         init {
             userImageView = itemView.findViewById(R.id.profile_image_view)
             nameTextView = itemView.findViewById(R.id.user_name_text_view)
-            nickTextView = itemView.findViewById(R.id.user_nick_text_view)
+            nickTextView = itemView.findViewById(R.id.user_rating_text_view)
 
             itemView.setOnClickListener {
                 val user = userList.get(layoutPosition)

@@ -24,7 +24,7 @@
             android:text="Devcolibri"/>
 
         <TextView
-            android:id="@+id/user_nick_text_view"
+            android:id="@+id/user_rating_text_view"
             style="@style/TextView.Secondary"
             android:text="devcolibri"/>
 

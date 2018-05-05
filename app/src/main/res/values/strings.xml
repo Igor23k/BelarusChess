@@ -23,7 +23,7 @@
     <string name="userSurname">Surname</string>
     <string name="userPatronymic">Patronymic</string>
     <string name="userAddress">Address</string>
-    <string name="userRating">Rating</string>
+    <string name="userRating">Rating:</string>
     <string name="phoneNumber">Mobile Number</string>
     <string name="renterPassword">Re-enter Password</string>
     <string name="createAccount">Create Account</string>
@@ -33,4 +33,7 @@
     <string name="connection_error">Connection error!</string>
     <string name="incorrect_email">Incorrect email! Please, try again.</string>
     <string name="incorrect_password">Incorrect password! Please, enter more than 4 characters.</string>
+    <string name="description">Description</string>
+    <string name="location">Location</string>
+    <string name="userRating_number">1900</string>
 </resources>

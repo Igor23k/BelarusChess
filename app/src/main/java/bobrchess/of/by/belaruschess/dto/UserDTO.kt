@@ -20,6 +20,8 @@ class UserDTO {
 
     var email: String? = null
 
+    var status: String? = null
+
     var password: String? = null
 
     var rank: RankDTO? = null
@@ -30,13 +32,14 @@ class UserDTO {
 
     var coach: UserDTO? = null
 
-    constructor(id: Long?, name: String, surname: String, patronymic: String,/* birthdate: Date, */email: String, password: String, rank: RankDTO, country: CountryDTO, rating: Int?, coach: UserDTO) {
+    constructor(id: Long?, name: String, surname: String, patronymic: String,/* birthdate: Date, */email: String, status: String, password: String, rank: RankDTO, country: CountryDTO, rating: Int?, coach: UserDTO) {
         this.id = id
         this.name = name
         this.surname = surname
         this.patronymic = patronymic
         //this.birthday = birthdate
         this.email = email
+        this.status = status
         this.password = password
         this.rank = rank
         this.country = country

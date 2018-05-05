@@ -25,21 +25,39 @@
             style="@style/TextView.Primary.Header"
             android:layout_below="@id/user_image_view"
             android:layout_marginTop="@dimen/text_small_margin"
-            android:text="Имя"/>
+            android:text="@string/userName"/>
 
         <TextView
-            android:id="@+id/user_nick_text_view"
+            android:id="@+id/user_surname_text_view"
+            style="@style/TextView.Primary.Header"
+            android:layout_below="@id/user_image_view"
+            android:layout_marginTop="@dimen/text_small_margin"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/user_name_text_view"
+            android:text="@string/userSurname"/>
+
+        <TextView
+            android:id="@+id/user_rating_static_text_view"
             style="@style/TextView.Secondary"
             android:layout_below="@id/user_name_text_view"
             android:layout_marginTop="@dimen/text_small_margin"
-            android:text="Ник"/>
+            android:text="@string/userRating"/>
+
+        <TextView
+            android:id="@+id/user_rating_text_view"
+            style="@style/TextView.Secondary"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/user_rating_static_text_view"
+            android:layout_below="@id/user_name_text_view"
+            android:layout_marginTop="@dimen/text_small_margin"
+            android:text="@string/userRating_number"/>
 
         <TextView
             android:id="@+id/user_description_text_view"
             style="@style/TextView.Primary"
-            android:layout_below="@id/user_nick_text_view"
+            android:layout_below="@id/user_rating_text_view"
             android:layout_marginTop="@dimen/text_small_margin"
-            android:text="Описание"/>
+            android:text="@string/description"/>
 
         <TextView
             android:id="@+id/user_location_icon_text_view"
@@ -56,7 +74,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="@dimen/text_small_margin"
             android:layout_toEndOf="@id/user_location_icon_text_view"
-            android:text="Местоположение"/>
+            android:text="@string/location"/>
 
         <TextView
             android:id="@+id/following_count_text_view"
