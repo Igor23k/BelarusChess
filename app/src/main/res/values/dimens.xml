@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_small_margin">5dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="two_dp">2dp</dimen>
 </resources>

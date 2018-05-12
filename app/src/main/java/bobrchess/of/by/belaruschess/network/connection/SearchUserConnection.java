@@ -90,7 +90,7 @@ public class SearchUserConnection {
         });
     }
 
-    public void attachView(CallBackSearchUser callBack) {
+    public void attachPresenter(CallBackSearchUser callBack) {
         this.callBack = callBack;
     }
 }

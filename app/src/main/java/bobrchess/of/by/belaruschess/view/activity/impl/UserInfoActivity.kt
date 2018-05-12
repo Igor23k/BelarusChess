@@ -1,5 +1,6 @@
 package bobrchess.of.by.belaruschess.view.activity.impl
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -11,18 +12,21 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
-import bobrchess.of.by.belaruschess.util.Constants.*
-import bobrchess.of.by.colibritweet.adapter.TweetAdapter
-import bobrchess.of.by.colibritweet.pojo.Tweet
+import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
+import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
+import bobrchess.of.by.colibritweet.adapter.TournamentAdapter
 import bobrchess.of.by.colibritweet.pojo.UserTweet
 import com.squareup.picasso.Picasso
-import java.util.*
 
 /**
  * Created by Igor on 25.03.2018.
  */
-class UserInfoActivity : AppCompatActivity() {
+class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
+
     companion object {
         val USER_ID = "userId"
     }
@@ -30,17 +34,20 @@ class UserInfoActivity : AppCompatActivity() {
     private var userImageView: ImageView? = null
     private var nameTextView: TextView? = null
     private var surnameTextView: TextView? = null
-    private var nickTextView: TextView? = null
-    private var descriptionTextView: TextView? = null
+    private var statusTextView: TextView? = null
     private var locationTextView: TextView? = null
     private var ratingTextView: TextView? = null
-    private var followingCountTextView: TextView? = null
-    private var followersCountTextView: TextView? = null
-    private var tweetsRecyclerView: RecyclerView? = null
-    private var tweetAdapter: TweetAdapter? = null
+    private var friendsCountTextView: TextView? = null
+    private var coachNameTextView: TextView? = null
+    private var tournamentsRecyclerView: RecyclerView? = null
+    private var tournamentAdapter: TournamentAdapter? = null
     private var toolbar: Toolbar? = null
 
-    private val user = UserDTO()
+    private var user = UserDTO()
+
+    private var progressDialog: ProgressDialog? = null
+
+    private var presenter: UserInfoPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,24 +56,30 @@ class UserInfoActivity : AppCompatActivity() {
         userImageView = findViewById(R.id.user_image_view)
         nameTextView = findViewById(R.id.user_name_text_view)
         surnameTextView = findViewById(R.id.user_surname_text_view)
-        nickTextView = findViewById(R.id.user_rating_text_view)
-        descriptionTextView = findViewById(R.id.user_description_text_view)
+        statusTextView = findViewById(R.id.user_status_text_view)
         locationTextView = findViewById(R.id.user_location_text_view)
         ratingTextView = findViewById(R.id.user_rating_text_view)
-        followingCountTextView = findViewById(R.id.following_count_text_view)
-        followersCountTextView = findViewById(R.id.followers_count_text_view)
+        friendsCountTextView = findViewById(R.id.count_friends_text_view)
+        coachNameTextView = findViewById(R.id.coach_name_text_view)
 
         toolbar = findViewById(R.id.toolbar)
+        presenter = UserInfoPresenterImpl()
+        presenter!!.attachView(this)
+        presenter!!.viewIsReady()
         setSupportActionBar(toolbar)
 
-        loadUserInfo()
+
         initRecyclerView()
-        loadTweets()
+        loadUserInfo()
+        loadUserTournaments()
     }
 
-    private fun loadTweets() {
-        val tweets = getTweets()
-        tweetAdapter!!.setItems(tweets)
+    private fun loadUserTournaments() {
+        presenter!!.readyToLoadUserTournaments()
+    }
+
+    override fun displayUserTournaments(tournaments: List<TournamentDTO>) {
+        tournamentAdapter!!.setItems(tournaments)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,56 +95,52 @@ class UserInfoActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getTweets(): Collection<Tweet> {
-        return Arrays.asList(
-                Tweet(getUser(), 1L, "Thu Dec 13 07:31:08 +0000 2017", "Очень длинное описание твита 1",
-                        4L, 4L, "https://www.w3schools.com/w3css/img_fjords.jpg"),
-
-                Tweet(getUser(), 2L, "Thu Dec 12 07:31:08 +0000 2017", "Очень длинное описание твита 2",
-                        5L, 5L, "https://www.w3schools.com/w3images/lights.jpg"),
-
-                Tweet(getUser(), 3L, "Thu Dec 11 07:31:08 +0000 2017", "Очень длинное описание твита 3",
-                        6L, 6L, "https://www.w3schools.com/css/img_mountains.jpg")
-        )
-    }
-
     private fun initRecyclerView() {
-        tweetsRecyclerView = findViewById(R.id.tweets_recycler_view)
-        tweetsRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        tweetAdapter = TweetAdapter()
-        tweetsRecyclerView!!.adapter = tweetAdapter
+        tournamentsRecyclerView = findViewById(R.id.tournaments_recycler_view)
+        tournamentsRecyclerView!!.layoutManager = LinearLayoutManager(this)
+        tournamentAdapter = TournamentAdapter()
+        tournamentsRecyclerView!!.adapter = tournamentAdapter
     }
 
     private fun loadUserInfo() {
-        createUser(intent)
+        user = getUserData(intent)
         displayUserInfo()
     }
 
-    private fun createUser(intent: Intent?) {
-        user.name = intent!!.getStringExtra(USER_NAME_PARAMETER)
-        user.surname = intent.getStringExtra(USER_SURNAME_PARAMETER)
-        user.patronymic = intent.getStringExtra(USER_PATRONYMIC_PARAMETER)
-        user.rating = intent.getIntExtra(USER_RATING_PARAMETER,0)
+    private fun getUserData(intent: Intent?): UserDTO {
+        return intent!!.getSerializableExtra(USER_PARAMETER) as UserDTO
     }
 
     private fun displayUserInfo() {
         Picasso.with(this).load("http://priscree.ru/img/5f1585e4e674e0.jpg").into(userImageView)
         nameTextView!!.text = user.name
         surnameTextView!!.text = user.surname
-        nickTextView!!.text = /*user.nick*/"Nickname"
-        descriptionTextView!!.text = "Description"
-        locationTextView!!.text = "Location"
+        statusTextView!!.text = user.status
+        locationTextView!!.text = user.country!!.name
+        coachNameTextView!!.text = getString(R.string.coach_full_name, user.coach!!.name, user.coach!!.surname)
         ratingTextView!!.text = user.rating.toString()
-
-        val followingCount = "34"//user.followingCount.toString()
-        followingCountTextView!!.text = followingCount
-
-        val followersCount = "29"//user.followersCount.toString()
-        followersCountTextView!!.text = followersCount
-
-        //supportActionBar!!.title = user.name
+        friendsCountTextView!!.text = "34"
     }
 
+    override fun showProgress() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideProgress() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onConnectionError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showToast(message: String?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showToast(resId: Int?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private fun getUser(): UserTweet {
         return UserTweet(

@@ -20,10 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
-import static bobrchess.of.by.belaruschess.util.Constants.USER_NAME_PARAMETER;
-import static bobrchess.of.by.belaruschess.util.Constants.USER_PATRONYMIC_PARAMETER;
-import static bobrchess.of.by.belaruschess.util.Constants.USER_RATING_PARAMETER;
-import static bobrchess.of.by.belaruschess.util.Constants.USER_SURNAME_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER;
 
 public class RegistrationActivity extends AppCompatActivity implements RegistrationContractView {
     private static final String TAG = "RegistrationActivity";
@@ -131,11 +128,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     private void putUserData(Intent intent, UserDTO userDTO) {
-        intent.putExtra(USER_NAME_PARAMETER, userDTO.getName());
-        intent.putExtra(USER_SURNAME_PARAMETER, userDTO.getSurname());
-        intent.putExtra(USER_PATRONYMIC_PARAMETER, userDTO.getPatronymic());
-        intent.putExtra(USER_RATING_PARAMETER, userDTO.getRating());
-
+        intent.putExtra(USER_PARAMETER, userDTO);
     }
 
     @Override
@@ -151,12 +144,12 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     @Override
-    public void showIncorrectEmailText(){
+    public void showIncorrectEmailText() {
         emailText.setError(this.getString(R.string.incorrect_email));
     }
 
     @Override
-    public void showIncorrectPasswordText(){
+    public void showIncorrectPasswordText() {
         passwordText.setError(this.getString(R.string.incorrect_password));
     }
 

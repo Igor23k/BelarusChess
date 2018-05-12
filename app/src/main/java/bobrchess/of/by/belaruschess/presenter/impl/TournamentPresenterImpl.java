@@ -6,8 +6,6 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.network.connection.TournamentConnection;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackTournament;
 import bobrchess.of.by.belaruschess.view.activity.TournamentPresenter;
-import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity;
-import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
 import bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity;
 
 /**
@@ -21,7 +19,7 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     public TournamentPresenterImpl() {
         tournamentConnection = new TournamentConnection();
-        tournamentConnection.attachView(this);
+        tournamentConnection.attachPresenter(this);
     }
 
     @Override

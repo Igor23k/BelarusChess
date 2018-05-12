@@ -1,12 +1,12 @@
 package bobrchess.of.by.belaruschess.dto
 
-import java.sql.Date
+import java.io.Serializable
 
 /**
  * Created by Igor on 05.04.2018.
  */
 
-class UserDTO {
+class UserDTO : Serializable{
 
     var id: Long? = null
 

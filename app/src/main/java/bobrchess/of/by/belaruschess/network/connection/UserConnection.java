@@ -66,7 +66,7 @@ public class UserConnection {
         });
     }
 
-    public void attachView(CallBackUser callBack) {
+    public void attachPresenter(CallBackUser callBack) {
         this.callBack = callBack;
     }
 }

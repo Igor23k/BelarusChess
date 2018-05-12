@@ -27,7 +27,7 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
 
     public SearchUserPresenterImpl() {
         userConnection = new SearchUserConnection();
-        userConnection.attachView(this);
+        userConnection.attachPresenter(this);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class TournamentConnection {
     }
 
 
-    public void attachView(CallBackTournament callBack) {
+    public void attachPresenter(CallBackTournament callBack) {
         this.callBack = callBack;
     }
 }

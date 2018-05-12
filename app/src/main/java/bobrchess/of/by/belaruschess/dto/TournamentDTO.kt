@@ -11,6 +11,10 @@ class TournamentDTO {
 
     var name: String? = null
 
+    var shortDescription: String? = null
+
+    var fullDescription: String? = null
+
     var startDate: Date? = null
 
     var finishDate: Date? = null
@@ -21,9 +25,11 @@ class TournamentDTO {
 
     var referee: UserDTO? = null
 
-    constructor(id: Int?, name: String, startDate: Date, finishDate: Date, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO) {
+    constructor(id: Int?, name: String, shortDescription: String, fullDescription: String, startDate: Date, finishDate: Date, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO) {
         this.id = id
         this.name = name
+        this.shortDescription = shortDescription
+        this.fullDescription = fullDescription
         this.startDate = startDate
         this.finishDate = finishDate
         this.countPlayersInTeam = countPlayersInTeam

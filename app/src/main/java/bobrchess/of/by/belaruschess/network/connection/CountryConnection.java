@@ -52,7 +52,7 @@ public class CountryConnection {
     }
 
 
-    public void attachView(CallBackCountry callBack) {
+    public void attachPresenter(CallBackCountry callBack) {
         this.callBack = callBack;
     }
 }
