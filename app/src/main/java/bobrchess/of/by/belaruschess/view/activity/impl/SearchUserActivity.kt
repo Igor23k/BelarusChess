@@ -141,30 +141,4 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     override fun onConnectionError() {
         showToast(R.string.connection_error)
     }
-
-    private fun getUsers(): Collection<UserTweet> {
-        return Arrays.asList(
-                UserTweet(
-                        929257819349700608L,
-                        "http://i.imgur.com/DvpvklR.png",
-                        "DevColibri",
-                        "@devcolibri",
-                        "Sample description",
-                        "USA",
-                        42,
-                        42
-                ),
-
-                UserTweet(
-                        44196397L,
-                        "https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg",
-                        "Elon Musk",
-                        "@elonmusk",
-                        "Hat Salesman",
-                        "Boring",
-                        14,
-                        13
-                )
-        )
-    }
 }
