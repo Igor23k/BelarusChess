@@ -41,7 +41,7 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     }
 
     @Override
-    public void searchUsers() {
+    public void searchTournaments() {
         String text = view.getSearchText();
         userConnection.searchUsers(text);
     }

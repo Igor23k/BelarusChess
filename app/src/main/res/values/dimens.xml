@@ -3,4 +3,5 @@
     <dimen name="ten_dp">10dp</dimen>
     <dimen name="five_dp">5dp</dimen>
     <dimen name="two_dp">2dp</dimen>
+    <dimen name="capture_font_size">20sp</dimen>
 </resources>

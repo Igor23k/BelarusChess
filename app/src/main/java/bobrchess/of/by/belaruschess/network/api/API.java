@@ -72,6 +72,9 @@ public interface API {
     @GET("/tournaments")
     Call<List<TournamentDTO>> getTournaments();
 
+    @GET("/searchTournaments")
+    Call<List<TournamentDTO>> searchTournaments(@Query("text") String text);
+
     @POST("/tournament")
     Call<TournamentDTO> addTournament(@Body TournamentDTO tournamentDTO);
 

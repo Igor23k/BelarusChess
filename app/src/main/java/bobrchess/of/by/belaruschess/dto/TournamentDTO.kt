@@ -1,12 +1,14 @@
 package bobrchess.of.by.belaruschess.dto
 
+import java.io.Serializable
 import java.util.Date
 
 /**
  * Created by Igor on 10.04.2018.
  */
 
-class TournamentDTO {
+class TournamentDTO : Serializable{
+
     var id: Int? = null
 
     var name: String? = null

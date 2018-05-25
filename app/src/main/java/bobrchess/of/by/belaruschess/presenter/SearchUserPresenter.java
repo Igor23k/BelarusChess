@@ -12,7 +12,7 @@ public interface SearchUserPresenter extends CallBack{
 
     void loadUsers(Integer count);
 
-    void searchUsers();
+    void searchTournaments();
 
     void attachView(SearchUserActivity activity);
 

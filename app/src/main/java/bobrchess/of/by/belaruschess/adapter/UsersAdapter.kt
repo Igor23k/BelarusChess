@@ -15,6 +15,7 @@ import java.util.*
 // Унаследовали наш адаптер от RecyclerView.Adapter
 // Здесь же указали наш собственный ViewHolder, который предоставит нам доступ к View-компонентам
 class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adapter<UsersAdapter.UserViewHolder>() {
+
     private val userList = ArrayList<UserDTO>()
     private val onUserClickListener: OnUserClickListener
 
@@ -66,7 +67,7 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
         fun bind(user: UserDTO) {
             nameTextView.text = user.name
             nickTextView.text = user.surname
-            Picasso.with(itemView.context).load("http://priscree.ru/img/5f1585e4e674e0.jpg"/*user.imageUrl*/).into(userImageView)
+            Picasso.with(itemView.context).load("http://priscree.ru/img/7a1bbc9a11ee66.png"/*user.imageUrl*/).into(userImageView)
         }
     }
 

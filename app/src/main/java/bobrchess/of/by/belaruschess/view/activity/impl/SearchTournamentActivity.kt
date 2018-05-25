@@ -15,28 +15,27 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
-import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
-import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
-import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
-import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
-import bobrchess.of.by.colibritweet.adapter.UsersAdapter
-import bobrchess.of.by.colibritweet.pojo.UserTweet
+import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
+import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import butterknife.ButterKnife
-import java.util.*
 
 /**
  * Created by Igor on 25.03.2018.
  */
-class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
+class SearchTournamentActivity : AppCompatActivity(), SearchTournamentContractView {
 
-    private var usersRecyclerView: RecyclerView? = null
-    private var usersAdapter: UsersAdapter? = null
-    private var presenter: SearchUserPresenter? = null
+    private var tournamentsRecyclerView: RecyclerView? = null
+    private var tournamentsAdapter: TournamentsAdapter? = null
+    private var presenter: SearchTournamentPresenter? = null
     private var progressDialog: ProgressDialog? = null
 
-   // @BindView(R.id.e_query_text)
+    // @BindView(R.id.e_query_text)
     private var queryEditText: EditText? = null
 
     //@BindView(R.id.toolbar)
@@ -47,7 +46,7 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_user)
+        setContentView(R.layout.activity_search_tournament)
         ButterKnife.bind(this)
         initRecyclerView()
 
@@ -67,9 +66,9 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        presenter = SearchUserPresenterImpl()
+        presenter = SearchTournamentPresenterImpl()
         presenter!!.attachView(this)
-        presenter!!.loadUsers()
+        presenter!!.loadTournaments()
         presenter!!.viewIsReady()
     }
 
@@ -85,35 +84,35 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     }
 
     private fun initRecyclerView() {
-        usersRecyclerView = findViewById(R.id.users_recycler_view)
-        usersRecyclerView!!.layoutManager = LinearLayoutManager(this)
+        tournamentsRecyclerView = findViewById(R.id.tournaments_recycler_view)
+        tournamentsRecyclerView!!.layoutManager = LinearLayoutManager(this)
 
-        val onUserClickListener = object : UsersAdapter.OnUserClickListener {
-            override fun onUserClick(user: UserDTO) {
-                val intent = Intent(this@SearchUserActivity, UserInfoActivity::class.java)
-                intent.putExtra(USER_PARAMETER, user)
+        val onTournamentClickListener = object : TournamentsAdapter.OnTournamentClickListener {
+            override fun onTournamentClick(tournament: TournamentDTO) {
+                val intent = Intent(this@SearchTournamentActivity, TournamentActivity::class.java)
+                intent.putExtra(TOURNAMENT_PARAMETER,  tournament)
                 startActivity(intent)
             }
         }
-        usersAdapter = UsersAdapter(onUserClickListener)
-        usersRecyclerView!!.adapter = usersAdapter
+        tournamentsAdapter = TournamentsAdapter(onTournamentClickListener)
+        tournamentsRecyclerView!!.adapter = tournamentsAdapter
     }
 
-    fun getSearchText() : String {
+    fun getSearchText(): String {
         return queryEditText!!.text.toString()
     }
 
-    private fun loadUsers() {
-        presenter!!.loadUsers()
+    private fun loadTournaments() {
+        presenter!!.loadTournaments()
     }
 
-    private fun loadUsers(count: Int) {
-        presenter!!.loadUsers(count)
+    private fun loadTournaments(count: Int) {
+        presenter!!.loadTournaments(count)
     }
 
-    fun showUsers(users: List<UserDTO>) {
-        usersAdapter!!.clearItems()
-        usersAdapter!!.setItems(users)
+    fun showTournaments(tournaments: List<TournamentDTO>) {
+        tournamentsAdapter!!.clearItems()
+        tournamentsAdapter!!.setItems(tournaments)
     }
 
     override fun showToast(resId: Int?) {
@@ -140,31 +139,5 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
 
     override fun onConnectionError() {
         showToast(R.string.connection_error)
-    }
-
-    private fun getUsers(): Collection<UserTweet> {
-        return Arrays.asList(
-                UserTweet(
-                        929257819349700608L,
-                        "http://i.imgur.com/DvpvklR.png",
-                        "DevColibri",
-                        "@devcolibri",
-                        "Sample description",
-                        "USA",
-                        42,
-                        42
-                ),
-
-                UserTweet(
-                        44196397L,
-                        "https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg",
-                        "Elon Musk",
-                        "@elonmusk",
-                        "Hat Salesman",
-                        "Boring",
-                        14,
-                        13
-                )
-        )
     }
 }

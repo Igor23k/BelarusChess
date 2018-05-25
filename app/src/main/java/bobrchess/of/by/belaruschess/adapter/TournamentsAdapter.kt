@@ -16,13 +16,18 @@ import java.util.*
 
 // Унаследовали наш адаптер от RecyclerView.Adapter
 // Здесь же указали наш собственный ViewHolder, который предоставит нам доступ к View-компонентам
-class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TournamentViewHolder>() {
+class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) : RecyclerView.Adapter<TournamentsAdapter.TournamentViewHolder>() {
 
     private val tournamentList = ArrayList<TournamentDTO>()
+    private val onTournamentClickListener: OnTournamentClickListener
+
+    init {
+        this.onTournamentClickListener = onTournamentClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TournamentViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.tournament_item_view, parent, false)
+                .inflate(R.layout.user_tournament_item_view, parent, false)
         return TournamentViewHolder(view)
     }
 
@@ -68,6 +73,11 @@ class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TournamentViewH
             tournamentImageView = itemView.findViewById(R.id.tournament_image_view)
             countPointsTextView = itemView.findViewById(R.id.count_points_text_view)
             positionNumberTextView = itemView.findViewById(R.id.position_number_text_view)
+
+            itemView.setOnClickListener {
+                val tournament = tournamentList.get(layoutPosition)
+                onTournamentClickListener.onTournamentClick(tournament)
+            }
         }
 
         fun bind(tournament: TournamentDTO) {
@@ -76,7 +86,7 @@ class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TournamentViewH
             countPointsTextView.text = "11"//random.nextInt(7).toString() + 2
             positionNumberTextView.text = "12"//random.nextInt(30).toString() + 5
 
-           // val StartDateFormatted = getFormattedDate(tournament.startDate.toString())
+            // val StartDateFormatted = getFormattedDate(tournament.startDate.toString())
             startDateTextView.text = "Oct 21"
             finishDateTextView.text = "Oct 26"
 
@@ -99,6 +109,10 @@ class TournamentAdapter : RecyclerView.Adapter<TournamentAdapter.TournamentViewH
             }
 
         }
+    }
+
+    interface OnTournamentClickListener {
+        fun onTournamentClick(tournament: TournamentDTO)
     }
 
     companion object {

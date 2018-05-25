@@ -16,9 +16,10 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
-import bobrchess.of.by.colibritweet.adapter.TournamentAdapter
+import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import bobrchess.of.by.colibritweet.pojo.UserTweet
 import com.squareup.picasso.Picasso
 
@@ -26,10 +27,6 @@ import com.squareup.picasso.Picasso
  * Created by Igor on 25.03.2018.
  */
 class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
-
-    companion object {
-        val USER_ID = "userId"
-    }
 
     private var userImageView: ImageView? = null
     private var nameTextView: TextView? = null
@@ -40,7 +37,7 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
     private var friendsCountTextView: TextView? = null
     private var coachNameTextView: TextView? = null
     private var tournamentsRecyclerView: RecyclerView? = null
-    private var tournamentAdapter: TournamentAdapter? = null
+    private var tournamentsAdapter: TournamentsAdapter? = null
     private var toolbar: Toolbar? = null
 
     private var user = UserDTO()
@@ -79,27 +76,42 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
     }
 
     override fun displayUserTournaments(tournaments: List<TournamentDTO>) {
-        tournamentAdapter!!.setItems(tournaments)
+        tournamentsAdapter!!.setItems(tournaments)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.user_info_menu, menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.action_search) {
-            val intent = Intent(this, SearchUserActivity::class.java)
-            startActivity(intent)
+        when (item!!.itemId) {
+            R.id.action_settings -> {}
+            R.id.action_tournaments_search -> {
+                val intent = Intent(this, SearchTournamentActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_search -> {
+                val intent = Intent(this, SearchUserActivity::class.java)
+                startActivity(intent)
+            }
         }
         return true
     }
 
     private fun initRecyclerView() {
-        tournamentsRecyclerView = findViewById(R.id.tournaments_recycler_view)
+        tournamentsRecyclerView = findViewById(R.id.user_tournaments_recycler_view)
         tournamentsRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        tournamentAdapter = TournamentAdapter()
-        tournamentsRecyclerView!!.adapter = tournamentAdapter
+        val onTournamentClickListener = object : TournamentsAdapter.OnTournamentClickListener {
+            override fun onTournamentClick(tournament: TournamentDTO) {
+                val intent = Intent(this@UserInfoActivity, TournamentActivity::class.java)
+                intent.putExtra(TOURNAMENT_PARAMETER, tournament)
+                startActivity(intent)
+            }
+        }
+        tournamentsAdapter = TournamentsAdapter(onTournamentClickListener)
+        tournamentsRecyclerView!!.adapter = tournamentsAdapter
     }
 
     private fun loadUserInfo() {
@@ -112,7 +124,7 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
     }
 
     private fun displayUserInfo() {
-        Picasso.with(this).load("http://priscree.ru/img/5f1585e4e674e0.jpg").into(userImageView)
+        Picasso.with(this).load("http://priscree.ru/img/7a1bbc9a11ee66.png").into(userImageView)
         nameTextView!!.text = user.name
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status
@@ -140,18 +152,5 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
 
     override fun showToast(resId: Int?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun getUser(): UserTweet {
-        return UserTweet(
-                1L,
-                "http://priscree.ru/img/5f1585e4e674e0.jpg",
-                "Igor",
-                "Igor23k",
-                "Sample description",
-                "Belarus",
-                42,
-                42
-        )
     }
 }
