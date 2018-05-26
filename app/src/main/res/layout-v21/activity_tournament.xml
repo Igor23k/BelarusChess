@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"/>
 
     <TextView
         android:id="@+id/tournament_name_text_view"
@@ -50,10 +55,11 @@
         android:layout_below="@id/tournament_full_description_text_view"
         android:layout_toEndOf="@id/profile_image_view"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/ten_dp">
+        android:layout_marginTop="@dimen/ten_dp"
+        android:id="@+id/date_main_container">
 
         <LinearLayout
-            android:id="@+id/date_first_container"
+            android:id="@+id/date_container"
             style="@style/HalfWidth"
             android:orientation="horizontal">
 
@@ -100,4 +106,19 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    <com.dd.CircularProgressButton
+        android:layout_below="@+id/date_main_container"
+        android:id="@+id/circularButton1"
+        android:layout_width="240dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="60sp"
+        android:textColor="@color/cpb_white"
+        android:textSize="18sp"
+        app:cpb_textComplete="judge"
+        app:cpb_textError="default_text"
+       />
+
+
+
+</LinearLayout>

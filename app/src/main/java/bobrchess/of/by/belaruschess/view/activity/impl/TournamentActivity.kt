@@ -1,26 +1,25 @@
 package bobrchess.of.by.belaruschess.view.activity.impl
 
-import android.annotation.SuppressLint
+import android.animation.ValueAnimator
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
-import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.TournamentPresenter
-import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
-import bobrchess.of.by.colibritweet.pojo.UserTweet
+import com.dd.CircularProgressButton
 import com.squareup.picasso.Picasso
+
 
 /**
  * Created by Igor on 25.03.2018.
@@ -55,6 +54,54 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         presenter!!.viewIsReady()
         setSupportActionBar(toolbar)
         loadTournamentData()
+
+
+        val actionBar = actionBar
+
+        actionBar?.title = "50"
+
+
+        val circularButton1 = findViewById<View>(R.id.circularButton1) as CircularProgressButton
+        circularButton1.text = "Зарегистрироваться"
+        circularButton1.setOnClickListener {
+            if (circularButton1.progress == 0) {
+                circularButton1.text = ""
+                simulateSuccessProgress(circularButton1)
+            } else {
+                circularButton1.progress = 0
+            }
+        }
+    }
+
+    private fun simulateSuccessProgress(button: CircularProgressButton) {
+        var value = 0
+        val widthAnimation = ValueAnimator.ofInt(1, 100)
+        widthAnimation.duration = 1500
+        widthAnimation.interpolator = AccelerateDecelerateInterpolator()
+        widthAnimation.addUpdateListener { animation ->
+            value = animation.animatedValue as Int
+            button.progress = value
+
+        }
+        widthAnimation.start()
+        android.os.Handler().postDelayed(
+                {
+                    button.text = "Вы зарегистрированы!"
+                }, 2000)
+    }
+
+    private fun simulateErrorProgress(button: CircularProgressButton) {
+        val widthAnimation = ValueAnimator.ofInt(1, 99)
+        widthAnimation.duration = 1500
+        widthAnimation.interpolator = AccelerateDecelerateInterpolator()
+        widthAnimation.addUpdateListener { animation ->
+            val value = animation.animatedValue as Int
+            button.progress = value
+            if (value == 99) {
+                button.progress = -1
+            }
+        }
+        widthAnimation.start()
     }
 
     private fun loadTournamentData() {
@@ -67,7 +114,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
         judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname
-        locationTextView!!.text = tournament.place!!.country!!.name + ", " + tournament!!.place!!.city + ", " + tournament!!.place!!.street + ", " + tournament!!.place!!.building
+        locationTextView!!.text = tournament.place!!.country!!.name + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
     }
 
     private fun getTournamentData(intent: Intent?): TournamentDTO {

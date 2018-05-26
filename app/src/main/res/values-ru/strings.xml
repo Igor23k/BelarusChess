@@ -43,6 +43,7 @@
     <string name="coach_full_name">%1$s %2$s</string>
     <string name="count_points">Очков:</string>
     <string name="judge">Судья:</string>
+    <string name="tournament_register">Зарегистрироваться</string>
     <string name="position_number">Место:</string>
     <string name="dash">-</string>
 

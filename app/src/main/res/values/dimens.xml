@@ -4,4 +4,5 @@
     <dimen name="five_dp">5dp</dimen>
     <dimen name="two_dp">2dp</dimen>
     <dimen name="capture_font_size">20sp</dimen>
+    <dimen name="fifty_percent">50%</dimen>
 </resources>
