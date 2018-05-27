@@ -15,26 +15,26 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
-import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
-import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
-import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
-import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
-import bobrchess.of.by.colibritweet.adapter.UsersAdapter
+import bobrchess.of.by.belaruschess.presenter.GamesListPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.GamesListPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.*
+import bobrchess.of.by.belaruschess.view.activity.GamesListContractView
+import bobrchess.of.by.colibritweet.adapter.GamesAdapter
 import butterknife.ButterKnife
 
 /**
  * Created by Igor on 25.03.2018.
  */
-class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
+class GamesListActivity : AppCompatActivity(), GamesListContractView {
 
-    private var usersRecyclerView: RecyclerView? = null
-    private var usersAdapter: UsersAdapter? = null
-    private var presenter: SearchUserPresenter? = null
+    private var gamesRecyclerView: RecyclerView? = null
+    private var gamesAdapter: GamesAdapter? = null
+    private var presenter: GamesListPresenter? = null
     private var progressDialog: ProgressDialog? = null
 
-   // @BindView(R.id.e_query_text)
+    // @BindView(R.id.e_query_text)
     private var queryEditText: EditText? = null
 
     //@BindView(R.id.toolbar)
@@ -45,7 +45,7 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_user)
+        setContentView(R.layout.activity_games_list)
         ButterKnife.bind(this)
         initRecyclerView()
 
@@ -53,11 +53,11 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
         searchButton = toolbar!!.findViewById(R.id.e_search_button)
         queryEditText = toolbar!!.findViewById(R.id.e_query_text)
 
-        searchButton!!.setOnClickListener(View.OnClickListener { presenter!!.searchUsers() })
+        searchButton!!.setOnClickListener(View.OnClickListener { presenter!!.searchGames() })
 
         queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                presenter!!.searchUsers()
+                presenter!!.searchGames()
                 return@OnEditorActionListener true
             }
             false
@@ -65,10 +65,10 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        presenter = SearchUserPresenterImpl()
+        presenter = GamesListPresenterImpl()
         presenter!!.attachView(this)
-        loadUsers()
         presenter!!.viewIsReady()
+        loadGames()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -83,35 +83,35 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     }
 
     private fun initRecyclerView() {
-        usersRecyclerView = findViewById(R.id.users_recycler_view)
-        usersRecyclerView!!.layoutManager = LinearLayoutManager(this)
+        gamesRecyclerView = findViewById(R.id.users_recycler_view)
+        gamesRecyclerView!!.layoutManager = LinearLayoutManager(this)
 
-        val onUserClickListener = object : UsersAdapter.OnUserClickListener {
-            override fun onUserClick(user: UserDTO) {
-                val intent = Intent(this@SearchUserActivity, UserInfoActivity::class.java)
-                intent.putExtra(USER_PARAMETER, user)
+        val onGameClickListener = object : GamesAdapter.OnGameClickListener {
+            override fun onGameClick(game: GameDTO) {
+                val intent = Intent(this@GamesListActivity, GameActivity::class.java)
+                intent.putExtra(GAME_PARAMETER, game)
                 startActivity(intent)
             }
         }
-        usersAdapter = UsersAdapter(onUserClickListener)
-        usersRecyclerView!!.adapter = usersAdapter
+        gamesAdapter = GamesAdapter(onGameClickListener)
+        gamesRecyclerView!!.adapter = gamesAdapter
     }
 
-    fun getSearchText() : String {
+    fun getSearchText(): String {
         return queryEditText!!.text.toString()
     }
 
-    private fun loadUsers() {
-        presenter!!.loadUsers()
+    private fun loadGames() {
+        presenter!!.loadGames()
     }
 
-    private fun loadUsers(count: Int) {
-        presenter!!.loadUsers(count)
+    private fun loadGames(count: Int) {
+        presenter!!.loadGames(count)
     }
 
-    fun showUsers(users: List<UserDTO>) {
-        usersAdapter!!.clearItems()
-        usersAdapter!!.setItems(users)
+    fun showGames(games: List<GameDTO>) {
+        gamesAdapter!!.clearItems()
+        gamesAdapter!!.setItems(games)
     }
 
     override fun showToast(resId: Int?) {

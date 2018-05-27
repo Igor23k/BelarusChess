@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.dto.UserDTO
 import com.squareup.picasso.Picasso
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -19,6 +20,7 @@ import java.util.*
 class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) : RecyclerView.Adapter<TournamentsAdapter.TournamentViewHolder>() {
 
     private val tournamentList = ArrayList<TournamentDTO>()
+    private val imageList = ArrayList<String>()
     private val onTournamentClickListener: OnTournamentClickListener
 
     init {
@@ -66,6 +68,7 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
         private val positionNumberTextView: TextView
 
         init {
+            initAvatarList()
             tournamentSmallImageView = itemView.findViewById(R.id.profile_image_view)
             tournamentNameTextView = itemView.findViewById(R.id.tournament_name_text_view)
             startDateTextView = itemView.findViewById(R.id.start_date_text_view)
@@ -90,13 +93,27 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
             startDateTextView.text = "Oct 21"
             finishDateTextView.text = "Oct 26"
 
-            Picasso.with(itemView.context).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentSmallImageView)
+         //   Picasso.with(itemView.context).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentSmallImageView)
 
-            val tweetPhotoUrl = "https://www.w3schools.com/w3css/img_fjords.jpg"
-            Picasso.with(itemView.context).load(tweetPhotoUrl).into(tournamentImageView)
+          //  val tweetPhotoUrl = "https://www.w3schools.com/w3css/img_fjords.jpg"
+           // Picasso.with(itemView.context).load(tweetPhotoUrl).into(tournamentImageView)
 
-            tournamentImageView.visibility = if (tweetPhotoUrl != null) View.VISIBLE else View.GONE
+            val avatarNumber = (0..3).random()
+            Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
+            Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentSmallImageView)
+
+          //  tournamentImageView.visibility = if (tweetPhotoUrl != null) View.VISIBLE else View.GONE  что это и нужно ли?
         }
+
+        private fun initAvatarList(){
+            imageList.add("https://www.w3schools.com/w3css/img_fjords.jpg")
+            imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
+            imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
+            imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
+        }
+
+        fun ClosedRange<Int>.random() =
+                Random().nextInt(endInclusive - start) +  start
 
         private fun getFormattedDate(rawDate: String): String {
             val utcFormat = SimpleDateFormat(TWITTER_RESPONSE_FORMAT, Locale.ROOT)

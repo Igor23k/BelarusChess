@@ -72,7 +72,7 @@ public interface API {
     @GET("/tournaments")
     Call<List<TournamentDTO>> getTournaments();
 
-    @GET("/searchTournaments")
+    @GET("/searchUsers")
     Call<List<TournamentDTO>> searchTournaments(@Query("text") String text);
 
     @POST("/tournament")
@@ -84,6 +84,12 @@ public interface API {
 
     @GET("/games")
     Call<List<GameDTO>> getGames();
+
+    @GET("/games")
+    Call<List<GameDTO>> getGames(@Query("count") int count);
+
+    @GET("/searchGames")
+    Call<List<GameDTO>> searchGames(@Query("text") String text);
 
     @POST("/game")
     @FormUrlEncoded

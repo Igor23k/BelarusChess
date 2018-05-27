@@ -1,12 +1,13 @@
 package bobrchess.of.by.belaruschess.dto
 
+import java.io.Serializable
 import java.util.Date
 
 /**
  * Created by Igor on 10.04.2018.
  */
 
-class MatchDTO {
+class MatchDTO : Serializable {
     var id: Int? = null
 
     var countPointsFirstTeam: Double? = null

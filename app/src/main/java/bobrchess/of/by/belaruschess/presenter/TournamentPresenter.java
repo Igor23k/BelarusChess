@@ -1,4 +1,4 @@
-package bobrchess.of.by.belaruschess.view.activity;
+package bobrchess.of.by.belaruschess.presenter;
 
 import bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity;
 

@@ -1,20 +1,21 @@
 package bobrchess.of.by.belaruschess.presenter;
 
 import bobrchess.of.by.belaruschess.presenter.callback.CallBack;
+import bobrchess.of.by.belaruschess.view.activity.impl.GamesListActivity;
 import bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity;
 
 /**
  * Created by Igor on 12.04.2018.
  */
 
-public interface SearchUserPresenter extends CallBack{
-    void loadUsers();
+public interface GamesListPresenter extends CallBack{
+    void loadGames();
 
-    void loadUsers(Integer count);
+    void loadGames(Integer count);
 
-    void searchUsers();
+    void searchGames();
 
-    void attachView(SearchUserActivity activity);
+    void attachView(GamesListActivity activity);
 
     void detachView();
 

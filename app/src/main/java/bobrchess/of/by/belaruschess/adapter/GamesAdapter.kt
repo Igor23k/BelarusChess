@@ -7,70 +7,79 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.dto.GameDTO
 import com.squareup.picasso.Picasso
 import java.util.*
 
 
 // Унаследовали наш адаптер от RecyclerView.Adapter
 // Здесь же указали наш собственный ViewHolder, который предоставит нам доступ к View-компонентам
-class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adapter<UsersAdapter.UserViewHolder>() {
+class GamesAdapter(onGameClickListener: OnGameClickListener) : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
 
-    private val userList = ArrayList<UserDTO>()
+    private val gamesList = ArrayList<GameDTO>()
     private val avatarList = ArrayList<String>()
-    private val onUserClickListener: OnUserClickListener
+    private val onGameClickListener: OnGameClickListener
 
     init {
-        this.onUserClickListener = onUserClickListener
+        this.onGameClickListener = onGameClickListener
         initAvatarList()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.user_item_view, parent, false)
-        return UserViewHolder(view)
+                .inflate(R.layout.game_item_view, parent, false)
+        return GameViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val user = userList.get(position)
-        holder.bind(user)
+    override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
+        val game = gamesList[position]
+        holder.bind(game)
     }
 
-    fun setItems(users: Collection<UserDTO>) {
-        userList.addAll(users)
+    fun setItems(games: Collection<GameDTO>) {
+        gamesList.addAll(games)
         notifyDataSetChanged()
     }
 
     fun clearItems() {
-        userList.clear()
+        gamesList.clear()
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return userList.size
+        return gamesList.size
     }
 
-    inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val userImageView: ImageView
-        private val nameTextView: TextView
-        private val nickTextView: TextView
-
+    inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private var firstPlayerNameTextView: TextView? = null
+        private var secondPlayerNameTextView: TextView? = null
+        private val countPointsFirstPlayerTextView: TextView
+        private val countPointsSecondPlayerTextView: TextView
+        private val firstPlayerImageView: ImageView
+        private val secondPlayerImageView: ImageView
         init {
-            userImageView = itemView.findViewById(R.id.profile_image_view)
-            nameTextView = itemView.findViewById(R.id.user_name_text_view)
-            nickTextView = itemView.findViewById(R.id.user_rating_text_view)
+            firstPlayerNameTextView =  itemView.findViewById(R.id.first_player__name_text_view)
+            secondPlayerNameTextView =  itemView.findViewById(R.id.second_player__name_text_view)
+            countPointsFirstPlayerTextView = itemView.findViewById(R.id.count_points_first_player_text_view)
+            countPointsSecondPlayerTextView = itemView.findViewById(R.id.count_points_second_player_text_view)
+            firstPlayerImageView = itemView.findViewById(R.id.first_player__image_view)
+            secondPlayerImageView = itemView.findViewById(R.id.second_player_image_view)
 
             itemView.setOnClickListener {
-                val user = userList[layoutPosition]
-                onUserClickListener.onUserClick(user)
+                val game = gamesList[layoutPosition]
+                onGameClickListener.onGameClick(game)
             }
         }
 
-        fun bind(user: UserDTO) {
-            nameTextView.text = user.name
-            nickTextView.text = user.surname
-            val avatarNumber = (0..10).random()
-            Picasso.with(itemView.context).load(avatarList[avatarNumber]/*user.imageUrl*/).into(userImageView)
+        fun bind(game: GameDTO) {
+            firstPlayerNameTextView!!.text = game.firstChessPlayer!!.name + " " + game.firstChessPlayer!!.surname
+            secondPlayerNameTextView!!.text = game.secondChessPlayer!!.name + " " +  game.secondChessPlayer!!.surname
+            countPointsFirstPlayerTextView.text = game.countPointsFirstPlayer.toString()
+            countPointsSecondPlayerTextView.text = game.countPointsSecondPlayer.toString()
+            var avatarNumber = (0..30).random()
+            Picasso.with(itemView.context).load(avatarList[avatarNumber]/*user.imageUrl*/).into(firstPlayerImageView)
+            avatarNumber = (0..30).random()
+            Picasso.with(itemView.context).load(avatarList[avatarNumber]/*user.imageUrl*/).into(secondPlayerImageView)
         }
     }
 
@@ -107,12 +116,10 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
         avatarList.add("http://priscree.ru/img/1f2b8c263c4758.jpg")
     }
 
-
-
-    interface OnUserClickListener {
-        fun onUserClick(user: UserDTO)
-    }
-
     fun ClosedRange<Int>.random() =
             Random().nextInt(endInclusive - start) +  start
+
+    interface OnGameClickListener {
+        fun onGameClick(game: GameDTO)
+    }
 }

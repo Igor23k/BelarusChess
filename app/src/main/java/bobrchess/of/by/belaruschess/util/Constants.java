@@ -28,6 +28,7 @@ public class Constants {
     public static final String INCORRECT_RATING = "Incorrect rating!";
 
     public static final String USER_PARAMETER = "user";
+    public static final String GAME_PARAMETER = "game";
     public static final String TOURNAMENT_PARAMETER = "tournament";
     public static final String USER_NAME_PARAMETER = "name";
     public static final String USER_SURNAME_PARAMETER = "surname";

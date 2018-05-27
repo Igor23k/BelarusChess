@@ -7,6 +7,7 @@
     <string name="coach_hint">Тренер:</string>
 
     <string name="search_user_query_hint">Введите имя пользователя</string>
+    <string name="search_query_hint">Введите текст</string>
     <string name="search_tournament_query_hint">Введите название турнира</string>
     <string name="search_hint">поиск</string>
     <string name="not_enough_symbols_msg">Пожалуйста, введите хотя бы один символ</string>
@@ -19,6 +20,7 @@
     <string name="default_text">Дефолтный текст</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_games">Игры</string>
     <string name="action_tournaments_search">Турниры</string>
     <string name="password">Пароль</string>
     <string name="login">Авторизоваться</string>
@@ -40,7 +42,7 @@
     <string name="description">Описание</string>
     <string name="location">Местоположение</string>
     <string name="userRating_number">1900</string>
-    <string name="coach_full_name">%1$s %2$s</string>
+    <string name="user_full_name">%1$s %2$s</string>
     <string name="count_points">Очков:</string>
     <string name="judge">Судья:</string>
     <string name="tournament_register">Зарегистрироваться</string>

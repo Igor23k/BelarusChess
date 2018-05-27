@@ -124,12 +124,13 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
     }
 
     private fun displayUserInfo() {
-        Picasso.with(this).load("http://priscree.ru/img/7a1bbc9a11ee66.png").into(userImageView)
+       // Picasso.with(this).load("http://priscree.ru/img/7a1bbc9a11ee66.png").into(userImageView)
+        Picasso.with(this).load("http://priscree.ru/img/013c16d74f1cd6.jpg").into(userImageView)
         nameTextView!!.text = user.name
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status
         locationTextView!!.text = user.country!!.name
-        coachNameTextView!!.text = getString(R.string.coach_full_name, user.coach!!.name, user.coach!!.surname)
+        coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.name, user.coach!!.surname)
         ratingTextView!!.text = user.rating.toString()
         friendsCountTextView!!.text = "34"
     }

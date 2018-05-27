@@ -26,22 +26,22 @@
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/user_location_icon_text_view"
         style="@style/TextIcon"
         android:layout_alignBaseline="@id/user_location_text_view"
         android:layout_below="@id/tournament_image_view"
         android:layout_marginTop="@dimen/five_dp"
         android:layout_toEndOf="@id/profile_image_view"
-        android:text="@string/fa_map_marker"/>
+        android:text="@string/fa_map_marker"/>-->
 
     <TextView
         android:id="@+id/tournament_location_text_view"
         style="@style/TextView.Primary"
-        android:layout_toEndOf="@id/user_location_icon_text_view"
         android:layout_below="@id/tournament_image_view"
         android:layout_marginTop="@dimen/five_dp"
-        android:layout_marginStart="@dimen/two_dp"/>
+        android:layout_marginStart="@dimen/two_dp"
+        android:text="frgregerg"/>
 
     <TextView
         android:id="@+id/tournament_full_description_text_view"
@@ -111,14 +111,12 @@
         android:id="@+id/circularButton1"
         android:layout_width="240dp"
         android:layout_height="64dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="12dp"
         android:layout_marginStart="60sp"
         android:textColor="@color/cpb_white"
         android:textSize="18sp"
         app:cpb_textComplete="judge"
         app:cpb_textError="default_text"
        />
-
-
 
 </LinearLayout>

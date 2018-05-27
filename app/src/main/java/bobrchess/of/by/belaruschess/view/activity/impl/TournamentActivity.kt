@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
@@ -16,9 +17,10 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
-import bobrchess.of.by.belaruschess.view.activity.TournamentPresenter
+import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
 import com.dd.CircularProgressButton
 import com.squareup.picasso.Picasso
+import java.util.*
 
 
 /**
@@ -34,6 +36,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
     private var toolbar: Toolbar? = null
 
     private var tournament = TournamentDTO()
+    private val imageList = ArrayList<String>()
 
     private var progressDialog: ProgressDialog? = null
 
@@ -42,6 +45,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tournament)
+        initImagesList()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
         descriptionTextView = findViewById(R.id.tournament_full_description_text_view)
@@ -110,7 +114,9 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
     }
 
     private fun displayTournamentData() {
-        Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
+       // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
+        val avatarNumber = (0..3).random()
+        Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
         judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname
@@ -123,9 +129,37 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.user_info_menu, menu)
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_tournament, menu)
         return true
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.action_games -> {
+                val intent = Intent(this, GamesListActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_tournaments_search -> {
+                val intent = Intent(this, SearchTournamentActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_search -> {
+                val intent = Intent(this, SearchUserActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return true
+    }
+
+    private fun initImagesList(){
+        imageList.add("https://www.w3schools.com/w3css/img_fjords.jpg")
+        imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
+        imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
+        imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
+    }
+
+    fun ClosedRange<Int>.random() =
+            Random().nextInt(endInclusive - start) +  start
 
     override fun showProgress() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -140,10 +174,6 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
     }
 
     override fun disableButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getTournaments() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
