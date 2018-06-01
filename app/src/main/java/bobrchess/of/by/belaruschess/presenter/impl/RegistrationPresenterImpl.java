@@ -7,6 +7,7 @@ import bobrchess.of.by.belaruschess.network.connection.RegistrationConnection;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration;
 import bobrchess.of.by.belaruschess.util.Util;
+import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
 import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
 
 import static bobrchess.of.by.belaruschess.util.Constants.*;
@@ -17,7 +18,7 @@ import static bobrchess.of.by.belaruschess.util.Constants.*;
 
 public class RegistrationPresenterImpl implements CallBackRegistration, RegistrationPresenter {
 
-    private RegistrationActivity view;
+    private RegistrationContractView view;
     private RegistrationConnection userConnection;
     private Boolean viewIsReady = false;
 
@@ -29,14 +30,14 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
     @Override
     public void onResponse(UserDTO userDTO) {
         view.hideProgress();
-        view.onLoginSuccess(userDTO);
+        view.onRegistrationSuccess(userDTO);
     }
 
     @Override
     public void onRegistrationFailure(Throwable t) {
         view.hideProgress();
         view.showToast(t.getLocalizedMessage());
-        view.onLoginFailed();
+        view.onRegistrationFailed();
     }
 
     @Override
@@ -57,10 +58,10 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
             userConnection.registration(userDTO);
         } catch (IncorrectEmailException e) {
             view.showIncorrectEmailText();
-            view.onLoginFailed();
+            view.onRegistrationFailed();
         } catch (IncorrectPasswordException e) {
             view.showIncorrectPasswordText();
-            view.onLoginFailed();
+            view.onRegistrationFailed();
         }
     }
 
@@ -83,7 +84,7 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
         return true;
     }
 
-    public void attachView(RegistrationActivity activity) {
+    public void attachView(RegistrationContractView activity) {
         view = activity;
     }
 

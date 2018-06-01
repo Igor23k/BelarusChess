@@ -7,12 +7,13 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
  */
 
 public interface RegistrationContractView extends BaseContractView{
+    void registration();
     void showProgress();
     void hideProgress();
     void enableButton();
     void disableButton();
-    void onLoginFailed();
-    void onLoginSuccess(UserDTO userDTO);
+    void onRegistrationFailed();
+    void onRegistrationSuccess(UserDTO userDTO);
     void onConnectionError();
     void showIncorrectEmailText();
     void showIncorrectPasswordText();

@@ -78,7 +78,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
                 final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
-                presenter.registration();
+                registration();
             }
         });
 
@@ -118,7 +118,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     @Override
-    public void onLoginSuccess(UserDTO userDTO) {
+    public void onRegistrationSuccess(UserDTO userDTO) {
         enableButton();
         finish();
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
@@ -132,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     @Override
-    public void onLoginFailed() {
+    public void onRegistrationFailed() {
         registrationButton.setEnabled(true);
     }
 
@@ -164,6 +164,11 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    @Override
+    public void registration() {
+        presenter.registration();
     }
 
     @Override

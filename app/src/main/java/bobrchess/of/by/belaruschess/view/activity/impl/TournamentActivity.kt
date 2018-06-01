@@ -109,7 +109,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
     }
 
     private fun loadTournamentData() {
-        tournament = getTournamentData(intent)
+        tournament = getTournamentData(intent)//мб проверку?
         displayTournamentData()
     }
 
@@ -139,12 +139,12 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
                 val intent = Intent(this, GamesListActivity::class.java)
                 startActivity(intent)
             }
-            R.id.action_tournaments_search -> {
-                val intent = Intent(this, SearchTournamentActivity::class.java)
+            R.id.action_add_tournament -> {
+                val intent = Intent(this, AddTournamentActivity::class.java)
                 startActivity(intent)
             }
-            R.id.action_search -> {
-                val intent = Intent(this, SearchUserActivity::class.java)
+            R.id.action_tournaments_search -> {
+                val intent = Intent(this, SearchTournamentActivity::class.java)
                 startActivity(intent)
             }
         }

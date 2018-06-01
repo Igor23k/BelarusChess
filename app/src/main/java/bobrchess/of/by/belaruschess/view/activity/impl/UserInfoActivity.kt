@@ -86,8 +86,8 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-            R.id.action_settings -> {
-            }
+            /*R.id.action_settings -> {
+            }*/
             R.id.action_tournaments_search -> {
                 val intent = Intent(this, SearchTournamentActivity::class.java)
                 startActivity(intent)
@@ -129,8 +129,12 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
         nameTextView!!.text = user.name
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status
-        locationTextView!!.text = user.country!!.name
-        coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.name, user.coach!!.surname)
+        user.country?.let {
+            locationTextView!!.text = user.country!!.name//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
+        }
+        user.coach?.let {
+            coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.name, user.coach!!.surname)
+        }
         ratingTextView!!.text = user.rating.toString()
         friendsCountTextView!!.text = "34"
     }

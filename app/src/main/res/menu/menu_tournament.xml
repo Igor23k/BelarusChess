@@ -4,13 +4,13 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/action_add_tournament"
+        android:orderInCategory="1"
+        android:title="@string/addTournament"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_games"
         android:orderInCategory="2"
         android:title="@string/action_games"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_tournaments_search"
-        android:orderInCategory="1"
-        android:title="@string/action_tournaments_search"
         app:showAsAction="never" />
 </menu>

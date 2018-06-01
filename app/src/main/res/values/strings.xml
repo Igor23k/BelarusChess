@@ -27,6 +27,11 @@
     <string name="noAccount">No account yet? Create one</string>
     <string name="email">Email</string>
     <string name="userName">Name</string>
+    <string name="tournamentName">Tournament name</string>
+    <string name="tournamentShortDescription">Tournament short description</string>
+    <string name="tournamentShortDescriptionHint">Enter short description</string>
+    <string name="tournamentFullDescription">Tournament full description</string>
+    <string name="tournamentFullDescriptionHint">Enter full description</string>
     <string name="userSurname">Surname</string>
     <string name="userPatronymic">Patronymic</string>
     <string name="userAddress">Address</string>
@@ -34,11 +39,13 @@
     <string name="phoneNumber">Mobile Number</string>
     <string name="renterPassword">Re-enter Password</string>
     <string name="createAccount">Create Account</string>
+    <string name="addTournament">Add tournament</string>
     <string name="isMember">Already a member? Login</string>
     <string name="logo">Logo</string>
     <string name="please_wait">Please, wait …</string>
     <string name="connection_error">Connection error!</string>
     <string name="incorrect_email">Incorrect email! Please, try again.</string>
+    <string name="incorrect_tournament_name">Incorrect tournament name! Please, try again.</string>
     <string name="incorrect_password">Incorrect password! Please, enter more than 4 characters.</string>
     <string name="description">Description</string>
     <string name="location">Location</string>

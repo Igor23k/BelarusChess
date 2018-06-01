@@ -6,7 +6,7 @@ package bobrchess.of.by.belaruschess.util;
 
 public class Constants {
     public static class URL {
-        public static final String HOST = "http://192.168.100.2:8080";
+        public static final String HOST = "http://192.168.100.7:8080";
        // public static final String HOST = "http://192.168.43.96:8080";
         //public static final String HOST = "https://api.github.com";
         public static final String GET_COUNTRIES = HOST + "country";
@@ -20,6 +20,7 @@ public class Constants {
     public static final String UNSUCCESSFUL_REQUEST = "Unsuccessful request!";
     public static final String ERROR_PARAMETER = "Error";
     public static final String EMPTY_STRING = "";
+    public static final String INCORRECT_TOURNAMENT_NAME = "Incorrect tournament name!";
     public static final String INCORRECT_EMAIL = "Incorrect email!";
     public static final String INCORRECT_PASSWORD = "Incorrect password!";
     public static final String INCORRECT_NAME = "Incorrect name!";

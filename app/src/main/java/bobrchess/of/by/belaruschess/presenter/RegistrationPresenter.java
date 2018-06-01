@@ -1,6 +1,6 @@
 package bobrchess.of.by.belaruschess.presenter;
 
-import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
+import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
 
 /**
  * Created by Igor on 12.04.2018.
@@ -9,7 +9,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
 public interface RegistrationPresenter {
     void registration();
 
-    void attachView(RegistrationActivity activity);
+    void attachView(RegistrationContractView activity);
 
     void detachView();
 
