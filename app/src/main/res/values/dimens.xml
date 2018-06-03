@@ -9,4 +9,6 @@
     <dimen name="_85_dp">85dp</dimen>
     <dimen name="_45_dp">45dp</dimen>
     <dimen name="_15_dp">15dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

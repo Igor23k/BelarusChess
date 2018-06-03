@@ -30,8 +30,6 @@
     <string name="tournamentName">Название турнира</string>
     <string name="tournamentShortDescription">Краткое описание турнира</string>
     <string name="tournamentFullDescription">Полное описание турнира</string>
-    <string name="tournamentShortDescriptionHint">Введите краткое описание турнира</string>
-    <string name="tournamentFullDescriptionHint">Введите полное описание турнира</string>
     <string name="userAddress">Адрес</string>
     <string name="userRating">Рейтинг:</string>
     <string name="phoneNumber">Мобильный номер</string>
@@ -55,5 +53,15 @@
     <string name="tournament_register">Зарегистрироваться</string>
     <string name="position_number">Место:</string>
     <string name="dash">-</string>
+
+
+
+    //date and time
+
+    <string name="title_activity_main">Range Picker</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="birthday">Дата рождения</string>
+    <string name="tournament_team_type">Командный турнир</string>
 
 </resources>

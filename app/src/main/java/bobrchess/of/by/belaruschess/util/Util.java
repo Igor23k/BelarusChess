@@ -16,7 +16,7 @@ public class Util {
         return new String(Hex.encodeHex(DigestUtils.md5(password)));
     }
 
-    UserDTO getTestUser() {
+    public static UserDTO getTestUser() {
         UserDTO userDTO = new UserDTO();
         CountryDTO countryDTO = new CountryDTO();
         countryDTO.setName("BELAR");

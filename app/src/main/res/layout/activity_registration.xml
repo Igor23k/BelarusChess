@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_name_input"
+            <EditText android:id="@+id/tournament_name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
@@ -91,6 +91,12 @@
                 android:text="www.bk.ru@mail.ru"
                 android:hint="@string/email" />
         </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/tournamentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/birthday" />
 
 
         <!-- mobile number -->

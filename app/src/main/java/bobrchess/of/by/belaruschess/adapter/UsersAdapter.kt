@@ -58,7 +58,7 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
         init {
             userImageView = itemView.findViewById(R.id.profile_image_view)
             nameTextView = itemView.findViewById(R.id.user_name_text_view)
-            nickTextView = itemView.findViewById(R.id.user_rating_text_view)
+            nickTextView = itemView.findViewById(R.id.user_rank_and_rating_text_view)
 
             itemView.setOnClickListener {
                 val user = userList[layoutPosition]

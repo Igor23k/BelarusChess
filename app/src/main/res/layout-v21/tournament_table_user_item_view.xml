@@ -12,6 +12,7 @@
         android:layout_height="48dp"
         android:src="@mipmap/ic_launcher"/>
 
+
     <LinearLayout
         android:layout_marginStart="@dimen/five_dp"
         android:orientation="vertical"
@@ -21,13 +22,23 @@
         <TextView
             android:id="@+id/user_name_text_view"
             style="@style/TextView.Primary.Bold"
-            android:text="Devcolibri"/>
+            android:text="Ihar Kazlou"/>
 
         <TextView
             android:id="@+id/user_rank_and_rating_text_view"
             style="@style/TextView.Secondary"
-            android:text="devcolibri"/>
-
+            android:text="Master 1703"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/user_count_points_text_view"
+        android:layout_marginStart="150dp"
+        style="@style/TextView.Primary.Bold"
+        android:text="8.5"/>
+
+    <TextView
+        android:id="@+id/user_place_text_view"
+        android:layout_marginStart="20dp"
+        style="@style/TextView.Primary.Bold"
+        android:text="1"/>
 </LinearLayout>

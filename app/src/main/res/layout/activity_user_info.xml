@@ -44,7 +44,7 @@
             android:text="@string/userRating"/>
 
         <TextView
-            android:id="@+id/user_rating_text_view"
+            android:id="@+id/user_rank_and_rating_text_view"
             style="@style/TextView.Secondary"
             android:layout_marginStart="@dimen/five_dp"
             android:layout_toEndOf="@+id/user_rating_static_text_view"
@@ -57,7 +57,7 @@
             style="@style/TextIcon"
             android:layout_alignBaseline="@id/user_location_text_view"
             android:layout_below="@id/user_name_text_view"
-            android:layout_toEndOf="@id/user_rating_text_view"
+            android:layout_toEndOf="@id/user_rank_and_rating_text_view"
             android:layout_marginTop="@dimen/five_dp"
             android:layout_marginStart="@dimen/ten_dp"
             android:text="@string/fa_map_marker"/>
@@ -74,7 +74,7 @@
         <TextView
             android:id="@+id/user_status_text_view"
             style="@style/TextView.Primary"
-            android:layout_below="@id/user_rating_text_view"
+            android:layout_below="@id/user_rank_and_rating_text_view"
             android:layout_marginTop="@dimen/five_dp"
             android:text="@string/default_text"/>
 
@@ -86,7 +86,7 @@
             android:text="@string/friends_hint"/>
 
         <TextView
-            android:id="@+id/count_friends_text_view"
+            android:id="@+id/participations_text_view"
             style="@style/TextView.Primary.Bold"
             android:layout_below="@id/user_status_text_view"
             android:layout_marginTop="@dimen/five_dp"
@@ -98,7 +98,7 @@
             android:id="@+id/coach_name_label_text_view"
             style="@style/TextView.Secondary"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/count_friends_text_view"
+            android:layout_toEndOf="@id/participations_text_view"
             android:layout_below="@id/user_status_text_view"
             android:layout_marginTop="@dimen/five_dp"
             android:text="@string/coach_hint"/>

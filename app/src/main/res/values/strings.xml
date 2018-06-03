@@ -15,6 +15,8 @@
     <string name="fa_map_marker">\uf041</string>
     <string name="fa_heart_o">\uf08a</string>
     <string name="fa_retweet">\uf079</string>
+    <string name="fa_calendar">\uf073</string>
+    <string name="fa_clock">\uf017</string>
     <string name="ion_search"></string>
 
     <string name="default_text">Default text</string>
@@ -29,9 +31,9 @@
     <string name="userName">Name</string>
     <string name="tournamentName">Tournament name</string>
     <string name="tournamentShortDescription">Tournament short description</string>
-    <string name="tournamentShortDescriptionHint">Enter short description</string>
+    <string name="tournamentShortDescriptionHint">Short description</string>
     <string name="tournamentFullDescription">Tournament full description</string>
-    <string name="tournamentFullDescriptionHint">Enter full description</string>
+    <string name="tournamentFullDescriptionHint">Full description</string>
     <string name="userSurname">Surname</string>
     <string name="userPatronymic">Patronymic</string>
     <string name="userAddress">Address</string>
@@ -56,4 +58,16 @@
     <string name="userRating_number">1900</string>
     <string name="user_full_name">%1$s %2$s</string>
     <string name="dash">-</string>
+
+
+
+
+
+
+    //date and time
+    <string name="title_activity_main">Range Picker</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="birthday">Birthday</string>
+    <string name="tournament_team_type">Team\'s tournament</string>
 </resources>

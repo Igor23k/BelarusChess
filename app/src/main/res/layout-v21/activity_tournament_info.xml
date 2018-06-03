@@ -116,7 +116,6 @@
         android:textColor="@color/cpb_white"
         android:textSize="18sp"
         app:cpb_textComplete="judge"
-        app:cpb_textError="default_text"
-       />
+        app:cpb_textError="default_text" />
 
 </LinearLayout>

@@ -26,7 +26,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     private static final String TAG = "RegistrationActivity";
     private static final int REGISTRATION_REQUEST = 1;
 
-    @BindView(R.id.e_name_input)
+    @BindView(R.id.tournament_name_input)
     EditText nameText;
 
     @BindView(R.id.e_surname_input)

@@ -15,13 +15,13 @@
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.MainActivity">
 
         </activity>
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity" android:theme="@style/AppTheme.Dark"/>
-          <!--  <intent-filter>
+        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity" android:theme="@style/AppTheme.Dark">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
+        </activity>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity" android:theme="@style/AppTheme.Dark"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity" />
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchTournamentActivity" />
@@ -30,11 +30,11 @@
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.GamesListActivity"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.GameActivity"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AddTournamentActivity" android:theme="@style/AppTheme.AddEntity">
-            <intent-filter>
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
     </application>
 </manifest>

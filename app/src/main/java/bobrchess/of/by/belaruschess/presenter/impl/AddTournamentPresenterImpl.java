@@ -50,7 +50,6 @@ public class AddTournamentPresenterImpl implements CallBackAddTournament, AddTou
         TournamentDTO tournamentDTO = view.getTournamentData();
         try {
             validateTournamentData(tournamentDTO);
-            tournamentDTO.setName(Util.getEncodedPassword(tournamentDTO.getName()));
             view.enableButton();
             view.showProgress();
             addTournamentConnection.addTournament(tournamentDTO);

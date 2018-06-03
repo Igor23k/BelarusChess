@@ -54,8 +54,8 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
         surnameTextView = findViewById(R.id.user_surname_text_view)
         statusTextView = findViewById(R.id.user_status_text_view)
         locationTextView = findViewById(R.id.user_location_text_view)
-        ratingTextView = findViewById(R.id.user_rating_text_view)
-        friendsCountTextView = findViewById(R.id.count_friends_text_view)
+        ratingTextView = findViewById(R.id.user_rank_and_rating_text_view)
+        friendsCountTextView = findViewById(R.id.participations_text_view)
         coachNameTextView = findViewById(R.id.coach_name_text_view)
 
         toolbar = findViewById(R.id.toolbar)

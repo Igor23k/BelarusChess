@@ -44,7 +44,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tournament)
+        setContentView(R.layout.activity_tournament_info)
         initImagesList()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
@@ -119,7 +119,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
-        judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname
+        judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname//проверку и локэйшн тоже
         locationTextView!!.text = tournament.place!!.country!!.name + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
     }
 
