@@ -23,6 +23,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_games">Games</string>
+    <string name="action_table">Table</string>
+    <string name="action_participants">Participants</string>
+    <string name="action_info">Info</string>
     <string name="action_tournaments_search">Tournaments</string>
     <string name="password">Password</string>
     <string name="login">Login</string>

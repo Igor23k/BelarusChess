@@ -51,6 +51,12 @@ dependencies {
 
     compile 'com.jpardogo.materialtabstrip:library:1.1.1'
     compile 'com.borax12.materialdaterangepicker:library:1.9'
+
+
+    //tabs
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.0'
 }
 repositories {
     jcenter()

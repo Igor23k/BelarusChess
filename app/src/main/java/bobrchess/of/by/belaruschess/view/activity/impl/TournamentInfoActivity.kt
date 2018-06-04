@@ -32,7 +32,7 @@ import java.util.*
 /**
  * Created by Igor on 25.03.2018.
  */
-class TournamentActivity : AppCompatActivity(), TournamentContractView {
+class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
 
     private var tournamentImageView: ImageView? = null
     private var nameTextView: TextView? = null
@@ -40,8 +40,6 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
     private var judgeTextView: TextView? = null
     private var locationTextView: TextView? = null
     private var toolbar: Toolbar? = null
-    private var tabLayout: TabLayout? = null
-    private var viewPager: ViewPager? = null
     private var tournament = TournamentDTO()
     private val imageList = ArrayList<String>()
 
@@ -51,7 +49,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tournament)
+        setContentView(R.layout.activity_tournament_info)
         initImagesList()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
@@ -62,14 +60,9 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         toolbar = findViewById(R.id.toolbar)
 
                 //   supportActionBar!!.setDisplayHomeAsUpEnabled(false)//кнопка назад, хз какой способ лучше, проверить
-        viewPager = findViewById<View>(R.id.viewpager) as ViewPager
-        setupViewPager(viewPager!!)
-        tabLayout = findViewById<View>(R.id.tabs) as TabLayout
-        tabLayout!!.setupWithViewPager(viewPager)
-
 
         presenter = TournamentPresenterImpl()
-        presenter!!.attachView(this)
+        //presenter!!.attachView(this)
         presenter!!.viewIsReady()
         setSupportActionBar(toolbar)
         //loadTournamentData()
@@ -79,7 +72,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
 
         actionBar?.title = "50"
 
-/*
+
         val circularButton1 = findViewById<View>(R.id.circularButton1) as CircularProgressButton
         circularButton1.text = "Зарегистрироваться"
         circularButton1.setOnClickListener {
@@ -89,10 +82,10 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
             } else {
                 circularButton1.progress = 0
             }
-        }*/
+        }
     }
 
-    /*private fun simulateSuccessProgress(button: CircularProgressButton) {
+    private fun simulateSuccessProgress(button: CircularProgressButton) {
         var value = 0
         val widthAnimation = ValueAnimator.ofInt(1, 100)
         widthAnimation.duration = 1500
@@ -121,7 +114,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
             }
         }
         widthAnimation.start()
-    }*/
+    }
 
     private fun loadTournamentData() {
         tournament = getTournamentData(intent)//мб проверку?
@@ -173,7 +166,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
             R.id.action_info -> {
                 val intent = Intent(this, TournamentInfoActivity::class.java)
                 //putTournamentData(intent, userDTO)
-                // startActivityForResult(intent, AUTHORIZATION_REQUEST)
+               // startActivityForResult(intent, AUTHORIZATION_REQUEST)
                 startActivity(intent)
             }
         }

@@ -13,4 +13,19 @@
         android:orderInCategory="2"
         android:title="@string/action_games"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_table"
+        android:orderInCategory="3"
+        android:title="@string/action_table"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_participants"
+        android:orderInCategory="4"
+        android:title="@string/action_participants"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_info"
+        android:orderInCategory="4"
+        android:title="@string/action_info"
+        app:showAsAction="never" />
 </menu>

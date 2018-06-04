@@ -26,7 +26,6 @@ import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
-import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl;
 import bobrchess.of.by.belaruschess.util.Util;

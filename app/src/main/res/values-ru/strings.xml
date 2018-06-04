@@ -21,6 +21,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Настройки</string>
     <string name="action_games">Игры</string>
+    <string name="action_table">Таблица</string>
+    <string name="action_participants">Участники</string>
+    <string name="action_info">Информация</string>
     <string name="action_tournaments_search">Турниры</string>
     <string name="password">Пароль</string>
     <string name="login">Авторизоваться</string>
