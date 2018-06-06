@@ -18,6 +18,7 @@ import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util.USER_INFO
 import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import com.squareup.picasso.Picasso
@@ -94,6 +95,7 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
             }
             R.id.action_search -> {
                 val intent = Intent(this, SearchUserActivity::class.java)
+                intent.putExtra("requestCode",USER_INFO)
                 startActivity(intent)
             }
         }
@@ -105,7 +107,7 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
         tournamentsRecyclerView!!.layoutManager = LinearLayoutManager(this)
         val onTournamentClickListener = object : TournamentsAdapter.OnTournamentClickListener {
             override fun onTournamentClick(tournament: TournamentDTO) {
-                val intent = Intent(this@UserInfoActivity, TournamentActivity::class.java)
+                val intent = Intent(this@UserInfoActivity, TournamentInfoActivity::class.java)
                 intent.putExtra(TOURNAMENT_PARAMETER, tournament)
                 startActivity(intent)
             }

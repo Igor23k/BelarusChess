@@ -20,7 +20,10 @@ import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
 import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util.*
 import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
+import bobrchess.of.by.colibritweet.adapter.TournamentParticipantsAdapter
+import bobrchess.of.by.colibritweet.adapter.TournamentTableAdapter
 import bobrchess.of.by.colibritweet.adapter.UsersAdapter
 import butterknife.ButterKnife
 
@@ -31,10 +34,12 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
 
     private var usersRecyclerView: RecyclerView? = null
     private var usersAdapter: UsersAdapter? = null
+    private var participantsAdapter: TournamentParticipantsAdapter? = null
+    private var tableAdapter: TournamentTableAdapter? = null
     private var presenter: SearchUserPresenter? = null
     private var progressDialog: ProgressDialog? = null
 
-   // @BindView(R.id.e_query_text)
+    // @BindView(R.id.e_query_text)
     private var queryEditText: EditText? = null
 
     //@BindView(R.id.toolbar)
@@ -85,19 +90,46 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     private fun initRecyclerView() {
         usersRecyclerView = findViewById(R.id.users_recycler_view)
         usersRecyclerView!!.layoutManager = LinearLayoutManager(this)
-
-        val onUserClickListener = object : UsersAdapter.OnUserClickListener {
-            override fun onUserClick(user: UserDTO) {
-                val intent = Intent(this@SearchUserActivity, UserInfoActivity::class.java)
-                intent.putExtra(USER_PARAMETER, user)
-                startActivity(intent)
+        val requestCode = intent.getIntExtra("requestCode", 0)
+        when (requestCode) {
+            TOURNAMENT_PARTICIPANTS_REQUEST -> {
+                val onUserClickListener = object : TournamentParticipantsAdapter.OnUserClickListener {
+                    override fun onUserClick(user: UserDTO) {
+                        val intent = Intent(this@SearchUserActivity, UserInfoActivity::class.java)
+                        intent.putExtra(USER_PARAMETER, user)
+                        startActivity(intent)
+                    }
+                }
+                participantsAdapter = TournamentParticipantsAdapter(onUserClickListener)
+                usersRecyclerView!!.adapter = participantsAdapter
+            }
+            USER_INFO -> {
+                val onUserClickListener = object : UsersAdapter.OnUserClickListener {
+                    override fun onUserClick(user: UserDTO) {
+                        val intent = Intent(this@SearchUserActivity, UserInfoActivity::class.java)
+                        intent.putExtra(USER_PARAMETER, user)
+                        startActivity(intent)
+                    }
+                }
+                usersAdapter = UsersAdapter(onUserClickListener)
+                usersRecyclerView!!.adapter = usersAdapter
+            }
+            TOURNAMENT_TABLE_REQUEST -> {
+                val onUserClickListener = object : TournamentTableAdapter.OnUserClickListener {
+                    override fun onUserClick(user: UserDTO) {
+                        val intent = Intent(this@SearchUserActivity, UserInfoActivity::class.java)
+                        intent.putExtra(USER_PARAMETER, user)
+                        startActivity(intent)
+                    }
+                }
+                tableAdapter = TournamentTableAdapter(onUserClickListener)
+                usersRecyclerView!!.adapter = tableAdapter
             }
         }
-        usersAdapter = UsersAdapter(onUserClickListener)
-        usersRecyclerView!!.adapter = usersAdapter
+
     }
 
-    fun getSearchText() : String {
+    fun getSearchText(): String {
         return queryEditText!!.text.toString()
     }
 
@@ -110,8 +142,16 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     }
 
     fun showUsers(users: List<UserDTO>) {
-        usersAdapter!!.clearItems()
-        usersAdapter!!.setItems(users)
+        if (usersAdapter != null) {//переписать
+            usersAdapter!!.clearItems()
+            usersAdapter!!.setItems(users)
+        } else if (participantsAdapter != null) {
+            participantsAdapter!!.clearItems()
+            participantsAdapter!!.setItems(users)
+        } else if (tableAdapter != null) {
+            tableAdapter!!.clearItems()
+            tableAdapter!!.setItems(users)
+        }
     }
 
     override fun showToast(resId: Int?) {

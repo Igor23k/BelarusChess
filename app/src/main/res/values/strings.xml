@@ -26,6 +26,8 @@
     <string name="action_table">Table</string>
     <string name="action_participants">Participants</string>
     <string name="action_info">Info</string>
+    <string name="draw">Draw</string>
+    <string name="tours">Tours</string>
     <string name="action_tournaments_search">Tournaments</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -48,6 +50,7 @@
     <string name="isMember">Already a member? Login</string>
     <string name="logo">Logo</string>
     <string name="please_wait">Please, wait …</string>
+    <string name="successful_draw">The draw is successfully conducted</string>
     <string name="connection_error">Connection error!</string>
     <string name="incorrect_email">Incorrect email! Please, try again.</string>
     <string name="incorrect_tournament_name">Incorrect tournament name! Please, try again.</string>

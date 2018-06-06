@@ -14,6 +14,11 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
  */
 
 public class Util {
+
+    public static Integer USER_INFO = 1;
+    public static Integer TOURNAMENT_PARTICIPANTS_REQUEST = 2; // вынести все их сюда
+    public static Integer TOURNAMENT_TABLE_REQUEST = 3;
+
     public static String getEncodedPassword(String password) {
         return new String(Hex.encodeHex(DigestUtils.md5(password)));
     }

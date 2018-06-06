@@ -4,26 +4,28 @@ import android.animation.ValueAnimator
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.fragments.*
-import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
-import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util.TOURNAMENT_PARTICIPANTS_REQUEST
+import bobrchess.of.by.belaruschess.util.Util.TOURNAMENT_TABLE_REQUEST
+import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
 import com.dd.CircularProgressButton
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -59,13 +61,13 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
 
         toolbar = findViewById(R.id.toolbar)
 
-                //   supportActionBar!!.setDisplayHomeAsUpEnabled(false)//кнопка назад, хз какой способ лучше, проверить
+        //   supportActionBar!!.setDisplayHomeAsUpEnabled(false)//кнопка назад, хз какой способ лучше, проверить
 
         presenter = TournamentPresenterImpl()
         //presenter!!.attachView(this)
         presenter!!.viewIsReady()
         setSupportActionBar(toolbar)
-        //loadTournamentData()
+        loadTournamentData()
 
 
         val actionBar = actionBar
@@ -122,7 +124,7 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
     }
 
     private fun displayTournamentData() {
-       // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
+        // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
         val avatarNumber = (0..3).random()
         Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
@@ -155,25 +157,46 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
                 val intent = Intent(this, SearchTournamentActivity::class.java)
                 startActivity(intent)
             }
-            R.id.action_table-> {
-                val intent = Intent(this, SearchTournamentActivity::class.java)
+            R.id.action_table -> {
+                val intent = Intent(this, SearchUserActivity::class.java)
+                intent.putExtra("requestCode", TOURNAMENT_TABLE_REQUEST)
                 startActivity(intent)
             }
             R.id.action_participants -> {
-                val intent = Intent(this, SearchTournamentActivity::class.java)
+                val intent = Intent(this, SearchUserActivity::class.java)
+                intent.putExtra("requestCode",TOURNAMENT_PARTICIPANTS_REQUEST)
+                startActivity(intent)
+            }
+            R.id.action_tours -> {
+                val intent = Intent(this, TournamentActivity::class.java)
+                putTournamentData(intent, tournament)
                 startActivity(intent)
             }
             R.id.action_info -> {
                 val intent = Intent(this, TournamentInfoActivity::class.java)
-                //putTournamentData(intent, userDTO)
-               // startActivityForResult(intent, AUTHORIZATION_REQUEST)
+                putTournamentData(intent, tournament)
                 startActivity(intent)
+            }
+            R.id.action_draw -> {
+                //val intent = Intent(this, TournamentInfoActivity::class.java)
+                //putTournamentData(intent, userDTO)
+                // startActivityForResult(intent, AUTHORIZATION_REQUEST)
+                //startActivity(intent)
+                showToast(R.string.successful_draw)
             }
         }
         return true
     }
 
-    private fun initImagesList(){
+    private fun saveTournamentData() {
+        tournament = getTournamentData(intent)//мб проверку?
+    }
+
+    private fun putTournamentData(intent: Intent, tournamentDTO: TournamentDTO) {
+        intent.putExtra(TOURNAMENT_PARAMETER, tournamentDTO)
+    }
+
+    private fun initImagesList() {
         imageList.add("https://www.w3schools.com/w3css/img_fjords.jpg")
         imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
         imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
@@ -181,10 +204,10 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
     }
 
     fun ClosedRange<Int>.random() =
-            Random().nextInt(endInclusive - start) +  start
+            Random().nextInt(endInclusive - start) + start
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.successful_draw))
     }
 
     override fun hideProgress() {
@@ -200,14 +223,9 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
     }
 
     override fun showToast(resId: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun setupViewPager(viewPager: ViewPager) {
-        val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(OneFragment(), "FIRST")
-        adapter.addFragment(TwoFragment(), "SECOND")
-        viewPager.adapter = adapter
+        val toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
     }
 
     internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {

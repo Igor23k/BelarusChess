@@ -24,6 +24,8 @@
     <string name="action_table">Таблица</string>
     <string name="action_participants">Участники</string>
     <string name="action_info">Информация</string>
+    <string name="draw">Провести жеребьевку</string>
+    <string name="tours">Туры</string>
     <string name="action_tournaments_search">Турниры</string>
     <string name="password">Пароль</string>
     <string name="login">Авторизоваться</string>
@@ -42,6 +44,7 @@
     <string name="isMember">Уже зарегистрированы? Авторизоваться</string>
     <string name="logo">Логотип</string>
     <string name="please_wait">Пожалуйста, подождите ...</string>
+    <string name="successful_draw">Жеребьевка успешно проведена</string>
     <string name="connection_error">Ошибка соединения!</string>
     <string name="incorrect_email">Неверный email! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_tournament_name">Неверное имя турнира! Пожалуйста, попробуйте еще раз.</string>

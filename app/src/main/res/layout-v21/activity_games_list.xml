@@ -18,7 +18,7 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <com.dd.CircularProgressButton
+    <!--<com.dd.CircularProgressButton
         android:id="@+id/doSmth"
         android:layout_width="240dp"
         android:layout_height="64dp"
@@ -27,7 +27,7 @@
         android:textColor="@color/cpb_white"
         android:textSize="18sp"
         app:cpb_textComplete="judge"
-        app:cpb_textError="default_text" />
+        app:cpb_textError="default_text" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/users_recycler_view"
