@@ -187,7 +187,7 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
     public void onAddTournamentSuccess(TournamentDTO tournamentDTO) {
         enableButton();
         finish();
-        Intent intent = new Intent(getApplicationContext(), TournamentActivity.class);
+        Intent intent = new Intent(getApplicationContext(), TournamentInfoActivity.class);
         putTournamentData(intent, tournamentDTO);
         startActivityForResult(intent, ADD_TOURNAMENT_REQUEST);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);

@@ -98,7 +98,7 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
           //  val tweetPhotoUrl = "https://www.w3schools.com/w3css/img_fjords.jpg"
            // Picasso.with(itemView.context).load(tweetPhotoUrl).into(tournamentImageView)
 
-            val avatarNumber = (0..3).random()
+            val avatarNumber = (0..6).random()
             Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
             Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentSmallImageView)
 
@@ -110,6 +110,9 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
             imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
             imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
             imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
+            imageList.add("http://priscree.ru/img/a43fc13021f087.jpg")
+            imageList.add("http://priscree.ru/img/6e04d186cda445.jpg")
+            imageList.add("http://priscree.ru/img/6e04d598aafbb9.jpg")
         }
 
         fun ClosedRange<Int>.random() =

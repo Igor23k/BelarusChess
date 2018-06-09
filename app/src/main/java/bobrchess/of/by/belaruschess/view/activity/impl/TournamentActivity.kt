@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -16,14 +18,17 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.fragments.OneFragment
 import bobrchess.of.by.belaruschess.fragments.TwoFragment
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.GAME_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
+import bobrchess.of.by.colibritweet.adapter.GamesAdapter
+import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -32,6 +37,9 @@ import java.util.*
  * Created by Igor on 25.03.2018.
  */
 class TournamentActivity : AppCompatActivity(), TournamentContractView {
+
+    private var gamesRecyclerView: RecyclerView? = null
+    private var gamesAdapter: GamesAdapter? = null
 
     private val TOURNAMENT_REQUEST = 0
 
@@ -53,6 +61,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tournament)
+        initRecyclerView()
         initImagesList()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
@@ -75,10 +84,10 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         setSupportActionBar(toolbar)
         //loadTournamentData()
         saveTournamentData()
-
+        loadGames()
         val actionBar = actionBar
 
-        actionBar?.title = "50"
+       // actionBar?.title = "50"// це шо и надо ли? ну надо, но что туда надо и почему тут null?
 
 /*
         val circularButton1 = findViewById<View>(R.id.circularButton1) as CircularProgressButton
@@ -124,6 +133,30 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         widthAnimation.start()
     }*/
 
+    private fun initRecyclerView() {
+        gamesRecyclerView = findViewById(R.id.games_recycler_view)
+        gamesRecyclerView!!.layoutManager = LinearLayoutManager(this)
+
+        val onGameClickListener = object : GamesAdapter.OnGameClickListener {
+            override fun onGameClick(game: GameDTO) {
+                val intent = Intent(this@TournamentActivity, GameActivity::class.java)
+                intent.putExtra(GAME_PARAMETER,  game)
+                startActivity(intent)
+            }
+        }
+        gamesAdapter = GamesAdapter(onGameClickListener)
+        gamesRecyclerView!!.adapter = gamesAdapter
+    }
+
+    fun showGames(games: List<GameDTO>) {
+        gamesAdapter!!.clearItems()
+        gamesAdapter!!.setItems(games)
+    }
+
+    private fun loadGames() {
+        presenter!!.loadGames()
+    }
+
     private fun saveTournamentData() {
         tournament = getTournamentData(intent)//мб проверку?
     }
@@ -135,7 +168,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
 
     private fun displayTournamentData() {
         // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
-        val avatarNumber = (0..3).random()
+        val avatarNumber = (0..6).random()
         Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
@@ -195,6 +228,9 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
         imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
         imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
+        imageList.add("http://priscree.ru/img/a43fc13021f087.jpg")
+        imageList.add("http://priscree.ru/img/6e04d186cda445.jpg")
+        imageList.add("http://priscree.ru/img/6e04d598aafbb9.jpg")
     }
 
     fun ClosedRange<Int>.random() =

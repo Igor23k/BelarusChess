@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.presenter.callback;
 
 import java.util.List;
 
+import bobrchess.of.by.belaruschess.dto.GameDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 
 /**
@@ -11,7 +12,7 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 public interface CallBackTournament extends CallBack {
     void onResponse(TournamentDTO tournamentDTO);
 
-    void onResponse(List<TournamentDTO> list);
+    void onResponse(List list);
 
     void onFailure(Throwable t);
 }

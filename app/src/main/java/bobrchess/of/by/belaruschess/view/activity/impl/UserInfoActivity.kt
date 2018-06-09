@@ -93,6 +93,10 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
                 val intent = Intent(this, SearchTournamentActivity::class.java)
                 startActivity(intent)
             }
+            R.id.action_add_tournament -> {
+                val intent = Intent(this, AddTournamentActivity::class.java)
+                startActivity(intent)
+            }
             R.id.action_search -> {
                 val intent = Intent(this, SearchUserActivity::class.java)
                 intent.putExtra("requestCode",USER_INFO)

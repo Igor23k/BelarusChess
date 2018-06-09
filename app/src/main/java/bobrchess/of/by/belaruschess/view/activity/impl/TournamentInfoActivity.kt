@@ -125,7 +125,7 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
 
     private fun displayTournamentData() {
         // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
-        val avatarNumber = (0..3).random()
+        val avatarNumber = (0..6).random()
         Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
@@ -149,10 +149,6 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
                 val intent = Intent(this, GamesListActivity::class.java)
                 startActivity(intent)
             }
-            R.id.action_add_tournament -> {
-                val intent = Intent(this, AddTournamentActivity::class.java)
-                startActivity(intent)
-            }
             R.id.action_tournaments_search -> {
                 val intent = Intent(this, SearchTournamentActivity::class.java)
                 startActivity(intent)
@@ -167,11 +163,11 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
                 intent.putExtra("requestCode",TOURNAMENT_PARTICIPANTS_REQUEST)
                 startActivity(intent)
             }
-            R.id.action_tours -> {
+            /*R.id.action_tours -> {
                 val intent = Intent(this, TournamentActivity::class.java)
                 putTournamentData(intent, tournament)
                 startActivity(intent)
-            }
+            }*/
             R.id.action_info -> {
                 val intent = Intent(this, TournamentInfoActivity::class.java)
                 putTournamentData(intent, tournament)
@@ -201,6 +197,9 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
         imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
         imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
         imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
+        imageList.add("http://priscree.ru/img/a43fc13021f087.jpg")
+        imageList.add("http://priscree.ru/img/6e04d186cda445.jpg")
+        imageList.add("http://priscree.ru/img/6e04d598aafbb9.jpg")
     }
 
     fun ClosedRange<Int>.random() =

@@ -27,12 +27,13 @@
         <TextView
             android:id="@+id/user_rank_and_rating_text_view"
             style="@style/TextView.Secondary"
-            android:text="Master 1703"/>
+            android:text="Master 1703"
+            android:paddingEnd="30dp"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/user_count_points_text_view"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="80dp"
         style="@style/TextView.Primary.Bold"
         android:text="8.5"/>
 

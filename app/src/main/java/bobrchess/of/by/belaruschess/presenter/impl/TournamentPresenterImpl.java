@@ -2,10 +2,11 @@ package bobrchess.of.by.belaruschess.presenter.impl;
 
 import java.util.List;
 
+import bobrchess.of.by.belaruschess.dto.GameDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.network.connection.TournamentConnection;
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackTournament;
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter;
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackTournament;
 import bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity;
 
 /**
@@ -28,8 +29,12 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
     }
 
     @Override
-    public void onResponse(List<TournamentDTO> list) {
-        view.hideProgress();
+    public void onResponse(List list) {
+        // view.hideProgress();
+        if( list.get(0).getClass().equals(GameDTO.class) ) {
+            view.showGames(list);
+        }
+        System.out.println();
     }
 
     @Override
@@ -49,6 +54,11 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
         view.disableButton();
         view.showProgress();
         tournamentConnection.getTournaments();
+    }
+
+    @Override
+    public void loadGames() {
+        tournamentConnection.getGames();
     }
 
     @Override

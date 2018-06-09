@@ -4,11 +4,6 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_add_tournament"
-        android:orderInCategory="1"
-        android:title="@string/addTournament"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_games"
         android:orderInCategory="2"
         android:title="@string/action_games"
@@ -33,9 +28,9 @@
         android:orderInCategory="6"
         android:title="@string/draw"
         app:showAsAction="never" />
-    <item
+    <!--<item
         android:id="@+id/action_tours"
         android:orderInCategory="7"
         android:title="@string/tours"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 </menu>

@@ -69,14 +69,14 @@
             android:layout_marginStart="@dimen/five_dp"
             android:layout_marginTop="@dimen/five_dp"
             android:layout_toEndOf="@id/user_location_icon_text_view"
-            android:text="@string/location"/>
+            android:text="Belarus"/>
 
         <TextView
             android:id="@+id/user_status_text_view"
             style="@style/TextView.Primary"
             android:layout_below="@id/user_rank_and_rating_text_view"
             android:layout_marginTop="@dimen/five_dp"
-            android:text="@string/default_text"/>
+            android:text="Hello, guys!"/>
 
         <TextView
             android:id="@+id/count_friends_label_text_view"
@@ -109,7 +109,7 @@
             android:layout_toEndOf="@id/coach_name_label_text_view"
             android:layout_below="@id/user_status_text_view"
             android:layout_marginTop="@dimen/five_dp"
-            android:text="@string/default_text"/>
+            android:text="Aleh Nikifarau"/>
     </RelativeLayout>
 
     <View

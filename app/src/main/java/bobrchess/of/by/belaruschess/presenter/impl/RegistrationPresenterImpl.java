@@ -50,6 +50,7 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
     public void registration() {
         view.disableButton();
         UserDTO userDTO = view.getUserData();
+        userDTO.setStatus("Hello guys!");
         try {
             validateUserData(userDTO);
             userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));

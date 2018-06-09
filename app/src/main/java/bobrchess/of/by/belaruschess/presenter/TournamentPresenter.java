@@ -11,6 +11,8 @@ public interface TournamentPresenter {
 
     void getTournaments();
 
+    void loadGames();
+
     void attachView(TournamentActivity activity);
 
     void detachView();

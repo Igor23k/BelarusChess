@@ -20,7 +20,7 @@ class TournamentTableAdapter(onUserClickListener: OnUserClickListener) : Recycle
     private val avatarList = ArrayList<String>()
     private val onUserClickListener: OnUserClickListener
     private var count = 0
-    private var temp = 9
+    private var temp = 1.0
 
     init {
         this.onUserClickListener = onUserClickListener
@@ -76,9 +76,12 @@ class TournamentTableAdapter(onUserClickListener: OnUserClickListener) : Recycle
             count++
             user_name_text_view.text = user.name + " " + user.surname
             user_rank_and_rating_text_view.text = user.rank!!.name + "    " + user.rating
-            if (count > 8) {
-                temp = 0
+            if (count > 4 && count < 8) {
+                temp = 0.5
+            } else if (count > 8){
+                temp = 1.0
             }//костыль придуманный
+            Thread.sleep(100)
             user_count_points_text_view.text = temp.toString()
             user_place_text_view.text = count.toString()
             val avatarNumber = (0..10).random()

@@ -29,8 +29,13 @@ public class Util {
         tournamentDTO.setReferee(getTestUser());
         tournamentDTO.setCountPlayersInTeam(1);
         tournamentDTO.setName("Белая ладья - 2018");
-        tournamentDTO.setFullDescription("Полное описание");
-        tournamentDTO.setShortDescription("Краткое описание");
+        tournamentDTO.setFullDescription("Положение о проведении открытого республиканского шахматного турнира памяти Ю. В.  Кулаги\n" +
+                "\n" +
+                "Цель турнира\n" +
+                "\n" +
+                "Ø Установление дружественных связей с шахматистами других регионов\n" +
+                "Ø Повышение мастерства шахматистов\n");
+        tournamentDTO.setShortDescription("Вам тут понравится!");
         tournamentDTO.setId(8);
         return tournamentDTO;
     }
@@ -49,7 +54,7 @@ public class Util {
 
     public static CountryDTO getTestCountry(){
         CountryDTO countryDTO = new CountryDTO();
-        countryDTO.setName("France");
+        countryDTO.setName("Франция");
         countryDTO.setAbbreviation("FRA");
         return countryDTO;
     }
