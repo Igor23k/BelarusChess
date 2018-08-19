@@ -16,6 +16,7 @@ public class GamePresenterImpl implements CallBackGame, GamePresenter {
 
     private GameActivity view;
     private GameConnection gameConnection;
+    private Boolean viewIsReady = false;
 
     public GamePresenterImpl() {
         gameConnection = new GameConnection();
@@ -35,20 +36,23 @@ public class GamePresenterImpl implements CallBackGame, GamePresenter {
     @Override
     public void onFailure(Throwable t) {
         view.hideProgress();
+        view.showToast(t.getLocalizedMessage());
     }
 
     @Override
     public void getGame(Integer id) {
-        view.disableButton();
-        view.showProgress();
-        gameConnection.getGame(id);
+        if(viewIsReady) {
+            view.showProgress();
+            gameConnection.getGame(id);
+        }
     }
 
     @Override
     public void getGames() {
-        view.disableButton();
-        view.showProgress();
-        gameConnection.getGames();
+        if(viewIsReady) {
+            view.showProgress();
+            gameConnection.getGames();
+        }
     }
 
     @Override
@@ -61,6 +65,7 @@ public class GamePresenterImpl implements CallBackGame, GamePresenter {
     }
 
     public void viewIsReady() {
-
+        viewIsReady = true;
     }
+
 }

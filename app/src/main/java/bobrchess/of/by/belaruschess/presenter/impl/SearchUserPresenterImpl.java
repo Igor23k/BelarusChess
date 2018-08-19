@@ -42,8 +42,10 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
 
     @Override
     public void searchUsers() {
-        String text = view.getSearchText();
-        userConnection.searchUsers(text);
+        if(viewIsReady) {
+            String text = view.getSearchText();
+            userConnection.searchUsers(text);
+        }
     }
 
     @Override
@@ -67,8 +69,8 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     }
 
     @Override
-    public void onConnectionError(Throwable t) {
+    public void onFailure(Throwable t) {
         view.hideProgress();
-        view.onConnectionError();
+        view.showToast(t.getLocalizedMessage());
     }
 }

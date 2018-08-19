@@ -30,9 +30,9 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
     }
 
     @Override
-    public void onConnectionError(Throwable t) {
+    public void onFailure(Throwable t) {
         view.hideProgress();
-        view.onConnectionError();
+        view.showToast(t.getLocalizedMessage());
     }
 
     @Override
@@ -41,8 +41,10 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
     }
 
     @Override
-    public void readyToLoadUserTournaments() {
-        userInfoConnection.getTournaments();
+    public void loadUserTournaments() {
+        if(viewIsReady) {
+            userInfoConnection.getTournaments();
+        }
     }
 
     public void detachView() {

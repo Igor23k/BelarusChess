@@ -12,11 +12,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
@@ -24,11 +26,10 @@ import bobrchess.of.by.belaruschess.fragments.OneFragment
 import bobrchess.of.by.belaruschess.fragments.TwoFragment
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.GAME_PARAMETER
-import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.util.Constants.*
+import bobrchess.of.by.belaruschess.util.Util.TOURNAMENT_REQUEST
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
 import bobrchess.of.by.colibritweet.adapter.GamesAdapter
-import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -40,8 +41,6 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
 
     private var gamesRecyclerView: RecyclerView? = null
     private var gamesAdapter: GamesAdapter? = null
-
-    private val TOURNAMENT_REQUEST = 0
 
     private var tournamentImageView: ImageView? = null
     private var nameTextView: TextView? = null
@@ -80,14 +79,14 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
 
         presenter = TournamentPresenterImpl()
         presenter!!.attachView(this)
-        presenter!!.viewIsReady()
         setSupportActionBar(toolbar)
+        presenter!!.viewIsReady()
         //loadTournamentData()
         saveTournamentData()
         loadGames()
         val actionBar = actionBar
 
-       // actionBar?.title = "50"// це шо и надо ли? ну надо, но что туда надо и почему тут null?
+        // actionBar?.title = "50"// це шо и надо ли? ну надо, но что туда надо и почему тут null?
 
 /*
         val circularButton1 = findViewById<View>(R.id.circularButton1) as CircularProgressButton
@@ -140,7 +139,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         val onGameClickListener = object : GamesAdapter.OnGameClickListener {
             override fun onGameClick(game: GameDTO) {
                 val intent = Intent(this@TournamentActivity, GameActivity::class.java)
-                intent.putExtra(GAME_PARAMETER,  game)
+                intent.putExtra(GAME_PARAMETER, game)
                 startActivity(intent)
             }
         }
@@ -237,23 +236,25 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
             Random().nextInt(endInclusive - start) + start
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait))
     }
 
     override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (progressDialog != null) {
+            progressDialog!!.dismiss()
+        }
     }
 
-    override fun enableButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showToast(resId: Int?) {
+        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
     }
 
-    override fun disableButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(resId: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
     }
 
     private fun setupViewPager(viewPager: ViewPager) {

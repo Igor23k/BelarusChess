@@ -135,8 +135,4 @@ class SearchTournamentActivity : AppCompatActivity(), SearchTournamentContractVi
             progressDialog!!.dismiss()
         }
     }
-
-    override fun onConnectionError() {
-        showToast(R.string.connection_error)
-    }
 }

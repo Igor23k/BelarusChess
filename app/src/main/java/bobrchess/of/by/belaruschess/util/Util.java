@@ -1,5 +1,10 @@
 package bobrchess.of.by.belaruschess.util;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -18,6 +23,10 @@ public class Util {
     public static Integer USER_INFO = 1;
     public static Integer TOURNAMENT_PARTICIPANTS_REQUEST = 2; // вынести все их сюда
     public static Integer TOURNAMENT_TABLE_REQUEST = 3;
+    public static final int AUTHORIZATION_REQUEST = 4;
+    public static final int ADD_TOURNAMENT_REQUEST = 5;
+    public static final int REGISTRATION_REQUEST = 6;
+    public static final int  TOURNAMENT_REQUEST = 7;
 
     public static String getEncodedPassword(String password) {
         return new String(Hex.encodeHex(DigestUtils.md5(password)));
@@ -36,7 +45,8 @@ public class Util {
                 "Ø Установление дружественных связей с шахматистами других регионов\n" +
                 "Ø Повышение мастерства шахматистов\n");
         tournamentDTO.setShortDescription("Вам тут понравится!");
-        tournamentDTO.setId(8);
+        tournamentDTO.setStartDate("456789");
+        tournamentDTO.setFinishDate("4567890");
         return tournamentDTO;
     }
 
@@ -48,7 +58,6 @@ public class Util {
         placeDTO.setBuilding("43");
         placeDTO.setCity("Минск");
         placeDTO.setCapacity(100);
-        placeDTO.setId(5);
         return placeDTO;
     }
 
@@ -56,6 +65,13 @@ public class Util {
         CountryDTO countryDTO = new CountryDTO();
         countryDTO.setName("Франция");
         countryDTO.setAbbreviation("FRA");
+        return countryDTO;
+    }
+
+    public static CountryDTO getTestCountry2(){
+        CountryDTO countryDTO = new CountryDTO();
+        countryDTO.setName("Франциq");
+        countryDTO.setAbbreviation("FRS");
         return countryDTO;
     }
 
@@ -69,14 +85,95 @@ public class Util {
     public static UserDTO getTestUser() {
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail("ww@dd.ek");
-        userDTO.setCountry(getTestCountry());
+        userDTO.setCountry(getTestCountry2());
         userDTO.setRank(getTestRank());
+        userDTO.setStatus("My best status");
+        userDTO.setPhoneNumber("29373692");
         userDTO.setName("Ihar");
         userDTO.setSurname("Kazlou");
         userDTO.setPatronymic("Sergeevich");
-        userDTO.setPassword("qwerty");
+        userDTO.setPassword("12345678901234567890123456789012");
         userDTO.setRating(2000);
-        //  userDTO.setBirthday(new Date(System.currentTimeMillis()));
+        userDTO.setBirthday("eeeeeee");
+        userDTO.setCoach(null);
         return userDTO;
+    }
+
+    public static UserDTO getTestUser2() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail("ww@dd.ek1");
+        userDTO.setCountry(getTestCountry());
+        userDTO.setRank(getTestRank());
+        userDTO.setStatus("My best status1");
+        userDTO.setPhoneNumber("293736921");
+        userDTO.setName("Ihar1");
+        userDTO.setSurname("Kazlou1");
+        userDTO.setPatronymic("Sergeevich1");
+        userDTO.setPassword("12345678901234567890123456789012");
+        userDTO.setRating(2000);
+        userDTO.setBirthday("eeeeeee1");
+        return userDTO;
+    }
+
+    private static ProgressDialog mProgressDialog;
+
+    public static void showSimpleProgressDialog(Context context, String title,
+                                                String msg, boolean isCancelable) {
+        try {
+            if (mProgressDialog == null) {
+                mProgressDialog = ProgressDialog.show(context, title, msg);
+                mProgressDialog.setCancelable(isCancelable);
+            }
+
+            if (!mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
+
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void showSimpleProgressDialog(Context context) {
+        showSimpleProgressDialog(context, null, "Loading...", false);
+    }
+    public static void removeSimpleProgressDialog() {
+        try {
+            if (mProgressDialog != null) {
+                if (mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                    mProgressDialog = null;
+                }
+            }
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            return false;
+        } else {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

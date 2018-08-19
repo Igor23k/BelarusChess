@@ -6,17 +6,9 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO;
  * Created by Igor on 22.04.2018.
  */
 
-public interface AddTournamentContractView extends BaseContractView{
-    void showProgress();
-    void hideProgress();
-    void enableButton();
-    void disableButton();
-    void onAddTournamentFailed();
-    void onAddTournamentSuccess(TournamentDTO tournamentDTO);
-    void onConnectionError();
+public interface AddTournamentContractView extends BaseContractView, ButtonContractView{
     void showIncorrectTournamentNameText();
-    void showToast(Integer resId);
-    void showToast(String message);
     void addTournament();
     TournamentDTO getTournamentData();
+    void startActivity(TournamentDTO tournamentDTO);
 }

@@ -42,8 +42,10 @@ public class SearchTournamentPresenterImpl implements CallBackSearchTournament, 
 
     @Override
     public void searchTournaments() {
-        String text = view.getSearchText();
-        tournamentConnection.searchTournaments(text);
+        if(viewIsReady) {
+            String text = view.getSearchText();
+            tournamentConnection.searchTournaments(text);
+        }
     }
 
     @Override
@@ -67,8 +69,8 @@ public class SearchTournamentPresenterImpl implements CallBackSearchTournament, 
     }
 
     @Override
-    public void onConnectionError(Throwable t) {
+    public void onFailure(Throwable t) {
         view.hideProgress();
-        view.onConnectionError();
+        view.showToast(t.getLocalizedMessage());
     }
 }

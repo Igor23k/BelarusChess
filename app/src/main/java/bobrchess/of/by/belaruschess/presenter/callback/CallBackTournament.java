@@ -13,6 +13,4 @@ public interface CallBackTournament extends CallBack {
     void onResponse(TournamentDTO tournamentDTO);
 
     void onResponse(List list);
-
-    void onFailure(Throwable t);
 }

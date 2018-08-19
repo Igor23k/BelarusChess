@@ -7,4 +7,6 @@ package bobrchess.of.by.belaruschess.view.activity;
 public interface BaseContractView {
     void showToast(Integer resId);
     void showToast(String message);
+    void showProgress();
+    void hideProgress();
 }

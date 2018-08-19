@@ -6,17 +6,9 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
  * Created by Igor on 22.04.2018.
  */
 
-public interface AuthorizationContractView extends BaseContractView{
-    void showProgress();
-    void hideProgress();
-    void enableButton();
-    void disableButton();
+public interface AuthorizationContractView extends BaseContractView, ButtonContractView{
     void showIncorrectEmailText();
     void showIncorrectPasswordText();
-    void onLoginFailed();
-    void onLoginSuccess(UserDTO userDTO);
-    void onConnectionError();
-    void showToast(Integer resId);
-    void showToast(String message);
     UserDTO getUserData();
+    void startActivity(UserDTO userDTO);
 }

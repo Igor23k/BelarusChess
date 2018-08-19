@@ -20,12 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
-import static bobrchess.of.by.belaruschess.util.Constants.USER_NAME_PARAMETER;
 import static bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Util.AUTHORIZATION_REQUEST;
 
 public class AuthorizationActivity extends AppCompatActivity implements AuthorizationContractView {
-    private static final String TAG = "AuthorizationActivity";
-    private static final int AUTHORIZATION_REQUEST = 0;
 
     @BindView(R.id.e_email_input)
     EditText emailText;
@@ -52,6 +50,7 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
         presenter.attachView(this);
         presenter.viewIsReady();
         initButtonsListeners();
+        presenter.viewIsReady();
     }
 
     private void initButtonsListeners() {
@@ -86,10 +85,8 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == AUTHORIZATION_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
+        if (resultCode == RESULT_OK) {
+            if (requestCode == AUTHORIZATION_REQUEST) {
                 this.finish();
             }
         }
@@ -101,28 +98,15 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
     }
 
     @Override
-    public void onLoginSuccess(UserDTO userDTO) {
-        enableButton();
-        finish();
+    public void startActivity(UserDTO userDTO) {
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
         putUserData(intent, userDTO);
-        startActivityForResult(intent, AUTHORIZATION_REQUEST);
+        startActivity(intent);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     private void putUserData(Intent intent, UserDTO userDTO) {
         intent.putExtra(USER_PARAMETER, userDTO);
-    }
-
-    @Override
-    public void onLoginFailed() {
-        enableButton();
-    }
-
-    @Override
-    public void onConnectionError() {
-        enableButton();
-        showToast(R.string.connection_error);
     }
 
     @Override

@@ -27,38 +27,36 @@ public class AuthorizationPresenterImpl implements CallBackAuthorization, Author
     @Override
     public void onResponse(UserDTO userDTO) {
         view.hideProgress();
-        view.onLoginSuccess(userDTO);
+        view.enableButton();
+        view.startActivity(userDTO);
     }
 
     @Override
-    public void onAuthorizationFailure(Throwable t) {
+    public void onFailure(Throwable t) {
         view.hideProgress();
+        view.enableButton();
         view.showToast(t.getLocalizedMessage());
-        view.onLoginFailed();
-    }
-
-    @Override
-    public void onConnectionError(Throwable t) {
-        view.hideProgress();
-        view.onConnectionError();
     }
 
     @Override
     public void authorization() {
-        view.disableButton();
-        UserDTO userDTO = view.getUserData();
-        try {
-            validateUserData(userDTO);
-            userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
+        if(viewIsReady) {
             view.disableButton();
-            view.showProgress();
-            userConnection.authorization(userDTO);
-        } catch (IncorrectEmailException e) {
-            view.showIncorrectEmailText();
-            view.onLoginFailed();
-        } catch (IncorrectPasswordException e) {
-            view.showIncorrectPasswordText();
-            view.onLoginFailed();
+            UserDTO userDTO = view.getUserData();
+            try {
+                validateUserData(userDTO);
+                userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
+                view.disableButton();
+                view.showProgress();
+                userConnection.authorization(userDTO);
+            } catch (IncorrectEmailException e) {
+                view.showIncorrectEmailText();
+            } catch (IncorrectPasswordException e) {
+                view.showIncorrectPasswordText();
+            } finally {
+                view.hideProgress();
+                view.enableButton();
+            }
         }
     }
 

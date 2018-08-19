@@ -135,8 +135,4 @@ class GamesListActivity : AppCompatActivity(), GamesListContractView {
             progressDialog!!.dismiss()
         }
     }
-
-    override fun onConnectionError() {
-        showToast(R.string.connection_error)
-    }
 }

@@ -65,11 +65,9 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
 
         presenter = TournamentPresenterImpl()
         //presenter!!.attachView(this)
-        presenter!!.viewIsReady()
+
         setSupportActionBar(toolbar)
-        loadTournamentData()
-
-
+        presenter!!.viewIsReady()
         val actionBar = actionBar
 
         actionBar?.title = "50"
@@ -85,6 +83,7 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
                 circularButton1.progress = 0
             }
         }
+        loadTournamentData()
     }
 
     private fun simulateSuccessProgress(button: CircularProgressButton) {
@@ -129,8 +128,8 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
         Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
-        judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname//проверку и локэйшн тоже
-        locationTextView!!.text = tournament.place!!.country!!.name + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
+       // judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname//проверку и локэйшн тоже
+       // locationTextView!!.text = tournament.place!!.country!!.name + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
     }
 
     private fun getTournamentData(intent: Intent?): TournamentDTO {
@@ -160,14 +159,14 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
             }
             R.id.action_participants -> {
                 val intent = Intent(this, SearchUserActivity::class.java)
-                intent.putExtra("requestCode",TOURNAMENT_PARTICIPANTS_REQUEST)
+                intent.putExtra("requestCode", TOURNAMENT_PARTICIPANTS_REQUEST)
                 startActivity(intent)
             }
-            /*R.id.action_tours -> {
-                val intent = Intent(this, TournamentActivity::class.java)
-                putTournamentData(intent, tournament)
-                startActivity(intent)
-            }*/
+        /*R.id.action_tours -> {
+            val intent = Intent(this, TournamentActivity::class.java)
+            putTournamentData(intent, tournament)
+            startActivity(intent)
+        }*/
             R.id.action_info -> {
                 val intent = Intent(this, TournamentInfoActivity::class.java)
                 putTournamentData(intent, tournament)
@@ -205,26 +204,26 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
     fun ClosedRange<Int>.random() =
             Random().nextInt(endInclusive - start) + start
 
+    override fun showToast(resId: Int?) {
+        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+    }
+
+    override fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+    }
+
     override fun showProgress() {
-        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.successful_draw))
+        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait))
     }
 
     override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun enableButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun disableButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(resId: Int) {
-        val toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
+        if (progressDialog != null) {
+            progressDialog!!.dismiss()
+        }
     }
 
     internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {

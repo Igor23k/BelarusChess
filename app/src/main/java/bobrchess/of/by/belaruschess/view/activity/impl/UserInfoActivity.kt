@@ -7,17 +7,18 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
-import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
+import bobrchess.of.by.belaruschess.util.Constants.*
 import bobrchess.of.by.belaruschess.util.Util.USER_INFO
 import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
@@ -62,17 +63,17 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
         toolbar = findViewById(R.id.toolbar)
         presenter = UserInfoPresenterImpl()
         presenter!!.attachView(this)
-        presenter!!.viewIsReady()
+
         setSupportActionBar(toolbar)
 
-
         initRecyclerView()
+        presenter!!.viewIsReady()
         loadUserInfo()
         loadUserTournaments()
     }
 
     private fun loadUserTournaments() {
-        presenter!!.readyToLoadUserTournaments()
+        presenter!!.loadUserTournaments()
     }
 
     override fun displayUserTournaments(tournaments: List<TournamentDTO>) {
@@ -87,8 +88,8 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-            /*R.id.action_settings -> {
-            }*/
+        /*R.id.action_settings -> {
+        }*/
             R.id.action_tournaments_search -> {
                 val intent = Intent(this, SearchTournamentActivity::class.java)
                 startActivity(intent)
@@ -99,7 +100,7 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
             }
             R.id.action_search -> {
                 val intent = Intent(this, SearchUserActivity::class.java)
-                intent.putExtra("requestCode",USER_INFO)
+                intent.putExtra("requestCode", USER_INFO)
                 startActivity(intent)
             }
         }
@@ -130,38 +131,40 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
     }
 
     private fun displayUserInfo() {
-       // Picasso.with(this).load("http://priscree.ru/img/7a1bbc9a11ee66.png").into(userImageView)
+        // Picasso.with(this).load("http://priscree.ru/img/7a1bbc9a11ee66.png").into(userImageView)
         Picasso.with(this).load("http://priscree.ru/img/013c16d74f1cd6.jpg").into(userImageView)
         nameTextView!!.text = user.name
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status
-        user.country?.let {
-            locationTextView!!.text = user.country!!.name//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
-        }
-        user.coach?.let {
-            coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.name, user.coach!!.surname)
-        }
+        /* user.country?.let {
+             locationTextView!!.text = user.country!!.name//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
+         }
+         user.coach?.let {
+             coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.name, user.coach!!.surname)
+         }*/
         ratingTextView!!.text = user.rating.toString()
         friendsCountTextView!!.text = "34"
     }
 
+    override fun showToast(resId: Int?) {
+        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+    }
+
+    override fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+    }
+
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait))
     }
 
     override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onConnectionError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(message: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(resId: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (progressDialog != null) {
+            progressDialog!!.dismiss()
+        }
     }
 }

@@ -8,8 +8,4 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
 
 public interface CallBackRegistration extends CallBack {
     void onResponse(UserDTO userDTO);
-
-    void onRegistrationFailure(Throwable t);
-
-    void onConnectionError(Throwable t);
 }

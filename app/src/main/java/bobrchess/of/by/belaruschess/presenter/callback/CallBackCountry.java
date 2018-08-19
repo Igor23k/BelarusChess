@@ -12,6 +12,4 @@ public interface CallBackCountry extends CallBack {
     void onResponse(CountryDTO countryDTO);
 
     void onResponse(List<CountryDTO> countryDTO);
-
-    void onFailure(Throwable t);
 }

@@ -11,6 +11,4 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
 
 public interface CallBackGamesList extends CallBack {
     void onResponse(List<GameDTO> games);
-
-    void onConnectionError(Throwable t);
 }

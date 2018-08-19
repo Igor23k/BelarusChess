@@ -25,6 +25,7 @@ import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentParticipantsAdapter
 import bobrchess.of.by.colibritweet.adapter.TournamentTableAdapter
 import bobrchess.of.by.colibritweet.adapter.UsersAdapter
+import butterknife.BindView
 import butterknife.ButterKnife
 
 /**
@@ -39,7 +40,7 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     private var presenter: SearchUserPresenter? = null
     private var progressDialog: ProgressDialog? = null
 
-    // @BindView(R.id.e_query_text)
+    @BindView(R.id.e_query_text)
     private var queryEditText: EditText? = null
 
     //@BindView(R.id.toolbar)
@@ -174,9 +175,5 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
         if (progressDialog != null) {
             progressDialog!!.dismiss()
         }
-    }
-
-    override fun onConnectionError() {
-        showToast(R.string.connection_error)
     }
 }

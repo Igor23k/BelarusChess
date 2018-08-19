@@ -1,8 +1,11 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import android.support.v7.app.AppCompatActivity;
+
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.GameDTO;
+import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.network.connection.GamesListConnection;
 import bobrchess.of.by.belaruschess.presenter.GamesListPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackGamesList;
@@ -35,8 +38,10 @@ public class GamesListPresenterImpl implements CallBackGamesList, GamesListPrese
 
     @Override
     public void searchGames() {
-        String text = view.getSearchText();
-        gameslistConnection.searchGames(text);
+        if(viewIsReady) {
+            String text = view.getSearchText();
+            gameslistConnection.searchGames(text);
+        }
     }
 
     @Override
@@ -60,8 +65,8 @@ public class GamesListPresenterImpl implements CallBackGamesList, GamesListPrese
     }
 
     @Override
-    public void onConnectionError(Throwable t) {
+    public void onFailure(Throwable t) {
         view.hideProgress();
-        view.onConnectionError();
+        view.showToast(t.getLocalizedMessage());
     }
 }

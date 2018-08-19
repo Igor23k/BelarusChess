@@ -6,7 +6,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity;
  * Created by Igor on 12.04.2018.
  */
 
-public interface TournamentPresenter {
+public interface TournamentPresenter extends BasePresenter{
     void getTournament(Integer id);
 
     void getTournaments();
@@ -14,8 +14,4 @@ public interface TournamentPresenter {
     void loadGames();
 
     void attachView(TournamentActivity activity);
-
-    void detachView();
-
-    void viewIsReady();
 }

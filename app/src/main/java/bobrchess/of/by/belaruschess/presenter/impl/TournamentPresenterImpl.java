@@ -17,6 +17,7 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     private TournamentActivity view;
     private TournamentConnection tournamentConnection;
+    private Boolean viewIsReady = false;
 
     public TournamentPresenterImpl() {
         tournamentConnection = new TournamentConnection();
@@ -30,30 +31,32 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     @Override
     public void onResponse(List list) {
-        // view.hideProgress();
+        // view.hideProgress(); bug це шо тут вообще такое?!
         if( list.get(0).getClass().equals(GameDTO.class) ) {
             view.showGames(list);
         }
-        System.out.println();
     }
 
     @Override
     public void onFailure(Throwable t) {
         view.hideProgress();
+        view.showToast(t.getLocalizedMessage());
     }
 
     @Override
     public void getTournament(Integer id) {
-        view.disableButton();
-        view.showProgress();
-        tournamentConnection.getTournament(id);
+        if(viewIsReady) {
+            view.showProgress();
+            tournamentConnection.getTournament(id);
+        }
     }
 
     @Override
     public void getTournaments() {
-        view.disableButton();
-        view.showProgress();
-        tournamentConnection.getTournaments();
+        if(viewIsReady) {
+            view.showProgress();
+            tournamentConnection.getTournaments();
+        }
     }
 
     @Override
@@ -71,6 +74,6 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
     }
 
     public void viewIsReady() {
-
+        viewIsReady = true;
     }
 }

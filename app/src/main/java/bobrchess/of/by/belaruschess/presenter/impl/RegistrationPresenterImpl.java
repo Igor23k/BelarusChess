@@ -8,9 +8,6 @@ import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
-import bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity;
-
-import static bobrchess.of.by.belaruschess.util.Constants.*;
 
 /**
  * Created by Igor on 11.04.2018.
@@ -30,39 +27,36 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
     @Override
     public void onResponse(UserDTO userDTO) {
         view.hideProgress();
-        view.onRegistrationSuccess(userDTO);
+        view.enableButton();
+        view.startActivity(userDTO);
     }
 
     @Override
-    public void onRegistrationFailure(Throwable t) {
+    public void onFailure(Throwable t) {
         view.hideProgress();
+        view.enableButton();
         view.showToast(t.getLocalizedMessage());
-        view.onRegistrationFailed();
-    }
-
-    @Override
-    public void onConnectionError(Throwable t) {
-        view.hideProgress();
-        view.showToast(t.getMessage());
     }
 
     @Override
     public void registration() {
-        view.disableButton();
-        UserDTO userDTO = view.getUserData();
-        userDTO.setStatus("Hello guys!");
-        try {
-            validateUserData(userDTO);
-            userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
-            view.enableButton();
-            view.showProgress();
-            userConnection.registration(userDTO);
-        } catch (IncorrectEmailException e) {
-            view.showIncorrectEmailText();
-            view.onRegistrationFailed();
-        } catch (IncorrectPasswordException e) {
-            view.showIncorrectPasswordText();
-            view.onRegistrationFailed();
+        if(viewIsReady) {
+            view.disableButton();
+            UserDTO userDTO = view.getUserData();
+            try {
+                validateUserData(userDTO);
+                userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
+                view.enableButton();
+                view.showProgress();
+                userConnection.registration(userDTO);
+            } catch (IncorrectEmailException e) {
+                view.showIncorrectEmailText();
+            } catch (IncorrectPasswordException e) {
+                view.showIncorrectPasswordText();
+            } finally {
+                view.hideProgress();
+                view.enableButton();
+            }
         }
     }
 
@@ -75,12 +69,12 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
         Integer rating = userDTO.getRating();
         //  Date birthdate = userDTO.getBirthday();
 
-        if (email == null || email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+     /*   if (email == null || email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             throw new IncorrectEmailException(INCORRECT_EMAIL);
         }
         if (password == null || password.isEmpty() || password.length() < 4) {
             throw new IncorrectPasswordException(INCORRECT_PASSWORD);
-        }
+        }*/
 
         return true;
     }

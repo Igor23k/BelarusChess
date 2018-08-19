@@ -5,14 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.presenter.GamePresenter
 import bobrchess.of.by.belaruschess.presenter.impl.GamePresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
 import bobrchess.of.by.belaruschess.util.Constants.GAME_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.GameContractView
 import com.squareup.picasso.Picasso
@@ -51,8 +54,8 @@ class GameActivity : AppCompatActivity(), GameContractView {
         toolbar = findViewById(R.id.toolbar)
         presenter = GamePresenterImpl()
         presenter!!.attachView(this)
-        presenter!!.viewIsReady()
         setSupportActionBar(toolbar)
+        presenter!!.viewIsReady()
         loadGameData()
 
 
@@ -77,7 +80,7 @@ class GameActivity : AppCompatActivity(), GameContractView {
         data!!.text = game.name
     }
 
-    private fun initAvatarList(){
+    private fun initAvatarList() {
         avatarList.add("http://priscree.ru/img/3e250315e81d1e.jpg")
         avatarList.add("http://priscree.ru/img/5dc25ed76ea661.jpg")
         avatarList.add("http://priscree.ru/img/95cbe6b870f873.jpg")
@@ -111,7 +114,7 @@ class GameActivity : AppCompatActivity(), GameContractView {
     }
 
     fun ClosedRange<Int>.random() =
-            Random().nextInt(endInclusive - start) +  start
+            Random().nextInt(endInclusive - start) + start
 
     interface OnGameClickListener {
         fun onGameClick(game: GameDTO)
@@ -146,22 +149,24 @@ class GameActivity : AppCompatActivity(), GameContractView {
     }
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait))
     }
 
     override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (progressDialog != null) {
+            progressDialog!!.dismiss()
+        }
     }
 
-    override fun enableButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showToast(resId: Int?) {
+        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
     }
 
-    override fun disableButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(resId: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showToast(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
     }
 }

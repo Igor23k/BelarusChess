@@ -13,6 +13,4 @@ public interface CallBackGame extends CallBack {
     void onResponse(GameDTO gameDTO);
 
     void onResponse(List<GameDTO> list);
-
-    void onFailure(Throwable t);
 }

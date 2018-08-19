@@ -12,6 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static bobrchess.of.by.belaruschess.util.Constants.ERROR_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.SERVER_UNAVAILABLE;
 import static bobrchess.of.by.belaruschess.util.Constants.UNSUCCESSFUL_REQUEST;
 
 /**
@@ -30,16 +31,16 @@ public class UserConnection {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack.onResponse(response.body());
                     } else {
-                        callBack.onConnectionError(new Throwable(response.raw().header(ERROR_PARAMETER)));
+                        callBack.onFailure(new Throwable(response.raw().header(ERROR_PARAMETER)));
                     }
                 } else {
-                    callBack.onConnectionError(new Throwable());
+                    callBack.onFailure(new Throwable());
                 }
             }
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                callBack.onConnectionError(t);
+                callBack.onFailure(new Throwable(SERVER_UNAVAILABLE));
             }
         });
     }
@@ -52,16 +53,16 @@ public class UserConnection {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack.onResponse(response.body());
                     } else {
-                        callBack.onConnectionError(new Throwable(response.raw().header(ERROR_PARAMETER)));
+                        callBack.onFailure(new Throwable(response.raw().header(ERROR_PARAMETER)));
                     }
                 } else {
-                    callBack.onConnectionError(new Throwable(UNSUCCESSFUL_REQUEST));
+                    callBack.onFailure(new Throwable(UNSUCCESSFUL_REQUEST));
                 }
             }
 
             @Override
             public void onFailure(Call<List<UserDTO>> call, Throwable t) {
-                callBack.onConnectionError(t);
+                callBack.onFailure(t);
             }
         });
     }

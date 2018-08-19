@@ -13,6 +13,4 @@ public interface CallBackUser extends CallBack {
     void onResponse(UserDTO userDTO);
 
     void onResponse(List<UserDTO> usersDTO);
-
-    void onConnectionError(Throwable t);
 }

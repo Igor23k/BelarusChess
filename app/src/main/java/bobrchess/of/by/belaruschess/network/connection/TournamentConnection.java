@@ -13,6 +13,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static bobrchess.of.by.belaruschess.util.Constants.ERROR_PARAMETER;
+import static bobrchess.of.by.belaruschess.util.Constants.SERVER_UNAVAILABLE;
 import static bobrchess.of.by.belaruschess.util.Constants.UNSUCCESSFUL_REQUEST;
 
 /**
@@ -28,9 +29,13 @@ public class TournamentConnection {
             @Override
             public void onResponse(Call<TournamentDTO> call, Response<TournamentDTO> response) {
                 if (response.isSuccessful()) {
-                    callBack.onResponse(response.body());
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack.onResponse(response.body());
+                    } else {
+                        callBack.onFailure(new Throwable(response.raw().header(ERROR_PARAMETER)));
+                    }
                 } else {
-                    //тут нужно блок экрана снимать и тд
+                    callBack.onFailure(new Throwable(UNSUCCESSFUL_REQUEST));
                 }
             }
 
@@ -54,7 +59,7 @@ public class TournamentConnection {
 
             @Override
             public void onFailure(Call<List<TournamentDTO>> call, Throwable t) {
-                callBack.onFailure(t);// в других onConnectionFaiture -> посмотреть и оставить что то одно
+                callBack.onFailure(new Throwable(SERVER_UNAVAILABLE));
             }
         });
     }
@@ -76,7 +81,7 @@ public class TournamentConnection {
 
             @Override
             public void onFailure(Call<List<GameDTO>> call, Throwable t) {
-                callBack.onFailure(t);
+                callBack.onFailure(new Throwable(SERVER_UNAVAILABLE));
             }
         });
     }

@@ -5,7 +5,6 @@ import bobrchess.of.by.belaruschess.exception.IncorrectTournamentNameException;
 import bobrchess.of.by.belaruschess.network.connection.AddTournamentConnection;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddTournament;
-import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
 
 import static bobrchess.of.by.belaruschess.util.Constants.INCORRECT_TOURNAMENT_NAME;
@@ -28,34 +27,33 @@ public class AddTournamentPresenterImpl implements CallBackAddTournament, AddTou
     @Override
     public void onResponse(TournamentDTO tournamentDTO) {
         view.hideProgress();
-        view.onAddTournamentSuccess(tournamentDTO);
+        view.enableButton();
+        view.startActivity(tournamentDTO);
     }
 
     @Override
-    public void onAddTournamentFailure(Throwable t) {
+    public void onFailure(Throwable t) {
         view.hideProgress();
+        view.enableButton();
         view.showToast(t.getLocalizedMessage());
-        view.onAddTournamentFailed();
-    }
-
-    @Override
-    public void onConnectionError(Throwable t) {
-        view.hideProgress();
-        view.showToast(t.getMessage());
     }
 
     @Override
     public void addTournament() {
-        view.disableButton();
-        TournamentDTO tournamentDTO = view.getTournamentData();
-        try {
-            validateTournamentData(tournamentDTO);
-            view.enableButton();
-            view.showProgress();
-            addTournamentConnection.addTournament(tournamentDTO);
-        } catch (IncorrectTournamentNameException e) {
-            view.showIncorrectTournamentNameText();
-            view.onAddTournamentFailed();
+        if(viewIsReady) {
+            view.disableButton();
+            TournamentDTO tournamentDTO = view.getTournamentData();
+            try {
+                validateTournamentData(tournamentDTO);
+                view.disableButton();
+                view.showProgress();
+                addTournamentConnection.addTournament(tournamentDTO);
+
+            } catch (IncorrectTournamentNameException e) {
+                view.showIncorrectTournamentNameText();
+                view.hideProgress();
+                view.enableButton();
+            }
         }
     }
 

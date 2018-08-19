@@ -18,7 +18,9 @@ public class Constants {
     }
 
     public static final String UNSUCCESSFUL_REQUEST = "Unsuccessful request!";
+    public static final String SERVER_UNAVAILABLE = "Server is unavailable!";
     public static final String ERROR_PARAMETER = "Error";
+    //public static final String PLEASE_WAIT = "Please, wait ...";
     public static final String EMPTY_STRING = "";
     public static final String INCORRECT_TOURNAMENT_NAME = "Incorrect tournament name!";
     public static final String INCORRECT_EMAIL = "Incorrect email!";
@@ -39,4 +41,6 @@ public class Constants {
     public static final String USER_PATRONYMIC_PARAMETER = "patronymic";
     public static final String USER_BIRTHDAY_PARAMETER = "birthday";
 
+    public static final String DATE_PICKER_DIALOG = "Datepickerdialog";
+    public static final String TIME_PICKER_DIALOG = "Timepickerdialog";
 }
