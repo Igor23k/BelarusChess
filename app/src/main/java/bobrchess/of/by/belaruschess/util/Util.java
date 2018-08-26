@@ -4,9 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
@@ -26,13 +32,13 @@ public class Util {
     public static final int AUTHORIZATION_REQUEST = 4;
     public static final int ADD_TOURNAMENT_REQUEST = 5;
     public static final int REGISTRATION_REQUEST = 6;
-    public static final int  TOURNAMENT_REQUEST = 7;
+    public static final int TOURNAMENT_REQUEST = 7;
 
     public static String getEncodedPassword(String password) {
         return new String(Hex.encodeHex(DigestUtils.md5(password)));
     }
 
-    public static TournamentDTO getTestTournament(){
+    public static TournamentDTO getTestTournament() {
         TournamentDTO tournamentDTO = new TournamentDTO();
         tournamentDTO.setPlace(getTestPlace());
         tournamentDTO.setReferee(getTestUser());
@@ -61,21 +67,21 @@ public class Util {
         return placeDTO;
     }
 
-    public static CountryDTO getTestCountry(){
+    public static CountryDTO getTestCountry() {
         CountryDTO countryDTO = new CountryDTO();
         countryDTO.setName("Франция");
         countryDTO.setAbbreviation("FRA");
         return countryDTO;
     }
 
-    public static CountryDTO getTestCountry2(){
+    public static CountryDTO getTestCountry2() {
         CountryDTO countryDTO = new CountryDTO();
         countryDTO.setName("Франциq");
         countryDTO.setAbbreviation("FRS");
         return countryDTO;
     }
 
-    public static RankDTO getTestRank(){
+    public static RankDTO getTestRank() {
         RankDTO rankDTO = new RankDTO();
         rankDTO.setAbbreviation("GM");
         rankDTO.setName("Gross");
@@ -137,9 +143,11 @@ public class Util {
             e.printStackTrace();
         }
     }
+
     public static void showSimpleProgressDialog(Context context) {
         showSimpleProgressDialog(context, null, "Loading...", false);
     }
+
     public static void removeSimpleProgressDialog() {
         try {
             if (mProgressDialog != null) {
@@ -175,5 +183,39 @@ public class Util {
             }
         }
         return false;
+    }
+
+    public static List<String> getUsersNames(List<UserDTO> users) {
+        List<String> usersNames = new ArrayList<>();
+        UserDTO user;
+        for (int i = 0; i < users.size(); i++) {
+            user = users.get(i);
+            usersNames.add(user.getName() + " " + user.getSurname() + " " + user.getPatronymic() + " (" + user.getRank().getAbbreviation() + ")");
+        }
+        return usersNames;
+    }
+
+    public static List<String> getRanksNames(List<RankDTO> ranks) {
+        List<String> usersNames = new ArrayList<>();
+        for (int i = 0; i < ranks.size(); i++) {
+            usersNames.add(ranks.get(i).getName());
+        }
+        return usersNames;
+    }
+
+    public static List<String> getCountriesNames(List<CountryDTO> countries) {
+        List<String> usersNames = new ArrayList<>();
+        for (int i = 0; i < countries.size(); i++) {
+            usersNames.add(countries.get(i).getName());
+        }
+        return usersNames;
+    }
+
+    public static List<String> getPlacesNames(List<PlaceDTO> places) {
+        List<String> usersNames = new ArrayList<>();
+        for (int i = 0; i < places.size(); i++) {
+            usersNames.add(places.get(i).getName());
+        }
+        return usersNames;
     }
 }

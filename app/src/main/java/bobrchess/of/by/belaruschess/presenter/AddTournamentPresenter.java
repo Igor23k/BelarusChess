@@ -8,6 +8,9 @@ import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
 
 public interface AddTournamentPresenter extends BasePresenter {
     void addTournament();
-
+    void loadPlaces();
+    void loadReferees();
     void attachView(AddTournamentContractView activity);
+    void setSelectedPlaceIndex(Integer selectedPlaceIndex);
+    void setSelectedRefereeIndex(Integer selectedRefereeIndex);
 }

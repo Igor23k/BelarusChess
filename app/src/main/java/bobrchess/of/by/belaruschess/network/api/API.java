@@ -6,6 +6,7 @@ import java.util.List;
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
 import bobrchess.of.by.belaruschess.dto.GameDTO;
 import bobrchess.of.by.belaruschess.dto.MatchDTO;
+import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.RankDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentTeamDTO;
@@ -24,6 +25,16 @@ import retrofit2.http.Query;
  */
 
 public interface API {
+    //Place
+    @GET("/place/{id}")
+    Call<PlaceDTO> getPlace(@Path("id") int id);
+
+    @GET("/places")
+    Call<List<PlaceDTO>> getPlaces();
+
+    @POST("/place")
+    Call<PlaceDTO> addPlace(@Body PlaceDTO placeDTO);
+
     //Rank
     @GET("/rank/{id}")
     Call<RankDTO> getRank(@Path("id") int id);
@@ -32,7 +43,6 @@ public interface API {
     Call<List<RankDTO>> getRanks();
 
     @POST("/rank")
-    @FormUrlEncoded
     Call<RankDTO> addRank(@Body RankDTO rankDTO);
 
     //Country
@@ -52,6 +62,9 @@ public interface API {
 
     @GET("/users")
     Call<List<UserDTO>> getUsers(@Query("count") int count);
+
+    @GET("/coaches")
+    Call<List<UserDTO>> getCoaches();
 
     @GET("/searchUsers")
     Call<List<UserDTO>> searchUsers(@Query("text") String text);

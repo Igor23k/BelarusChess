@@ -26,6 +26,10 @@ class UserDTO : Serializable {
 
     var password: String? = null
 
+    var beCoach: Boolean = false
+
+    var beOrganizer: Boolean = false
+
     var rank: RankDTO? = null
 
     var country: CountryDTO? = null
@@ -34,16 +38,18 @@ class UserDTO : Serializable {
 
     var coach: UserDTO? = null
 
-    constructor(id: Long?, name: String, surname: String, patronymic: String, birthdate: String, email: String, status: String, phoneNumber: String, rating: Int?, password: String, rank: RankDTO, country: CountryDTO, coach: UserDTO) {
+    constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?, email: String?, status: String?, phoneNumber: String?, password: String?, beCoach: Boolean, beOrganizer: Boolean, rank: RankDTO?, country: CountryDTO?, rating: Int?, coach: UserDTO?) {
         this.id = id
         this.name = name
         this.surname = surname
         this.patronymic = patronymic
-        this.birthday = birthdate
+        this.birthday = birthday
         this.email = email
         this.status = status
         this.phoneNumber = phoneNumber
         this.password = password
+        this.beCoach = beCoach
+        this.beOrganizer = beOrganizer
         this.rank = rank
         this.country = country
         this.rating = rating

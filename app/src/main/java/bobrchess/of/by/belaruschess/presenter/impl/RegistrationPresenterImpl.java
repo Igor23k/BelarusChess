@@ -1,5 +1,12 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import bobrchess.of.by.belaruschess.dto.CountryDTO;
+import bobrchess.of.by.belaruschess.dto.PlaceDTO;
+import bobrchess.of.by.belaruschess.dto.RankDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectEmailException;
 import bobrchess.of.by.belaruschess.exception.IncorrectPasswordException;
@@ -18,6 +25,15 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
     private RegistrationContractView view;
     private RegistrationConnection userConnection;
     private Boolean viewIsReady = false;
+    private List<RankDTO> ranks;
+    private List<CountryDTO> countries;
+    private List<UserDTO> coaches;
+    private Integer selectedRankIndex;
+    private Integer selectedCountryIndex;
+    private Integer selectedCoachIndex;
+    private Map<Integer, RankDTO> ranksIndexes = new HashMap<>();
+    private Map<Integer, CountryDTO> countriesIndexes = new HashMap<>();
+    private Map<Integer, UserDTO> coachesIndexes = new HashMap<>();
 
     public RegistrationPresenterImpl() {
         userConnection = new RegistrationConnection();
@@ -32,6 +48,33 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
     }
 
     @Override
+    public void onCoachResponse(List<UserDTO> coaches) {
+        this.coaches = coaches;
+        saveCoachesIndexes(coaches);
+        view.hideProgress();
+        view.enableButton();
+        view.setCoachSpinnerAdapter(Util.getUsersNames(coaches));
+    }
+
+    @Override
+    public void onRankResponse(List<RankDTO> ranks) {
+        this.ranks = ranks;
+        saveRanksIndexes(ranks);
+        view.hideProgress();
+        view.enableButton();
+        view.setRankSpinnerAdapter(Util.getRanksNames(ranks));
+    }
+
+    @Override
+    public void onCountryResponse(List<CountryDTO> countries) {
+        this.countries = countries;
+        saveCountriesIndexes(countries);
+        view.hideProgress();
+        view.enableButton();
+        view.setCountrySpinnerAdapter(Util.getCountriesNames(countries));
+    }
+
+    @Override
     public void onFailure(Throwable t) {
         view.hideProgress();
         view.enableButton();
@@ -40,9 +83,15 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
 
     @Override
     public void registration() {
-        if(viewIsReady) {
+        if (viewIsReady) {
             view.disableButton();
             UserDTO userDTO = view.getUserData();
+            userDTO.setRank(ranksIndexes.get(selectedRankIndex));
+            userDTO.setCountry(countriesIndexes.get(selectedCountryIndex));
+            userDTO.setCoach(coachesIndexes.get(selectedCoachIndex));
+            userDTO.setBirthday("ДОБАВИТЬ"); // bug добавить выбор даты рождения и 2 строки ниже тоже
+            userDTO.setBeCoach(true);
+            userDTO.setBeOrganizer(true);
             try {
                 validateUserData(userDTO);
                 userDTO.setPassword(Util.getEncodedPassword(userDTO.getPassword()));
@@ -58,6 +107,21 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
                 view.enableButton();
             }
         }
+    }
+
+    @Override
+    public void loadCoaches() {
+        userConnection.getCoaches();
+    }
+
+    @Override
+    public void loadRanks() {
+        userConnection.getRanks();
+    }
+
+    @Override
+    public void loadCountries() {
+        userConnection.getCountries();
     }
 
     private boolean validateUserData(UserDTO userDTO) throws IncorrectEmailException, IncorrectPasswordException {
@@ -89,5 +153,35 @@ public class RegistrationPresenterImpl implements CallBackRegistration, Registra
 
     public void viewIsReady() {
         viewIsReady = true;
+    }
+
+    public void setSelectedRankIndex(Integer selectedRankIndex) {
+        this.selectedRankIndex = selectedRankIndex;
+    }
+
+    public void setSelectedCountryIndex(Integer selectedCountryIndex) {
+        this.selectedCountryIndex = selectedCountryIndex;
+    }
+
+    public void setSelectedCoachIndex(Integer selectedCoachIndex) {
+        this.selectedCoachIndex = selectedCoachIndex;
+    }
+
+    private void saveRanksIndexes(List<RankDTO> ranks) {
+        for (int i = 0; i < ranks.size(); i++) {
+            ranksIndexes.put(i,ranks.get(i));
+        }
+    }
+
+    private void saveCountriesIndexes(List<CountryDTO> countries) {
+        for (int i = 0; i < countries.size(); i++) {
+            countriesIndexes.put(i,countries.get(i));
+        }
+    }
+
+    private void saveCoachesIndexes(List<UserDTO> coaches) {
+        for (int i = 0; i < coaches.size(); i++) {
+            coachesIndexes.put(i,coaches.get(i));
+        }
     }
 }

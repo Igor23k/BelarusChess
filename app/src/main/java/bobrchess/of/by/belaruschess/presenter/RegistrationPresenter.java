@@ -8,6 +8,11 @@ import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
 
 public interface RegistrationPresenter extends BasePresenter{
     void registration();
-
+    void loadCoaches();
+    void loadRanks();
+    void loadCountries();
     void attachView(RegistrationContractView activity);
+    void setSelectedRankIndex(Integer selectedRankIndex);
+    void setSelectedCountryIndex(Integer selectedCountryIndex);
+    void setSelectedCoachIndex(Integer selectedCoachIndex);
 }

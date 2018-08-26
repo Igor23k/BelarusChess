@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
@@ -19,9 +22,12 @@ import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.borax12.materialdaterangepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
+import java.util.List;
 
 import bobrchess.of.by.belaruschess.R;
+import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
+import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
@@ -65,10 +71,12 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
     private ProgressDialog progressDialog;
 
     private AddTournamentPresenter presenter;
-
-    String startDate;
-
-    String finishDate;
+    private PlaceDTO place;
+    private UserDTO referee;
+    private String startDate;
+    private String finishDate;
+    private Spinner refereeSpinner;
+    private Spinner placeSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,9 +87,16 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
         toolbar = findViewById(R.id.toolbar);
         presenter = new AddTournamentPresenterImpl();
         presenter.attachView(this);
-        presenter.viewIsReady();
+        presenter.viewIsReady();// bug позже видимо нужно это делать
+        refereeSpinner = findViewById(R.id.refereeSpinner);
+        refereeSpinner.setOnItemSelectedListener(new RefereeItemSelectedListener());
+        placeSpinner = findViewById(R.id.countrySpinner);
+        placeSpinner.setOnItemSelectedListener(new PlaceItemSelectedListener());
         setSupportActionBar(toolbar);
         initButtonsListeners();
+
+        presenter.loadPlaces();
+        presenter.loadReferees();
 
         CheckBox team_type = findViewById(R.id.team_type_checkbox);
         team_type.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -224,12 +239,23 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
             tournamentData.setCountPlayersInTeam(1);
         }
         tournamentData.setCountPlayersInTeam(1);
-
-        tournamentData.setReferee(getTestUser());
-        tournamentData.setPlace(getTestPlace());
         tournamentData.setStartDate(startDate);
         tournamentData.setFinishDate(finishDate);
         return tournamentData;
+    }
+
+    @Override
+    public void setRefereeSpinnerAdapter(List<String> refereeNames) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, refereeNames);
+        refereeSpinner.setAdapter(adapter);
+    }
+
+    @Override
+    public void setCountrySpinnerAdapter(List<String> placesNames) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, placesNames);
+        placeSpinner.setAdapter(adapter);
     }
 
     @Override
@@ -251,5 +277,35 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
                           int minuteEnd) {
         startDate += " " + hourOfDay + ":" + minute + ":00";
         finishDate += " " + hourOfDayEnd + ":" + minuteEnd + ":00";
+    }
+
+    public AddTournamentPresenter getPresenter() {
+        return presenter;
+    }
+
+    public void setReferee(UserDTO referee) {
+        this.referee = referee;
+    }
+
+    public class PlaceItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            AddTournamentActivity.this.getPresenter().setSelectedPlaceIndex(position);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg) {
+
+        }
+    }
+
+    public class RefereeItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            AddTournamentActivity.this.getPresenter().setSelectedRefereeIndex(position);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg) {
+
+        }
     }
 }

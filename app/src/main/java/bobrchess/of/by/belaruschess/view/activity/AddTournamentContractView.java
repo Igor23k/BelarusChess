@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.view.activity;
 
+import java.util.List;
+
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 
 /**
@@ -10,5 +12,7 @@ public interface AddTournamentContractView extends BaseContractView, ButtonContr
     void showIncorrectTournamentNameText();
     void addTournament();
     TournamentDTO getTournamentData();
+    void setRefereeSpinnerAdapter(List<String> refereeNames);
+    void setCountrySpinnerAdapter(List<String> countryNames);
     void startActivity(TournamentDTO tournamentDTO);
 }

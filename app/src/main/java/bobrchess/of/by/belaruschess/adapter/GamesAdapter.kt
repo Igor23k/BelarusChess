@@ -11,9 +11,6 @@ import bobrchess.of.by.belaruschess.dto.GameDTO
 import com.squareup.picasso.Picasso
 import java.util.*
 
-
-// Унаследовали наш адаптер от RecyclerView.Adapter
-// Здесь же указали наш собственный ViewHolder, который предоставит нам доступ к View-компонентам
 class GamesAdapter(onGameClickListener: OnGameClickListener) : RecyclerView.Adapter<GamesAdapter.GameViewHolder>() {
 
     private val gamesList = ArrayList<GameDTO>()

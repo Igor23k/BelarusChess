@@ -1,15 +1,21 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
@@ -60,6 +66,9 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
     private RegistrationPresenter presenter;
 
+    private Spinner coachSpinner;
+    private Spinner rankSpinner;
+    private Spinner countrySpinner;
 
     /*private ParseContent parseContent;
     private Button btn;
@@ -77,7 +86,18 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         presenter.attachView(this);
         presenter.viewIsReady();
         initButtonsListeners();
-        presenter.viewIsReady();
+        coachSpinner = findViewById(R.id.coachSpinner);
+        coachSpinner.setOnItemSelectedListener(new CoachItemSelectedListener());
+        rankSpinner = findViewById(R.id.rankSpinner);
+        rankSpinner.setOnItemSelectedListener(new RankItemSelectedListener());
+        countrySpinner = findViewById(R.id.countrySpinner);
+        countrySpinner.setOnItemSelectedListener(new CountryItemSelectedListener());
+        presenter.loadCoaches();
+        presenter.loadRanks();
+        presenter.loadCountries();
+
+        presenter.viewIsReady();// проверить, походу нужно это делать когда coachSpinner загрузится
+
 
         /*parseContent = new ParseContent(this);
         aQuery = new AQuery(this);
@@ -293,17 +313,65 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         userData.setSurname(surnameText.getText().toString());
         userData.setPatronymic(patronymicText.getText().toString());
         userData.setEmail(emailText.getText().toString());
-        userData.setStatus("My best status");
         userData.setPhoneNumber("29292834");
         userData.setPassword(passwordText.getText().toString());
         userData.setRating(Integer.valueOf(ratingText.getText().toString()));// bug падает если ввести не число
-        userData.setCountry(Util.getTestCountry());
-        userData.setCoach(null);
-        userData.setRank(Util.getTestRank());
         //  userData.setImage(getUploadedImage());
-      //  return userData;
-        return Util.getTestUser();
+        return userData;
     }
 
+    public void setCoachSpinnerAdapter(List<String> userNames) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, userNames);
+        coachSpinner.setAdapter(adapter);
+    }
 
+    public void setRankSpinnerAdapter(List<String> ranksNames) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, ranksNames);
+        rankSpinner.setAdapter(adapter);
+    }
+
+    public void setCountrySpinnerAdapter(List<String> countriesNames) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, countriesNames);
+        countrySpinner.setAdapter(adapter);
+    }
+
+    public class CoachItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            RegistrationActivity.this.getPresenter().setSelectedCoachIndex(position);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg) {
+
+        }
+    }
+
+    public class RankItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            RegistrationActivity.this.getPresenter().setSelectedRankIndex(position);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg) {
+
+        }
+    }
+
+    public class CountryItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            RegistrationActivity.this.getPresenter().setSelectedCountryIndex(position);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg) {
+
+        }
+    }
+
+    public RegistrationPresenter getPresenter() {
+        return presenter;
+    }
 }

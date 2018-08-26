@@ -87,6 +87,26 @@
                 android:hint="@string/email" />
         </android.support.design.widget.TextInputLayout>
 
+        <Spinner
+            android:id="@+id/coachSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#d11f08"
+            android:padding="5dp" />
+
+        <Spinner
+            android:id="@+id/rankSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#d11f08"
+            android:padding="5dp" />
+
+        <Spinner
+            android:id="@+id/countrySpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#d11f08"
+            android:padding="5dp" />
      <!--   <Button
             android:id="@+id/tournamentDate"
             android:layout_width="wrap_content"
@@ -152,5 +172,31 @@
             android:gravity="center"
             android:textSize="16sp"/>
 
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Select Image and upload to server" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Below image is fetched from server"
+            android:layout_marginTop="5dp"
+            android:textSize="23sp"
+            android:gravity="center"
+            android:textColor="#000"/>
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/iv"/>-->
     </LinearLayout>
 </ScrollView>
