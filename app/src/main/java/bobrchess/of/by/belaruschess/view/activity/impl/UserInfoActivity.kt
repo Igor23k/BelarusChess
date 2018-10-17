@@ -137,10 +137,10 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status
         /* user.country?.let {
-             locationTextView!!.text = user.country!!.name//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
+             locationTextView!!.text = user.country!!.gameRecord//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
          }
          user.coach?.let {
-             coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.name, user.coach!!.surname)
+             coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.gameRecord, user.coach!!.surname)
          }*/
         ratingTextView!!.text = user.rating.toString()
         friendsCountTextView!!.text = "34"

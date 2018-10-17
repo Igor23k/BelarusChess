@@ -1,19 +1,30 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
-import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.AuthorizationPresenterImpl;
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView;
 import butterknife.BindView;
@@ -22,8 +33,15 @@ import butterknife.ButterKnife;
 import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
 import static bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER;
 import static bobrchess.of.by.belaruschess.util.Util.AUTHORIZATION_REQUEST;
+import static bobrchess.of.by.belaruschess.util.Util.TYPE_NOT_CONNECTED;
+import static bobrchess.of.by.belaruschess.util.Util.getConnectivityStatus;
 
-public class AuthorizationActivity extends AppCompatActivity implements AuthorizationContractView {
+public class AuthorizationActivity extends MvpAppCompatActivity implements AuthorizationContractView {
+
+    private static Snackbar snackbar;
+
+    @InjectPresenter
+    AuthorizationPresenterImpl presenter;
 
     @BindView(R.id.e_email_input)
     EditText emailText;
@@ -37,17 +55,16 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
     @BindView(R.id.t_link_registration)
     TextView registrationLink;
 
+    private ScrollView view;
+    private Integer connectivityStatus;
     private ProgressDialog progressDialog;
-
-    private AuthorizationPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorization);
         ButterKnife.bind(this);
-        presenter = new AuthorizationPresenterImpl();
-        presenter.attachView(this);
+        presenter.attachViewComponent(findViewById(R.id.scrollViewRegistration));
         presenter.viewIsReady();
         initButtonsListeners();
         presenter.viewIsReady();
@@ -60,7 +77,7 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
                 final ProgressDialog progressDialog = new ProgressDialog(AuthorizationActivity.this,
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
-                presenter.authorization();
+                authorization();
             }
         });
 
@@ -75,6 +92,46 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+    }
+
+    public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            connectivityStatus = getConnectivityStatus(context);
+            presenter.setConnectivityStatus(connectivityStatus);
+        }
+    };
+
+    private void registerInternetCheckReceiver() {
+        IntentFilter internetFilter = new IntentFilter();
+        internetFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(broadcastReceiver, internetFilter);//bug unregister тоже где то надо делать
+    }
+
+    @Override
+    public void showNoConnectionAlertDialog(@StringRes @NonNull Integer title, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText, @NonNull Boolean cancelable) {
+        final AlertDialog builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(cancelable)
+                .setPositiveButton(buttonText, null)
+                //  Log.d("TAG", "Show Dialog: " + "Message");// bug оформить норм
+                .create();
+        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (connectivityStatus != TYPE_NOT_CONNECTED) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -98,14 +155,14 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
     }
 
     @Override
-    public void startActivity(UserDTO userDTO) {
+    public void startActivity(@NonNull UserDTO userDTO) {
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
         putUserData(intent, userDTO);
         startActivity(intent);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    private void putUserData(Intent intent, UserDTO userDTO) {
+    private void putUserData(Intent intent, @NonNull UserDTO userDTO) {
         intent.putExtra(USER_PARAMETER, userDTO);
     }
 
@@ -120,14 +177,14 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
     }
 
     @Override
-    public void showToast(Integer resId) {
+    public void showToast(@StringRes @NonNull Integer resId) {
         Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
     @Override
-    public void showToast(String message) {
+    public void showToast(@NonNull String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
@@ -155,11 +212,56 @@ public class AuthorizationActivity extends AppCompatActivity implements Authoriz
         loginButton.setEnabled(false);
     }
 
-    @Override
     public UserDTO getUserData() {
         UserDTO userData = new UserDTO();
         userData.setEmail(emailText.getText().toString());
         userData.setPassword(passwordText.getText().toString());
         return userData;
     }
+
+    @Override
+    public void showSnackBar(@NonNull View componentView, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText) {
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(buttonText, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                        authorization();
+                    }
+                });
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+    @Override
+    public void showSnackBar(@NonNull View componentView, @NonNull String message, @StringRes @NonNull Integer buttonText) {
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(buttonText, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                        authorization();
+                    }
+                });
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+    @Override
+    public void authorization() {
+        try {
+            presenter.authorization(getUserData());
+        } catch (NumberFormatException e) {
+            showToast(R.string.incorrect_rating);
+        }
+    }
+
 }

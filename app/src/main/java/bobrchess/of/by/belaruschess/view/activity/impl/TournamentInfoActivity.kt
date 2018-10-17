@@ -128,8 +128,8 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
         Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
-       // judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname//проверку и локэйшн тоже
-       // locationTextView!!.text = tournament.place!!.country!!.name + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
+       // judgeTextView!!.text = tournament.referee!!.gameRecord + " " + tournament.referee!!.surname//проверку и локэйшн тоже
+       // locationTextView!!.text = tournament.place!!.country!!.gameRecord + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
     }
 
     private fun getTournamentData(intent: Intent?): TournamentDTO {

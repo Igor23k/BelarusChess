@@ -31,7 +31,6 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     @Override
     public void onResponse(List list) {
-        // view.hideProgress(); bug це шо тут вообще такое?!
         if( list.get(0).getClass().equals(GameDTO.class) ) {
             view.showGames(list);
         }

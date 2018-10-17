@@ -78,7 +78,7 @@ class TournamentTableAdapter(onUserClickListener: OnUserClickListener) : Recycle
             user_rank_and_rating_text_view.text = user.rank!!.name + "    " + user.rating
             if (count > 4 && count < 8) {
                 temp = 0.5
-            } else if (count > 8){
+            } else if (count > 8) {
                 temp = 1.0
             }//костыль придуманный
             Thread.sleep(100)

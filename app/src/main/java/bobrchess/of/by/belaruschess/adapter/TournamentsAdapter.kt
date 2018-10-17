@@ -8,15 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
 import com.squareup.picasso.Picasso
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-// Унаследовали наш адаптер от RecyclerView.Adapter
-// Здесь же указали наш собственный ViewHolder, который предоставит нам доступ к View-компонентам
 class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) : RecyclerView.Adapter<TournamentsAdapter.TournamentViewHolder>() {
 
     private val tournamentList = ArrayList<TournamentDTO>()
@@ -51,10 +47,7 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
         notifyDataSetChanged()
     }
 
-    // Предоставляет прямую ссылку на каждый View-компонент
-    // Используется для кэширования View-компонентов и последующего быстрого доступа к ним
-    inner class TournamentViewHolder// Мы также создали конструктор, который принимает на вход View-компонент строкИ
-    // и ищет все дочерние компоненты
+    inner class TournamentViewHolder
     (itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Ваш ViewHolder должен содержать переменные для всех
         // View-компонентов, которым вы хотите задавать какие-либо свойства
@@ -93,19 +86,19 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
             startDateTextView.text = "Oct 21"
             finishDateTextView.text = "Oct 26"
 
-         //   Picasso.with(itemView.context).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentSmallImageView)
+            //   Picasso.with(itemView.context).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentSmallImageView)
 
-          //  val tweetPhotoUrl = "https://www.w3schools.com/w3css/img_fjords.jpg"
-           // Picasso.with(itemView.context).load(tweetPhotoUrl).into(tournamentImageView)
+            //  val tweetPhotoUrl = "https://www.w3schools.com/w3css/img_fjords.jpg"
+            // Picasso.with(itemView.context).load(tweetPhotoUrl).into(tournamentImageView)
 
             val avatarNumber = (0..6).random()
             Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
             Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentSmallImageView)
 
-          //  tournamentImageView.visibility = if (tweetPhotoUrl != null) View.VISIBLE else View.GONE  что это и нужно ли?
+            //  tournamentImageView.visibility = if (tweetPhotoUrl != null) View.VISIBLE else View.GONE  что это и нужно ли?
         }
 
-        private fun initAvatarList(){
+        private fun initAvatarList() {
             imageList.add("https://www.w3schools.com/w3css/img_fjords.jpg")
             imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
             imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
@@ -116,7 +109,7 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
         }
 
         fun ClosedRange<Int>.random() =
-                Random().nextInt(endInclusive - start) +  start
+                Random().nextInt(endInclusive - start) + start
 
         private fun getFormattedDate(rawDate: String): String {
             val utcFormat = SimpleDateFormat(TWITTER_RESPONSE_FORMAT, Locale.ROOT)

@@ -1,20 +1,34 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.borax12.materialdaterangepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.R;
@@ -26,11 +40,19 @@ import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static bobrchess.of.by.belaruschess.util.Constants.DATE_PICKER_DIALOG;
 import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
 import static bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER;
 import static bobrchess.of.by.belaruschess.util.Util.REGISTRATION_REQUEST;
+import static bobrchess.of.by.belaruschess.util.Util.TYPE_NOT_CONNECTED;
+import static bobrchess.of.by.belaruschess.util.Util.getConnectivityStatus;
 
-public class RegistrationActivity extends AppCompatActivity implements RegistrationContractView {
+public class RegistrationActivity extends MvpAppCompatActivity implements RegistrationContractView, DatePickerDialog.OnDateSetListener {
+
+    private static Snackbar snackbar;
+
+    @InjectPresenter
+    RegistrationPresenterImpl presenter;
 
     @BindView(R.id.tournament_name_input)
     EditText nameText;
@@ -62,58 +84,41 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     @BindView(R.id.t_link_authorization)
     TextView authorizationLink;
 
+    @BindView(R.id.calendar_birthday_image)
+    ImageView calendarImage;
+
     private ProgressDialog progressDialog;
-
-    private RegistrationPresenter presenter;
-
+    private ScrollView view;
+    private Spinner genderSpinner;
     private Spinner coachSpinner;
     private Spinner rankSpinner;
     private Spinner countrySpinner;
 
-    /*private ParseContent parseContent;
-    private Button btn;
-    private ImageView imageview;
-    private static final String IMAGE_DIRECTORY = "/demonuts_upload_gallery";
-    private final int GALLERY = 2;
-    private AQuery aQuery;*/
+    private String birthday;
+
+    private Integer connectivityStatus;
+
+    // TODO https://demonuts.com/upload-image-from-gallery/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
-        presenter = new RegistrationPresenterImpl();
-        presenter.attachView(this);
-        presenter.viewIsReady();
+        presenter = new RegistrationPresenterImpl(this);
+        view = findViewById(R.id.scrollViewRegistration);
+        presenter.attachViewComponent(findViewById(R.id.scrollViewRegistration));
         initButtonsListeners();
+        registerInternetCheckReceiver();
+        genderSpinner = findViewById(R.id.genderSpinner);
+        genderSpinner.setOnItemSelectedListener(new GenderItemSelectedListener());
+        setGenderSpinnerAdapter(Util.getGenders());
         coachSpinner = findViewById(R.id.coachSpinner);
         coachSpinner.setOnItemSelectedListener(new CoachItemSelectedListener());
         rankSpinner = findViewById(R.id.rankSpinner);
         rankSpinner.setOnItemSelectedListener(new RankItemSelectedListener());
         countrySpinner = findViewById(R.id.countrySpinner);
         countrySpinner.setOnItemSelectedListener(new CountryItemSelectedListener());
-        presenter.loadCoaches();
-        presenter.loadRanks();
-        presenter.loadCountries();
-
-        presenter.viewIsReady();// проверить, походу нужно это делать когда coachSpinner загрузится
-
-
-        /*parseContent = new ParseContent(this);
-        aQuery = new AQuery(this);
-
-        btn = (Button) findViewById(R.id.btn);
-        imageview = (ImageView) findViewById(R.id.iv);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(galleryIntent, GALLERY);
-            }
-        });*/
     }
 
     private void initButtonsListeners() {
@@ -138,105 +143,36 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+        calendarImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = com.borax12.materialdaterangepicker.date.DatePickerDialog.newInstance(
+                        RegistrationActivity.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.show(getFragmentManager(), DATE_PICKER_DIALOG);
+            }
+        });
+
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         presenter.detachView();
+        super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == this.RESULT_CANCELED) {
-            return;
-        } else if (requestCode == REGISTRATION_REQUEST) {
+        if (requestCode == REGISTRATION_REQUEST) {
             if (resultCode == RESULT_OK) {
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
                 this.finish();
             }
         }
-        /*if (requestCode == GALLERY) {
-            if (data != null) {
-                Uri contentURI = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
-                    uploadImageToServer(path);
-                    //Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    //imageview.setImageBitmap(bitmap);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(RegistrationActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
     }
-
-
-    // TODO https://demonuts.com/upload-image-from-gallery/
-
-    /*private void uploadImageToServer(final String path) throws IOException, JSONException {
-
-        if (!Util.isNetworkAvailable(RegistrationActivity.this)) {
-            Toast.makeText(RegistrationActivity.this, "Internet is required!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("url", "http://demonuts.com/Demonuts/JsonTest/Tennis/uploadfile.php");
-        map.put("filename", path);
-       // new MultiPartRequester(this, map, GALLERY, this);
-        new MultiPartRequester();
-        Util.showSimpleProgressDialog(this);
-    }
-
-    @Override
-    public void onTaskCompleted(String response, int serviceCode) {
-        Util.removeSimpleProgressDialog();
-        Log.d("res", response.toString());
-        switch (serviceCode) {
-
-            case GALLERY:
-                if (parseContent.isSuccess(response)) {
-                    String url = parseContent.getURL(response);
-                    aQuery.id(imageview).image(url);
-                }
-        }
-    }
-
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }*/
 
     @Override
     public void onBackPressed() {
@@ -244,26 +180,26 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     @Override
-    public void startActivity(UserDTO userDTO) {
+    public void startActivity(@NonNull UserDTO userDTO) {
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
         putUserData(intent, userDTO);
         startActivityForResult(intent, REGISTRATION_REQUEST);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    private void putUserData(Intent intent, UserDTO userDTO) {
+    private void putUserData(Intent intent, @NonNull UserDTO userDTO) {
         intent.putExtra(USER_PARAMETER, userDTO);
     }
 
     @Override
-    public void showToast(Integer resId) {
+    public void showToast(@StringRes @NonNull Integer resId) {
         Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
     @Override
-    public void showToast(String message) {
+    public void showToast(@NonNull String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
@@ -281,7 +217,11 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
     @Override
     public void registration() {
-        presenter.registration();
+        try {
+            presenter.registration(getUserData());
+        } catch (NumberFormatException e) {
+            showToast(R.string.incorrect_rating);
+        }
     }
 
     @Override
@@ -306,8 +246,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         registrationButton.setEnabled(false);
     }
 
-    @Override
-    public UserDTO getUserData() {
+    public UserDTO getUserData() throws NumberFormatException {
         UserDTO userData = new UserDTO();
         userData.setName(nameText.getText().toString());
         userData.setSurname(surnameText.getText().toString());
@@ -315,30 +254,67 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         userData.setEmail(emailText.getText().toString());
         userData.setPhoneNumber("29292834");
         userData.setPassword(passwordText.getText().toString());
-        userData.setRating(Integer.valueOf(ratingText.getText().toString()));// bug падает если ввести не число
+        userData.setRating(Integer.parseInt(ratingText.getText().toString()));
+        userData.setBirthday(birthday);
         //  userData.setImage(getUploadedImage());
         return userData;
     }
 
-    public void setCoachSpinnerAdapter(List<String> userNames) {
+
+    @Override
+    public void setGenderSpinnerAdapter(@NonNull List<String> genders) {
+        genders.add(0, getString(R.string.notSelected));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, userNames);
+                android.R.layout.simple_spinner_dropdown_item, genders);
+        genderSpinner.setAdapter(adapter);
+    }
+
+    @Override
+    public void setCoachSpinnerAdapter(@NonNull List<String> coachesNames) {
+        coachesNames.add(0, getString(R.string.notSelected));
+        coachesNames.add(1, getString(R.string.absence));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, coachesNames);
         coachSpinner.setAdapter(adapter);
     }
 
-    public void setRankSpinnerAdapter(List<String> ranksNames) {
+    @Override
+    public void setRankSpinnerAdapter(@NonNull List<String> ranksNames) {
+        ranksNames.add(0, getString(R.string.notSelected));
+        ranksNames.add(1, getString(R.string.absence));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, ranksNames);
         rankSpinner.setAdapter(adapter);
     }
 
-    public void setCountrySpinnerAdapter(List<String> countriesNames) {
+    @Override
+    public void setCountrySpinnerAdapter(@NonNull List<String> countriesNames) {
+        countriesNames.add(0, getString(R.string.notSelected));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, countriesNames);
         countrySpinner.setAdapter(adapter);
     }
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth,
+                          int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+        birthday = year + "-" + monthOfYear + "-" + dayOfMonth;
+    }
+
+    public class GenderItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            RegistrationActivity.this.getPresenter().setSelectedGenderIndex(position);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg) {
+
+        }
+    }
+
     public class CoachItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             RegistrationActivity.this.getPresenter().setSelectedCoachIndex(position);
         }
@@ -350,6 +326,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     public class RankItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             RegistrationActivity.this.getPresenter().setSelectedRankIndex(position);
         }
@@ -361,6 +338,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     public class CountryItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             RegistrationActivity.this.getPresenter().setSelectedCountryIndex(position);
         }
@@ -373,5 +351,116 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
     public RegistrationPresenter getPresenter() {
         return presenter;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            connectivityStatus = getConnectivityStatus(context);
+            presenter.setConnectivityStatus(connectivityStatus);
+        }
+    };
+
+    private void registerInternetCheckReceiver() {
+        IntentFilter internetFilter = new IntentFilter();
+        internetFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(broadcastReceiver, internetFilter);//bug unregister тоже где то надо делать
+    }
+
+    @Override
+    public void showNoConnectionAlertDialog(@StringRes @NonNull Integer title, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText, @NonNull Boolean cancelable) {
+        final AlertDialog builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(cancelable)
+                .setPositiveButton(buttonText, null)
+                //  Log.d("TAG", "Show Dialog: " + "Message");// bug оформить норм
+                .create();
+        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (connectivityStatus != TYPE_NOT_CONNECTED) {
+                            dialog.dismiss();
+                            loadSpinnersData();
+                        }
+                    }
+                });
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void showServerInUnavailableAlertDialog(@StringRes @NonNull Integer title, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText, @NonNull Boolean cancelable) {
+        final AlertDialog builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(cancelable)
+                .setPositiveButton(buttonText, null)
+                //  Log.d("TAG", "Show Dialog: " + "Message");// bug оформить норм
+                .create();
+        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        loadSpinnersData();
+                    }
+                });
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void showSnackBar(@NonNull View componentView, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText) {
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(buttonText, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                        registration();
+                    }
+                });
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+    @Override
+    public void showSnackBar(@NonNull View componentView, @NonNull String message, @StringRes @NonNull Integer buttonText) {
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(buttonText, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                        registration();
+                    }
+                });
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+    @Override
+    public void loadSpinnersData() {
+        presenter.loadSpinnersData();
     }
 }

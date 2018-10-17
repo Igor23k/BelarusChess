@@ -6,6 +6,5 @@ package bobrchess.of.by.belaruschess.presenter;
 
 public interface BasePresenter {
     void detachView();
-
     void viewIsReady();
 }

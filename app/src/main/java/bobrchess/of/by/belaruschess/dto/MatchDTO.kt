@@ -18,11 +18,11 @@ class MatchDTO : Serializable {
 
     var tournament: TournamentDTO? = null
 
-    var firstTeam: TournamentTeamDTO? = null
+    var firstTeam: TeamDTO? = null
 
-    var secondTeam: TournamentTeamDTO? = null
+    var secondTeam: TeamDTO? = null
 
-    constructor(id: Int?, countPointsFirstTeam: Double?, countPointsSecondTeam: Double?, date: Date, tournamentDTO: TournamentDTO, firstTeam: TournamentTeamDTO, secondTeam: TournamentTeamDTO) {
+    constructor(id: Int?, countPointsFirstTeam: Double?, countPointsSecondTeam: Double?, date: Date, tournamentDTO: TournamentDTO, firstTeam: TeamDTO, secondTeam: TeamDTO) {
         this.id = id
         this.countPointsFirstTeam = countPointsFirstTeam
         this.countPointsSecondTeam = countPointsSecondTeam

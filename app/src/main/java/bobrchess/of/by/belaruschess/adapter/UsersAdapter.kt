@@ -11,9 +11,6 @@ import bobrchess.of.by.belaruschess.dto.UserDTO
 import com.squareup.picasso.Picasso
 import java.util.*
 
-
-// Унаследовали наш адаптер от RecyclerView.Adapter
-// Здесь же указали наш собственный ViewHolder, который предоставит нам доступ к View-компонентам
 class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adapter<UsersAdapter.UserViewHolder>() {
 
     private val userList = ArrayList<UserDTO>()
@@ -74,7 +71,7 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
         }
     }
 
-    private fun initAvatarList(){
+    private fun initAvatarList() {
         avatarList.add("http://priscree.ru/img/3e250315e81d1e.jpg")
         avatarList.add("http://priscree.ru/img/5dc25ed76ea661.jpg")
         avatarList.add("http://priscree.ru/img/95cbe6b870f873.jpg")
@@ -108,11 +105,10 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
     }
 
 
-
     interface OnUserClickListener {
         fun onUserClick(user: UserDTO)
     }
 
     fun ClosedRange<Int>.random() =
-            Random().nextInt(endInclusive - start) +  start
+            Random().nextInt(endInclusive - start) + start
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:id="@+id/scrollViewRegistration"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -30,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userName" />
+                android:hint="@string/userName"
+                android:text="Igor"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Surname Label -->
@@ -43,7 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userSurname" />
+                android:hint="@string/userSurname"
+                android:text="Kozlov"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Patronymic Label -->
@@ -56,7 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userPatronymic" />
+                android:hint="@string/userPatronymic"
+                android:text="Sergeevich"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Rating Label -->
@@ -69,7 +73,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userRating" />
+                android:hint="@string/userRating"
+                android:text="2000"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -84,8 +89,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="@string/email" />
+                android:hint="@string/email"
+                android:text="www.bk.ru@mail1.ru"/>
         </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/genderSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#d11f08"
+            android:padding="5dp" />
 
         <Spinner
             android:id="@+id/coachSpinner"
@@ -107,6 +120,14 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#d11f08"
             android:padding="5dp" />
+
+            <ImageView
+                android:id="@+id/calendar_birthday_image"
+                android:src="@drawable/ic_calendar_black_48dp"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+
      <!--   <Button
             android:id="@+id/tournamentDate"
             android:layout_width="wrap_content"
@@ -115,7 +136,7 @@
 
 
         <!-- mobile number -->
-        <!--<android.support.design.widget.TextInputLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -126,7 +147,7 @@
                 android:inputType="number"
                 android:text="345676678"
                 android:hint="@string/phoneNumber" />
-        </android.support.design.widget.TextInputLayout>-->
+        </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
@@ -138,7 +159,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="@string/password"/>
+                android:hint="@string/password"
+                android:text="qwerty"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Re-enter Label -->
@@ -151,7 +173,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="@string/renterPassword"/>
+                android:hint="@string/renterPassword"
+                android:text="qwerty"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
@@ -198,5 +221,32 @@
             android:scaleType="fitXY"
             android:src="@mipmap/ic_launcher"
             android:id="@+id/iv"/>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </LinearLayout>
+
 </ScrollView>

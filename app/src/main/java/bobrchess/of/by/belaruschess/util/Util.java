@@ -2,11 +2,12 @@ package bobrchess.of.by.belaruschess.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -33,6 +34,10 @@ public class Util {
     public static final int ADD_TOURNAMENT_REQUEST = 5;
     public static final int REGISTRATION_REQUEST = 6;
     public static final int TOURNAMENT_REQUEST = 7;
+
+    public static int TYPE_WIFI = 1;
+    public static int TYPE_MOBILE = 2;
+    public static int TYPE_NOT_CONNECTED = 0;
 
     public static String getEncodedPassword(String password) {
         return new String(Hex.encodeHex(DigestUtils.md5(password)));
@@ -217,5 +222,25 @@ public class Util {
             usersNames.add(places.get(i).getName());
         }
         return usersNames;
+    }
+
+    public static List<String> getGenders() {
+        List<String> genders = new ArrayList<>();
+        genders.add("Male");
+        genders.add("Female");//bug доставать это из резурсов (с интернационализацией).
+        return genders;
+    }
+
+    public static int getConnectivityStatus(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (null != activeNetwork) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
+                return TYPE_WIFI;
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+                return TYPE_MOBILE;
+        }
+        return TYPE_NOT_CONNECTED;
     }
 }

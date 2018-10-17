@@ -1,6 +1,5 @@
 package bobrchess.of.by.belaruschess.network.api;
 
-import java.util.Date;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
@@ -9,11 +8,9 @@ import bobrchess.of.by.belaruschess.dto.MatchDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.RankDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
-import bobrchess.of.by.belaruschess.dto.TournamentTeamDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;

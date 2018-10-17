@@ -9,7 +9,7 @@ import java.io.Serializable
 class GameDTO : Serializable {
     var id: Int? = null
 
-    var name: String? = null
+    var gameRecord: String? = null
 
     var countPointsFirstPlayer: Double? = null
 
@@ -23,7 +23,7 @@ class GameDTO : Serializable {
 
     constructor(id: Int?, name: String, countPointsFirstPlayer: Double?, countPointsSecondPlayer: Double?, matchDTO: MatchDTO, firstChessPlayer: UserDTO, secondChessPlayer: UserDTO) {
         this.id = id
-        this.name = name
+        this.gameRecord = name
         this.countPointsFirstPlayer = countPointsFirstPlayer
         this.countPointsSecondPlayer = countPointsSecondPlayer
         this.matchDTO = matchDTO

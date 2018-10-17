@@ -54,9 +54,10 @@ class GamesAdapter(onGameClickListener: OnGameClickListener) : RecyclerView.Adap
         private val countPointsSecondPlayerTextView: TextView
         private val firstPlayerImageView: ImageView
         private val secondPlayerImageView: ImageView
+
         init {
-            firstPlayerNameTextView =  itemView.findViewById(R.id.first_player__name_text_view)
-            secondPlayerNameTextView =  itemView.findViewById(R.id.second_player__name_text_view)
+            firstPlayerNameTextView = itemView.findViewById(R.id.first_player__name_text_view)
+            secondPlayerNameTextView = itemView.findViewById(R.id.second_player__name_text_view)
             countPointsFirstPlayerTextView = itemView.findViewById(R.id.count_points_first_player_text_view)
             countPointsSecondPlayerTextView = itemView.findViewById(R.id.count_points_second_player_text_view)
             firstPlayerImageView = itemView.findViewById(R.id.first_player__image_view)
@@ -70,7 +71,7 @@ class GamesAdapter(onGameClickListener: OnGameClickListener) : RecyclerView.Adap
 
         fun bind(game: GameDTO) {
             firstPlayerNameTextView!!.text = game.firstChessPlayer!!.name + " " + game.firstChessPlayer!!.surname
-            secondPlayerNameTextView!!.text = game.secondChessPlayer!!.name + " " +  game.secondChessPlayer!!.surname
+            secondPlayerNameTextView!!.text = game.secondChessPlayer!!.name + " " + game.secondChessPlayer!!.surname
             countPointsFirstPlayerTextView.text = game.countPointsFirstPlayer.toString()
             countPointsSecondPlayerTextView.text = game.countPointsSecondPlayer.toString()
             var avatarNumber = (0..30).random()
@@ -80,7 +81,7 @@ class GamesAdapter(onGameClickListener: OnGameClickListener) : RecyclerView.Adap
         }
     }
 
-    private fun initAvatarList(){
+    private fun initAvatarList() {
         avatarList.add("http://priscree.ru/img/3e250315e81d1e.jpg")
         avatarList.add("http://priscree.ru/img/5dc25ed76ea661.jpg")
         avatarList.add("http://priscree.ru/img/95cbe6b870f873.jpg")
@@ -114,7 +115,7 @@ class GamesAdapter(onGameClickListener: OnGameClickListener) : RecyclerView.Adap
     }
 
     fun ClosedRange<Int>.random() =
-            Random().nextInt(endInclusive - start) +  start
+            Random().nextInt(endInclusive - start) + start
 
     interface OnGameClickListener {
         fun onGameClick(game: GameDTO)

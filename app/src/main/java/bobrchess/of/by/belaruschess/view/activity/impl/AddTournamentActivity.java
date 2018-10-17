@@ -3,7 +3,6 @@ package bobrchess.of.by.belaruschess.view.activity.impl;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.borax12.materialdaterangepicker.time.TimePickerDialog;
@@ -39,10 +40,11 @@ import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
 import static bobrchess.of.by.belaruschess.util.Constants.TIME_PICKER_DIALOG;
 import static bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER;
 import static bobrchess.of.by.belaruschess.util.Util.ADD_TOURNAMENT_REQUEST;
-import static bobrchess.of.by.belaruschess.util.Util.getTestPlace;
-import static bobrchess.of.by.belaruschess.util.Util.getTestUser;
 
-public class AddTournamentActivity extends AppCompatActivity implements AddTournamentContractView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class AddTournamentActivity extends MvpAppCompatActivity implements AddTournamentContractView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
+    @InjectPresenter
+    AddTournamentPresenterImpl presenter;
 
     private boolean manyPeopleInTeam;
 
@@ -70,7 +72,6 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
 
     private ProgressDialog progressDialog;
 
-    private AddTournamentPresenter presenter;
     private PlaceDTO place;
     private UserDTO referee;
     private String startDate;
@@ -85,9 +86,7 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
         ButterKnife.bind(this);
 
         toolbar = findViewById(R.id.toolbar);
-        presenter = new AddTournamentPresenterImpl();
         presenter.attachView(this);
-        presenter.viewIsReady();// bug позже видимо нужно это делать
         refereeSpinner = findViewById(R.id.refereeSpinner);
         refereeSpinner.setOnItemSelectedListener(new RefereeItemSelectedListener());
         placeSpinner = findViewById(R.id.countrySpinner);
@@ -224,10 +223,9 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
 
     @Override
     public void addTournament() {
-        presenter.addTournament();
+        presenter.addTournament(getTournamentData());
     }
 
-    @Override
     public TournamentDTO getTournamentData() {
         TournamentDTO tournamentData = new TournamentDTO();
         tournamentData.setName(nameText.getText().toString());
@@ -252,7 +250,7 @@ public class AddTournamentActivity extends AppCompatActivity implements AddTourn
     }
 
     @Override
-    public void setCountrySpinnerAdapter(List<String> placesNames) {
+    public void setPlaceSpinnerAdapter(List<String> placesNames) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, placesNames);
         placeSpinner.setAdapter(adapter);

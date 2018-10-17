@@ -1,5 +1,10 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import android.support.annotation.NonNull;
+
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,97 +12,81 @@ import java.util.Map;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
-import bobrchess.of.by.belaruschess.exception.IncorrectTournamentNameException;
+import bobrchess.of.by.belaruschess.exception.IncorrectDataException;
 import bobrchess.of.by.belaruschess.network.connection.AddTournamentConnection;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddTournament;
 import bobrchess.of.by.belaruschess.util.Util;
+import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
 
-import static bobrchess.of.by.belaruschess.util.Constants.INCORRECT_TOURNAMENT_NAME;
-
-/**
- * Created by Igor on 11.04.2018.
- */
-
-public class AddTournamentPresenterImpl implements CallBackAddTournament, AddTournamentPresenter {
+@InjectViewState
+public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContractView> implements CallBackAddTournament, AddTournamentPresenter {
 
     private AddTournamentContractView view;
     private AddTournamentConnection addTournamentConnection;
     private Boolean viewIsReady = false;
-    private List<PlaceDTO> places;
-    private List<UserDTO> referees;
     private Integer selectedPlaceIndex;
     private Integer selectedRefereeIndex;
+    private Byte countSuccessfulSpinnerResponses = 0;
     private Map<Integer, PlaceDTO> placesIndexes = new HashMap<>();
     private Map<Integer, UserDTO> refereesIndexes = new HashMap<>();
 
+
     public AddTournamentPresenterImpl() {
+    }
+
+    public AddTournamentPresenterImpl(AddTournamentContractView view) {
         addTournamentConnection = new AddTournamentConnection();
         addTournamentConnection.attachPresenter(this);
+        attachView(view);
+        view.showProgress();
     }
 
     @Override
-    public void onResponse(TournamentDTO tournamentDTO) {
+    public void onResponse(@NonNull TournamentDTO tournamentDTO) {
         view.hideProgress();
         view.enableButton();
         view.startActivity(tournamentDTO);
     }
 
     @Override
-    public void onRefereeResponse(List<UserDTO> referees) {
-        this.referees = referees;
+    public void onRefereeResponse(@NonNull List<UserDTO> referees) {
         saveRefereesIndexes(referees);
-        view.hideProgress();
-        view.enableButton();
         view.setRefereeSpinnerAdapter(Util.getUsersNames(referees));
+        checkIsViewReady();
     }
 
     @Override
-    public void onPlaceResponse(List<PlaceDTO> places) {
-        this.places = places;
+    public void onPlaceResponse(@NonNull List<PlaceDTO> places) {
         savePlacesIndexes(places);
-        view.hideProgress();
-        view.enableButton();
-        view.setCountrySpinnerAdapter(Util.getPlacesNames(places));// bug почему называется country spinner?
+        view.setPlaceSpinnerAdapter(Util.getPlacesNames(places));
+        checkIsViewReady();
     }
 
     @Override
-    public void onFailure(Throwable t) {
-        view.hideProgress();
-        view.enableButton();
+    public void onFailure(@NonNull Throwable t) {
         view.showToast(t.getLocalizedMessage());
     }
 
     @Override
-    public void addTournament() {
+    public void addTournament(TournamentDTO tournamentDTO) {
         if (viewIsReady) {
             view.disableButton();
-            TournamentDTO tournamentDTO = view.getTournamentData();
             tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex));
             tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex));
             try {
-                validateTournamentData(tournamentDTO);
+                Validator.INSTANCE.validateTournamentData(tournamentDTO);
                 view.disableButton();
                 view.showProgress();
                 addTournamentConnection.addTournament(tournamentDTO);
-            } catch (IncorrectTournamentNameException e) {
+            } catch (IncorrectDataException e) {
                 view.showIncorrectTournamentNameText();
+            } finally {
                 view.hideProgress();
                 view.enableButton();
             }
         }
-    }
-
-    private boolean validateTournamentData(TournamentDTO tournamentDTO) throws IncorrectTournamentNameException {
-        //TODO
-        String name = tournamentDTO.getName();
-
-        if (name == null || name.isEmpty()) {
-            throw new IncorrectTournamentNameException(INCORRECT_TOURNAMENT_NAME);
-        }
-
-        return true;
     }
 
     public void attachView(AddTournamentContractView activity) {
@@ -134,13 +123,20 @@ public class AddTournamentPresenterImpl implements CallBackAddTournament, AddTou
 
     private void savePlacesIndexes(List<PlaceDTO> places) {
         for (int i = 0; i < places.size(); i++) {
-            placesIndexes.put(i,places.get(i));
+            placesIndexes.put(i, places.get(i));
         }
     }
 
     private void saveRefereesIndexes(List<UserDTO> referees) {
         for (int i = 0; i < referees.size(); i++) {
-            refereesIndexes.put(i,referees.get(i));
+            refereesIndexes.put(i, referees.get(i));
+        }
+    }
+
+    synchronized private void checkIsViewReady() {
+        countSuccessfulSpinnerResponses++;
+        if (countSuccessfulSpinnerResponses == 2) {
+            viewIsReady();
         }
     }
 }

@@ -77,7 +77,7 @@ class GameActivity : AppCompatActivity(), GameContractView {
         Picasso.with(this).load(avatarList[avatarNumber]/*user.imageUrl*/).into(secondPlayerImageView)
         firstPlayerNameTextView!!.text = getString(R.string.user_full_name, game.firstChessPlayer!!.name, game.firstChessPlayer!!.surname)
         secondPlayerNameTextView!!.text = getString(R.string.user_full_name, game.secondChessPlayer!!.name, game.secondChessPlayer!!.surname)
-        data!!.text = game.name
+        data!!.text = game.gameRecord
     }
 
     private fun initAvatarList() {

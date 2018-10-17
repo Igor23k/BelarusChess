@@ -47,6 +47,7 @@
     <string name="successful_draw">Жеребьевка успешно проведена</string>
     <string name="connection_error">Ошибка соединения!</string>
     <string name="incorrect_email">Неверный email! Пожалуйста, попробуйте еще раз.</string>
+    <string name="incorrect_rating">Неверный рейтинг! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_tournament_name">Неверное имя турнира! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_password">Неверный пароль! Подалуйста, введите более 4 символов.</string>
     <string name="nick">Ник</string>
@@ -59,11 +60,17 @@
     <string name="tournament_register">Зарегистрироваться</string>
     <string name="position_number">Место:</string>
     <string name="dash">-</string>
-
-
+    <string name="absence">Отсутствует</string>
+    <string name="notSelected">Не выбрано</string>
+    <string name="retry">Повторить</string>
+    <string name="internalServerError">Внутренняя ошибка сервера</string>
+    <string name="serverIsUnavailable">Сервер недоступен</string>
+    <string name="serverIsUnavailableMessage">Извините, мы не готовы прямо сейчас:( Пожалуйста, попробуйте позже</string>
+    <string name="noInternetConnection">Соединение отсутствует</string>
+    <string name="noInternetConnectionMessage">Пожалуйста, проверьте достук к интернету и попробуйте снова"</string>
+    <string name="incorrectData">Неверные данные! Попробуйсте снова"</string>
 
     //date and time
-
     <string name="title_activity_main">Range Picker</string>
     <string name="time">Time</string>
     <string name="date">Date</string>

@@ -1,5 +1,6 @@
 package bobrchess.of.by.belaruschess.presenter;
 
+import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
 
 /**
@@ -7,7 +8,7 @@ import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
  */
 
 public interface AddTournamentPresenter extends BasePresenter {
-    void addTournament();
+    void addTournament(TournamentDTO tournamentDTO);
     void loadPlaces();
     void loadReferees();
     void attachView(AddTournamentContractView activity);
