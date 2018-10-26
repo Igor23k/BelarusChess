@@ -26,12 +26,12 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
 
     private var view: RegistrationContractView? = null
     private var viewComponent: View? = null
-    private var userConnection: RegistrationConnection? = null
+    private var userConnection: RegistrationConnection = RegistrationConnection()
     private var viewIsReady: Boolean? = false
-    private var selectedRankIndex: Int? = null
-    private var selectedCountryIndex: Int? = null
-    private var selectedCoachIndex: Int? = null
-    private var selectedGenderIndex: Int? = null
+    private var selectedRankIndex: Int = 0
+    private var selectedCountryIndex: Int = 0
+    private var selectedCoachIndex: Int = 0
+    private var selectedGenderIndex: Int = 0
     private val ranksIndexes = HashMap<Int, RankDTO>()
     private val countriesIndexes = HashMap<Int, CountryDTO>()
     private val coachesIndexes = HashMap<Int, UserDTO>()
@@ -42,12 +42,8 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
         private const val NOT_SELECTED_INDEX = 0
     }
 
-    constructor()
-
-    constructor(view: RegistrationContractView) {
-        userConnection = RegistrationConnection()
-        userConnection!!.attachPresenter(this)
-        attachView(view)
+    constructor() {
+        userConnection.attachPresenter(this)
     }
 
     override fun onResponse(userDTO: UserDTO) {
@@ -76,6 +72,8 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
     }
 
     override fun onFailure(t: Throwable) {
+        view!!.hideProgress()
+        view!!.enableButton()
         when (t.message) {
             SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
@@ -87,15 +85,14 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
     }
 
     private fun onUnsuccessfulRequest() {
-        view!!.showSnackBar(viewComponent, R.string.internalServerError, R.string.retry)
+        view!!.showSnackBar(viewComponent!!, R.string.internalServerError, R.string.retry)
     }
 
     private fun onServerUnavailable() {
-        view!!.hideProgress()
         when {
             connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
             !viewIsReady!! -> view!!.showServerInUnavailableAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
-            else -> view!!.showSnackBar(viewComponent, R.string.serverIsUnavailable, R.string.retry)
+            else -> view!!.showSnackBar(viewComponent!!, R.string.serverIsUnavailable, R.string.retry)
         }
     }
 
@@ -111,26 +108,26 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
             Validator.validateUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password)
             view!!.showProgress()
-            userConnection!!.registration(userDTO)
+            userConnection.registration(userDTO)
         } catch (e: IncorrectDataException) {
-            view!!.showSnackBar(viewComponent, e.localizedMessage, R.string.retry)
-        } finally {
-            view!!.hideProgress()
             view!!.enableButton()
+            view!!.showSnackBar(viewComponent!!, e.localizedMessage, R.string.retry)
         }
     }
 
     private fun setUserData(@NonNull userDTO: UserDTO) {
         if (selectedRankIndex !== NOT_SELECTED_INDEX) {// bug equals?
-            userDTO.rank = ranksIndexes[selectedRankIndex]
+            userDTO.rank = ranksIndexes[selectedRankIndex.minus(2)]
         }
         if (selectedCountryIndex !== NOT_SELECTED_INDEX) {
-            userDTO.country = countriesIndexes[selectedCountryIndex]
+            userDTO.country = countriesIndexes[selectedCountryIndex.minus(1)]
         }
         if (selectedCoachIndex !== NOT_SELECTED_INDEX) {
-            userDTO.coach = coachesIndexes[selectedCoachIndex]
+            userDTO.coach = coachesIndexes[selectedCoachIndex.minus(2)]
         }
-        userDTO.beMale = isMale(selectedGenderIndex)
+        if (selectedCoachIndex !== NOT_SELECTED_INDEX) {
+            userDTO.beMale = isMale(selectedGenderIndex - 1)
+        }
         userDTO.beCoach = true// bug думать, думать
         userDTO.beOrganizer = true
     }
@@ -142,21 +139,21 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
             if (connectivityStatus == TYPE_NOT_CONNECTED) {
                 view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
             } else if ((!viewIsReady!!)) {
-                view!!.loadSpinnersData()
+                loadSpinnersData()
             }
         }
     }
 
     override fun loadCoaches() {
-        userConnection?.getCoaches()
+        userConnection.getCoaches()
     }
 
     override fun loadRanks() {
-        userConnection?.getRanks()
+        userConnection.getRanks()
     }
 
     override fun loadCountries() {
-        userConnection?.getCountries()
+        userConnection.getCountries()
     }
 
     override fun attachView(activity: RegistrationContractView) {
@@ -177,19 +174,19 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
         view?.enableButton()
     }
 
-    override fun setSelectedRankIndex(selectedRankIndex: Int?) {
+    override fun setSelectedRankIndex(selectedRankIndex: Int) {
         this.selectedRankIndex = selectedRankIndex
     }
 
-    override fun setSelectedCountryIndex(selectedCountryIndex: Int?) {
+    override fun setSelectedCountryIndex(selectedCountryIndex: Int) {
         this.selectedCountryIndex = selectedCountryIndex
     }
 
-    override fun setSelectedCoachIndex(selectedCoachIndex: Int?) {
+    override fun setSelectedCoachIndex(selectedCoachIndex: Int) {
         this.selectedCoachIndex = selectedCoachIndex
     }
 
-    override fun setSelectedGenderIndex(selectedGenderIndex: Int?) {
+    override fun setSelectedGenderIndex(selectedGenderIndex: Int) {
         this.selectedGenderIndex = selectedGenderIndex
     }
 

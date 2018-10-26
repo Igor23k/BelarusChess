@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ten_dp"
                 android:id="@+id/tournament_name_text">
-                <EditText android:id="@+id/tournament_name_input"
+                <EditText android:id="@+id/e_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -58,7 +58,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
-                android:id="@+id/countrySpinner"
+                android:id="@+id/s_countrySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#d11f08"
@@ -68,7 +68,7 @@
                 android:id="@+id/refereeSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/countrySpinner"
+                android:layout_below="@+id/s_countrySpinner"
                 android:backgroundTint="#d11f08"
                 android:padding="5dp" />
            <!-- <EditText

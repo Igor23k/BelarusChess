@@ -10,26 +10,23 @@ import org.springframework.util.StringUtils
 
 object Validator {
     @Throws(IncorrectDataException::class)
-    fun validateUserData(userDTO: UserDTO): Boolean {
-        val email = userDTO.email
-        val password = userDTO.password
-        val name = userDTO.name
-        val surname = userDTO.surname
-        val patronymic = userDTO.patronymic
-        val rating = userDTO.rating
-        val birthdate = userDTO.birthday
-        val status = userDTO.status
-        val phoneNumber = userDTO.phoneNumber
-        val rank = userDTO.rank
-        val coach = userDTO.coach
-        val country = userDTO.country
+    fun validateUserData(userDTO: UserDTO?): Boolean {
+        val email = userDTO?.email
+        val password = userDTO?.password
+        val name = userDTO?.name
+        val surname = userDTO?.surname
+        val patronymic = userDTO?.patronymic
+        val rating = userDTO?.rating
+        val birthdate = userDTO?.birthday
+        val status = userDTO?.status
+        val phoneNumber = userDTO?.phoneNumber
+        val rank = userDTO?.rank
+        val coach = userDTO?.coach
+        val country = userDTO?.country
 
-        if (StringUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email!!).matches()) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_EMAIL)
-        }
-        if (StringUtils.isEmpty(password) || password!!.length < 6) {//bug проверить что совпадают пароли
-            throw IncorrectDataException(Constants.INCORRECT_USER_PASSWORD)
-        }
+        validatePassword(password)
+        validateEmail(email)
+
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 30) {
             throw IncorrectDataException(Constants.INCORRECT_USER_NAME)
         }
@@ -51,19 +48,45 @@ object Validator {
         if (StringUtils.isEmpty(phoneNumber)) {
             throw IncorrectDataException(Constants.INCORRECT_USER_PHONE_NUMBER)
         }
+        validateRankData(userDTO.rank)
+
         return true
     }
 
     @Throws(IncorrectDataException::class)
-    fun validateTournamentData(tournamentDTO: TournamentDTO): Boolean {
-        val name = tournamentDTO.name
-        val shortDescription = tournamentDTO.shortDescription
-        val fullDescription = tournamentDTO.fullDescription
-        val countPlayersInTeam = tournamentDTO.countPlayersInTeam
-        val startDate = tournamentDTO.startDate
-        val finishDate = tournamentDTO.finishDate
-        val referee = tournamentDTO.referee
-        val place = tournamentDTO.place
+    fun validateAuthUserData(userDTO: UserDTO?): Boolean {
+        val email = userDTO?.email
+        val password = userDTO?.password
+
+        validatePassword(password)
+        validateEmail(email)
+        return true
+    }
+
+    @Throws(IncorrectDataException::class)
+    private fun validateEmail(email: String?) {
+        if (StringUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            throw IncorrectDataException(Constants.INCORRECT_USER_EMAIL)
+        }
+    }
+
+    @Throws(IncorrectDataException::class)
+    private fun validatePassword(password: String?) {
+        if (StringUtils.isEmpty(password) || password?.length!! < 6) {//bug проверить что совпадают пароли
+            throw IncorrectDataException(Constants.INCORRECT_USER_PASSWORD)
+        }
+    }
+
+    @Throws(IncorrectDataException::class)
+    fun validateTournamentData(tournamentDTO: TournamentDTO?): Boolean {
+        val name = tournamentDTO?.name
+        val shortDescription = tournamentDTO?.shortDescription
+        val fullDescription = tournamentDTO?.fullDescription
+        val countPlayersInTeam = tournamentDTO?.countPlayersInTeam
+        val startDate = tournamentDTO?.startDate
+        val finishDate = tournamentDTO?.finishDate
+        val referee = tournamentDTO?.referee
+        val place = tournamentDTO?.place
 
         if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
             throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_NAME)
@@ -87,13 +110,13 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    fun validateGameData(gameDTO: GameDTO): Boolean {
-        val gameRecord = gameDTO.gameRecord
-        val countPointsFirstPlayer = gameDTO.countPointsFirstPlayer
-        val countPointsSecondPlayer = gameDTO.countPointsSecondPlayer
-        val firstChessPlayer = gameDTO.firstChessPlayer
-        val secondChessPlayer = gameDTO.secondChessPlayer
-        val matchDTO = gameDTO.matchDTO
+    fun validateGameData(gameDTO: GameDTO?): Boolean {
+        val gameRecord = gameDTO?.gameRecord
+        val countPointsFirstPlayer = gameDTO?.countPointsFirstPlayer
+        val countPointsSecondPlayer = gameDTO?.countPointsSecondPlayer
+        val firstChessPlayer = gameDTO?.firstChessPlayer
+        val secondChessPlayer = gameDTO?.secondChessPlayer
+        val matchDTO = gameDTO?.matchDTO
 
         if (StringUtils.isEmpty(gameRecord) || gameRecord!!.length < 2 || gameRecord.length > 20000) {
             throw IncorrectDataException(Constants.INCORRECT_GAME_RECORD)
@@ -107,14 +130,14 @@ object Validator {
         return true
     }
 
-    @Throws(IncorrectDataException::class)//проверить, видимо это вообще нигде и=не пригодится и это нужно удалить
-    fun validateMatchData(matchDTO: MatchDTO): Boolean {
-        val date = matchDTO.date
-        val countPointsFirstTeam = matchDTO.countPointsFirstTeam
-        val countPointsSecondTeam = matchDTO.countPointsSecondTeam
-        val firstTeam = matchDTO.firstTeam
-        val secondTeam = matchDTO.secondTeam
-        val tournament = matchDTO.tournament
+    @Throws(IncorrectDataException::class)
+    fun validateMatchData(matchDTO: MatchDTO?): Boolean {
+        val date = matchDTO?.date
+        val countPointsFirstTeam = matchDTO?.countPointsFirstTeam
+        val countPointsSecondTeam = matchDTO?.countPointsSecondTeam
+        val firstTeam = matchDTO?.firstTeam
+        val secondTeam = matchDTO?.secondTeam
+        val tournament = matchDTO?.tournament
 
         if (countPointsFirstTeam == null || countPointsFirstTeam < 0 || countPointsSecondTeam == null || countPointsSecondTeam < 0) {
             throw IncorrectDataException(Constants.INCORRECT_COUNT_POINTS_OF_TEAM)
@@ -126,15 +149,15 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    fun validatePlaceData(placeDTO: PlaceDTO): Boolean {
-        val name = placeDTO.name
-        val capacity = placeDTO.capacity
-        val building = placeDTO.building
-        val city = placeDTO.city
-        val street = placeDTO.street
-        val country = placeDTO.country
+    fun validatePlaceData(placeDTO: PlaceDTO?): Boolean {
+        val name = placeDTO?.name
+        val capacity = placeDTO?.capacity
+        val building = placeDTO?.building
+        val city = placeDTO?.city
+        val street = placeDTO?.street
+        val country = placeDTO?.country
 
-        if (StringUtils.isEmpty(name) || name!!.length < 1 || name.length > 100) {
+        if (StringUtils.isEmpty(name) || name!!.isEmpty() || name.length > 100) {
             throw IncorrectDataException(Constants.INCORRECT_PLACE_NAME)
         }
         if (StringUtils.isEmpty(city) || city!!.length < 3 || city.length > 50) {
@@ -143,7 +166,7 @@ object Validator {
         if (StringUtils.isEmpty(street) || street!!.length < 3 || street.length > 50) {
             throw IncorrectDataException(Constants.INCORRECT_PLACE_STREET)
         }
-        if (StringUtils.isEmpty(building) || building!!.length < 1 || building.length > 10) {
+        if (StringUtils.isEmpty(building) || building!!.isEmpty() || building.length > 10) {
             throw IncorrectDataException(Constants.INCORRECT_PLACE_BUILDING)
         }
         if (capacity == null || capacity < 1) {
@@ -157,14 +180,14 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    fun validateRankData(rankDTO: RankDTO): Boolean {
-        val name = rankDTO.name
-        val abbreviation = rankDTO.abbreviation
+    fun validateRankData(rankDTO: RankDTO?): Boolean {
+        val name = rankDTO?.name
+        val abbreviation = rankDTO?.abbreviation
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 50) {
             throw IncorrectDataException(Constants.INCORRECT_RANK_NAME)
         }
-        if (StringUtils.isEmpty(abbreviation) || abbreviation!!.length < 3 || abbreviation.length > 3) {
+        if (StringUtils.isEmpty(abbreviation) || abbreviation!!.length < 2 || abbreviation.length > 3) {
             throw IncorrectDataException(Constants.INCORRECT_RANK_ABBREVIATION)
         }
 
@@ -172,9 +195,9 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    fun validateCountryData(countryDTO: CountryDTO): Boolean {
-        val name = countryDTO.name
-        val abbreviation = countryDTO.abbreviation
+    fun validateCountryData(countryDTO: CountryDTO?): Boolean {
+        val name = countryDTO?.name
+        val abbreviation = countryDTO?.abbreviation
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 50) {
             throw IncorrectDataException(Constants.INCORRECT_COUNTRY_NAME)
@@ -187,8 +210,8 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    fun validateTeamData(teamDTO: TeamDTO): Boolean {
-        val name = teamDTO.name
+    fun validateTeamData(teamDTO: TeamDTO?): Boolean {
+        val name = teamDTO?.name
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 50) {
             throw IncorrectDataException(Constants.INCORRECT_TEAM_NAME)
@@ -198,9 +221,9 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    fun validateTournamentTeamRankingData(tournamentTeamRankingDTO: TournamentTeamRankingDTO): Boolean {
-        val points = tournamentTeamRankingDTO.points
-        val position = tournamentTeamRankingDTO.position
+    fun validateTournamentTeamRankingData(tournamentTeamRankingDTO: TournamentTeamRankingDTO?): Boolean {
+        val points = tournamentTeamRankingDTO?.points
+        val position = tournamentTeamRankingDTO?.position
 
         if (points == null || points < 0) {
             throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS)

@@ -54,7 +54,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     @InjectPresenter
     RegistrationPresenterImpl presenter;
 
-    @BindView(R.id.tournament_name_input)
+    @BindView(R.id.e_name_input)
     EditText nameText;
 
     @BindView(R.id.e_surname_input)
@@ -84,7 +84,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     @BindView(R.id.t_link_authorization)
     TextView authorizationLink;
 
-    @BindView(R.id.calendar_birthday_image)
+    @BindView(R.id.i_calendar_birthday)
     ImageView calendarImage;
 
     private ProgressDialog progressDialog;
@@ -105,19 +105,18 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
-        presenter = new RegistrationPresenterImpl(this);
         view = findViewById(R.id.scrollViewRegistration);
         presenter.attachViewComponent(findViewById(R.id.scrollViewRegistration));
         initButtonsListeners();
         registerInternetCheckReceiver();
-        genderSpinner = findViewById(R.id.genderSpinner);
+        genderSpinner = findViewById(R.id.s_genderSpinner);
         genderSpinner.setOnItemSelectedListener(new GenderItemSelectedListener());
         setGenderSpinnerAdapter(Util.getGenders());
-        coachSpinner = findViewById(R.id.coachSpinner);
+        coachSpinner = findViewById(R.id.s_coachSpinner);
         coachSpinner.setOnItemSelectedListener(new CoachItemSelectedListener());
-        rankSpinner = findViewById(R.id.rankSpinner);
+        rankSpinner = findViewById(R.id.s_rankSpinner);
         rankSpinner.setOnItemSelectedListener(new RankItemSelectedListener());
-        countrySpinner = findViewById(R.id.countrySpinner);
+        countrySpinner = findViewById(R.id.s_countrySpinner);
         countrySpinner.setOnItemSelectedListener(new CountryItemSelectedListener());
     }
 
@@ -372,7 +371,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     }
 
     @Override
-    public void showNoConnectionAlertDialog(@StringRes @NonNull Integer title, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText, @NonNull Boolean cancelable) {
+    public void showNoConnectionAlertDialog(@StringRes @NonNull int title, @StringRes @NonNull int message, @StringRes @NonNull int buttonText, @NonNull boolean cancelable) {
         final AlertDialog builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle)
                 .setTitle(title)
                 .setMessage(message)
@@ -399,7 +398,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     }
 
     @Override
-    public void showServerInUnavailableAlertDialog(@StringRes @NonNull Integer title, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText, @NonNull Boolean cancelable) {
+    public void showServerInUnavailableAlertDialog(@StringRes @NonNull int title, @StringRes @NonNull int message, @StringRes @NonNull int buttonText, @NonNull boolean cancelable) {
         final AlertDialog builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle)
                 .setTitle(title)
                 .setMessage(message)
@@ -424,16 +423,9 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     }
 
     @Override
-    public void showSnackBar(@NonNull View componentView, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText) {
+    public void showSnackBar(@NonNull View componentView, @StringRes @NonNull int message, @StringRes @NonNull int buttonText) {
         snackbar = Snackbar
-                .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction(buttonText, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        snackbar.dismiss();
-                        registration();
-                    }
-                });
+                .make(componentView, message, Snackbar.LENGTH_LONG);
         snackbar.setActionTextColor(Color.WHITE);
         View sbView = snackbar.getView();
         TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -442,16 +434,9 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     }
 
     @Override
-    public void showSnackBar(@NonNull View componentView, @NonNull String message, @StringRes @NonNull Integer buttonText) {
+    public void showSnackBar(@NonNull View componentView, @NonNull String message, @StringRes @NonNull int buttonText) {
         snackbar = Snackbar
-                .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction(buttonText, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        snackbar.dismiss();
-                        registration();
-                    }
-                });
+                .make(componentView, message, Snackbar.LENGTH_LONG);
         snackbar.setActionTextColor(Color.WHITE);
         View sbView = snackbar.getView();
         TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);

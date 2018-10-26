@@ -19,20 +19,19 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
 
     private var view: AuthorizationContractView? = null
     private var viewComponent: View? = null
-    private var userConnection: AuthorizationConnection? = null
+    private var userConnection: AuthorizationConnection = AuthorizationConnection()
     private var viewIsReady: Boolean? = false
     private var connectivityStatus: Int? = null
 
-    constructor()
-
-    constructor(view: AuthorizationContractView) {
-        userConnection = AuthorizationConnection()
-        userConnection!!.attachPresenter(this)
-        attachView(view)
+    constructor(){
+        userConnection.attachPresenter(this)
     }
 
     override fun setConnectivityStatus(connectivityStatus: Int?) {
         this.connectivityStatus = connectivityStatus
+        if (connectivityStatus == Util.TYPE_NOT_CONNECTED) {
+            view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+        }
     }
 
     override fun attachViewComponent(viewComponent: View) {
@@ -46,6 +45,8 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
     }
 
     override fun onFailure(t: Throwable) {
+        view!!.hideProgress()
+        view!!.enableButton()
         when (t.message) {
             Constants.SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
@@ -61,7 +62,6 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
     }
 
     private fun onServerUnavailable() {
-        view!!.hideProgress()
         when (connectivityStatus) {
             Util.TYPE_NOT_CONNECTED -> view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
             else -> view!!.showSnackBar(viewComponent, R.string.serverIsUnavailable, R.string.retry)
@@ -71,15 +71,13 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
     override fun authorization(userDTO: UserDTO) {
         view!!.disableButton()
         try {
-            Validator.validateUserData(userDTO)
+            Validator.validateAuthUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password)
             view!!.showProgress()
-            userConnection!!.authorization(userDTO)
+            userConnection.authorization(userDTO)
         } catch (e: IncorrectDataException) {
-            view!!.showSnackBar(viewComponent, e.localizedMessage, R.string.retry)// bug нужна видимо интернационализация, в регистрации то же самое
-        } finally {
-            view!!.hideProgress()
             view!!.enableButton()
+            view!!.showSnackBar(viewComponent, e.localizedMessage, R.string.retry)// bug нужна видимо интернационализация, в регистрации то же самое
         }
     }
 

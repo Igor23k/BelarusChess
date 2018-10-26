@@ -31,7 +31,7 @@ public class Constants {
     public static final String TIME_PICKER_DIALOG = "Timepickerdialog";
 
     public static final String INCORRECT_USER_ID = "Error! User id must not be less than 1!";
-    public static final String INCORRECT_USER_NAME = "Error! User gameRecord must contain from 3 to 30 symbols!";
+    public static final String INCORRECT_USER_NAME = "Error! User name must contain from 3 to 30 symbols!";
     public static final String INCORRECT_USER_SURNAME = "Error! User surname must contain from 3 to 30 symbols!";
     public static final String INCORRECT_USER_PATRONYMIC = "Error! User patronymic must contain from 3 to 30 symbols!";
     public static final String INCORRECT_USER_BIRTHDAY = "Error! Incorrect user birthday!";

@@ -64,10 +64,9 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorization);
         ButterKnife.bind(this);
-        presenter.attachViewComponent(findViewById(R.id.scrollViewRegistration));
-        presenter.viewIsReady();
+        presenter.attachViewComponent(findViewById(R.id.scrollViewAuthorization));
         initButtonsListeners();
-        presenter.viewIsReady();
+        registerInternetCheckReceiver();
     }
 
     private void initButtonsListeners() {
@@ -240,7 +239,7 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     @Override
     public void showSnackBar(@NonNull View componentView, @NonNull String message, @StringRes @NonNull Integer buttonText) {
         snackbar = Snackbar
-                .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
+                .make(componentView, message, Snackbar.LENGTH_LONG)
                 .setAction(buttonText, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

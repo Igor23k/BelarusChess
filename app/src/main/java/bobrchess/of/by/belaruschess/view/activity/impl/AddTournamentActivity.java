@@ -48,7 +48,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
 
     private boolean manyPeopleInTeam;
 
-    @BindView(R.id.tournament_name_input)
+    @BindView(R.id.e_name_input)
     EditText nameText;
 
     @BindView(R.id.tournament_short_description_input)
@@ -89,7 +89,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
         presenter.attachView(this);
         refereeSpinner = findViewById(R.id.refereeSpinner);
         refereeSpinner.setOnItemSelectedListener(new RefereeItemSelectedListener());
-        placeSpinner = findViewById(R.id.countrySpinner);
+        placeSpinner = findViewById(R.id.s_countrySpinner);
         placeSpinner.setOnItemSelectedListener(new PlaceItemSelectedListener());
         setSupportActionBar(toolbar);
         initButtonsListeners();
