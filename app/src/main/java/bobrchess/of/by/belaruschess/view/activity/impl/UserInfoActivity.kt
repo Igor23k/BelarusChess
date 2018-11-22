@@ -18,8 +18,10 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.*
-import bobrchess.of.by.belaruschess.util.Util.USER_INFO
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util.Companion.USER_INFO
 import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import com.squareup.picasso.Picasso
@@ -88,8 +90,8 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-        /*R.id.action_settings -> {
-        }*/
+            /*R.id.action_settings -> {
+            }*/
             R.id.action_tournaments_search -> {
                 val intent = Intent(this, SearchTournamentActivity::class.java)
                 startActivity(intent)

@@ -18,8 +18,8 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
-import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import butterknife.ButterKnife

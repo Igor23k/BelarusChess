@@ -18,9 +18,11 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
-import bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER
-import bobrchess.of.by.belaruschess.util.Util.*
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_PARTICIPANTS_REQUEST
+import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_TABLE_REQUEST
+import bobrchess.of.by.belaruschess.util.Util.Companion.USER_INFO
 import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentParticipantsAdapter
 import bobrchess.of.by.colibritweet.adapter.TournamentTableAdapter

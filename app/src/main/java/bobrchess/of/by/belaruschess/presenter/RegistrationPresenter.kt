@@ -12,7 +12,7 @@ interface RegistrationPresenter : BasePresenter {
     fun loadCountries()
     fun attachView(activity: RegistrationContractView)
     fun attachViewComponent(view: View)
-    fun setConnectivityStatus(status: Int?)
+    fun setConnectivityStatus(connectivityStatus: Int?)
     fun setSelectedRankIndex(selectedRankIndex: Int)
     fun setSelectedCountryIndex(selectedCountryIndex: Int)
     fun setSelectedCoachIndex(selectedCoachIndex: Int)

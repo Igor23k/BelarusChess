@@ -10,7 +10,7 @@ import bobrchess.of.by.belaruschess.dto.UserDTO
 
 interface CallBackRegistration : CallBack {
     fun onResponse(userDTO: UserDTO)
-    fun onCoachResponse(coaches: List<UserDTO>)
-    fun onRankResponse(ranks: List<RankDTO>)
-    fun onCountryResponse(countries: List<CountryDTO>)
+    fun onCoachResponse(coaches: MutableList<UserDTO>)
+    fun onRankResponse(ranks: MutableList<RankDTO>)
+    fun onCountryResponse(countries: MutableList<CountryDTO>)
 }

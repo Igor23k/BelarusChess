@@ -53,14 +53,14 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     @Override
     public void onRefereeResponse(@NonNull List<UserDTO> referees) {
         saveRefereesIndexes(referees);
-        view.setRefereeSpinnerAdapter(Util.getUsersNames(referees));
+        view.setRefereeSpinnerAdapter(Util.Companion.getUsersNames(referees));
         checkIsViewReady();
     }
 
     @Override
     public void onPlaceResponse(@NonNull List<PlaceDTO> places) {
         savePlacesIndexes(places);
-        view.setPlaceSpinnerAdapter(Util.getPlacesNames(places));
+        view.setPlaceSpinnerAdapter(Util.Companion.getPlacesNames(places));
         checkIsViewReady();
     }
 

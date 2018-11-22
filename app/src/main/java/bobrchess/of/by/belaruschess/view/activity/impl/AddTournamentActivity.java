@@ -31,15 +31,11 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl;
+import bobrchess.of.by.belaruschess.util.Constants;
+import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static bobrchess.of.by.belaruschess.util.Constants.DATE_PICKER_DIALOG;
-import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
-import static bobrchess.of.by.belaruschess.util.Constants.TIME_PICKER_DIALOG;
-import static bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER;
-import static bobrchess.of.by.belaruschess.util.Util.ADD_TOURNAMENT_REQUEST;
 
 public class AddTournamentActivity extends MvpAppCompatActivity implements AddTournamentContractView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -116,7 +112,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
                 );
-                dpd.show(getFragmentManager(), DATE_PICKER_DIALOG);
+                dpd.show(getFragmentManager(), Constants.Companion.getDATE_PICKER_DIALOG());
             }
         });
 
@@ -130,7 +126,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
                         now.get(Calendar.MINUTE),
                         false
                 );
-                tpd.show(getFragmentManager(), TIME_PICKER_DIALOG);
+                tpd.show(getFragmentManager(), Constants.Companion.getTIME_PICKER_DIALOG());
             }
         });
         presenter.viewIsReady();
@@ -157,7 +153,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == ADD_TOURNAMENT_REQUEST) {
+            if (requestCode == Util.Companion.getADD_TOURNAMENT_REQUEST()) {
                 this.finish();
             }
         }
@@ -177,7 +173,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
     }
 
     private void putTournamentData(Intent intent, TournamentDTO tournamentDTO) {
-        intent.putExtra(TOURNAMENT_PARAMETER, tournamentDTO);
+        intent.putExtra(Constants.Companion.getTOURNAMENT_PARAMETER(), tournamentDTO);
     }
 
     @Override
@@ -201,7 +197,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
 
     @Override
     public void showProgress() {
-        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait));
+        progressDialog = ProgressDialog.show(this, "", this.getString(R.string.please_wait));
     }
 
     @Override
@@ -259,7 +255,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
     @Override
     public void onResume() {
         super.onResume();
-        DatePickerDialog dpd = (DatePickerDialog) getFragmentManager().findFragmentByTag(DATE_PICKER_DIALOG);
+        DatePickerDialog dpd = (DatePickerDialog) getFragmentManager().findFragmentByTag(Constants.Companion.getDATE_PICKER_DIALOG());
         if (dpd != null) dpd.setOnDateSetListener(this);
     }
 

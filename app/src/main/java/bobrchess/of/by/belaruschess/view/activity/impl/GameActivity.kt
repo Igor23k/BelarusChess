@@ -15,8 +15,8 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.presenter.GamePresenter
 import bobrchess.of.by.belaruschess.presenter.impl.GamePresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
-import bobrchess.of.by.belaruschess.util.Constants.GAME_PARAMETER
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.GAME_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.GameContractView
 import com.squareup.picasso.Picasso
 import java.util.*

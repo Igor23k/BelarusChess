@@ -10,10 +10,10 @@ import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.RegistrationConnection
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration
-import bobrchess.of.by.belaruschess.util.Constants.SERVER_UNAVAILABLE
-import bobrchess.of.by.belaruschess.util.Constants.UNSUCCESSFUL_REQUEST
+import bobrchess.of.by.belaruschess.util.Constants.Companion.SERVER_UNAVAILABLE
+import bobrchess.of.by.belaruschess.util.Constants.Companion.UNSUCCESSFUL_REQUEST
 import bobrchess.of.by.belaruschess.util.Util
-import bobrchess.of.by.belaruschess.util.Util.TYPE_NOT_CONNECTED
+import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Validator
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 import com.arellomobile.mvp.InjectViewState
@@ -52,19 +52,19 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
         view!!.startActivity(userDTO)
     }
 
-    override fun onCoachResponse(coaches: List<UserDTO>) {
+    override fun onCoachResponse(coaches: MutableList<UserDTO>) {
         saveCoachesIndexes(coaches)
-        view!!.setCoachSpinnerAdapter(Util.getUsersNames(coaches))
+        view!!.setCoachSpinnerAdapter(Util.getUsersNames(coaches).toMutableList())
         loadRanks()
     }
 
-    override fun onRankResponse(ranks: List<RankDTO>) {
+    override fun onRankResponse(ranks: MutableList<RankDTO>) {
         saveRanksIndexes(ranks)
-        view!!.setRankSpinnerAdapter(Util.getRanksNames(ranks))
+        view!!.setRankSpinnerAdapter(Util.getRanksNames(ranks).toMutableList())
         loadCountries()
     }
 
-    override fun onCountryResponse(countries: List<CountryDTO>) {
+    override fun onCountryResponse(countries: MutableList<CountryDTO>) {
         saveCountriesIndexes(countries)
         view!!.setCountrySpinnerAdapter(Util.getCountriesNames(countries))
         viewIsReady = true
@@ -106,7 +106,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
         setUserData(userDTO)
         try {
             Validator.validateUserData(userDTO)
-            userDTO.password = Util.getEncodedPassword(userDTO.password)
+            userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
             userConnection.registration(userDTO)
         } catch (e: IncorrectDataException) {

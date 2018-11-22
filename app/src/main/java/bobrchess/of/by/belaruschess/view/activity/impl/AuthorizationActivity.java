@@ -26,15 +26,11 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.impl.AuthorizationPresenterImpl;
+import bobrchess.of.by.belaruschess.util.Constants;
+import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
-import static bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER;
-import static bobrchess.of.by.belaruschess.util.Util.AUTHORIZATION_REQUEST;
-import static bobrchess.of.by.belaruschess.util.Util.TYPE_NOT_CONNECTED;
-import static bobrchess.of.by.belaruschess.util.Util.getConnectivityStatus;
 
 public class AuthorizationActivity extends MvpAppCompatActivity implements AuthorizationContractView {
 
@@ -86,7 +82,7 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                startActivityForResult(intent, AUTHORIZATION_REQUEST);
+                startActivityForResult(intent, Util.Companion.getAUTHORIZATION_REQUEST());
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
@@ -96,7 +92,7 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            connectivityStatus = getConnectivityStatus(context);
+            connectivityStatus = Util.Companion.getConnectivityStatus(context);
             presenter.setConnectivityStatus(connectivityStatus);
         }
     };
@@ -123,7 +119,7 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (connectivityStatus != TYPE_NOT_CONNECTED) {
+                        if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
                             dialog.dismiss();
                         }
                     }
@@ -142,7 +138,7 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == AUTHORIZATION_REQUEST) {
+            if (requestCode == Util.Companion.getAUTHORIZATION_REQUEST()) {
                 this.finish();
             }
         }
@@ -162,7 +158,7 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     }
 
     private void putUserData(Intent intent, @NonNull UserDTO userDTO) {
-        intent.putExtra(USER_PARAMETER, userDTO);
+        intent.putExtra(Constants.Companion.getUSER_PARAMETER(), userDTO);
     }
 
     @Override
@@ -191,7 +187,7 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
 
     @Override
     public void showProgress() {
-        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait));
+        progressDialog = ProgressDialog.show(this, Constants.Companion.getEMPTY_STRING(), this.getString(R.string.please_wait));
     }
 
     @Override

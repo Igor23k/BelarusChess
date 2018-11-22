@@ -16,10 +16,10 @@ import android.widget.TextView
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.GamesListPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.GamesListPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.*
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.GAME_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.GamesListContractView
 import bobrchess.of.by.colibritweet.adapter.GamesAdapter
 import butterknife.ButterKnife

@@ -21,7 +21,7 @@ public class App extends Application {
         super.onCreate();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.URL.HOST)
+                .baseUrl(Constants.Companion.getHOST())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         api = retrofit.create(API.class);

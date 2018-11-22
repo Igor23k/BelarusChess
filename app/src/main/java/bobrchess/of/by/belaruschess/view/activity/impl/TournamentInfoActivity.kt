@@ -21,10 +21,10 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING
-import bobrchess.of.by.belaruschess.util.Constants.TOURNAMENT_PARAMETER
-import bobrchess.of.by.belaruschess.util.Util.TOURNAMENT_PARTICIPANTS_REQUEST
-import bobrchess.of.by.belaruschess.util.Util.TOURNAMENT_TABLE_REQUEST
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_PARTICIPANTS_REQUEST
+import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_TABLE_REQUEST
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
 import com.dd.CircularProgressButton
 import com.squareup.picasso.Picasso

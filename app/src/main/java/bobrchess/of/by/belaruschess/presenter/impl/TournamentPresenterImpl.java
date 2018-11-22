@@ -31,7 +31,7 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     @Override
     public void onResponse(List list) {
-        if( list.get(0).getClass().equals(GameDTO.class) ) {
+        if (list.get(0).getClass().equals(GameDTO.class)) {
             view.showGames(list);
         }
     }
@@ -44,7 +44,7 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     @Override
     public void getTournament(Integer id) {
-        if(viewIsReady) {
+        if (viewIsReady) {
             view.showProgress();
             tournamentConnection.getTournament(id);
         }
@@ -52,7 +52,7 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     @Override
     public void getTournaments() {
-        if(viewIsReady) {
+        if (viewIsReady) {
             view.showProgress();
             tournamentConnection.getTournaments();
         }

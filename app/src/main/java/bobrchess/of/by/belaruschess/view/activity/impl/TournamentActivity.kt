@@ -26,8 +26,10 @@ import bobrchess.of.by.belaruschess.fragments.OneFragment
 import bobrchess.of.by.belaruschess.fragments.TwoFragment
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.*
-import bobrchess.of.by.belaruschess.util.Util.TOURNAMENT_REQUEST
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.GAME_PARAMETER
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_REQUEST
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
 import bobrchess.of.by.colibritweet.adapter.GamesAdapter
 import com.squareup.picasso.Picasso

@@ -35,17 +35,11 @@ import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl;
+import bobrchess.of.by.belaruschess.util.Constants;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static bobrchess.of.by.belaruschess.util.Constants.DATE_PICKER_DIALOG;
-import static bobrchess.of.by.belaruschess.util.Constants.EMPTY_STRING;
-import static bobrchess.of.by.belaruschess.util.Constants.USER_PARAMETER;
-import static bobrchess.of.by.belaruschess.util.Util.REGISTRATION_REQUEST;
-import static bobrchess.of.by.belaruschess.util.Util.TYPE_NOT_CONNECTED;
-import static bobrchess.of.by.belaruschess.util.Util.getConnectivityStatus;
 
 public class RegistrationActivity extends MvpAppCompatActivity implements RegistrationContractView, DatePickerDialog.OnDateSetListener {
 
@@ -111,7 +105,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
         registerInternetCheckReceiver();
         genderSpinner = findViewById(R.id.s_genderSpinner);
         genderSpinner.setOnItemSelectedListener(new GenderItemSelectedListener());
-        setGenderSpinnerAdapter(Util.getGenders());
+        setGenderSpinnerAdapter(Util.Companion.getGenders());
         coachSpinner = findViewById(R.id.s_coachSpinner);
         coachSpinner.setOnItemSelectedListener(new CoachItemSelectedListener());
         rankSpinner = findViewById(R.id.s_rankSpinner);
@@ -137,7 +131,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
-                startActivityForResult(intent, REGISTRATION_REQUEST);
+                startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
@@ -152,7 +146,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
                 );
-                dpd.show(getFragmentManager(), DATE_PICKER_DIALOG);
+                dpd.show(getFragmentManager(), Constants.Companion.getDATE_PICKER_DIALOG());
             }
         });
 
@@ -166,7 +160,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REGISTRATION_REQUEST) {
+        if (requestCode == Util.Companion.getREGISTRATION_REQUEST()) {
             if (resultCode == RESULT_OK) {
                 this.finish();
             }
@@ -182,12 +176,12 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     public void startActivity(@NonNull UserDTO userDTO) {
         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
         putUserData(intent, userDTO);
-        startActivityForResult(intent, REGISTRATION_REQUEST);
+        startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     private void putUserData(Intent intent, @NonNull UserDTO userDTO) {
-        intent.putExtra(USER_PARAMETER, userDTO);
+        intent.putExtra(Constants.Companion.getUSER_PARAMETER(), userDTO);
     }
 
     @Override
@@ -225,7 +219,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
 
     @Override
     public void showProgress() {
-        progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait));
+        progressDialog = ProgressDialog.show(this, "", this.getString(R.string.please_wait));
     }
 
     @Override
@@ -359,7 +353,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
     public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            connectivityStatus = getConnectivityStatus(context);
+            connectivityStatus = Util.Companion.getConnectivityStatus(context);
             presenter.setConnectivityStatus(connectivityStatus);
         }
     };
@@ -386,7 +380,7 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (connectivityStatus != TYPE_NOT_CONNECTED) {
+                        if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
                             dialog.dismiss();
                             loadSpinnersData();
                         }

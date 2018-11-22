@@ -72,7 +72,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
         view!!.disableButton()
         try {
             Validator.validateAuthUserData(userDTO)
-            userDTO.password = Util.getEncodedPassword(userDTO.password)
+            userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
             userConnection.authorization(userDTO)
         } catch (e: IncorrectDataException) {
