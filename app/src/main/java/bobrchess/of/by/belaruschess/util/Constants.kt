@@ -11,6 +11,7 @@ class Constants {
 
         val UNSUCCESSFUL_REQUEST = "Unsuccessful request!"
         val SERVER_UNAVAILABLE = "Server is unavailable"
+        val TOKEN_IS_EXPIRED = "Token is expired"
         val ERROR_PARAMETER = "Error"
         //public static final String PLEASE_WAIT = "Please, wait ...";
         val EMPTY_STRING = ""
@@ -30,7 +31,7 @@ class Constants {
         val TIME_PICKER_DIALOG = "Timepickerdialog"
 
         val INCORRECT_USER_ID = "Error! User id must not be less than 1!"
-        val INCORRECT_USER_NAME = "Error! User name must contain from 3 to 30 symbols!"
+        val INCORRECT_USER_NAME = "Error! User token must contain from 3 to 30 symbols!"
         val INCORRECT_USER_SURNAME = "Error! User surname must contain from 3 to 30 symbols!"
         val INCORRECT_USER_PATRONYMIC = "Error! User patronymic must contain from 3 to 30 symbols!"
         val INCORRECT_USER_BIRTHDAY = "Error! Incorrect user birthday!"
@@ -42,7 +43,7 @@ class Constants {
         val INCORRECT_USER_PHONE_NUMBER = "Error! User phone number must contain from 5 to 20 symbols!"
 
         val INCORRECT_COUNTRY_ID = "Error! Country id must not be less than 1!"
-        val INCORRECT_COUNTRY_NAME = "Error! Country name must contain from 3 to 50 symbols!"
+        val INCORRECT_COUNTRY_NAME = "Error! Country token must contain from 3 to 50 symbols!"
         val INCORRECT_COUNTRY_ABBREVIATION = "Error! Country abbreviation must contain from 3 to 3 symbols!"
 
         val INCORRECT_GAME_ID = "Error! Game id must not be less than 1!"
@@ -67,7 +68,7 @@ class Constants {
         val INCORRECT_PLACE_COUNTRY = "Error! Place country must not be null!"
 
         val INCORRECT_RANK_ID = "Error! Rank id must not be less than 1!"
-        val INCORRECT_RANK_NAME = "Error! Rank gameRecord must contain from 3 to 50 symbols!"
+        val INCORRECT_RANK_NAME = "Error! Rank token must contain from 3 to 50 symbols!"
         val INCORRECT_RANK_ABBREVIATION = "Error! Rank abbreviation must contain from 3 to 3 symbols!"
 
         val INCORRECT_TOURNAMENT_ID = "Error! Tournament id must not be less than 1!"
@@ -88,7 +89,13 @@ class Constants {
 
 
         val HOST = "http://192.168.100.2:8080"
-        //public static final String HOST = "http://192.168.43.96:8080";
+        //val HOST = "http://192.168.43.96:8080"
+
+
+        val REFRESH_TOKEN_DEFAULT = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWN1cml0eUBnbWFpbC5jb20iLCJzY29wZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfUFJFTUlVTV9NRU1CRVIiLCJST0xFX1JFRlJFU0hfVE9LRU4iXSwiaXNzIjoiaHR0cDovL3N2bGFkYS5jb20iLCJpYXQiOjE0NzIzOTAwNjUsImV4cCI6MTk3MjM5MDk2NX0.q9H20pGFLegFH2LjiYBNTm7u9i3PWGZh8rTx3A3nrXnFVg5_fOiSDxYQuodkt_S9gFNjJCI8ap-dvogTgwCf5Q"
+        val REFRESH_TOKEN = "refreshToken"
+        val TOKEN = "token"
+        val TOKEN_DEFAULT = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWN1cml0eUBnbWFpbC5jb20iLCJzY29wZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfUFJFTUlVTV9NRU1CRVIiLCJST0xFX1JFRlJFU0hfVE9LRU4iXSwiaXNzIjoiaHR0cDovL3N2bGFkYS5jb20iLCJpYXQiOjE0NzIzOTAwNjUsImV4cCI6MTk3MjM5MDk2NX0.q9H20pGFLegFH2LjiYBNTm7u9i3PWGZh8rTx3A3nrXnFVg5_fOiSDxYQuodkt_S9gFNjJCI8ap-dvogTgwCf5Q"
 
     }
 }

@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.presenter.impl
 
 import android.view.View
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.ErrorDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.AuthorizationConnection
@@ -11,24 +12,27 @@ import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Validator
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView
+import bobrchess.of.by.belaruschess.view.activity.impl.PackageModel
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.google.gson.Gson
 
 @InjectViewState
 class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, CallBackAuthorization, AuthorizationPresenter {
 
     private var view: AuthorizationContractView? = null
     private var viewComponent: View? = null
-    private var userConnection: AuthorizationConnection = AuthorizationConnection()
+    private var authorizationConnection: AuthorizationConnection = AuthorizationConnection()
     private var viewIsReady: Boolean? = false
     private var connectivityStatus: Int? = null
+    private var packageModel: PackageModel? = null
 
-    constructor(){
-        userConnection.attachPresenter(this)
+    constructor() {
+        authorizationConnection.attachPresenter(this)
     }
 
-    override fun setConnectivityStatus(connectivityStatus: Int?) {
-        this.connectivityStatus = connectivityStatus
+    override fun setConnectivityStatus(status: Int?) {
+        this.connectivityStatus = status
         if (connectivityStatus == Util.TYPE_NOT_CONNECTED) {
             view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
         }
@@ -47,7 +51,9 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
     override fun onFailure(t: Throwable) {
         view!!.hideProgress()
         view!!.enableButton()
-        when (t.message) {
+        val errorDto = Gson().fromJson(t.message, ErrorDTO::class.java)
+
+        when (errorDto.message) {
             Constants.SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
             }
@@ -68,13 +74,17 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
         }
     }
 
+    fun setPackageModel(packageModel: PackageModel) {
+        this.packageModel = packageModel
+    }
+
     override fun authorization(userDTO: UserDTO) {
         view!!.disableButton()
         try {
             Validator.validateAuthUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
-            userConnection.authorization(userDTO)
+            authorizationConnection.authorization(userDTO)
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
             view!!.showSnackBar(viewComponent, e.localizedMessage, R.string.retry)// bug нужна видимо интернационализация, в регистрации то же самое

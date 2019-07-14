@@ -112,42 +112,33 @@ public class RegistrationActivity extends MvpAppCompatActivity implements Regist
         rankSpinner.setOnItemSelectedListener(new RankItemSelectedListener());
         countrySpinner = findViewById(R.id.s_countrySpinner);
         countrySpinner.setOnItemSelectedListener(new CountryItemSelectedListener());
+        presenter.setPackageModel(new PackageModel(this));
     }
 
     private void initButtonsListeners() {
-        registrationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
-                        R.style.AppTheme_Dark_Dialog);
-                progressDialog.setIndeterminate(true);
-                registration();
-            }
+        registrationButton.setOnClickListener(v -> {
+            final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            registration();
         });
 
 
-        authorizationLink.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
-                startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
+        authorizationLink.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
+            startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
+            finish();
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         });
-        calendarImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog dpd = com.borax12.materialdaterangepicker.date.DatePickerDialog.newInstance(
-                        RegistrationActivity.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.show(getFragmentManager(), Constants.Companion.getDATE_PICKER_DIALOG());
-            }
+        calendarImage.setOnClickListener(v -> {
+            Calendar now = Calendar.getInstance();
+            DatePickerDialog dpd = DatePickerDialog.newInstance(
+                    RegistrationActivity.this,
+                    now.get(Calendar.YEAR),
+                    now.get(Calendar.MONTH),
+                    now.get(Calendar.DAY_OF_MONTH)
+            );
+            dpd.show(getFragmentManager(), Constants.Companion.getDATE_PICKER_DIALOG());
         });
 
     }

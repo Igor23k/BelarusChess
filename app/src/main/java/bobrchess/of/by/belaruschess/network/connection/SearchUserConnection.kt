@@ -22,16 +22,16 @@ class SearchUserConnection {
     private var callBack: CallBackSearchUser? = null
 
     fun getUsers() {
-        App.getAPI().users.enqueue(object : Callback<List<UserDTO>> {
+        App.getAPI().users("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWN1cml0eUBnbWFpbC5jb20iLCJzY29wZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfUFJFTUlVTV9NRU1CRVIiLCJST0xFX1JFRlJFU0hfVE9LRU4iXSwiaXNzIjoiaHR0cDovL3N2bGFkYS5jb20iLCJpYXQiOjE0NzIzOTAwNjUsImV4cCI6MTk3MjM5MDk2NX0.q9H20pGFLegFH2LjiYBNTm7u9i3PWGZh8rTx3A3nrXnFVg5_fOiSDxYQuodkt_S9gFNjJCI8ap-dvogTgwCf5Q").enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
                     } else {
-                        callBack!!.onFailure(Throwable(response.raw().header(ERROR_PARAMETER)))
+                        callBack!!.onFailure(Throwable(response.errorBody().string()))
                     }
                 } else {
-                    callBack!!.onFailure(Throwable(UNSUCCESSFUL_REQUEST))
+                    callBack!!.onFailure(Throwable(response.errorBody().string()))
                 }
             }
 
@@ -48,10 +48,10 @@ class SearchUserConnection {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
                     } else {
-                        callBack!!.onFailure(Throwable(response.raw().header(ERROR_PARAMETER)))
+                        callBack!!.onFailure(Throwable(response.errorBody().string()))
                     }
                 } else {
-                    callBack!!.onFailure(Throwable(UNSUCCESSFUL_REQUEST))
+                    callBack!!.onFailure(Throwable(response.errorBody().string()))
                 }
             }
 
@@ -68,10 +68,10 @@ class SearchUserConnection {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
                     } else {
-                        callBack!!.onFailure(Throwable(response.raw().header(ERROR_PARAMETER)))
+                        callBack!!.onFailure(Throwable(response.errorBody().string()))
                     }
                 } else {
-                    callBack!!.onFailure(Throwable(UNSUCCESSFUL_REQUEST))
+                    callBack!!.onFailure(Throwable(response.errorBody().string()))
                 }
             }
 

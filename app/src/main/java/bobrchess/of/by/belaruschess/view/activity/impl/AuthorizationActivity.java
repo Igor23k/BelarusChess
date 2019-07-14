@@ -26,6 +26,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.impl.AuthorizationPresenterImpl;
+import bobrchess.of.by.belaruschess.presenter.impl.TokenAuthPresenterImpl;
 import bobrchess.of.by.belaruschess.util.Constants;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView;
@@ -36,8 +37,13 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
 
     private static Snackbar snackbar;
 
+    private boolean tokenAuthAttempt = true;
+
     @InjectPresenter
     AuthorizationPresenterImpl presenter;
+
+    @InjectPresenter
+    TokenAuthPresenterImpl tokenAuthPresenter;
 
     @BindView(R.id.e_email_input)
     EditText emailText;
@@ -58,34 +64,54 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter.setPackageModel(new PackageModel(this));
+        tokenAuthPresenter.setPackageModel(new PackageModel(this));
+        registerInternetCheckReceiver();
+
+        if (tokenAuthPresenter.isAuthenticated()) {
+            tokenAuthPresenter.tokenAuthorization();
+        } else {
+            initActivityData();
+        }
+    }
+
+    public void unsuccessfulTokenAuth(){
+        initActivityData();
+    }
+
+    public void initActivityData(){
         setContentView(R.layout.activity_authorization);
         ButterKnife.bind(this);
         presenter.attachViewComponent(findViewById(R.id.scrollViewAuthorization));
         initButtonsListeners();
-        registerInternetCheckReceiver();
+    }
+
+    public boolean isTokenAuthAttempt() {
+        return tokenAuthAttempt;
+    }
+
+    public void setTokenAuthAttempt(boolean tokenAuthAttempt) {
+        this.tokenAuthAttempt = tokenAuthAttempt;
+    }
+
+    public void tokenAuthCompleted(boolean successfullAuth){
+        System.out.println();
     }
 
     private void initButtonsListeners() {
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(AuthorizationActivity.this,
-                        R.style.AppTheme_Dark_Dialog);
-                progressDialog.setIndeterminate(true);
-                authorization();
-            }
+        loginButton.setOnClickListener(v -> {
+            final ProgressDialog progressDialog = new ProgressDialog(AuthorizationActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            authorization();
         });
 
 
-        registrationLink.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                startActivityForResult(intent, Util.Companion.getAUTHORIZATION_REQUEST());
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
+        registrationLink.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+            startActivityForResult(intent, Util.Companion.getAUTHORIZATION_REQUEST());
+            finish();
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         });
     }
 
@@ -112,19 +138,13 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
                 .setPositiveButton(buttonText, null)
                 //  Log.d("TAG", "Show Dialog: " + "Message");// bug оформить норм
                 .create();
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(final DialogInterface dialog) {
-                Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-            }
+        builder.setOnShowListener(dialog -> {
+            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
+            b.setOnClickListener(v -> {
+                if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
+                    dialog.dismiss();
+                }
+            });
         });
         builder.show();
     }

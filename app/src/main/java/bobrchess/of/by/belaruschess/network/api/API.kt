@@ -1,19 +1,8 @@
 package bobrchess.of.by.belaruschess.network.api
 
-import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.dto.GameDTO
-import bobrchess.of.by.belaruschess.dto.MatchDTO
-import bobrchess.of.by.belaruschess.dto.PlaceDTO
-import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.dto.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by Igor on 10.04.2018.
@@ -32,8 +21,8 @@ interface API {
 
     //User
 
-    @get:GET("/allUsers")
-    val users: Call<List<UserDTO>>
+    @GET("/api/allUsers")
+    fun users(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
     @get:GET("/coaches")
     val coaches: Call<List<UserDTO>>
@@ -77,11 +66,17 @@ interface API {
     @GET("/user/{id}")
     fun getUser(@Path("id") id: Int): Call<UserDTO>
 
-    @POST("/user")
+    @GET("/api/me")
+    fun getUser(@Header("Authorization") authorization: String): Call<UserDTO>
+
+    @POST("/api/auth/login")
     fun authorization(@Body userDTO: UserDTO): Call<UserDTO>
 
-    @POST("/addUser")
-    fun registration(@Body userDTO: UserDTO): Call<UserDTO>
+    @GET("/api/auth/token")
+    fun refreshToken(@Header("Authorization") authorization: String): Call<TokenDTO>
+
+    @POST("/register")
+    fun registration(@Body userDTO: UserDTO): Call<UserContextDTO>
 
     //Tournament
     @GET("/tournament/{id}")

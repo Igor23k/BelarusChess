@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.presenter.callback
 
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.RankDTO
+import bobrchess.of.by.belaruschess.dto.UserContextDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 
 /**
@@ -9,7 +10,7 @@ import bobrchess.of.by.belaruschess.dto.UserDTO
  */
 
 interface CallBackRegistration : CallBack {
-    fun onResponse(userDTO: UserDTO)
+    fun onResponse(userContextDTO: UserContextDTO)
     fun onCoachResponse(coaches: MutableList<UserDTO>)
     fun onRankResponse(ranks: MutableList<RankDTO>)
     fun onCountryResponse(countries: MutableList<CountryDTO>)

@@ -29,10 +29,10 @@ class TournamentConnection {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
                     } else {
-                        callBack!!.onFailure(Throwable(response.raw().header(ERROR_PARAMETER)))
+                        callBack!!.onFailure(Throwable(response.errorBody().string()))
                     }
                 } else {
-                    callBack!!.onFailure(Throwable(UNSUCCESSFUL_REQUEST))
+                    callBack!!.onFailure(Throwable(response.errorBody().string()))
                 }
             }
 
@@ -65,10 +65,10 @@ class TournamentConnection {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
                     } else {
-                        callBack!!.onFailure(Throwable(response.raw().header(ERROR_PARAMETER)))
+                        callBack!!.onFailure(Throwable(response.errorBody().string()))
                     }
                 } else {
-                    callBack!!.onFailure(Throwable(UNSUCCESSFUL_REQUEST))
+                    callBack!!.onFailure(Throwable(response.errorBody().string()))
                 }
             }
 

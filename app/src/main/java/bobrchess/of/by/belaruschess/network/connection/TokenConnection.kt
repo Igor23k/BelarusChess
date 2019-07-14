@@ -6,6 +6,7 @@ import bobrchess.of.by.belaruschess.App
 import bobrchess.of.by.belaruschess.dto.TokenDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAuthorization
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,13 +19,13 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.UNSUCCESSFUL_REQUES
  * Created by Igor on 11.04.2018.
  */
 
-class AuthorizationConnection {
+class TokenConnection {
 
-    private var callBack: CallBackAuthorization? = null
+    private var callBack: CallBackToken? = null
 
-    fun authorization(userDTO: UserDTO) {
-        App.getAPI().authorization(userDTO).enqueue(object : Callback<UserDTO> {
-            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+    fun refreshToken(authorization: String) {
+        App.getAPI().refreshToken(authorization).enqueue(object : Callback<TokenDTO> {
+            override fun onResponse(call: Call<TokenDTO>, response: Response<TokenDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -36,33 +37,13 @@ class AuthorizationConnection {
                 }
             }
 
-            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+            override fun onFailure(call: Call<TokenDTO>, t: Throwable) {
                 callBack!!.onFailure(Throwable(SERVER_UNAVAILABLE))
             }
         })
     }
 
-    fun getUser(authorization: String) {
-        App.getAPI().getUser(authorization).enqueue(object : Callback<UserDTO> {
-            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
-                if (response.isSuccessful) {
-                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
-                        callBack!!.onResponse(response.body())
-                    } else {
-                        callBack!!.onFailure(Throwable(response.errorBody().string()))
-                    }
-                } else {
-                    callBack!!.onFailure(Throwable(response.errorBody().string()))
-                }
-            }
-
-            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                callBack!!.onFailure(Throwable(SERVER_UNAVAILABLE))
-            }
-        })
-    }
-
-    fun attachPresenter(callBack: CallBackAuthorization) {
+    fun attachPresenter(callBack: CallBackToken) {
         this.callBack = callBack
     }
 }

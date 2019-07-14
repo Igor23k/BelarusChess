@@ -5,6 +5,7 @@ import android.view.View
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.RankDTO
+import bobrchess.of.by.belaruschess.dto.UserContextDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.RegistrationConnection
@@ -16,6 +17,7 @@ import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Validator
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
+import bobrchess.of.by.belaruschess.view.activity.impl.PackageModel
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import java.util.*
@@ -37,6 +39,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
     private val coachesIndexes = HashMap<Int, UserDTO>()
     private var connectivityStatus: Int? = null
     private var firstTimeSpinnerLoad: Boolean = true
+    private var packageModel: PackageModel? = null
 
     companion object {
         private const val NOT_SELECTED_INDEX = 0
@@ -46,10 +49,22 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
         userConnection.attachPresenter(this)
     }
 
-    override fun onResponse(userDTO: UserDTO) {
+    fun setPackageModel(packageModel: PackageModel){
+        this.packageModel = packageModel
+    }
+
+    override fun onResponse(userContextDTO: UserContextDTO) {
+        val f1a = packageModel!!.getValue("token")
+        val a21 = packageModel!!.getValue("refreshToken")
+        packageModel!!.putTokenMap(userContextDTO.tokenMap)
+        val a = packageModel!!.getValue("token")
+        val a1 = packageModel!!.getValue("refreshToken")
         view!!.hideProgress()
         view!!.enableButton()
-        view!!.startActivity(userDTO)
+       // view!!.startActivity(userContextDTO)
+        
+        view!!.startActivity(UserDTO())//todo
+
     }
 
     override fun onCoachResponse(coaches: MutableList<UserDTO>) {
@@ -78,9 +93,9 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
             SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
             }
-            UNSUCCESSFUL_REQUEST -> {
+           /* UNSUCCESSFUL_REQUEST -> {
                 onUnsuccessfulRequest()
-            }
+            }*/
         }
     }
 

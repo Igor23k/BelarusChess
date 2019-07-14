@@ -34,9 +34,9 @@
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.GameActivity"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AddTournamentActivity" android:theme="@style/AppTheme.AddEntity">
           <!--  <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:token="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:token="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
     </application>

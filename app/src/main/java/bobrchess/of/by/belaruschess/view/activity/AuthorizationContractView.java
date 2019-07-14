@@ -13,6 +13,8 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
  */
 
 public interface AuthorizationContractView extends MvpView, BaseContractView, ButtonContractView{
+    boolean isTokenAuthAttempt();
+    void unsuccessfulTokenAuth();
     void showIncorrectEmailText();
     void showIncorrectPasswordText();
     void startActivity(UserDTO userDTO);

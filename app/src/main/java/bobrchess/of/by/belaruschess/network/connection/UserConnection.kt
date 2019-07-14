@@ -1,17 +1,15 @@
 package bobrchess.of.by.belaruschess.network.connection
 
-import org.apache.commons.httpclient.HttpStatus
-
 import bobrchess.of.by.belaruschess.App
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUser
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
 import bobrchess.of.by.belaruschess.util.Constants.Companion.ERROR_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.SERVER_UNAVAILABLE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.UNSUCCESSFUL_REQUEST
+import org.apache.commons.httpclient.HttpStatus
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * Created by Igor on 11.04.2018.
@@ -28,10 +26,10 @@ class UserConnection {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
                     } else {
-                        callBack!!.onFailure(Throwable(response.raw().header(ERROR_PARAMETER)))
+                        callBack!!.onFailure(Throwable(response.errorBody().string()))
                     }
                 } else {
-                    callBack!!.onFailure(Throwable())
+                    callBack!!.onFailure(Throwable(response.errorBody().string()))
                 }
             }
 
@@ -41,17 +39,17 @@ class UserConnection {
         })
     }
 
-    fun getUsers() {
-        App.getAPI().users.enqueue(object : Callback<List<UserDTO>> {
+    fun getUsers(authorizationHeader: String) {
+        App.getAPI().users(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
                     } else {
-                        callBack!!.onFailure(Throwable(response.raw().header(ERROR_PARAMETER)))
+                        callBack!!.onFailure(Throwable(response.errorBody().string()))
                     }
                 } else {
-                    callBack!!.onFailure(Throwable(UNSUCCESSFUL_REQUEST))
+                    callBack!!.onFailure(Throwable(response.errorBody().string()))
                 }
             }
 
