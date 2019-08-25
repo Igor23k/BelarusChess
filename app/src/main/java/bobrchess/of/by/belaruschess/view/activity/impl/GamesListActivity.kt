@@ -3,17 +3,13 @@ package bobrchess.of.by.belaruschess.view.activity.impl
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.presenter.GamesListPresenter
@@ -27,7 +23,7 @@ import butterknife.ButterKnife
 /**
  * Created by Igor on 25.03.2018.
  */
-class GamesListActivity : AppCompatActivity(), GamesListContractView {
+class GamesListActivity : AbstractActivity(), GamesListContractView {
 
     private var gamesRecyclerView: RecyclerView? = null
     private var gamesAdapter: GamesAdapter? = null
@@ -48,14 +44,15 @@ class GamesListActivity : AppCompatActivity(), GamesListContractView {
         setContentView(R.layout.activity_games_list)
         ButterKnife.bind(this)
         initRecyclerView()
+        registerInternetCheckReceiver()
 
         toolbar = findViewById(R.id.toolbar)
         searchButton = toolbar!!.findViewById(R.id.e_search_button)
         queryEditText = toolbar!!.findViewById(R.id.e_query_text)
 
-        searchButton!!.setOnClickListener(View.OnClickListener { presenter!!.searchGames() })
+        searchButton!!.setOnClickListener { presenter!!.searchGames() }
 
-        queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 presenter!!.searchGames()
                 return@OnEditorActionListener true
@@ -114,18 +111,6 @@ class GamesListActivity : AppCompatActivity(), GamesListContractView {
         gamesAdapter!!.setItems(games)
     }
 
-    override fun showToast(resId: Int?) {
-        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
-
-    override fun showToast(message: String?) {
-        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
-
     override fun showProgress() {
         progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait))
     }
@@ -134,5 +119,17 @@ class GamesListActivity : AppCompatActivity(), GamesListContractView {
         if (progressDialog != null) {
             progressDialog!!.dismiss()
         }
+    }
+
+    override fun setConnectionStatus(connectivityStatus: Int?) {
+        presenter?.setConnectivityStatus(connectivityStatus)
+    }
+
+    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun dialogConfirmButtonClicked() {
+
     }
 }

@@ -1,10 +1,8 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -12,15 +10,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import bobrchess.of.by.belaruschess.R;
@@ -33,11 +28,9 @@ import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AuthorizationActivity extends MvpAppCompatActivity implements AuthorizationContractView {
+public class AuthorizationActivity extends AbstractActivity implements AuthorizationContractView {
 
     private static Snackbar snackbar;
-
-    private boolean tokenAuthAttempt = true;
 
     @InjectPresenter
     AuthorizationPresenterImpl presenter;
@@ -58,14 +51,14 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     TextView registrationLink;
 
     private ScrollView view;
-    private Integer connectivityStatus;
     private ProgressDialog progressDialog;
+    private boolean tokenAuthFailed = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.setPackageModel(new PackageModel(this));
-        tokenAuthPresenter.setPackageModel(new PackageModel(this));
+        presenter.setPackageModel(getPackageModel());
+        tokenAuthPresenter.setPackageModel(getPackageModel());
         registerInternetCheckReceiver();
 
         if (tokenAuthPresenter.isAuthenticated()) {
@@ -75,27 +68,16 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
         }
     }
 
-    public void unsuccessfulTokenAuth(){
+    public void unsuccessfulTokenAuth() {
+        tokenAuthFailed = true;
         initActivityData();
     }
 
-    public void initActivityData(){
+    public void initActivityData() {
         setContentView(R.layout.activity_authorization);
         ButterKnife.bind(this);
         presenter.attachViewComponent(findViewById(R.id.scrollViewAuthorization));
         initButtonsListeners();
-    }
-
-    public boolean isTokenAuthAttempt() {
-        return tokenAuthAttempt;
-    }
-
-    public void setTokenAuthAttempt(boolean tokenAuthAttempt) {
-        this.tokenAuthAttempt = tokenAuthAttempt;
-    }
-
-    public void tokenAuthCompleted(boolean successfullAuth){
-        System.out.println();
     }
 
     private void initButtonsListeners() {
@@ -115,38 +97,22 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
         });
     }
 
-    public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            connectivityStatus = Util.Companion.getConnectivityStatus(context);
-            presenter.setConnectivityStatus(connectivityStatus);
+   /* public void alertDialogOnClick(AlertDialog dialog) {
+        if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
+            dialog.dismiss();
+            if (!tokenAuthFailed) {
+                tokenAuthPresenter.tokenAuthorization();
+            }
         }
-    };
-
-    private void registerInternetCheckReceiver() {
-        IntentFilter internetFilter = new IntentFilter();
-        internetFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(broadcastReceiver, internetFilter);//bug unregister тоже где то надо делать
-    }
+    }*/
 
     @Override
-    public void showNoConnectionAlertDialog(@StringRes @NonNull Integer title, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText, @NonNull Boolean cancelable) {
-        final AlertDialog builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle)
-                .setTitle(title)
-                .setMessage(message)
-                .setCancelable(cancelable)
-                .setPositiveButton(buttonText, null)
-                //  Log.d("TAG", "Show Dialog: " + "Message");// bug оформить норм
-                .create();
-        builder.setOnShowListener(dialog -> {
-            Button b = builder.getButton(AlertDialog.BUTTON_POSITIVE);
-            b.setOnClickListener(v -> {
-                if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
-                    dialog.dismiss();
-                }
-            });
-        });
-        builder.show();
+    public void dialogConfirmButtonClicked() {
+        if (presenter.isConnected(getConnectivityStatus())) {
+            if (!tokenAuthFailed) {
+                tokenAuthPresenter.tokenAuthorization();
+            }
+        }
     }
 
     @Override
@@ -192,20 +158,6 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     }
 
     @Override
-    public void showToast(@StringRes @NonNull Integer resId) {
-        Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
-
-    @Override
-    public void showToast(@NonNull String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
-
-    @Override
     public void showProgress() {
         progressDialog = ProgressDialog.show(this, Constants.Companion.getEMPTY_STRING(), this.getString(R.string.please_wait));
     }
@@ -238,10 +190,11 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     public void showSnackBar(@NonNull View componentView, @StringRes @NonNull Integer message, @StringRes @NonNull Integer buttonText) {
         snackbar = Snackbar
                 .make(componentView, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction(buttonText, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        snackbar.dismiss();
+                .setAction(buttonText, view -> {
+                    snackbar.dismiss();
+                    if (!tokenAuthFailed) {
+                        tokenAuthPresenter.tokenAuthorization();
+                    } else {
                         authorization();
                     }
                 });
@@ -256,13 +209,36 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
     public void showSnackBar(@NonNull View componentView, @NonNull String message, @StringRes @NonNull Integer buttonText) {
         snackbar = Snackbar
                 .make(componentView, message, Snackbar.LENGTH_LONG)
-                .setAction(buttonText, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        snackbar.dismiss();
+                .setAction(buttonText, view -> {
+                    snackbar.dismiss();
+                    if (!tokenAuthFailed) {
+                        tokenAuthPresenter.tokenAuthorization();
+                    } else {
                         authorization();
                     }
                 });
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+    @Override
+    public void showSnackBar(@NonNull View componentView, @StringRes int message) {
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_LONG);
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+    @Override
+    public void showSnackBar(@NonNull View componentView, @NonNull String message) {
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_LONG);
         snackbar.setActionTextColor(Color.WHITE);
         View sbView = snackbar.getView();
         TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -279,4 +255,15 @@ public class AuthorizationActivity extends MvpAppCompatActivity implements Autho
         }
     }
 
+    @Override
+    public void setConnectionStatus(Integer connectivityStatus) {
+        presenter.setConnectivityStatus(connectivityStatus);
+    }
+
+    @Override
+    public void tokenAuthorization() {
+        if (!tokenAuthFailed) {
+            tokenAuthPresenter.tokenAuthorization();
+        }
+    }
 }

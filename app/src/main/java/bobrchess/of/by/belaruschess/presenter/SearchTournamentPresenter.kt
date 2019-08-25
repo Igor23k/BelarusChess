@@ -8,10 +8,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.SearchTournamentActivity
 
 interface SearchTournamentPresenter : BasePresenter {
     fun loadTournaments()
-
     fun loadTournaments(count: Int?)
-
     fun searchTournaments()
-
     fun attachView(activity: SearchTournamentActivity)
 }

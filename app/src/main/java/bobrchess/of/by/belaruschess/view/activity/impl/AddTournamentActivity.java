@@ -1,5 +1,6 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,10 +35,11 @@ import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl;
 import bobrchess.of.by.belaruschess.util.Constants;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
+import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddTournamentActivity extends MvpAppCompatActivity implements AddTournamentContractView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class AddTournamentActivity extends AbstractActivity implements AddTournamentContractView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     @InjectPresenter
     AddTournamentPresenterImpl presenter;
@@ -80,6 +82,7 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tournament);
         ButterKnife.bind(this);
+        registerInternetCheckReceiver();
 
         toolbar = findViewById(R.id.toolbar);
         presenter.attachView(this);
@@ -94,53 +97,39 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
         presenter.loadReferees();
 
         CheckBox team_type = findViewById(R.id.team_type_checkbox);
-        team_type.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                manyPeopleInTeam = b;
-            }
+        team_type.setOnCheckedChangeListener((compoundButton, b) -> manyPeopleInTeam = b);
+
+
+        calendarImage.setOnClickListener(v -> {
+            Calendar now = Calendar.getInstance();
+            DatePickerDialog dpd = DatePickerDialog.newInstance(
+                    AddTournamentActivity.this,
+                    now.get(Calendar.YEAR),
+                    now.get(Calendar.MONTH),
+                    now.get(Calendar.DAY_OF_MONTH)
+            );
+            dpd.show(getFragmentManager(), Constants.Companion.getDATE_PICKER_DIALOG());
         });
 
-
-        calendarImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog dpd = com.borax12.materialdaterangepicker.date.DatePickerDialog.newInstance(
-                        AddTournamentActivity.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.show(getFragmentManager(), Constants.Companion.getDATE_PICKER_DIALOG());
-            }
-        });
-
-        clockImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar now = Calendar.getInstance();
-                TimePickerDialog tpd = TimePickerDialog.newInstance(
-                        AddTournamentActivity.this,
-                        now.get(Calendar.HOUR_OF_DAY),
-                        now.get(Calendar.MINUTE),
-                        false
-                );
-                tpd.show(getFragmentManager(), Constants.Companion.getTIME_PICKER_DIALOG());
-            }
+        clockImage.setOnClickListener(v -> {
+            Calendar now = Calendar.getInstance();
+            TimePickerDialog tpd = TimePickerDialog.newInstance(
+                    AddTournamentActivity.this,
+                    now.get(Calendar.HOUR_OF_DAY),
+                    now.get(Calendar.MINUTE),
+                    false
+            );
+            tpd.show(getFragmentManager(), Constants.Companion.getTIME_PICKER_DIALOG());
         });
         presenter.viewIsReady();
     }
 
     private void initButtonsListeners() {
-        addTournamentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(AddTournamentActivity.this,
-                        R.style.AppTheme_Dark_Dialog);
-                progressDialog.setIndeterminate(true);
-                addTournament();
-            }
+        addTournamentButton.setOnClickListener(v -> {
+            final ProgressDialog progressDialog = new ProgressDialog(AddTournamentActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            addTournament();
         });
     }
 
@@ -182,22 +171,13 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
     }
 
     @Override
-    public void showToast(Integer resId) {
-        Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
+    public void dialogConfirmButtonClicked() {
 
-    @Override
-    public void showToast(String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 
     @Override
     public void showProgress() {
-        progressDialog = ProgressDialog.show(this, "", this.getString(R.string.please_wait));
+        progressDialog = ProgressDialog.show(this, "", this.getString(R.string.please_wait));//todo
     }
 
     @Override
@@ -301,5 +281,10 @@ public class AddTournamentActivity extends MvpAppCompatActivity implements AddTo
         public void onNothingSelected(AdapterView<?> arg) {
 
         }
+    }
+
+    @Override
+    public void setConnectionStatus(Integer connectivityStatus) {
+        presenter.setConnectivityStatus(connectivityStatus);
     }
 }

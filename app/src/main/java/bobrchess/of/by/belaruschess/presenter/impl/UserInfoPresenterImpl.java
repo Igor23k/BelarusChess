@@ -1,12 +1,17 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import android.support.annotation.NonNull;
+
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
+import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
-import bobrchess.of.by.belaruschess.network.connection.SearchUserConnection;
 import bobrchess.of.by.belaruschess.network.connection.UserInfoConnection;
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUserInfo;
+import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.impl.UserInfoActivity;
 
 /**
@@ -18,6 +23,7 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
     private UserInfoActivity view;
     private UserInfoConnection userInfoConnection;
     private Boolean viewIsReady = false;
+    private Integer connectivityStatus = 0;
 
     public UserInfoPresenterImpl() {
         userInfoConnection = new UserInfoConnection();
@@ -25,24 +31,24 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
     }
 
     @Override
-    public void onResponse(List<TournamentDTO> tournaments) {
+    public void onResponse(@NonNull List<TournamentDTO> tournaments) {
         view.displayUserTournaments(tournaments);
     }
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onFailure(@NonNull ErrorDTO errorDTO) {
         view.hideProgress();
-        view.showToast(t.getLocalizedMessage());
+        view.showToast(errorDTO.getError());
     }
 
     @Override
-    public void attachView(UserInfoActivity activity) {
+    public void attachView(@NonNull UserInfoActivity activity) {
         view = activity;
     }
 
     @Override
     public void loadUserTournaments() {
-        if(viewIsReady) {
+        if (viewIsReady) {
             userInfoConnection.getTournaments();
         }
     }
@@ -54,4 +60,24 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
     public void viewIsReady() {
         viewIsReady = true;
     }
+
+    @Override
+    public void setConnectivityStatus(Integer status) {
+        this.connectivityStatus = status;
+    }
+
+    @Override
+    public void onServerUnavailable() {
+
+    }
+
+    @Override
+    public void onUnsuccessfulRequest(@Nullable String message) {
+
+    }
+
+    @Override
+    public boolean isConnected(int status) {
+        return Util.Companion.isConnected(status);
+    }//todo remove
 }

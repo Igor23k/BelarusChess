@@ -3,6 +3,7 @@ package bobrchess.of.by.belaruschess.presenter.impl
 import android.view.View
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.ErrorDTO
+import bobrchess.of.by.belaruschess.dto.UserContextDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.AuthorizationConnection
@@ -12,13 +13,13 @@ import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Validator
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView
-import bobrchess.of.by.belaruschess.view.activity.impl.PackageModel
+import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.google.gson.Gson
+import org.springframework.util.StringUtils
 
 @InjectViewState
-class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, CallBackAuthorization, AuthorizationPresenter {
+class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBackAuthorization, AuthorizationPresenter {
 
     private var view: AuthorizationContractView? = null
     private var viewComponent: View? = null
@@ -27,19 +28,29 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
     private var connectivityStatus: Int? = null
     private var packageModel: PackageModel? = null
 
-    constructor() {
+    init {
         authorizationConnection.attachPresenter(this)
     }
 
     override fun setConnectivityStatus(status: Int?) {
         this.connectivityStatus = status
-        if (connectivityStatus == Util.TYPE_NOT_CONNECTED) {
-            view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+        if (!Util.isConnected(status)) {
+            view?.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+        } else {
+            view?.dismissAlertDialog()
+            view?.tokenAuthorization()
         }
     }
 
-    override fun attachViewComponent(viewComponent: View) {
-        this.viewComponent = viewComponent
+    override fun attachViewComponent(view: View) {
+        this.viewComponent = view
+    }
+
+    override fun onResponse(userContextDTO: UserContextDTO) {
+        packageModel?.putTokenMap(userContextDTO.tokenMap)
+        view!!.hideProgress()
+        view!!.enableButton()
+        view!!.startActivity(userContextDTO.user)
     }
 
     override fun onResponse(userDTO: UserDTO) {
@@ -48,33 +59,49 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
         view!!.startActivity(userDTO)
     }
 
-    override fun onFailure(t: Throwable) {
+    override fun onFailure(errorDTO: ErrorDTO) {
         view!!.hideProgress()
         view!!.enableButton()
-        val errorDto = Gson().fromJson(t.message, ErrorDTO::class.java)
 
-        when (errorDto.message) {
+        when (errorDTO.error) {
             Constants.SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
             }
-            Constants.UNSUCCESSFUL_REQUEST -> {
-                onUnsuccessfulRequest()
+            Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
+                onUnsuccessfulRequest(errorDTO.message)
             }
+            else -> {
+                when (errorDTO.message) {
+                    Constants.KEY_INVALID_EMAIL_OR_PASSWORD -> {
+                        onInvalidEmailOrPassword()
+                    }
+                    else -> {
+                        onUnsuccessfulRequest(errorDTO.message)
+                    }
+                }
+            }
+
         }
     }
 
-    private fun onUnsuccessfulRequest() {
-        view!!.showSnackBar(viewComponent, R.string.internalServerError, R.string.retry)
+    private fun onInvalidEmailOrPassword() {
+        view!!.showSnackBar(viewComponent!!, R.string.incorrectEmailOrPassword)
     }
 
-    private fun onServerUnavailable() {
+    override fun onUnsuccessfulRequest(message: String?) {
+        if (!StringUtils.isEmpty(message)) {
+            view!!.showSnackBar(viewComponent!!, message.toString())//todo переделать чтобы тут была своя строка ибо когда переключим на русский то тут все равно будет англ. ПОпропробовать заюзать интернационализацию
+        }
+    }
+
+    override fun onServerUnavailable() {
         when (connectivityStatus) {
-            Util.TYPE_NOT_CONNECTED -> view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-            else -> view!!.showSnackBar(viewComponent, R.string.serverIsUnavailable, R.string.retry)
+            Util.TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+            else -> view!!.showSnackBar(viewComponent!!, R.string.serverIsUnavailable, R.string.retry)
         }
     }
 
-    fun setPackageModel(packageModel: PackageModel) {
+    public fun setPackageModel(packageModel: PackageModel) {
         this.packageModel = packageModel
     }
 
@@ -87,7 +114,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>, Call
             authorizationConnection.authorization(userDTO)
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
-            view!!.showSnackBar(viewComponent, e.localizedMessage, R.string.retry)// bug нужна видимо интернационализация, в регистрации то же самое
+            view!!.showSnackBar(viewComponent!!, e.localizedMessage, R.string.retry)// todo bug нужна видимо интернационализация, в регистрации то же самое
         }
     }
 

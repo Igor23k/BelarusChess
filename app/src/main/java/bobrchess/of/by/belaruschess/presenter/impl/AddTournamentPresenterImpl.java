@@ -5,10 +5,13 @@ import android.support.annotation.NonNull;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
@@ -19,6 +22,9 @@ import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddTournament;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
+import bobrchess.of.by.belaruschess.view.activity.PackageModel;
+
+import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
 
 @InjectViewState
 public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContractView> implements CallBackAddTournament, AddTournamentPresenter {
@@ -31,7 +37,8 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     private Byte countSuccessfulSpinnerResponses = 0;
     private Map<Integer, PlaceDTO> placesIndexes = new HashMap<>();
     private Map<Integer, UserDTO> refereesIndexes = new HashMap<>();
-
+    private PackageModel packageModel;
+    private Integer connectivityStatus = 0;
 
     public AddTournamentPresenterImpl() {
     }
@@ -53,7 +60,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     @Override
     public void onRefereeResponse(@NonNull List<UserDTO> referees) {
         saveRefereesIndexes(referees);
-        view.setRefereeSpinnerAdapter(Util.Companion.getUsersNames(referees));
+        view.setRefereeSpinnerAdapter(Util.Companion.getUsersBasicData(referees));
         checkIsViewReady();
     }
 
@@ -65,12 +72,12 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     }
 
     @Override
-    public void onFailure(@NonNull Throwable t) {
-        view.showToast(t.getLocalizedMessage());
+    public void onFailure(@NonNull ErrorDTO errorDTO) {
+        view.showToast(errorDTO.getError());
     }
 
     @Override
-    public void addTournament(TournamentDTO tournamentDTO) {
+    public void addTournament(@NonNull TournamentDTO tournamentDTO) {
         if (viewIsReady) {
             view.disableButton();
             tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex));
@@ -79,7 +86,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 Validator.INSTANCE.validateTournamentData(tournamentDTO);
                 view.disableButton();
                 view.showProgress();
-                addTournamentConnection.addTournament(tournamentDTO);
+                addTournamentConnection.addTournament(tournamentDTO, packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showIncorrectTournamentNameText();
             } finally {
@@ -89,7 +96,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
         }
     }
 
-    public void attachView(AddTournamentContractView activity) {
+    public void attachView(@NonNull AddTournamentContractView activity) {
         view = activity;
     }
 
@@ -103,7 +110,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
 
     @Override
     public void loadReferees() {
-        addTournamentConnection.getReferees();
+        addTournamentConnection.getReferees(packageModel.getValue(TOKEN));
     }
 
     @Override
@@ -139,4 +146,28 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
             viewIsReady();
         }
     }
+
+    @Override
+    public void onServerUnavailable() {
+
+    }
+
+    @Override
+    public void onUnsuccessfulRequest(@Nullable String message) {
+
+    }
+
+    @Override
+    public void setConnectivityStatus(Integer status) {
+        this.connectivityStatus = status;
+    }
+
+    public void setPackageModel(PackageModel packageModel) {
+        this.packageModel = packageModel;
+    }
+
+    @Override
+    public boolean isConnected(int status) {
+        return Util.Companion.isConnected(status);
+    }//todo remove
 }

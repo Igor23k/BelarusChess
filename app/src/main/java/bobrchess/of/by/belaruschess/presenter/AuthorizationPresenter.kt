@@ -12,6 +12,5 @@ import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView
 interface AuthorizationPresenter : BasePresenter {
     fun authorization(userDTO: UserDTO)
     fun attachView(activity: AuthorizationContractView)
-    fun setConnectivityStatus(status: Int?)
     fun attachViewComponent(view: View)
 }

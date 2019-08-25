@@ -15,6 +15,8 @@
     <string name="fa_map_marker">\uf041</string>
     <string name="fa_heart_o">\uf08a</string>
     <string name="fa_retweet">\uf079</string>
+    <string name="fa_calendar">\uf073</string>
+    <string name="fa_clock">\uf017</string>
     <string name="ion_search"></string>
 
     <string name="default_text">Дефолтный текст</string>
@@ -32,6 +34,9 @@
     <string name="noAccount">Еще нет учетной записи? Создать</string>
     <string name="email">Email</string>
     <string name="userName">Имя</string>
+    <string name="tournamentFullDescriptionHint">Полное описание</string>
+    <string name="userSurname">Фамилия</string>
+    <string name="userPatronymic">Отчество</string>
     <string name="tournamentName">Название турнира</string>
     <string name="tournamentShortDescription">Краткое описание турнира</string>
     <string name="tournamentFullDescription">Полное описание турнира</string>
@@ -64,17 +69,23 @@
     <string name="notSelected">Не выбрано</string>
     <string name="retry">Повторить</string>
     <string name="internalServerError">Внутренняя ошибка сервера</string>
+    <string name="incorrectEmailOrPassword">Неверная почта или пароль!</string>
     <string name="serverIsUnavailable">Сервер недоступен</string>
     <string name="serverIsUnavailableMessage">Извините, мы не готовы прямо сейчас:( Пожалуйста, попробуйте позже</string>
     <string name="noInternetConnection">Соединение отсутствует</string>
     <string name="noInternetConnectionMessage">Пожалуйста, проверьте достук к интернету и попробуйте снова"</string>
     <string name="incorrectData">Неверные данные! Попробуйсте снова"</string>
 
-    //date and time
+    <string name="tournamentShortDescriptionHint">Краткое описание</string>
+
     <string name="title_activity_main">Range Picker</string>
     <string name="time">Time</string>
     <string name="date">Date</string>
     <string name="birthday">Дата рождения</string>
     <string name="tournament_team_type">Командный турнир</string>
+
+    <string name="take_photo">Сфотографировать</string>
+    <string name="upload_server">Загрузить</string>
+    <string name="uploaded">Загружено успешно</string>
 
 </resources>

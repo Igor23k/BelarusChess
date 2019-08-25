@@ -72,7 +72,7 @@ class UsersAdapter(onUserClickListener: OnUserClickListener) : RecyclerView.Adap
     }
 
     private fun initAvatarList() {
-        avatarList.add("http://priscree.ru/img/3e250315e81d1e.jpg")
+        avatarList.add("http://priscree.ru/img/00e3f09547d8f8.jpg")
         avatarList.add("http://priscree.ru/img/5dc25ed76ea661.jpg")
         avatarList.add("http://priscree.ru/img/95cbe6b870f873.jpg")
         avatarList.add("http://priscree.ru/img/f85bddf83dfca1.jpg")

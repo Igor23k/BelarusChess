@@ -14,4 +14,8 @@ class ErrorDTO {
         this.message = message
         this.path = path
     }
+
+    constructor()
+
+
 }

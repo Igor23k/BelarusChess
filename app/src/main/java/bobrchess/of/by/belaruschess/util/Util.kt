@@ -4,9 +4,16 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
+import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.view.activity.BaseContractView
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
+import org.springframework.util.StringUtils
 import java.util.*
 
 /**
@@ -208,12 +215,14 @@ class Util {
             return false
         }
 
-        fun getUsersNames(users: MutableList<UserDTO>): MutableList<String> {
+        fun getUsersBasicData(users: MutableList<UserDTO>): MutableList<String> {
             val usersNames = ArrayList<String>()
             var user: UserDTO
             for (i in users.indices) {
                 user = users[i]
-                usersNames.add(user.name + " " + user.surname + " " + user.patronymic + " (" + user.rank!!.abbreviation + ")")
+                var rank = user.rank?.abbreviation
+                rank = if (!StringUtils.isEmpty(rank)) " ($rank)" else ""
+                usersNames.add(user.name + " " + user.surname + " " + user.patronymic + rank)
             }
             return usersNames
         }
@@ -240,6 +249,38 @@ class Util {
                 places[i].name?.let { usersNames.add(it) }
             }
             return usersNames
+        }
+
+        fun buildErrorJsonResponse(errorString: String): String {
+            return try {
+                (JsonParser().parse(errorString) as JsonObject).toString()
+            } catch (e: Exception) {
+                EMPTY_STRING
+            }
+        }
+
+        fun buildErrorDto(errorMessage: String): ErrorDTO {
+            if (!StringUtils.isEmpty(errorMessage)) {
+                try {
+                    return Gson().fromJson(errorMessage, ErrorDTO::class.java)
+                } catch (e: Exception) {
+                    //todo log
+                }
+            }
+            return ErrorDTO()
+        }
+
+        fun buildOnFailureResponse(): ErrorDTO {
+            return buildErrorDto(buildErrorJsonResponse(getInternalizedMessage(Constants.KEY_SERVER_UNAVAILABLE_JSON_FORMAT)))
+        }
+
+        fun getInternalizedMessage(key: String): String {
+            val errors = ResourceBundle.getBundle("messages", Locale.getDefault())
+            return errors.getString(key)
+        }
+
+        fun isConnected(status: Int?): Boolean {
+            return status != TYPE_NOT_CONNECTED
         }
     }
 }

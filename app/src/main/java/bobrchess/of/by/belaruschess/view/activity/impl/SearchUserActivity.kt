@@ -3,22 +3,19 @@ package bobrchess.of.by.belaruschess.view.activity.impl
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.REQUEST_CODE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_PARTICIPANTS_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_TABLE_REQUEST
@@ -33,8 +30,7 @@ import butterknife.ButterKnife
 /**
  * Created by Igor on 25.03.2018.
  */
-class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
-
+class SearchUserActivity : AbstractActivity(), SearchUserContractView {
     private var usersRecyclerView: RecyclerView? = null
     private var usersAdapter: UsersAdapter? = null
     private var participantsAdapter: TournamentParticipantsAdapter? = null
@@ -56,14 +52,15 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
         setContentView(R.layout.activity_search_user)
         ButterKnife.bind(this)
         initRecyclerView()
+        registerInternetCheckReceiver()
 
         toolbar = findViewById(R.id.toolbar)
         searchButton = toolbar!!.findViewById(R.id.e_search_button)
         queryEditText = toolbar!!.findViewById(R.id.e_query_text)
 
-        searchButton!!.setOnClickListener(View.OnClickListener { presenter!!.searchUsers() })
+        searchButton!!.setOnClickListener { presenter!!.searchUsers() }
 
-        queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 presenter!!.searchUsers()
                 return@OnEditorActionListener true
@@ -93,7 +90,7 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     private fun initRecyclerView() {
         usersRecyclerView = findViewById(R.id.users_recycler_view)
         usersRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        val requestCode = intent.getIntExtra("requestCode", 0)
+        val requestCode = intent.getIntExtra(REQUEST_CODE, 0)
         when (requestCode) {
             TOURNAMENT_PARTICIPANTS_REQUEST -> {
                 val onUserClickListener = object : TournamentParticipantsAdapter.OnUserClickListener {
@@ -145,28 +142,20 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
     }
 
     fun showUsers(users: List<UserDTO>) {
-        if (usersAdapter != null) {//переписать
-            usersAdapter!!.clearItems()
-            usersAdapter!!.setItems(users)
-        } else if (participantsAdapter != null) {
-            participantsAdapter!!.clearItems()
-            participantsAdapter!!.setItems(users)
-        } else if (tableAdapter != null) {
-            tableAdapter!!.clearItems()
-            tableAdapter!!.setItems(users)
+        when {
+            usersAdapter != null -> {
+                usersAdapter!!.clearItems()
+                usersAdapter!!.setItems(users)
+            }
+            participantsAdapter != null -> {
+                participantsAdapter!!.clearItems()
+                participantsAdapter!!.setItems(users)
+            }
+            tableAdapter != null -> {
+                tableAdapter!!.clearItems()
+                tableAdapter!!.setItems(users)
+            }
         }
-    }
-
-    override fun showToast(resId: Int?) {
-        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
-
-    override fun showToast(message: String?) {
-        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
     }
 
     override fun showProgress() {
@@ -177,5 +166,13 @@ class SearchUserActivity : AppCompatActivity(), SearchUserContractView {
         if (progressDialog != null) {
             progressDialog!!.dismiss()
         }
+    }
+
+    override fun dialogConfirmButtonClicked() {
+
+    }
+
+    override fun setConnectionStatus(connectivityStatus: Int?) {
+        presenter?.setConnectivityStatus(connectivityStatus)
     }
 }

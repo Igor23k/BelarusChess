@@ -3,28 +3,27 @@ package bobrchess.of.by.belaruschess.presenter.impl
 import android.support.annotation.NonNull
 import android.view.View
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.dto.UserContextDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.RegistrationConnection
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration
+import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Constants.Companion.INTERNAL_SERVER_ERROR
 import bobrchess.of.by.belaruschess.util.Constants.Companion.SERVER_UNAVAILABLE
-import bobrchess.of.by.belaruschess.util.Constants.Companion.UNSUCCESSFUL_REQUEST
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Validator
+import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
-import bobrchess.of.by.belaruschess.view.activity.impl.PackageModel
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import org.springframework.util.StringUtils
 import java.util.*
 
 
 @InjectViewState
-class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBackRegistration, RegistrationPresenter {
+class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), CallBackRegistration, RegistrationPresenter {
 
     private var view: RegistrationContractView? = null
     private var viewComponent: View? = null
@@ -43,33 +42,27 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
 
     companion object {
         private const val NOT_SELECTED_INDEX = 0
+        private const val ABSENCE_INDEX = 1
     }
 
-    constructor() {
+    init {
         userConnection.attachPresenter(this)
     }
 
-    fun setPackageModel(packageModel: PackageModel){
+    fun setPackageModel(packageModel: PackageModel) {
         this.packageModel = packageModel
     }
 
     override fun onResponse(userContextDTO: UserContextDTO) {
-        val f1a = packageModel!!.getValue("token")
-        val a21 = packageModel!!.getValue("refreshToken")
-        packageModel!!.putTokenMap(userContextDTO.tokenMap)
-        val a = packageModel!!.getValue("token")
-        val a1 = packageModel!!.getValue("refreshToken")
+        packageModel?.putTokenMap(userContextDTO.tokenMap)
         view!!.hideProgress()
         view!!.enableButton()
-       // view!!.startActivity(userContextDTO)
-        
-        view!!.startActivity(UserDTO())//todo
-
+        view!!.startActivity(userContextDTO.user)
     }
 
     override fun onCoachResponse(coaches: MutableList<UserDTO>) {
         saveCoachesIndexes(coaches)
-        view!!.setCoachSpinnerAdapter(Util.getUsersNames(coaches).toMutableList())
+        view!!.setCoachSpinnerAdapter(Util.getUsersBasicData(coaches).toMutableList())
         loadRanks()
     }
 
@@ -86,28 +79,30 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
         view!!.hideProgress()
     }
 
-    override fun onFailure(t: Throwable) {
+    override fun onFailure(errorDTO: ErrorDTO) {
         view!!.hideProgress()
         view!!.enableButton()
-        when (t.message) {
+        when (errorDTO.error) {
             SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
             }
-           /* UNSUCCESSFUL_REQUEST -> {
-                onUnsuccessfulRequest()
-            }*/
+            Constants.KEY_UNSUCCESSFUL_REQUEST, INTERNAL_SERVER_ERROR -> {
+                onUnsuccessfulRequest(errorDTO.message)
+            }
         }
     }
 
-    private fun onUnsuccessfulRequest() {
-        view!!.showSnackBar(viewComponent!!, R.string.internalServerError, R.string.retry)
+    override fun onUnsuccessfulRequest(message: String?) {
+        if (!StringUtils.isEmpty(message)) {
+            view!!.showSnackBar(viewComponent!!, message.toString())//todo переделать чтобы тут была своя строка ибо когда переключим на русский то тут все равно будет англ. ПОпропробовать заюзать интернационализацию
+        }
     }
 
-    private fun onServerUnavailable() {
+    override fun onServerUnavailable() {
         when {
-            connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-            !viewIsReady!! -> view!!.showServerInUnavailableAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
-            else -> view!!.showSnackBar(viewComponent!!, R.string.serverIsUnavailable, R.string.retry)
+            connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+            !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
+            else -> view!!.showSnackBar(viewComponent!!, R.string.serverIsUnavailable)
         }
     }
 
@@ -126,33 +121,36 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
             userConnection.registration(userDTO)
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
-            view!!.showSnackBar(viewComponent!!, e.localizedMessage, R.string.retry)
+            view!!.showSnackBar(viewComponent!!, e.localizedMessage)
         }
     }
 
     private fun setUserData(@NonNull userDTO: UserDTO) {
-        if (selectedRankIndex !== NOT_SELECTED_INDEX) {// bug equals?
+        if (selectedRankIndex != NOT_SELECTED_INDEX) {
+            if(selectedGenderIndex != ABSENCE_INDEX){
+
+            }
             userDTO.rank = ranksIndexes[selectedRankIndex.minus(2)]
         }
-        if (selectedCountryIndex !== NOT_SELECTED_INDEX) {
+        if (selectedCountryIndex != NOT_SELECTED_INDEX) {
             userDTO.country = countriesIndexes[selectedCountryIndex.minus(1)]
         }
-        if (selectedCoachIndex !== NOT_SELECTED_INDEX) {
+        if (selectedCoachIndex != NOT_SELECTED_INDEX) {
             userDTO.coach = coachesIndexes[selectedCoachIndex.minus(2)]
         }
-        if (selectedCoachIndex !== NOT_SELECTED_INDEX) {
+        if (selectedGenderIndex != NOT_SELECTED_INDEX) {
             userDTO.beMale = isMale(selectedGenderIndex - 1)
         }
-        userDTO.beCoach = true// bug думать, думать
+        userDTO.beCoach = true// todo bug думать, думать
         userDTO.beOrganizer = true
     }
 
-    override fun setConnectivityStatus(connectivityStatus: Int?) {
-        this.connectivityStatus = connectivityStatus
+    override fun setConnectivityStatus(status: Int?) {
+        this.connectivityStatus = status
         if (firstTimeSpinnerLoad) {
             firstTimeSpinnerLoad = false
-            if (connectivityStatus == TYPE_NOT_CONNECTED) {
-                view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+            if (!Util.isConnected(status)) {
+                view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
             } else if ((!viewIsReady!!)) {
                 loadSpinnersData()
             }
@@ -175,8 +173,8 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>, CallBa
         view = activity
     }
 
-    override fun attachViewComponent(viewComponent: View) {
-        this.viewComponent = viewComponent
+    override fun attachViewComponent(view: View) {
+        this.viewComponent = view
     }
 
     override fun detachView() {

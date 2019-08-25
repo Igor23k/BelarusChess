@@ -1,12 +1,19 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import android.support.annotation.NonNull;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
+import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.GameDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.network.connection.TournamentConnection;
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackTournament;
+import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity;
 
 /**
@@ -18,6 +25,7 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
     private TournamentActivity view;
     private TournamentConnection tournamentConnection;
     private Boolean viewIsReady = false;
+    private Integer connectivityStatus = 0;
 
     public TournamentPresenterImpl() {
         tournamentConnection = new TournamentConnection();
@@ -25,21 +33,21 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
     }
 
     @Override
-    public void onResponse(TournamentDTO tournamentDTO) {
+    public void onResponse(@NonNull TournamentDTO tournamentDTO) {
         view.hideProgress();
     }
 
     @Override
-    public void onResponse(List list) {
+    public void onResponse(@NonNull List list) {
         if (list.get(0).getClass().equals(GameDTO.class)) {
             view.showGames(list);
         }
     }
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onFailure(@NonNull ErrorDTO errorDTO) {
         view.hideProgress();
-        view.showToast(t.getLocalizedMessage());
+        view.showToast(errorDTO.getError());
     }
 
     @Override
@@ -64,7 +72,7 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
     }
 
     @Override
-    public void attachView(TournamentActivity activity) {
+    public void attachView(@NotNull TournamentActivity activity) {
         view = activity;
     }
 
@@ -74,5 +82,25 @@ public class TournamentPresenterImpl implements CallBackTournament, TournamentPr
 
     public void viewIsReady() {
         viewIsReady = true;
+    }
+
+    @Override
+    public void setConnectivityStatus(Integer status) {
+        this.connectivityStatus = status;
+    }
+
+    @Override
+    public boolean isConnected(int status) {
+        return false;
+    }
+
+    @Override
+    public void onServerUnavailable() {
+
+    }
+
+    @Override
+    public void onUnsuccessfulRequest(@Nullable String message) {
+
     }
 }

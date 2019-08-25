@@ -6,5 +6,6 @@ package bobrchess.of.by.belaruschess.view.activity;
 
 public interface ButtonContractView {
     void enableButton();
+
     void disableButton();
 }

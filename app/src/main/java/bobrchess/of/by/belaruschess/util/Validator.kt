@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.util
 
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
+import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import org.springframework.util.StringUtils
 
 /**
@@ -20,35 +21,32 @@ object Validator {
         val birthdate = userDTO?.birthday
         val status = userDTO?.status
         val phoneNumber = userDTO?.phoneNumber
-        val rank = userDTO?.rank
         val coach = userDTO?.coach
-        val country = userDTO?.country
 
         validatePassword(password)
         validateEmail(email)
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 30) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_NAME)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_NAME))
         }
         if (StringUtils.isEmpty(surname) || surname!!.length < 3 || surname.length > 30) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_SURNAME)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_SURNAME))
         }
         if (StringUtils.isEmpty(patronymic) || patronymic!!.length < 3 || patronymic.length > 30) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_PATRONYMIC)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PATRONYMIC))
         }
         if (rating == null || rating < 0) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_RATING_SMALL)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_RATING_SMALL))
         }
         if (rating > 5000) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_RATING_BIG)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_RATING_BIG))
         }
         if (StringUtils.isEmpty(birthdate)) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_BIRTHDAY)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_BIRTHDAY))
         }
         if (StringUtils.isEmpty(phoneNumber)) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_PHONE_NUMBER)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PHONE_NUMBER))
         }
-        validateRankData(userDTO.rank)
 
         return true
     }
@@ -66,14 +64,14 @@ object Validator {
     @Throws(IncorrectDataException::class)
     private fun validateEmail(email: String?) {
         if (StringUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            throw IncorrectDataException(Constants.INCORRECT_USER_EMAIL)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_EMAIL))
         }
     }
 
     @Throws(IncorrectDataException::class)
     private fun validatePassword(password: String?) {
-        if (StringUtils.isEmpty(password) || password?.length!! < 6) {//bug проверить что совпадают пароли
-            throw IncorrectDataException(Constants.INCORRECT_USER_PASSWORD)
+        if (StringUtils.isEmpty(password) || password?.length!! < 6) {//todo bug проверить что совпадают пароли
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PASSWORD))
         }
     }
 
@@ -89,22 +87,22 @@ object Validator {
         val place = tournamentDTO?.place
 
         if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_NAME)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_NAME))
         }
         if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 20 || shortDescription.length > 100) {
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_SHORT_DESCRIPTION)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION))
         }
         if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 20000) {
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_FULL_DESCRIPTION)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION))
         }
-        if (countPlayersInTeam == null || countPlayersInTeam > 20) {//bug сделать такие же значения на сервере
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_COUNT_PLAYERS_IN_TEAM)
+        if (countPlayersInTeam == null || countPlayersInTeam > 20) {// todo bug сделать такие же значения на сервере
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_COUNT_PLAYERS_IN_TEAM))
         }
         if (StringUtils.isEmpty(startDate)) {
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_START_DATE)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_START_DATE))
         }
         if (StringUtils.isEmpty(finishDate)) {
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_FINISH_DATE)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FINISH_DATE))
         }
         return true
     }
@@ -119,13 +117,13 @@ object Validator {
         val matchDTO = gameDTO?.matchDTO
 
         if (StringUtils.isEmpty(gameRecord) || gameRecord!!.length < 2 || gameRecord.length > 20000) {
-            throw IncorrectDataException(Constants.INCORRECT_GAME_RECORD)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_GAME_RECORD))
         }
         if (countPointsFirstPlayer == null || countPointsFirstPlayer < 0 || countPointsSecondPlayer == null || countPointsSecondPlayer < 0) {
-            throw IncorrectDataException(Constants.INCORRECT_COUNT_POINTS_OF_PLAYER_SMALL)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_COUNT_POINTS_OF_PLAYER_SMALL))
         }
         if (countPointsFirstPlayer > 1 || countPointsSecondPlayer > 1) {
-            throw IncorrectDataException(Constants.INCORRECT_COUNT_POINTS_OF_PLAYER_BIG)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_COUNT_POINTS_OF_PLAYER_BIG))
         }
         return true
     }
@@ -140,10 +138,10 @@ object Validator {
         val tournament = matchDTO?.tournament
 
         if (countPointsFirstTeam == null || countPointsFirstTeam < 0 || countPointsSecondTeam == null || countPointsSecondTeam < 0) {
-            throw IncorrectDataException(Constants.INCORRECT_COUNT_POINTS_OF_TEAM)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_MATCH_COUNT_POINTS_OF_TEAM))
         }
         if (StringUtils.isEmpty(date)) {
-            throw IncorrectDataException(Constants.INCORRECT_MATCH_DATE)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_MATCH_DATE))
         }
         return true
     }
@@ -158,22 +156,22 @@ object Validator {
         val country = placeDTO?.country
 
         if (StringUtils.isEmpty(name) || name!!.isEmpty() || name.length > 100) {
-            throw IncorrectDataException(Constants.INCORRECT_PLACE_NAME)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_NAME))
         }
         if (StringUtils.isEmpty(city) || city!!.length < 3 || city.length > 50) {
-            throw IncorrectDataException(Constants.INCORRECT_PLACE_CITY)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_CITY))
         }
         if (StringUtils.isEmpty(street) || street!!.length < 3 || street.length > 50) {
-            throw IncorrectDataException(Constants.INCORRECT_PLACE_STREET)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_STREET))
         }
         if (StringUtils.isEmpty(building) || building!!.isEmpty() || building.length > 10) {
-            throw IncorrectDataException(Constants.INCORRECT_PLACE_BUILDING)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_BUILDING))
         }
         if (capacity == null || capacity < 1) {
-            throw IncorrectDataException(Constants.INCORRECT_PLACE_CAPACITY_SMALL)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_CAPACITY_SMALL))
         }
         if (capacity > 10000) {
-            throw IncorrectDataException(Constants.INCORRECT_PLACE_CAPACITY_BIG)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_CAPACITY_BIG))
         }
 
         return true
@@ -185,10 +183,10 @@ object Validator {
         val abbreviation = rankDTO?.abbreviation
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 50) {
-            throw IncorrectDataException(Constants.INCORRECT_RANK_NAME)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_RANK_NAME))
         }
         if (StringUtils.isEmpty(abbreviation) || abbreviation!!.length < 2 || abbreviation.length > 3) {
-            throw IncorrectDataException(Constants.INCORRECT_RANK_ABBREVIATION)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_RANK_ABBREVIATION))
         }
 
         return true
@@ -200,10 +198,10 @@ object Validator {
         val abbreviation = countryDTO?.abbreviation
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 50) {
-            throw IncorrectDataException(Constants.INCORRECT_COUNTRY_NAME)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_COUNTRY_NAME))
         }
         if (StringUtils.isEmpty(abbreviation) || abbreviation!!.length < 3 || abbreviation.length > 3) {
-            throw IncorrectDataException(Constants.INCORRECT_COUNTRY_ABBREVIATION)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_COUNTRY_ABBREVIATION))
         }
 
         return true
@@ -214,7 +212,7 @@ object Validator {
         val name = teamDTO?.name
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 50) {
-            throw IncorrectDataException(Constants.INCORRECT_TEAM_NAME)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TEAM_NAME))
         }
 
         return true
@@ -226,10 +224,10 @@ object Validator {
         val position = tournamentTeamRankingDTO?.position
 
         if (points == null || points < 0) {
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS))
         }
         if (position == null || position > 1) {
-            throw IncorrectDataException(Constants.INCORRECT_TOURNAMENT_TEAM_POSITION)
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_TEAM_POSITION))
         }
         return true
     }

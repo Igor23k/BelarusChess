@@ -1,28 +1,28 @@
 package bobrchess.of.by.belaruschess.view.activity.impl
 
 import android.animation.ValueAnimator
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.REQUEST_CODE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
+import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_PARTICIPANTS_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_TABLE_REQUEST
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
@@ -34,7 +34,7 @@ import java.util.*
 /**
  * Created by Igor on 25.03.2018.
  */
-class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
+class TournamentInfoActivity : AbstractActivity(), TournamentContractView {
 
     private var tournamentImageView: ImageView? = null
     private var nameTextView: TextView? = null
@@ -53,6 +53,7 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tournament_info)
         initImagesList()
+        registerInternetCheckReceiver()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
         descriptionTextView = findViewById(R.id.tournament_full_description_text_view)
@@ -118,7 +119,7 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
     }
 
     private fun loadTournamentData() {
-        tournament = getTournamentData(intent)//мб проверку?
+        tournament = getTournamentData(intent)// todo мб проверку?
         displayTournamentData()
     }
 
@@ -128,8 +129,8 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
         Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
-       // judgeTextView!!.text = tournament.referee!!.gameRecord + " " + tournament.referee!!.surname//проверку и локэйшн тоже
-       // locationTextView!!.text = tournament.place!!.country!!.gameRecord + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
+        // judgeTextView!!.text = tournament.referee!!.gameRecord + " " + tournament.referee!!.surname//проверку и локэйшн тоже
+        // locationTextView!!.text = tournament.place!!.country!!.gameRecord + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
     }
 
     private fun getTournamentData(intent: Intent?): TournamentDTO {
@@ -154,19 +155,19 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
             }
             R.id.action_table -> {
                 val intent = Intent(this, SearchUserActivity::class.java)
-                intent.putExtra("requestCode", TOURNAMENT_TABLE_REQUEST)
+                intent.putExtra(REQUEST_CODE, TOURNAMENT_TABLE_REQUEST)
                 startActivity(intent)
             }
             R.id.action_participants -> {
                 val intent = Intent(this, SearchUserActivity::class.java)
-                intent.putExtra("requestCode", TOURNAMENT_PARTICIPANTS_REQUEST)
+                intent.putExtra(REQUEST_CODE, TOURNAMENT_PARTICIPANTS_REQUEST)
                 startActivity(intent)
             }
-        /*R.id.action_tours -> {
-            val intent = Intent(this, TournamentActivity::class.java)
-            putTournamentData(intent, tournament)
-            startActivity(intent)
-        }*/
+            /*R.id.action_tours -> {
+                val intent = Intent(this, TournamentActivity::class.java)
+                putTournamentData(intent, tournament)
+                startActivity(intent)
+            }*/
             R.id.action_info -> {
                 val intent = Intent(this, TournamentInfoActivity::class.java)
                 putTournamentData(intent, tournament)
@@ -192,29 +193,17 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
     }
 
     private fun initImagesList() {
-        imageList.add("https://www.w3schools.com/w3css/img_fjords.jpg")
-        imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
-        imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
-        imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
-        imageList.add("http://priscree.ru/img/a43fc13021f087.jpg")
-        imageList.add("http://priscree.ru/img/6e04d186cda445.jpg")
-        imageList.add("http://priscree.ru/img/6e04d598aafbb9.jpg")
+        imageList.add("https://www.imageup.ru/img152/thumb/8881565-8-0-1514194890-1514194898-650-fd8a7b9d44-15142794413450426.jpg")
+        imageList.add("https://www.imageup.ru/img127/3459237/_1258-410.jpg")
+        imageList.add("https://www.imageup.ru/img127/3459238/1529578102_5.jpg")
+        imageList.add("https://www.imageup.ru/img127/3459240/s-6a1cc696546524f7b5469e4e1797382d0b7a1da8.jpg")
+        imageList.add("https://www.imageup.ru/img127/3459241/bez-nazvaniya-1.jpg")
+        imageList.add("https://www.imageup.ru/img127/3459243/bez-nazvaniya.jpg")
     }
 
     fun ClosedRange<Int>.random() =
             Random().nextInt(endInclusive - start) + start
 
-    override fun showToast(resId: Int?) {
-        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
-
-    override fun showToast(message: String) {
-        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
 
     override fun showProgress() {
         progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait))
@@ -246,5 +235,13 @@ class TournamentInfoActivity : AppCompatActivity(), TournamentContractView {
         override fun getPageTitle(position: Int): CharSequence? {
             return mFragmentTitleList[position]
         }
+    }
+
+    override fun dialogConfirmButtonClicked() {
+
+    }
+
+    override fun setConnectionStatus(connectivityStatus: Int?) {
+        presenter?.setConnectivityStatus(connectivityStatus)
     }
 }

@@ -3,22 +3,20 @@ package bobrchess.of.by.belaruschess.view.activity.impl
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.util.Constants.Companion.REQUEST_CODE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.USER_INFO
@@ -29,7 +27,7 @@ import com.squareup.picasso.Picasso
 /**
  * Created by Igor on 25.03.2018.
  */
-class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
+class UserInfoActivity : AbstractActivity(), UserInfoContractView {
 
     private var userImageView: ImageView? = null
     private var nameTextView: TextView? = null
@@ -72,6 +70,7 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
         presenter!!.viewIsReady()
         loadUserInfo()
         loadUserTournaments()
+        registerInternetCheckReceiver()
     }
 
     private fun loadUserTournaments() {
@@ -102,7 +101,7 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
             }
             R.id.action_search -> {
                 val intent = Intent(this, SearchUserActivity::class.java)
-                intent.putExtra("requestCode", USER_INFO)
+                intent.putExtra(REQUEST_CODE, USER_INFO)
                 startActivity(intent)
             }
         }
@@ -133,31 +132,23 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
     }
 
     private fun displayUserInfo() {
-        // Picasso.with(this).load("http://priscree.ru/img/7a1bbc9a11ee66.png").into(userImageView)
-        Picasso.with(this).load("http://priscree.ru/img/013c16d74f1cd6.jpg").into(userImageView)
+        Picasso.with(this).load("https://www.imageup.ru/img152/thumb/8881565-8-0-1514194890-1514194898-650-fd8a7b9d44-15142794413450426.jpg").into(userImageView)
         nameTextView!!.text = user.name
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status
-        /* user.country?.let {
-             locationTextView!!.text = user.country!!.gameRecord//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
-         }
-         user.coach?.let {
-             coachNameTextView!!.text = getString(R.string.user_full_name, user.coach!!.gameRecord, user.coach!!.surname)
-         }*/
-        ratingTextView!!.text = user.rating.toString()
+        user.country?.let {
+            locationTextView!!.text = user.country?.name//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
+        }
+        user.coach?.let {
+            coachNameTextView!!.text = getString(R.string.user_full_name, user.coach?.name, user.coach?.surname)
+        }
+        val rating = user.rating
+        var ratingString = this.getString(R.string.absence)
+        if (rating != null) {
+            ratingString = rating.toString()
+        }
+        ratingTextView!!.text = ratingString
         friendsCountTextView!!.text = "34"
-    }
-
-    override fun showToast(resId: Int?) {
-        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
-
-    override fun showToast(message: String) {
-        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
     }
 
     override fun showProgress() {
@@ -168,5 +159,13 @@ class UserInfoActivity : AppCompatActivity(), UserInfoContractView {
         if (progressDialog != null) {
             progressDialog!!.dismiss()
         }
+    }
+
+    override fun dialogConfirmButtonClicked() {
+
+    }
+
+    override fun setConnectionStatus(connectivityStatus: Int?) {
+        presenter?.setConnectivityStatus(connectivityStatus)
     }
 }

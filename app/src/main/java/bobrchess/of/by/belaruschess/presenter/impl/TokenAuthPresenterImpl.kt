@@ -4,27 +4,27 @@ import android.view.View
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.ErrorDTO
 import bobrchess.of.by.belaruschess.dto.TokenDTO
+import bobrchess.of.by.belaruschess.dto.UserContextDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.network.connection.AuthorizationConnection
 import bobrchess.of.by.belaruschess.network.connection.TokenConnection
 import bobrchess.of.by.belaruschess.presenter.TokenAuthPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAuthorization
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackToken
+import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.REFRESH_TOKEN
-import bobrchess.of.by.belaruschess.util.Constants.Companion.REFRESH_TOKEN_DEFAULT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN
-import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN_DEFAULT
-import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN_IS_EXPIRED
+import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_TOKEN_IS_EXPIRED
+import bobrchess.of.by.belaruschess.util.Constants.Companion.UNAUTHORIZED
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView
-import bobrchess.of.by.belaruschess.view.activity.impl.PackageModel
+import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.google.gson.Gson
 import org.springframework.util.StringUtils
 
 @InjectViewState
-class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>, CallBackAuthorization, CallBackToken, TokenAuthPresenter {
+class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBackAuthorization, CallBackToken, TokenAuthPresenter {
 
     private var view: AuthorizationContractView? = null
     private var viewComponent: View? = null
@@ -34,20 +34,21 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>, CallBack
     private var connectivityStatus: Int? = null
     private var packageModel: PackageModel? = null
 
-    constructor() {
+    init {
         authorizationConnection.attachPresenter(this)
         tokenConnection.attachPresenter(this)
     }
 
     override fun setConnectivityStatus(status: Int?) {
         this.connectivityStatus = status
-        if (connectivityStatus == Util.TYPE_NOT_CONNECTED) {
-            view!!.showNoConnectionAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-        }
     }
 
     override fun attachViewComponent(view: View) {
         this.viewComponent = view
+    }
+
+    override fun onResponse(userContextDTO: UserContextDTO) {
+        view!!.startActivity(userContextDTO.user)
     }
 
     override fun onResponse(userDTO: UserDTO) {
@@ -59,12 +60,29 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>, CallBack
         tokenAuthorization()
     }
 
-    override fun onFailure(t: Throwable) {
-        val errorDto = Gson().fromJson(t.message, ErrorDTO :: class.java)
-        if (TOKEN_IS_EXPIRED == errorDto.message) {
-            refreshToken()
-        }else {
-            view!!.unsuccessfulTokenAuth()
+    override fun onServerUnavailable() {
+        when {
+            connectivityStatus == Util.TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+            !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
+            else -> view!!.showSnackBar(viewComponent!!, R.string.serverIsUnavailable, R.string.retry)
+        }
+    }
+
+    override fun onFailure(errorDTO: ErrorDTO) {
+        when (errorDTO.error) {
+            Constants.SERVER_UNAVAILABLE -> {
+                onServerUnavailable()
+            }
+            UNAUTHORIZED -> {
+                when (errorDTO.message) {
+                    KEY_TOKEN_IS_EXPIRED -> {
+                        refreshToken()
+                    }
+                    else -> {
+                        view!!.unsuccessfulTokenAuth()
+                    }
+                }
+            }//сделать дефолтное действие если ничего не нашел
         }
     }
 
@@ -73,21 +91,20 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>, CallBack
     }
 
     override fun isAuthenticated(): Boolean {
-        return true
-        // return !StringUtils.isEmpty(packageModel!!.getValue(TOKEN))
+        return !StringUtils.isEmpty(packageModel!!.getValue(TOKEN))
     }
 
     override fun tokenAuthorization() {
-        // val token = packageModel!!.getValue(TOKEN)
-        authorizationConnection.getUser(TOKEN_DEFAULT)
+        val token = packageModel!!.getValue(TOKEN)
+        authorizationConnection.getUser(token)
     }
 
-    fun refreshToken() {
-        val refreshToken = /*packageModel!!.getValue(REFRESH_TOKEN)*/REFRESH_TOKEN_DEFAULT
+    private fun refreshToken() {
+        val refreshToken = packageModel!!.getValue(REFRESH_TOKEN)
         if (!StringUtils.isEmpty(refreshToken)) {
             tokenConnection.refreshToken(refreshToken)
         } else {
-            //enter login and pass
+            //enter login and pass todo
         }
     }
 
@@ -101,5 +118,9 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>, CallBack
 
     override fun viewIsReady() {
         viewIsReady = true
+    }
+
+    override fun onUnsuccessfulRequest(message: String?) {
+
     }
 }

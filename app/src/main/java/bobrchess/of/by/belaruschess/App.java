@@ -30,7 +30,7 @@ public class App extends Application {
 
         httpClient.addInterceptor(new Interceptor() {
             @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
+            public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request()
                         .newBuilder()
                         .addHeader("Cache-Control", "no-cache")

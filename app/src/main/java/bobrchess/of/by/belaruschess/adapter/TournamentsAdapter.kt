@@ -61,7 +61,7 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
         private val positionNumberTextView: TextView
 
         init {
-            initAvatarList()
+            initTournamentList()
             tournamentSmallImageView = itemView.findViewById(R.id.profile_image_view)
             tournamentNameTextView = itemView.findViewById(R.id.tournament_name_text_view)
             startDateTextView = itemView.findViewById(R.id.start_date_text_view)
@@ -98,14 +98,12 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
             //  tournamentImageView.visibility = if (tweetPhotoUrl != null) View.VISIBLE else View.GONE  что это и нужно ли?
         }
 
-        private fun initAvatarList() {
-            imageList.add("https://www.w3schools.com/w3css/img_fjords.jpg")
-            imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
-            imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
-            imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
-            imageList.add("http://priscree.ru/img/a43fc13021f087.jpg")
-            imageList.add("http://priscree.ru/img/6e04d186cda445.jpg")
-            imageList.add("http://priscree.ru/img/6e04d598aafbb9.jpg")
+        private fun initTournamentList() {
+            imageList.add("https://www.imageup.ru/img152/3450439/5d0a75e13c3c5dac093874ec22358870.jpeg")
+            imageList.add("https://www.imageup.ru/img127/3459217/london.jpg")
+            imageList.add("https://www.imageup.ru/img127/3459220/melburn.jpg")
+            imageList.add("https://www.imageup.ru/img127/3459221/paris.jpg")
+            imageList.add("https://www.imageup.ru/img127/3459222/vena.jpg")
         }
 
         fun ClosedRange<Int>.random() =

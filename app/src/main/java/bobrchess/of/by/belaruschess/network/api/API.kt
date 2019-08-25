@@ -70,7 +70,7 @@ interface API {
     fun getUser(@Header("Authorization") authorization: String): Call<UserDTO>
 
     @POST("/api/auth/login")
-    fun authorization(@Body userDTO: UserDTO): Call<UserDTO>
+    fun authorization(@Body userDTO: UserDTO): Call<UserContextDTO>
 
     @GET("/api/auth/token")
     fun refreshToken(@Header("Authorization") authorization: String): Call<TokenDTO>

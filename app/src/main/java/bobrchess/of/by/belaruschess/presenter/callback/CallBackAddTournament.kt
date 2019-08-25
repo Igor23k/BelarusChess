@@ -1,8 +1,6 @@
 package bobrchess.of.by.belaruschess.presenter.callback
 
-import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.PlaceDTO
-import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 

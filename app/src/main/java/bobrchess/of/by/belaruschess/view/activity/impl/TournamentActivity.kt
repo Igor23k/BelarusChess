@@ -8,17 +8,14 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
@@ -39,7 +36,7 @@ import java.util.*
 /**
  * Created by Igor on 25.03.2018.
  */
-class TournamentActivity : AppCompatActivity(), TournamentContractView {
+class TournamentActivity : AbstractActivity(), TournamentContractView {
 
     private var gamesRecyclerView: RecyclerView? = null
     private var gamesAdapter: GamesAdapter? = null
@@ -64,6 +61,7 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         setContentView(R.layout.activity_tournament)
         initRecyclerView()
         initImagesList()
+        registerInternetCheckReceiver()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
         descriptionTextView = findViewById(R.id.tournament_full_description_text_view)
@@ -223,15 +221,8 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         intent.putExtra(TOURNAMENT_PARAMETER, tournamentDTO)
     }
 
-
     private fun initImagesList() {
-        imageList.add("https://www.w3schools.com/w3css/img_fjords.jpg")
-        imageList.add("http://priscree.ru/img/0bae62a5b4004b.jpg")
-        imageList.add("http://priscree.ru/img/129060a88b433a.jpg")
-        imageList.add("http://priscree.ru/img/7c8aaa9735d29f.jpg")
-        imageList.add("http://priscree.ru/img/a43fc13021f087.jpg")
-        imageList.add("http://priscree.ru/img/6e04d186cda445.jpg")
-        imageList.add("http://priscree.ru/img/6e04d598aafbb9.jpg")
+        imageList.add("https://www.imageup.ru/img152/thumb/8881565-8-0-1514194890-1514194898-650-fd8a7b9d44-15142794413450426.jpg")
     }
 
     fun ClosedRange<Int>.random() =
@@ -245,18 +236,6 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         if (progressDialog != null) {
             progressDialog!!.dismiss()
         }
-    }
-
-    override fun showToast(resId: Int?) {
-        val toast = Toast.makeText(this, resId!!, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-    }
-
-    override fun showToast(message: String) {
-        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
@@ -289,5 +268,13 @@ class TournamentActivity : AppCompatActivity(), TournamentContractView {
         override fun getPageTitle(position: Int): CharSequence? {
             return mFragmentTitleList[position]
         }
+    }
+
+    override fun dialogConfirmButtonClicked() {
+
+    }
+
+    override fun setConnectionStatus(connectivityStatus: Int?) {
+        presenter?.setConnectivityStatus(connectivityStatus)
     }
 }

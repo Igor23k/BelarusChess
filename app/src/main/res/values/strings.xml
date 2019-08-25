@@ -19,6 +19,7 @@
     <string name="fa_clock">\uf017</string>
     <string name="ion_search"></string>
 
+    <string name="nick">Nick</string>
     <string name="default_text">Default text</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -69,6 +70,7 @@
     <string name="notSelected">Not selected</string>
     <string name="retry">Retry</string>
     <string name="internalServerError">Internal server error</string>
+    <string name="incorrectEmailOrPassword">Incorrect email or password!</string>
     <string name="serverIsUnavailable">Server is unavailable</string>
     <string name="serverIsUnavailableMessage">Sorry, we are not ready right now. Please, try again later</string>
     <string name="noInternetConnection">No Internet Connection</string>
