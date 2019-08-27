@@ -7,18 +7,13 @@ import java.io.Serializable
  */
 
 class GameDTO : Serializable {
+
     var id: Int? = null
-
     var gameRecord: String? = null
-
     var countPointsFirstPlayer: Double? = null
-
     var countPointsSecondPlayer: Double? = null
-
     var matchDTO: MatchDTO? = null
-
     var firstChessPlayer: UserDTO? = null
-
     var secondChessPlayer: UserDTO? = null
 
     constructor(id: Int?, name: String, countPointsFirstPlayer: Double?, countPointsSecondPlayer: Double?, matchDTO: MatchDTO, firstChessPlayer: UserDTO, secondChessPlayer: UserDTO) {

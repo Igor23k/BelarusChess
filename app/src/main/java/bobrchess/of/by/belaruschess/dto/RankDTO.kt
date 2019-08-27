@@ -7,10 +7,9 @@ import java.io.Serializable
  */
 
 class RankDTO : Serializable{
+
     var id: Int? = null
-
     var name: String? = null
-
     var abbreviation: String? = null
 
     constructor(id: Int?, name: String, abbreviation: String) {

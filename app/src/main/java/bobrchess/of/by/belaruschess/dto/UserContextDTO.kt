@@ -9,7 +9,6 @@ import java.io.Serializable
 class UserContextDTO : Serializable {
 
     var user: UserDTO
-
     var tokenMap: Map<String, String>
 
     constructor(user: UserDTO, tokenMap: Map<String, String>) {

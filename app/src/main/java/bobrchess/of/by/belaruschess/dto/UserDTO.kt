@@ -9,40 +9,29 @@ import java.io.Serializable
 class UserDTO : Serializable {
 
     var id: Long? = null
-
     var name: String? = null
-
     var surname: String? = null
-
     var patronymic: String? = null
-
     var birthday: String? = null
-
     var email: String? = null
-
     var status: String? = null
-
     var phoneNumber: String? = null
-
     var password: String? = null
-
     var beCoach: Boolean = false
-
     var beOrganizer: Boolean = false
-
     var beMale: Boolean = false
-
     var rank: RankDTO? = null
-
     var country: CountryDTO? = null
-
     var rating: Int? = null
-
     var coach: UserDTO? = null
-
     var places: List<PlaceDTO>? = null
+    var image: String? = null
 
-    constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?, email: String?, status: String?, phoneNumber: String?, password: String?, beCoach: Boolean, beOrganizer: Boolean, beMale: Boolean, rank: RankDTO?, country: CountryDTO?, rating: Int?, coach: UserDTO?, places: List<PlaceDTO>?) {
+    constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?,
+                email: String?, status: String?, phoneNumber: String?, password: String?,
+                beCoach: Boolean, beOrganizer: Boolean, beMale: Boolean, rank: RankDTO?,
+                country: CountryDTO?, rating: Int?, coach: UserDTO?,
+                places: List<PlaceDTO>?, image: String) {
         this.id = id
         this.name = name
         this.surname = surname
@@ -60,7 +49,8 @@ class UserDTO : Serializable {
         this.rating = rating
         this.coach = coach
         this.places = places
+        this.image = image
     }
 
-    constructor() {}
+    constructor()
 }

@@ -28,15 +28,12 @@ public class App extends Application {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request()
-                        .newBuilder()
-                        .addHeader("Cache-Control", "no-cache")
-                        .build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request()
+                    .newBuilder()
+                    .addHeader("Cache-Control", "no-cache")
+                    .build();
+            return chain.proceed(request);
         });
         OkHttpClient client = httpClient.build();
         retrofit = new Retrofit.Builder()

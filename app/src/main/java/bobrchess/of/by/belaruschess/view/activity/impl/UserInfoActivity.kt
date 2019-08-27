@@ -24,9 +24,6 @@ import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import com.squareup.picasso.Picasso
 
-/**
- * Created by Igor on 25.03.2018.
- */
 class UserInfoActivity : AbstractActivity(), UserInfoContractView {
 
     private var userImageView: ImageView? = null
@@ -132,7 +129,7 @@ class UserInfoActivity : AbstractActivity(), UserInfoContractView {
     }
 
     private fun displayUserInfo() {
-        Picasso.with(this).load("https://www.imageup.ru/img152/thumb/8881565-8-0-1514194890-1514194898-650-fd8a7b9d44-15142794413450426.jpg").into(userImageView)
+        Picasso.with(this).load(user.image).into(userImageView)
         nameTextView!!.text = user.name
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status

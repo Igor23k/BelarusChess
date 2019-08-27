@@ -7,14 +7,11 @@ import java.io.Serializable
  */
 
 class TournamentTeamRankingDTO : Serializable {
+
     var id: Int? = null
-
     var position: Int? = null
-
     var points: Double? = null
-
     var team: TeamDTO? = null
-
     var tournament: TournamentDTO? = null
 
     constructor(id: Int?, position: Int?, points: Double?, team: TeamDTO?, tournamet: TournamentDTO?) {

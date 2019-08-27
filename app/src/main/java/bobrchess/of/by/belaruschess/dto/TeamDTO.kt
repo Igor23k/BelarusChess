@@ -7,10 +7,9 @@ import java.io.Serializable
  */
 
 class TeamDTO : Serializable {
+
     var id: Int? = null
-
     var name: String? = null
-
     var players: List<UserDTO>? = null
 
     constructor(id: Int?, name: String, players: List<UserDTO>) {

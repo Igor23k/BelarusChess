@@ -11,24 +11,18 @@ import java.time.LocalDateTime
 class TournamentDTO : Serializable{
 
     var id: Long? = null
-
     var name: String? = null
-
     var shortDescription: String? = null
-
     var fullDescription: String? = null
-
     var startDate: String? = null
-
     var finishDate: String? = null
-
     var countPlayersInTeam: Int? = null
-
     var place: PlaceDTO? = null
-
     var referee: UserDTO? = null
+    var image: String? = null
 
-    constructor(id: Long?, name: String, shortDescription: String, fullDescription: String, startDate: String, finishDate: String, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO) {
+    constructor(id: Long?, name: String, shortDescription: String, fullDescription: String, startDate: String,
+                finishDate: String, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO, image: String) {
         this.id = id
         this.name = name
         this.shortDescription = shortDescription
@@ -38,6 +32,7 @@ class TournamentDTO : Serializable{
         this.countPlayersInTeam = countPlayersInTeam
         this.place = place
         this.referee = referee
+        this.image = image
     }
 
     constructor()

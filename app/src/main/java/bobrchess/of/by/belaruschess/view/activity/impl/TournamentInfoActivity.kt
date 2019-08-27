@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.view.activity.impl
 
 import android.animation.ValueAnimator
-import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +21,6 @@ import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
 import bobrchess.of.by.belaruschess.util.Constants.Companion.REQUEST_CODE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
-import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_PARTICIPANTS_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_TABLE_REQUEST
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
@@ -43,7 +41,6 @@ class TournamentInfoActivity : AbstractActivity(), TournamentContractView {
     private var locationTextView: TextView? = null
     private var toolbar: Toolbar? = null
     private var tournament = TournamentDTO()
-    private val imageList = ArrayList<String>()
 
     private var progressDialog: ProgressDialog? = null
 
@@ -52,7 +49,6 @@ class TournamentInfoActivity : AbstractActivity(), TournamentContractView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tournament_info)
-        initImagesList()
         registerInternetCheckReceiver()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
@@ -124,9 +120,7 @@ class TournamentInfoActivity : AbstractActivity(), TournamentContractView {
     }
 
     private fun displayTournamentData() {
-        // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
-        val avatarNumber = (0..6).random()
-        Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
+        Picasso.with(this).load(tournament.image).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
         // judgeTextView!!.text = tournament.referee!!.gameRecord + " " + tournament.referee!!.surname//проверку и локэйшн тоже
@@ -190,15 +184,6 @@ class TournamentInfoActivity : AbstractActivity(), TournamentContractView {
 
     private fun putTournamentData(intent: Intent, tournamentDTO: TournamentDTO) {
         intent.putExtra(TOURNAMENT_PARAMETER, tournamentDTO)
-    }
-
-    private fun initImagesList() {
-        imageList.add("https://www.imageup.ru/img152/thumb/8881565-8-0-1514194890-1514194898-650-fd8a7b9d44-15142794413450426.jpg")
-        imageList.add("https://www.imageup.ru/img127/3459237/_1258-410.jpg")
-        imageList.add("https://www.imageup.ru/img127/3459238/1529578102_5.jpg")
-        imageList.add("https://www.imageup.ru/img127/3459240/s-6a1cc696546524f7b5469e4e1797382d0b7a1da8.jpg")
-        imageList.add("https://www.imageup.ru/img127/3459241/bez-nazvaniya-1.jpg")
-        imageList.add("https://www.imageup.ru/img127/3459243/bez-nazvaniya.jpg")
     }
 
     fun ClosedRange<Int>.random() =

@@ -7,23 +7,19 @@ import java.io.Serializable
  */
 
 class PlaceDTO : Serializable {
+
     var id: Int? = null
-
     var name: String? = null
-
     var city: String? = null
-
     var street: String? = null
-
     var building: String? = null
-
     var capacity: Int? = null
-
     var country: CountryDTO? = null
-
     var approved: Boolean = false
+    var image: String? = null
 
-    constructor(id: Int?, name: String, city: String, street: String, building: String, capacity: Int?, country: CountryDTO, approved: Boolean) {
+    constructor(id: Int?, name: String, city: String, street: String, building: String, capacity: Int?,
+                country: CountryDTO, approved: Boolean, image: String) {
         this.id = id
         this.name = name
         this.city = city
@@ -32,7 +28,8 @@ class PlaceDTO : Serializable {
         this.capacity = capacity
         this.country = country
         this.approved = approved
+        this.image = image
     }
 
-    constructor() {}
+    constructor()
 }

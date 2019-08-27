@@ -8,18 +8,13 @@ import java.util.Date
  */
 
 class MatchDTO : Serializable {
+
     var id: Int? = null
-
     var countPointsFirstTeam: Double? = null
-
     var countPointsSecondTeam: Double? = null
-
     var date: Date? = null
-
     var tournament: TournamentDTO? = null
-
     var firstTeam: TeamDTO? = null
-
     var secondTeam: TeamDTO? = null
 
     constructor(id: Int?, countPointsFirstTeam: Double?, countPointsSecondTeam: Double?, date: Date, tournamentDTO: TournamentDTO, firstTeam: TeamDTO, secondTeam: TeamDTO) {

@@ -1,6 +1,7 @@
 package bobrchess.of.by.belaruschess.dto
 
 class ErrorDTO {
+
     var timestamp : String? = null
     var status : Int? = null
     var error : String? = null

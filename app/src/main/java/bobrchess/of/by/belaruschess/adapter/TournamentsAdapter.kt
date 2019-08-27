@@ -16,7 +16,6 @@ import java.util.*
 class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) : RecyclerView.Adapter<TournamentsAdapter.TournamentViewHolder>() {
 
     private val tournamentList = ArrayList<TournamentDTO>()
-    private val imageList = ArrayList<String>()
     private val onTournamentClickListener: OnTournamentClickListener
 
     init {
@@ -61,7 +60,6 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
         private val positionNumberTextView: TextView
 
         init {
-            initTournamentList()
             tournamentSmallImageView = itemView.findViewById(R.id.profile_image_view)
             tournamentNameTextView = itemView.findViewById(R.id.tournament_name_text_view)
             startDateTextView = itemView.findViewById(R.id.start_date_text_view)
@@ -92,18 +90,10 @@ class TournamentsAdapter(onTournamentClickListener: OnTournamentClickListener) :
             // Picasso.with(itemView.context).load(tweetPhotoUrl).into(tournamentImageView)
 
             val avatarNumber = (0..6).random()
-            Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
-            Picasso.with(itemView.context).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentSmallImageView)
+            Picasso.with(itemView.context).load(tournament.image).into(tournamentImageView)
+            Picasso.with(itemView.context).load(tournament.image).into(tournamentSmallImageView)
 
             //  tournamentImageView.visibility = if (tweetPhotoUrl != null) View.VISIBLE else View.GONE  что это и нужно ли?
-        }
-
-        private fun initTournamentList() {
-            imageList.add("https://www.imageup.ru/img152/3450439/5d0a75e13c3c5dac093874ec22358870.jpeg")
-            imageList.add("https://www.imageup.ru/img127/3459217/london.jpg")
-            imageList.add("https://www.imageup.ru/img127/3459220/melburn.jpg")
-            imageList.add("https://www.imageup.ru/img127/3459221/paris.jpg")
-            imageList.add("https://www.imageup.ru/img127/3459222/vena.jpg")
         }
 
         fun ClosedRange<Int>.random() =

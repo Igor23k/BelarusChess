@@ -50,7 +50,6 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
     private var tournament = TournamentDTO()
-    private val imageList = ArrayList<String>()
 
     private var progressDialog: ProgressDialog? = null
 
@@ -60,7 +59,6 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tournament)
         initRecyclerView()
-        initImagesList()
         registerInternetCheckReceiver()
         tournamentImageView = findViewById(R.id.tournament_image_view)
         nameTextView = findViewById(R.id.tournament_name_text_view)
@@ -167,8 +165,7 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
 
     private fun displayTournamentData() {
         // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
-        val avatarNumber = (0..6).random()
-        Picasso.with(this).load(imageList[avatarNumber]/*user.imageUrl*/).into(tournamentImageView)
+        Picasso.with(this).load(tournament.image).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
         judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname//проверку и локэйшн тоже
@@ -219,10 +216,6 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
 
     private fun putTournamentData(intent: Intent, tournamentDTO: TournamentDTO) {
         intent.putExtra(TOURNAMENT_PARAMETER, tournamentDTO)
-    }
-
-    private fun initImagesList() {
-        imageList.add("https://www.imageup.ru/img152/thumb/8881565-8-0-1514194890-1514194898-650-fd8a7b9d44-15142794413450426.jpg")
     }
 
     fun ClosedRange<Int>.random() =

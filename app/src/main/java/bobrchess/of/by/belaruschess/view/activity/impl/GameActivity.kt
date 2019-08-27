@@ -40,13 +40,11 @@ class GameActivity : AbstractActivity(), GameContractView {
     private var game = GameDTO()
 
     private var progressDialog: ProgressDialog? = null
-    private val avatarList = ArrayList<String>()
     private var presenter: GamePresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
-        initAvatarList()
         registerInternetCheckReceiver()
         firstPlayerNameTextView = findViewById(R.id.first_player__name_text_view)
         secondPlayerNameTextView = findViewById(R.id.second_player__name_text_view)
@@ -74,22 +72,11 @@ class GameActivity : AbstractActivity(), GameContractView {
     }
 
     private fun displayGameData() {
-        //Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(secondPlayerImageView)
-        var avatarNumber = (0..30).random()
-        Picasso.with(this).load(avatarList[avatarNumber]/*user.imageUrl*/).into(firstPlayerImageView)
-        avatarNumber = (0..30).random()
-        Picasso.with(this).load(avatarList[avatarNumber]/*user.imageUrl*/).into(secondPlayerImageView)
+        Picasso.with(this).load(game.firstChessPlayer?.image).into(firstPlayerImageView)
+        Picasso.with(this).load(game.secondChessPlayer?.image).into(secondPlayerImageView)
         firstPlayerNameTextView!!.text = getString(R.string.user_full_name, game.firstChessPlayer!!.name, game.firstChessPlayer!!.surname)
         secondPlayerNameTextView!!.text = getString(R.string.user_full_name, game.secondChessPlayer!!.name, game.secondChessPlayer!!.surname)
         data!!.text = game.gameRecord
-    }
-
-    private fun initAvatarList() {
-        avatarList.add("https://www.imageup.ru/img152/3450439/5d0a75e13c3c5dac093874ec22358870.jpeg")
-        avatarList.add("https://www.imageup.ru/img152/3450439/5d0a75e13c3c5dac093874ec22358870.jpeg")
-        avatarList.add("https://www.imageup.ru/img152/3450439/5d0a75e13c3c5dac093874ec22358870.jpeg")
-        avatarList.add("https://www.imageup.ru/img152/3450439/5d0a75e13c3c5dac093874ec22358870.jpeg")
-        avatarList.add("https://www.imageup.ru/img152/3450439/5d0a75e13c3c5dac093874ec22358870.jpeg")
     }
 
     fun ClosedRange<Int>.random() =
