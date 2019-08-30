@@ -33,9 +33,6 @@ import com.squareup.picasso.Picasso
 import java.util.*
 
 
-/**
- * Created by Igor on 25.03.2018.
- */
 class TournamentActivity : AbstractActivity(), TournamentContractView {
 
     private var gamesRecyclerView: RecyclerView? = null
@@ -68,7 +65,7 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
 
         toolbar = findViewById(R.id.toolbar)
 
-        //   supportActionBar!!.setDisplayHomeAsUpEnabled(false)//кнопка назад, хз какой способ лучше, проверить
+        //   supportActionBar!!.setDisplayHomeAsUpEnabled(false)//todo кнопка назад, хз какой способ лучше, проверить
         viewPager = findViewById<View>(R.id.viewpager) as ViewPager
         setupViewPager(viewPager!!)
         tabLayout = findViewById<View>(R.id.tabs) as TabLayout
@@ -155,21 +152,20 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
     }
 
     private fun saveTournamentData() {
-        tournament = getTournamentData(intent)//мб проверку?
+        tournament = getTournamentData(intent)//todo мб проверку?
     }
 
     private fun loadTournamentData() {
-        tournament = getTournamentData(intent)//мб проверку?
+        tournament = getTournamentData(intent)//todo мб проверку?
         displayTournamentData()
     }
 
     private fun displayTournamentData() {
-        // Picasso.with(this).load("https://www.w3schools.com/w3css/img_fjords.jpg").into(tournamentImageView)
         Picasso.with(this).load(tournament.image).into(tournamentImageView)
         nameTextView!!.text = tournament.name
         descriptionTextView!!.text = tournament.fullDescription
-        judgeTextView!!.text = tournament.referee!!.name + " " + tournament.referee!!.surname//проверку и локэйшн тоже
-        locationTextView!!.text = tournament.place!!.country!!.name + ", " + tournament.place!!.city + ", " + tournament.place!!.street + ", " + tournament.place!!.building
+        judgeTextView!!.text =  String.format(getString(R.string.judge_placeholder, tournament.referee?.name,tournament.referee?.surname) )//todo to check it works well
+        locationTextView!!.text = String.format(getString(R.string.location_placeholder, tournament.place?.country?.name,tournament.place?.city, tournament.place?.street, tournament.place?.building))//todo to check it works well
     }
 
     private fun getTournamentData(intent: Intent?): TournamentDTO {
@@ -217,9 +213,6 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
     private fun putTournamentData(intent: Intent, tournamentDTO: TournamentDTO) {
         intent.putExtra(TOURNAMENT_PARAMETER, tournamentDTO)
     }
-
-    fun ClosedRange<Int>.random() =
-            Random().nextInt(endInclusive - start) + start
 
     override fun showProgress() {
         progressDialog = ProgressDialog.show(this, EMPTY_STRING, this.getString(R.string.please_wait))

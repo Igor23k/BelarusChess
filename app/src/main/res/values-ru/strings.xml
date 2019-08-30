@@ -48,7 +48,7 @@
     <string name="addTournament">Добавить турнир</string>
     <string name="isMember">Уже зарегистрированы? Авторизоваться</string>
     <string name="logo">Логотип</string>
-    <string name="please_wait">Пожалуйста, подождите ...</string>
+    <string name="please_wait">Пожалуйста, подождите &#8230;</string>
     <string name="successful_draw">Жеребьевка успешно проведена</string>
     <string name="connection_error">Ошибка соединения!</string>
     <string name="incorrect_email">Неверный email! Пожалуйста, попробуйте еще раз.</string>
@@ -59,7 +59,7 @@
     <string name="description">Описание</string>
     <string name="location">Местоположение</string>
     <string name="userRating_number">1900</string>
-    <string name="user_full_name">%1$s %2$s</string>
+    <string name="user_full_name_placeholder">%1$s %2$s</string>
     <string name="count_points">Очков:</string>
     <string name="judge">Судья:</string>
     <string name="tournament_register">Зарегистрироваться</string>
@@ -87,5 +87,9 @@
     <string name="take_photo">Сфотографировать</string>
     <string name="upload_server">Загрузить</string>
     <string name="uploaded">Загружено успешно</string>
+
+    <string name="judge_placeholder" formatted="true"> %s1 %s2</string>
+    <string name="location_placeholder" formatted="true"> %s1, %s2, %s3, %s4</string>
+
 
 </resources>

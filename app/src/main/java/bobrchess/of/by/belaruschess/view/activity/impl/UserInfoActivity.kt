@@ -134,10 +134,10 @@ class UserInfoActivity : AbstractActivity(), UserInfoContractView {
         surnameTextView!!.text = user.surname
         statusTextView!!.text = user.status
         user.country?.let {
-            locationTextView!!.text = user.country?.name//тут нужна проверка, страна не обязательна вроде. Или сделать обязательной?? С тренером то же самое
+            locationTextView!!.text = user.country?.name
         }
         user.coach?.let {
-            coachNameTextView!!.text = getString(R.string.user_full_name, user.coach?.name, user.coach?.surname)
+            coachNameTextView!!.text = getString(R.string.user_full_name_placeholder, user.coach?.name, user.coach?.surname)
         }
         val rating = user.rating
         var ratingString = this.getString(R.string.absence)

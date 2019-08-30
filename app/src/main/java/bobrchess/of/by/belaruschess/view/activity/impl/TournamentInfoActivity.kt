@@ -28,10 +28,6 @@ import com.dd.CircularProgressButton
 import com.squareup.picasso.Picasso
 import java.util.*
 
-
-/**
- * Created by Igor on 25.03.2018.
- */
 class TournamentInfoActivity : AbstractActivity(), TournamentContractView {
 
     private var tournamentImageView: ImageView? = null
@@ -58,7 +54,7 @@ class TournamentInfoActivity : AbstractActivity(), TournamentContractView {
 
         toolbar = findViewById(R.id.toolbar)
 
-        //   supportActionBar!!.setDisplayHomeAsUpEnabled(false)//кнопка назад, хз какой способ лучше, проверить
+        //   supportActionBar!!.setDisplayHomeAsUpEnabled(false)//todo кнопка назад, хз какой способ лучше, проверить
 
         presenter = TournamentPresenterImpl()
         //presenter!!.attachView(this)

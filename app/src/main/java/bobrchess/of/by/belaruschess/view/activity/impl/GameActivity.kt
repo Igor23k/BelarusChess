@@ -1,33 +1,24 @@
 package bobrchess.of.by.belaruschess.view.activity.impl
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.presenter.GamePresenter
 import bobrchess.of.by.belaruschess.presenter.impl.GamePresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
 import bobrchess.of.by.belaruschess.util.Constants.Companion.GAME_PARAMETER
-import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.GameContractView
-import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import com.squareup.picasso.Picasso
-import org.springframework.util.StringUtils
 import java.util.*
 
 
-/**
- * Created by Igor on 25.03.2018.
- */
 class GameActivity : AbstractActivity(), GameContractView {
 
     private var firstPlayerImageView: ImageView? = null
@@ -74,13 +65,10 @@ class GameActivity : AbstractActivity(), GameContractView {
     private fun displayGameData() {
         Picasso.with(this).load(game.firstChessPlayer?.image).into(firstPlayerImageView)
         Picasso.with(this).load(game.secondChessPlayer?.image).into(secondPlayerImageView)
-        firstPlayerNameTextView!!.text = getString(R.string.user_full_name, game.firstChessPlayer!!.name, game.firstChessPlayer!!.surname)
-        secondPlayerNameTextView!!.text = getString(R.string.user_full_name, game.secondChessPlayer!!.name, game.secondChessPlayer!!.surname)
+        firstPlayerNameTextView!!.text = getString(R.string.user_full_name_placeholder, game.firstChessPlayer?.name, game.firstChessPlayer?.surname)
+        secondPlayerNameTextView!!.text = getString(R.string.user_full_name_placeholder, game.secondChessPlayer?.name, game.secondChessPlayer?.surname)
         data!!.text = game.gameRecord
     }
-
-    fun ClosedRange<Int>.random() =
-            Random().nextInt(endInclusive - start) + start
 
     interface OnGameClickListener {
         fun onGameClick(game: GameDTO)

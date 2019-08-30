@@ -97,7 +97,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
         });
     }
 
-   /* public void alertDialogOnClick(AlertDialog dialog) {
+   /* public void alertDialogOnClick(AlertDialog dialog) {/todo проверить что норм тут все работает
         if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
             dialog.dismiss();
             if (!tokenAuthFailed) {

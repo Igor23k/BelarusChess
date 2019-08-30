@@ -64,7 +64,7 @@
     <string name="tournament_register">Register</string>
     <string name="position_number">Position:</string>
     <string name="userRating_number">1900</string>
-    <string name="user_full_name">%1$s %2$s</string>
+    <string name="user_full_name_placeholder">%1$s %2$s</string>
     <string name="dash">-</string>
     <string name="absence">Absence</string>//bug перевести нормально(отсутствие выбора)
     <string name="notSelected">Not selected</string>
@@ -87,4 +87,8 @@
     <string name="take_photo">Take a Photo</string>
     <string name="upload_server">Upload</string>
     <string name="uploaded">Successfully uploaded</string>
+
+    <string name="judge_placeholder" formatted="true"> %s1 %s2</string>
+    <string name="location_placeholder" formatted="true"> %s1, %s2, %s3, %s4</string>
+
 </resources>

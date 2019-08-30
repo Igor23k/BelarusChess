@@ -27,9 +27,6 @@ import bobrchess.of.by.colibritweet.adapter.UsersAdapter
 import butterknife.BindView
 import butterknife.ButterKnife
 
-/**
- * Created by Igor on 25.03.2018.
- */
 class SearchUserActivity : AbstractActivity(), SearchUserContractView {
     private var usersRecyclerView: RecyclerView? = null
     private var usersAdapter: UsersAdapter? = null
@@ -37,14 +34,9 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
     private var tableAdapter: TournamentTableAdapter? = null
     private var presenter: SearchUserPresenter? = null
     private var progressDialog: ProgressDialog? = null
-
     @BindView(R.id.e_query_text)
     private var queryEditText: EditText? = null
-
-    //@BindView(R.id.toolbar)
     private var toolbar: Toolbar? = null
-
-    //@BindView(R.id.e_search_button)
     private var searchButton: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,8 +82,7 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
     private fun initRecyclerView() {
         usersRecyclerView = findViewById(R.id.users_recycler_view)
         usersRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        val requestCode = intent.getIntExtra(REQUEST_CODE, 0)
-        when (requestCode) {
+        when (intent.getIntExtra(REQUEST_CODE, 0)) {
             TOURNAMENT_PARTICIPANTS_REQUEST -> {
                 val onUserClickListener = object : TournamentParticipantsAdapter.OnUserClickListener {
                     override fun onUserClick(user: UserDTO) {

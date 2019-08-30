@@ -1,23 +1,18 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
@@ -35,7 +30,6 @@ import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl;
 import bobrchess.of.by.belaruschess.util.Constants;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
-import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -43,27 +37,20 @@ public class AddTournamentActivity extends AbstractActivity implements AddTourna
 
     @InjectPresenter
     AddTournamentPresenterImpl presenter;
-
-    private boolean manyPeopleInTeam;
-
     @BindView(R.id.e_name_input)
     EditText nameText;
-
     @BindView(R.id.tournament_short_description_input)
     EditText shortDescriptionText;
-
     @BindView(R.id.tournament_full_description_input)
     EditText fullDescriptionText;
-
     @BindView(R.id.clock_image)
     ImageView clockImage;
-
     @BindView(R.id.calendar_image)
     ImageView calendarImage;
 
     private Toolbar toolbar;
 
-    //добавить place и referee
+    //todo добавить place и referee
 
     @BindView(R.id.b_registration)
     Button addTournamentButton;
@@ -76,6 +63,8 @@ public class AddTournamentActivity extends AbstractActivity implements AddTourna
     private String finishDate;
     private Spinner refereeSpinner;
     private Spinner placeSpinner;
+
+    private boolean manyPeopleInTeam;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,7 +110,7 @@ public class AddTournamentActivity extends AbstractActivity implements AddTourna
             );
             tpd.show(getFragmentManager(), Constants.Companion.getTIME_PICKER_DIALOG());
         });
-        presenter.viewIsReady();
+        presenter.viewIsReady(); // todo нужно де ждать пока зыпросы вернутся. + лучше сделать чтобы там был 1 запрос а не а
     }
 
     private void initButtonsListeners() {

@@ -20,23 +20,14 @@ import bobrchess.of.by.belaruschess.view.activity.GamesListContractView
 import bobrchess.of.by.colibritweet.adapter.GamesAdapter
 import butterknife.ButterKnife
 
-/**
- * Created by Igor on 25.03.2018.
- */
 class GamesListActivity : AbstractActivity(), GamesListContractView {
 
     private var gamesRecyclerView: RecyclerView? = null
     private var gamesAdapter: GamesAdapter? = null
     private var presenter: GamesListPresenter? = null
     private var progressDialog: ProgressDialog? = null
-
-    // @BindView(R.id.e_query_text)
     private var queryEditText: EditText? = null
-
-    //@BindView(R.id.toolbar)
     private var toolbar: Toolbar? = null
-
-    //@BindView(R.id.e_search_button)
     private var searchButton: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,7 +117,6 @@ class GamesListActivity : AbstractActivity(), GamesListContractView {
     }
 
     override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun dialogConfirmButtonClicked() {
