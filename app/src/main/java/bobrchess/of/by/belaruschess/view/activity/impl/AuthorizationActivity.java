@@ -1,10 +1,7 @@
 package bobrchess.of.by.belaruschess.view.activity.impl;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -137,7 +134,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
 
     @Override
     public void startActivity(@NonNull UserDTO userDTO) {
-        Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         putUserData(intent, userDTO);
         startActivity(intent);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);

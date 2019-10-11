@@ -26,4 +26,11 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
 
+
+
+    <!--from birthday app-->
+    <color name="textDark">#757575</color>
+    <color name="textVeryDark">#424242</color>
+    <color name="darkGrey">#616161</color>
+
 </resources>

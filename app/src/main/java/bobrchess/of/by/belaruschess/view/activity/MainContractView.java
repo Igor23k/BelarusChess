@@ -9,6 +9,6 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
  * Created by Igor on 22.04.2018.
  */
 
-public interface UserInfoContractView extends BaseContractView {
+public interface MainContractView extends BaseContractView {
     void displayUserTournaments(List<TournamentDTO> tournaments);
 }

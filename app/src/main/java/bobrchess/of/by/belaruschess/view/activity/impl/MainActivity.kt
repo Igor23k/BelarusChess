@@ -20,11 +20,11 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.REQUEST_CODE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.USER_INFO
-import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
+import bobrchess.of.by.belaruschess.view.activity.MainContractView
 import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
 import com.squareup.picasso.Picasso
 
-class UserInfoActivity : AbstractActivity(), UserInfoContractView {
+class MainActivity : AbstractActivity(), MainContractView {
 
     private var userImageView: ImageView? = null
     private var nameTextView: TextView? = null
@@ -110,7 +110,7 @@ class UserInfoActivity : AbstractActivity(), UserInfoContractView {
         tournamentsRecyclerView!!.layoutManager = LinearLayoutManager(this)
         val onTournamentClickListener = object : TournamentsAdapter.OnTournamentClickListener {
             override fun onTournamentClick(tournament: TournamentDTO) {
-                val intent = Intent(this@UserInfoActivity, TournamentInfoActivity::class.java)
+                val intent = Intent(this@MainActivity, TournamentInfoActivity::class.java)
                 intent.putExtra(TOURNAMENT_PARAMETER, tournament)
                 startActivity(intent)
             }

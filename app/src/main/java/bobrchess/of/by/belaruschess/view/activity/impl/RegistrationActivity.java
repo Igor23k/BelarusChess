@@ -156,7 +156,7 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
 
     @Override
     public void startActivity(@NonNull UserDTO userDTO) {
-        Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         putUserData(intent, userDTO);
         startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);

@@ -91,8 +91,8 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS = "incorrect_tournament_team_count_points"
 
 
-        val HOST = "http://192.168.100.2:8080"
-        //val HOST = "http://192.168.43.96:8080"
+        //val HOST = "http://192.168.100.2:8080"
+        val HOST = "http://192.168.43.96:8080"
 
 
         @JvmField
@@ -106,7 +106,7 @@ class Constants {
         @JvmField
         val USER_PREFERENCES = "userPreferences"
 
-        val REQUEST_CODE = "requestCode";
+        val REQUEST_CODE = "requestCode"
     }
 
 }

@@ -27,7 +27,6 @@
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity" android:theme="@style/AppTheme.Dark"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity" />
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchTournamentActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.UserInfoActivity"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.TournamentInfoActivity"/>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.GamesListActivity"/>
