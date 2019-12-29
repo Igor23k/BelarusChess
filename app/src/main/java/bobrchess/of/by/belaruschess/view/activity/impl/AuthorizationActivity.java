@@ -108,7 +108,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
         if (presenter.isConnected(getConnectivityStatus())) {
             if (!tokenAuthFailed) {
                 tokenAuthPresenter.tokenAuthorization();
-            }
+            }//todo тут походу элсе нужно еще добавить а то ничего не происходит
         }
     }
 

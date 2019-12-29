@@ -1,16 +1,14 @@
 package bobrchess.of.by.belaruschess.dto
 
 import java.io.Serializable
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 /**
  * Created by Igor on 10.04.2018.
  */
 
-class TournamentDTO : Serializable{
+class TournamentDTO : Serializable {
 
-    var id: Long? = null
+    var id: Long = 0
     var name: String? = null
     var shortDescription: String? = null
     var fullDescription: String? = null
@@ -21,8 +19,8 @@ class TournamentDTO : Serializable{
     var referee: UserDTO? = null
     var image: String? = null
 
-    constructor(id: Long?, name: String, shortDescription: String, fullDescription: String, startDate: String,
-                finishDate: String, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO, image: String) {
+    constructor(id: Long, name: String, shortDescription: String, fullDescription: String, startDate: String,
+                finishDate: String, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO, image: String, id1: Long) {
         this.id = id
         this.name = name
         this.shortDescription = shortDescription
@@ -33,6 +31,7 @@ class TournamentDTO : Serializable{
         this.place = place
         this.referee = referee
         this.image = image
+        this.id = id1
     }
 
     constructor()

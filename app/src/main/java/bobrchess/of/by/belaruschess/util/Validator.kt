@@ -86,13 +86,13 @@ object Validator {
         val referee = tournamentDTO?.referee
         val place = tournamentDTO?.place
 
-        if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
+        if (StringUtils.isEmpty(name) || name!!.length < 2 || name.length > 50) {//todo should be 8
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_NAME))
         }
-        if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 20 || shortDescription.length > 100) {
+        if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 2 || shortDescription.length > 100) {//todo should be 20
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION))
         }
-        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 20000) {
+        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 2 || fullDescription.length > 20000) {//todo should be 100
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION))
         }
         if (countPlayersInTeam == null || countPlayersInTeam > 20) {// todo bug сделать такие же значения на сервере

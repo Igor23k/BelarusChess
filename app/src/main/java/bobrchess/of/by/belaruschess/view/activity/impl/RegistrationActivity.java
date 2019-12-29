@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.R;
@@ -156,7 +158,7 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
 
     @Override
     public void startActivity(@NonNull UserDTO userDTO) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainOldActivity.class);
         putUserData(intent, userDTO);
         startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);

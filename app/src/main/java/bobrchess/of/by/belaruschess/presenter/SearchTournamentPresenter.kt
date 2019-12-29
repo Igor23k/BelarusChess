@@ -1,6 +1,6 @@
 package bobrchess.of.by.belaruschess.presenter
 
-import bobrchess.of.by.belaruschess.view.activity.impl.SearchTournamentActivity
+import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 
 /**
  * Created by Igor on 12.04.2018.
@@ -9,6 +9,6 @@ import bobrchess.of.by.belaruschess.view.activity.impl.SearchTournamentActivity
 interface SearchTournamentPresenter : BasePresenter {
     fun loadTournaments()
     fun loadTournaments(count: Int?)
-    fun searchTournaments()
-    fun attachView(activity: SearchTournamentActivity)
+    fun searchTournaments(test: String)
+    fun attachView(activity: MainActivity)
 }

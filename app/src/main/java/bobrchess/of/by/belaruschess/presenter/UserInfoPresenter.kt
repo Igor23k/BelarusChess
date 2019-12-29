@@ -1,13 +1,13 @@
 package bobrchess.of.by.belaruschess.presenter
 
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
+import bobrchess.of.by.belaruschess.view.activity.impl.MainOldActivity
 
 /**
  * Created by Igor on 12.04.2018.
  */
 
 interface UserInfoPresenter : BasePresenter {
-    fun attachView(activity: MainActivity)
+    fun attachView(activity: MainOldActivity)
 
     fun loadUserTournaments()
 }

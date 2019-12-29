@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>// цвета короч повторяются colorAccent и accent И тд. Разобраться с этим, с темами завязано
+<!--    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>// цвета короч повторяются colorAccent и accent И тд. Разобраться с этим, с темами завязано-->
     <color name="colorLight">#d1d8df</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
 
     <color name="white_alpha">#66ffffff</color>
 
     <color name="black">#000000</color>
-    <color name="white">#ffffff</color>
+ <!--   <color name="white">#ffffff</color>-->
     <color name="gray_dove_light">#666666</color>
     <color name="gray_mercury">#E1E1E1</color>
 
@@ -28,9 +28,25 @@
 
 
 
-    <!--from birthday app-->
+    <!--from tournament app-->
+    <color name="colorPrimary">#FAFAFA</color>
+    <color name="colorPrimaryDark">#FAFAFA</color>
+    <color name="colorPrimaryLight">#859cb1</color>
+    <color name="colorAccent">#cf3f5c</color>
+
+    <!-- Grey color values -->
+    <color name="brightGrey">#BDC3C7</color>
+    <color name="veryBrightGrey">#e3e6e8</color>
+    <color name="darkGrey">#616161</color>
     <color name="textDark">#757575</color>
     <color name="textVeryDark">#424242</color>
-    <color name="darkGrey">#616161</color>
+    <color name="dark">#212121</color>
+    <color name="white">#ffffff</color>
+
+    <!-- NOTIFICATION LIGHTS -->
+    <color name="notification_light_white">#ffffff</color>
+    <color name="notification_light_red">#ff0000</color>
+    <color name="notification_light_green">#00ff00</color>
+    <color name="notification_light_blue">#0066ff</color>
 
 </resources>

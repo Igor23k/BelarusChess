@@ -23,7 +23,7 @@ class Constants {
         val GAME_PARAMETER = "game"
         val TOURNAMENT_PARAMETER = "tournament"
         val USER_NAME_PARAMETER = "gameRecord"
-        val USER_SURNAME_PARAMETER = "surname"
+        val USER_SURNAME_PARAMETER = "shortDescription"
         val USER_RATING_PARAMETER = "rating"
         val USER_EMAIL_PARAMETER = "email"
         val USER_STATUS_PARAMETER = "status"
@@ -91,8 +91,8 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS = "incorrect_tournament_team_count_points"
 
 
-        //val HOST = "http://192.168.100.2:8080"
-        val HOST = "http://192.168.43.96:8080"
+        val HOST = "http://192.168.100.2:8080"
+        //val HOST = "http://192.168.43.96:8080"
 
 
         @JvmField

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.adapter.HelpAdapter
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
+import bobrchess.of.by.belaruschess.view.activity.impl.MainOldActivity
 
 class HelpFragment : Fragment() {
 
@@ -24,8 +25,8 @@ class HelpFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_help, container, false)
@@ -42,7 +43,7 @@ class HelpFragment : Fragment() {
         viewManager = LinearLayoutManager(view.context)
         viewAdapter = HelpAdapter(context!!)
 
-        toolbar.setTitle(R.string.incorrect_rating)
+        toolbar.setTitle(R.string.main_menu_item_help)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_help).apply {
             setHasFixedSize(true)
@@ -63,6 +64,6 @@ class HelpFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            HelpFragment()
+                HelpFragment()
     }
 }

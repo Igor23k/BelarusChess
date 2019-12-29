@@ -276,4 +276,9 @@ public class AddTournamentActivity extends AbstractActivity implements AddTourna
     public void setConnectionStatus(Integer connectivityStatus) {
         presenter.setConnectivityStatus(connectivityStatus);
     }
+
+    @Override
+    public void tournamentAdded(TournamentDTO tournamentDTO) {
+
+    }
 }

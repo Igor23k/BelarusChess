@@ -15,4 +15,19 @@
     <dimen name="tab_padding_bottom">16dp</dimen>
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
+
+
+
+    //tournament app
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size_bigger">56dp</dimen>
+    <dimen name="fab_size_smaller">40dp</dimen>
+
+    <dimen name="larg_text_size">24sp</dimen>
+    <dimen name="larger_text_size">18sp</dimen>
+    <dimen name="smaller_text_size">14sp</dimen>
+
+    <dimen name="standard_55">55dp</dimen>
+    <dimen name="standard_105">105dp</dimen>
+    <dimen name="standard_155">155dp</dimen>
 </resources>

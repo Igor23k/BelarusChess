@@ -86,7 +86,7 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
             TOURNAMENT_PARTICIPANTS_REQUEST -> {
                 val onUserClickListener = object : TournamentParticipantsAdapter.OnUserClickListener {
                     override fun onUserClick(user: UserDTO) {
-                        val intent = Intent(this@SearchUserActivity, MainActivity::class.java)
+                        val intent = Intent(this@SearchUserActivity, MainOldActivity::class.java)
                         intent.putExtra(USER_PARAMETER, user)
                         startActivity(intent)
                     }
@@ -97,7 +97,7 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
             USER_INFO -> {
                 val onUserClickListener = object : UsersAdapter.OnUserClickListener {
                     override fun onUserClick(user: UserDTO) {
-                        val intent = Intent(this@SearchUserActivity, MainActivity::class.java)
+                        val intent = Intent(this@SearchUserActivity, MainOldActivity::class.java)
                         intent.putExtra(USER_PARAMETER, user)
                         startActivity(intent)
                     }
@@ -108,7 +108,7 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
             TOURNAMENT_TABLE_REQUEST -> {
                 val onUserClickListener = object : TournamentTableAdapter.OnUserClickListener {
                     override fun onUserClick(user: UserDTO) {
-                        val intent = Intent(this@SearchUserActivity, MainActivity::class.java)
+                        val intent = Intent(this@SearchUserActivity, MainOldActivity::class.java)
                         intent.putExtra(USER_PARAMETER, user)
                         startActivity(intent)
                     }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout_onetime_item_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ripple_recycler_view_item"
+    android:clickable="true"
+    android:elevation="0dp"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/iv_one_time_item"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:tint="@color/brightGrey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_timer"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_one_time_item_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center|start"
+        android:textColor="@color/textDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_one_time_item"
+        app:layout_constraintEnd_toStartOf="@+id/tv_one_time_item_date_value"
+        app:layout_constraintStart_toEndOf="@+id/iv_one_time_item"
+        app:layout_constraintTop_toTopOf="@+id/iv_one_time_item"
+        tools:text="Name" />
+
+    <TextView
+        android:id="@+id/tv_one_time_item_date_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/event_property_date"
+        android:textColor="@color/brightGrey"
+        app:layout_constraintEnd_toStartOf="@+id/tv_days_until_one_time_title"
+        app:layout_constraintTop_toTopOf="@+id/iv_one_time_item" />
+
+    <TextView
+        android:id="@+id/tv_days_until_one_time_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/event_property_days"
+        android:textColor="@color/brightGrey"
+        app:layout_constraintEnd_toStartOf="@+id/tv_one_time_item_years_value"
+        app:layout_constraintTop_toTopOf="@+id/iv_one_time_item" />
+
+    <TextView
+        android:id="@+id/tv_one_time_item_date_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/textDark"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_one_time_item"
+        app:layout_constraintEnd_toEndOf="@+id/tv_one_time_item_date_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_one_time_item_date_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_one_time_item_date_title"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="06.02" />
+
+
+    <TextView
+        android:id="@+id/tv_days_until_one_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/textDark"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_one_time_item"
+        app:layout_constraintEnd_toEndOf="@+id/tv_days_until_one_time_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_days_until_one_time_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_days_until_one_time_title"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tv_one_time_item_years_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/event_property_years"
+        android:textColor="@color/brightGrey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_one_time_item" />
+
+
+    <TextView
+        android:id="@+id/tv_years_one_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/textDark"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_one_time_item"
+        app:layout_constraintEnd_toEndOf="@+id/tv_one_time_item_years_value"
+        app:layout_constraintStart_toStartOf="@+id/tv_one_time_item_years_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_one_time_item_years_value"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="2" />
+</android.support.constraint.ConstraintLayout>

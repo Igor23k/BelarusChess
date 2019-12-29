@@ -52,11 +52,11 @@ class SearchTournamentActivity : AbstractActivity(), SearchTournamentContractVie
         searchButton = toolbar!!.findViewById(R.id.e_search_button)
         queryEditText = toolbar!!.findViewById(R.id.e_query_text)
 
-        searchButton!!.setOnClickListener { presenter!!.searchTournaments() }
+    //    searchButton!!.setOnClickListener { presenter!!.searchTournaments() }
 
         queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                presenter!!.searchTournaments()
+           //     presenter!!.searchTournaments()
                 return@OnEditorActionListener true
             }
             false
@@ -65,7 +65,7 @@ class SearchTournamentActivity : AbstractActivity(), SearchTournamentContractVie
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         presenter = SearchTournamentPresenterImpl()
-        presenter!!.attachView(this)
+       // presenter!!.attachView(this)
         presenter!!.loadTournaments()
         presenter!!.viewIsReady()
     }

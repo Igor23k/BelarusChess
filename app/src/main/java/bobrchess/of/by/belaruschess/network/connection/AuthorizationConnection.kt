@@ -20,6 +20,7 @@ class AuthorizationConnection {
     private var callBack: CallBackAuthorization? = null
 
     fun authorization(userDTO: UserDTO) {
+
         App.getAPI().authorization(userDTO).enqueue(object : Callback<UserContextDTO> {
             override fun onResponse(call: Call<UserContextDTO>, response: Response<UserContextDTO>) {
                 if (response.isSuccessful) {

@@ -54,7 +54,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     public void onResponse(@NonNull TournamentDTO tournamentDTO) {
         view.hideProgress();
         view.enableButton();
-        view.startActivity(tournamentDTO);
+        view.tournamentAdded(tournamentDTO);
     }
 
     @Override
@@ -80,8 +80,8 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     public void addTournament(@NonNull TournamentDTO tournamentDTO) {
         if (viewIsReady) {
             view.disableButton();
-            tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex));
-            tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex));
+            tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex - 1));
+            tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex - 1));
             try {
                 Validator.INSTANCE.validateTournamentData(tournamentDTO);
                 view.disableButton();

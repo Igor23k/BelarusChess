@@ -18,7 +18,7 @@ import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchTournament;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView;
-import bobrchess.of.by.belaruschess.view.activity.impl.SearchTournamentActivity;
+import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity;
 import butterknife.BindView;
 
 /**
@@ -26,9 +26,9 @@ import butterknife.BindView;
  */
 
 @InjectViewState
-public class SearchTournamentPresenterImpl  extends MvpPresenter<SearchTournamentContractView> implements CallBackSearchTournament, SearchTournamentPresenter {
+public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournamentContractView> implements CallBackSearchTournament, SearchTournamentPresenter {
 
-    private SearchTournamentActivity view;
+    private MainActivity view;
     private SearchTournamentConnection tournamentConnection;
     private Boolean viewIsReady = false;
     private Integer connectivityStatus = 0;
@@ -52,15 +52,14 @@ public class SearchTournamentPresenterImpl  extends MvpPresenter<SearchTournamen
     }
 
     @Override
-    public void searchTournaments() {
-        if(viewIsReady) {
-            String text = view.getSearchText();
+    public void searchTournaments(String text) {
+        if (viewIsReady) {
             tournamentConnection.searchTournaments(text);
         }
     }
 
     @Override
-    public void attachView(@NotNull SearchTournamentActivity activity) {
+    public void attachView(@NotNull MainActivity activity) {
         view = activity;
     }
 

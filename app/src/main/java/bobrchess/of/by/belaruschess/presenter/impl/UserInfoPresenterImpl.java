@@ -12,7 +12,7 @@ import bobrchess.of.by.belaruschess.network.connection.UserInfoConnection;
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUserInfo;
 import bobrchess.of.by.belaruschess.util.Util;
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity;
+import bobrchess.of.by.belaruschess.view.activity.impl.MainOldActivity;
 
 /**
  * Created by Igor on 11.04.2018.
@@ -20,7 +20,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity;
 
 public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresenter {
 
-    private MainActivity view;
+    private MainOldActivity view;
     private UserInfoConnection userInfoConnection;
     private Boolean viewIsReady = false;
     private Integer connectivityStatus = 0;
@@ -42,7 +42,7 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
     }
 
     @Override
-    public void attachView(@NonNull MainActivity activity) {
+    public void attachView(@NonNull MainOldActivity activity) {
         view = activity;
     }
 

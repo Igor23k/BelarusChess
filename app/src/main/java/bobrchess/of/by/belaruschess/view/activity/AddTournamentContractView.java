@@ -16,4 +16,5 @@ public interface AddTournamentContractView extends MvpView, BaseContractView, Bu
     void setRefereeSpinnerAdapter(List<String> refereeNames);
     void setPlaceSpinnerAdapter(List<String> placeNames);
     void startActivity(TournamentDTO tournamentDTO);
+    void tournamentAdded(TournamentDTO tournamentDTO);
 }

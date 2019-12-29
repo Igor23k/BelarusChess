@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.BirthdayInstanceFragment"
+    tools:ignore="Autofill, ContentDescription">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/frame_layout_add_avatar_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_add_avatar_btn"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_birthday_person" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|end"
+                    android:clickable="false"
+                    android:src="@drawable/ic_add_a_photo"
+                    app:elevation="0dp"
+                    app:fabCustomSize="40dp" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/iv_tournamet_name"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:tint="@color/darkGrey"
+                app:layout_constraintBottom_toBottomOf="@+id/e_add_tournament_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/e_add_tournament_name"
+                app:srcCompat="@drawable/ic_account_box" />
+
+            <EditText
+                android:id="@+id/e_add_tournament_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/tournamentName"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="20"
+                android:textColor="@color/dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_tournamet_name"
+                app:layout_constraintTop_toBottomOf="@+id/frame_layout_add_avatar_image" />
+
+            <EditText
+                android:id="@+id/e_add_tournament_short_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/tournamentShortDescriptionHint"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="20"
+                android:textColor="@color/dark"
+                app:layout_constraintEnd_toEndOf="@+id/e_add_tournament_name"
+                app:layout_constraintStart_toStartOf="@+id/e_add_tournament_name"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_tournament_name" />
+
+            <EditText
+                android:id="@+id/e_add_tournament_full_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/tournamentFullDescriptionHint"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="15"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_add_tournament_short_description"
+                app:layout_constraintStart_toStartOf="@+id/e_add_tournament_short_description"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_tournament_short_description" />
+
+            <ImageView
+                android:id="@+id/iv_tournament_start_date"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/e_add_tournament_start_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/e_add_tournament_start_date"
+                app:srcCompat="@drawable/ic_cake" />
+
+            <TextView
+                android:id="@+id/t_add_tournament_start_date"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/dark"
+                android:textSize="@dimen/larger_text_size"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/sw_is_start_year_given"
+                app:layout_constraintStart_toEndOf="@+id/iv_tournament_start_date"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_tournament_full_description" />
+
+            <EditText
+                android:id="@+id/e_add_tournament_start_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="date"
+                android:textColor="@color/dark"
+                android:textSize="@dimen/larger_text_size"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@+id/sw_is_start_year_given"
+                app:layout_constraintStart_toEndOf="@+id/iv_tournament_start_date"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_tournament_full_description" />
+
+            <Switch
+                android:id="@+id/sw_is_start_year_given"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:showText="false"
+                android:splitTrack="false"
+                android:text="@string/tournament_start_date"
+                android:textColor="#808080"
+                app:layout_constraintBottom_toBottomOf="@+id/e_add_tournament_start_date"
+                app:layout_constraintEnd_toEndOf="@+id/e_add_tournament_full_description"
+                app:layout_constraintTop_toTopOf="@+id/e_add_tournament_start_date" />
+
+            <ImageView
+                android:id="@+id/iv_tournament_end_date"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/e_add_tournament_end_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/e_add_tournament_end_date"
+                app:srcCompat="@drawable/ic_cake" />
+
+            <TextView
+                android:id="@+id/t_add_tournament_end_date"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/dark"
+                android:textSize="@dimen/larger_text_size"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/sw_is_end_year_given"
+                app:layout_constraintStart_toEndOf="@+id/iv_tournament_end_date"
+                app:layout_constraintTop_toBottomOf="@+id/sw_is_start_year_given" />
+
+            <EditText
+                android:id="@+id/e_add_tournament_end_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="date"
+                android:textColor="@color/dark"
+                android:textSize="@dimen/larger_text_size"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@+id/sw_is_end_year_given"
+                app:layout_constraintStart_toEndOf="@+id/iv_tournament_end_date"
+                app:layout_constraintTop_toBottomOf="@+id/sw_is_start_year_given" />
+
+            <Switch
+                android:id="@+id/sw_is_end_year_given"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:showText="false"
+                android:splitTrack="false"
+                android:text="@string/tournament_end_date"
+                android:textColor="#808080"
+                app:layout_constraintBottom_toBottomOf="@+id/e_add_tournament_end_date"
+                app:layout_constraintEnd_toEndOf="@+id/sw_is_start_year_given"
+                app:layout_constraintTop_toTopOf="@+id/e_add_tournament_end_date" />
+
+             <ImageView
+                 android:id="@+id/iv_birthday_note"
+                 android:layout_width="24dp"
+                 android:layout_height="24dp"
+                 android:layout_marginStart="8dp"
+                 android:layout_marginTop="8dp"
+                 app:layout_constraintBottom_toBottomOf="@+id/s_refereeSpinner1"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="@+id/s_refereeSpinner1"
+                 app:srcCompat="@drawable/ic_notes" />
+
+            <Spinner
+                android:id="@+id/s_refereeSpinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/iv_birthday_note"
+                app:layout_constraintTop_toBottomOf="@+id/t_add_tournament_end_date"/>
+
+            <ImageView
+                android:id="@+id/iv_birthday_note1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/s_placeSpinner1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/s_placeSpinner1"
+                app:srcCompat="@drawable/ic_notes" />
+
+            <Spinner
+                android:id="@+id/s_placeSpinner1"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/iv_birthday_note1"
+                app:layout_constraintTop_toBottomOf="@+id/s_refereeSpinner1"/>
+
+           <!--  <EditText
+                 android:id="@+id/edit_add_fragment_note"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="8dp"
+                 android:layout_marginTop="8dp"
+                 android:ems="10"
+                 android:hint="@string/event_property_note"
+                 android:inputType="textMultiLine|textCapSentences"
+                 android:textColor="@color/dark"
+                 app:layout_constraintEnd_toEndOf="@+id/sw_is_end_year_given"
+                 app:layout_constraintStart_toEndOf="@+id/iv_birthday_note"
+                 app:layout_constraintTop_toBottomOf="@+id/t_add_tournament_end_date"/>-->
+
+             <Button
+                 android:id="@+id/btn_birthday_add_fragment_delete"
+                 style="@style/Widget.AppCompat.Button.Colored"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="8dp"
+                 android:layout_marginTop="24dp"
+                 android:layout_marginEnd="8dp"
+                 android:layout_marginBottom="24dp"
+                 android:text="@string/btn_birthday_delete"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/s_refereeSpinner1" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

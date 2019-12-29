@@ -4,10 +4,8 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
-import bobrchess.of.by.belaruschess.view.activity.BaseContractView
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -244,11 +242,11 @@ class Util {
         }
 
         fun getPlacesNames(places: List<PlaceDTO>): MutableList<String> {
-            val usersNames = ArrayList<String>()
+            val placeNames = ArrayList<String>()
             for (i in places.indices) {
-                places[i].name?.let { usersNames.add(it) }
+                places[i].name?.let { placeNames.add(it) }
             }
-            return usersNames
+            return placeNames
         }
 
         fun buildErrorJsonResponse(errorString: String): String {
