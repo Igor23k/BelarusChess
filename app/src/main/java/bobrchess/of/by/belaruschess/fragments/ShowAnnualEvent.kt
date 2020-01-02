@@ -10,7 +10,6 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.models.AnnualEvent
 import kotlinx.android.synthetic.main.fragment_show_annual_event.*
 import java.text.DateFormat
 
@@ -31,11 +30,11 @@ class ShowAnnualEvent : ShowEventFragment() {
      */
     override fun updateUI() {
         EventHandler.getEventToEventIndex(eventID)?.let { annualEvent ->
-            if (annualEvent is AnnualEvent) {
+           /* if (annualEvent is AnnualEvent) {
                 //set name of annual_event
                 this.tv_show_annual_event_name.text = annualEvent.name
 
-                val date =
+                val startDate =
                     EventDate.parseDateToString(
                         EventDate.dateToCurrentTimeContext(annualEvent.eventDate),
                         DateFormat.FULL
@@ -71,7 +70,7 @@ class ShowAnnualEvent : ShowEventFragment() {
                     1 -> {
                         tv_show_annual_event_date.text = resources.getString(
                             R.string.annual_event_show_date_tomorrow,
-                            date
+                            startDate
                         )
                     }
                     else -> {
@@ -79,7 +78,7 @@ class ShowAnnualEvent : ShowEventFragment() {
                             R.plurals.annual_event_show_date,
                             annualEvent.getDaysUntil(),
                             annualEvent.getDaysUntil(),
-                            date,
+                            startDate,
                             annualEvent.getWeeksUntilAsString()
                         )
                     }
@@ -92,7 +91,7 @@ class ShowAnnualEvent : ShowEventFragment() {
                 } else {
                     this.tv_show_annual_event_note.visibility = TextView.GONE
                 }
-            }
+            }*/
         }
     }
 
@@ -102,7 +101,7 @@ class ShowAnnualEvent : ShowEventFragment() {
      */
     override fun shareEvent() {
         EventHandler.getEventToEventIndex(eventID)?.let { annualEvent ->
-            if (annualEvent is AnnualEvent) {
+            /*if (annualEvent is AnnualEvent) {
 
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
@@ -113,7 +112,7 @@ class ShowAnnualEvent : ShowEventFragment() {
                         annualEvent.name
                     )
 
-                //annual_event next date
+                //annual_event next startDate
                 shareAnnualEventMsg += "\n" + context!!.resources.getString(
                     R.string.share_annual_event_date_next,
                     EventDate.parseDateToString(
@@ -130,7 +129,7 @@ class ShowAnnualEvent : ShowEventFragment() {
                 )
 
                 if (annualEvent.hasStartYear) {
-                    //annual_event date start
+                    //annual_event startDate start
                     shareAnnualEventMsg += "\n" + context!!.resources.getString(
                         R.string.share_annual_event_date_start,
                         EventDate.parseDateToString(annualEvent.eventDate, DateFormat.FULL)
@@ -150,7 +149,7 @@ class ShowAnnualEvent : ShowEventFragment() {
                         resources.getString(R.string.intent_share_chooser_title)
                     )
                 )
-            }
+            }*/
         }
     }
 

@@ -47,9 +47,9 @@ class ShowTournamentEvent : ShowEventFragment() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
         EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
             if (tournamentEvent is EventTournament) {
-                    this.tournament_name.text = tournamentEvent.tournamentDTO.name
+                    this.tournament_name.text = tournamentEvent.name
                     this.tournament_short_description.visibility = TextView.VISIBLE
-                    this.tournament_short_description.text = tournamentEvent.tournamentDTO.shortDescription
+                    this.tournament_short_description.text = tournamentEvent.shortDescription
 
                 var scrollRange = -1
                 (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
@@ -60,7 +60,7 @@ class ShowTournamentEvent : ShowEventFragment() {
                         if (scrollRange + verticalOffset == 0) {
                             setToolbarTitle(context!!.resources.getString(R.string.app_name))
                         } else {
-                            setToolbarTitle(tournamentEvent.tournamentDTO.name!!)
+                            setToolbarTitle(tournamentEvent.name!!)
                         }
                     }
                 })
@@ -85,17 +85,17 @@ class ShowTournamentEvent : ShowEventFragment() {
                 val date: String
                 date = tournamentEvent.dateToPrettyString(DateFormat.FULL)
 
-                tv_show_birthday_years_old.text = tournamentEvent.tournamentDTO.fullDescription
+                tv_show_birthday_years_old.text = tournamentEvent.fullDescription
 
                 tournament_start_date.text = date
-                   // context!!.resources.getString(R.string.person_show_date, date)
+                   // context!!.resources.getString(R.string.person_show_date, startDate)
 
              /*   //show adapted string for 1 day, not 1 days
                 when (tournamentEvent.getDaysUntil()) {
                     0 -> {
                         tv_show_birthday_days.text = resources.getString(
                             R.string.person_days_until_today,
-                            tournamentEvent.getNicknameOrForename()
+                            tournamentEvent.getName()
                         )
                     }
                     1 -> {
@@ -103,7 +103,7 @@ class ShowTournamentEvent : ShowEventFragment() {
                             resources.getQuantityString(
                                 R.plurals.person_days_until,
                                 tournamentEvent.getDaysUntil(),
-                                tournamentEvent.getNicknameOrForename(),
+                                tournamentEvent.getName(),
                                 tournamentEvent.getDaysUntil(),
                                 EventDate.parseDateToString(
                                     EventDate.dateToCurrentTimeContext(tournamentEvent.eventDate),
@@ -116,7 +116,7 @@ class ShowTournamentEvent : ShowEventFragment() {
                             resources.getQuantityString(
                                 R.plurals.person_days_until,
                                 tournamentEvent.getDaysUntil(),
-                                tournamentEvent.getNicknameOrForename(),
+                                tournamentEvent.getName(),
                                 tournamentEvent.getDaysUntil(),
                                 EventDate.parseDateToString(
                                     EventDate.dateToCurrentTimeContext(tournamentEvent.eventDate),
@@ -198,13 +198,13 @@ class ShowTournamentEvent : ShowEventFragment() {
                         )
                     }
 
-                if (birthday.isYearGiven) {
-                    //date person was born
+             //   if (birthday.isYearGiven) {
+                    //startDate person was born
                     shareBirthdayMsg += "\n" + context!!.resources.getString(
                         R.string.share_birthday_date_start,
                         EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
                     )
-                }
+          //      }
 
                 //next birthday
                 shareBirthdayMsg += "\n" + context!!.resources.getString(
@@ -230,15 +230,15 @@ class ShowTournamentEvent : ShowEventFragment() {
                     )
                 }
 
-                if (birthday.isYearGiven) {
+               // if (birthday.isYearGiven) {
                     //person will be years old
                     shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
                         R.plurals.person_years_old,
                         birthday.getYearsSince() + 1,
-                        birthday.getNicknameOrForename(),
+                        birthday.name,
                         birthday.getYearsSince() + 1
                     )
-                }
+                //}
 
                 intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
                 startActivity(

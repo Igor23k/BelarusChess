@@ -16,7 +16,6 @@ import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.handler.NotificationHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.models.AnnualEvent
 import com.procrastimax.birthdaybuddy.models.EventTournament
 import com.procrastimax.birthdaybuddy.models.OneTimeEvent
 
@@ -106,7 +105,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         channel.enableLights(false)
                     }
                 }
-                is AnnualEvent -> {
+               /* is AnnualEvent -> {
                     val lightColor = getLightColor(event, context)
                     if (lightColor != null) {
                         channel.enableLights(true)
@@ -114,7 +113,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     } else {
                         channel.enableLights(false)
                     }
-                }
+                }*/
                 is OneTimeEvent -> {
                     val lightColor = getLightColor(event, context)
                     if (lightColor != null) {
@@ -204,7 +203,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 }
             }
             // ANNUAL EVENT
-            is AnnualEvent -> {
+           /* is AnnualEvent -> {
 
                 var defaults = Notification.DEFAULT_ALL
 
@@ -247,7 +246,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 }
 
                 // ONE TIME EVENT
-            }
+            }*/
             is OneTimeEvent -> {
 
                 var defaults = Notification.DEFAULT_ALL
@@ -303,34 +302,34 @@ class AlarmReceiver : BroadcastReceiver() {
             0 -> {
                 returnString = context.resources.getString(
                     R.string.notification_content_birthday_today,
-                    tournament.getNicknameOrForename()
+                    tournament.getName()
                 )
             }
             //tomorrow
             1 -> {
                 returnString = context.resources.getString(
                     R.string.notification_content_birthday_tomorrow,
-                    tournament.getNicknameOrForename()
+                    tournament.getName()
                 )
             }
             else -> {
                 returnString = context.resources.getString(
                     R.string.notification_content_birthday_future,
-                    tournament.getNicknameOrForename(),
+                    tournament.getName(),
                     tournament.getDaysUntil()
                 )
             }
         }
         returnString += "\n${context.resources.getString(
                 R.string.notification_content_birthday_years_old,
-                tournament.getNicknameOrForename(),
+                tournament.getName(),
                 tournament.getTurningAgeValue()
             )}"
         */
         return returnString
     }
 
-    private fun buildAnnualEventNotificationBodyText(
+    /*private fun buildAnnualEventNotificationBodyText(
         context: Context,
         annualEvent: AnnualEvent
     ): String {
@@ -366,7 +365,7 @@ class AlarmReceiver : BroadcastReceiver() {
             )}"
         }
         return returnString
-    }
+    }*/
 
     private fun buildOneTimeEventNotificationBodyText(
         context: Context,
@@ -406,11 +405,11 @@ class AlarmReceiver : BroadcastReceiver() {
                     IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightBirthday)!!
                 return getLightARGBFromColorValue(lightValue, context)
             }
-            is AnnualEvent -> {
+            /*is AnnualEvent -> {
                 val lightValue =
                     IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightAnnual)!!
                 return getLightARGBFromColorValue(lightValue, context)
-            }
+            }*/
             is OneTimeEvent -> {
                 val lightValue =
                     IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightOneTime)!!

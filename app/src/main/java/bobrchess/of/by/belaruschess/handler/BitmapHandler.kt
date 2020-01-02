@@ -81,6 +81,7 @@ object BitmapHandler {
                         true
                     )
                     removeBitmap(id, context)
+
                     showMissingImageAlertDialog(context)
                 }
                 success = false
@@ -260,6 +261,6 @@ object BitmapHandler {
             dialog.dismiss()
         }
         builder.setIcon(R.drawable.ic_error_outline)
-        builder.show()
+       // builder.show()//todo мб надо удалить это ибо если невалидный урл то падает все
     }
 }

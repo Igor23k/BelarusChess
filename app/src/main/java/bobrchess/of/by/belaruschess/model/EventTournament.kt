@@ -1,7 +1,5 @@
 package com.procrastimax.birthdaybuddy.models
 
-import android.util.Log
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import java.text.DateFormat
@@ -10,70 +8,58 @@ import java.util.*
 /**
  * EventTournament is model class to store basic data about a persons birthday
  *
- * It inherits from EventDay, so it uses a Date, and Strings for the name of the described person
+ * It inherits from EventDay, so it uses a StartDate, and Strings for the name of the described person
  * ShortDescription cant be null, if it shouldn't be set, use "0" to mark the shortDescription as unwanted property when f.e. don't show it in UI
  * isYearGiven is flag to indicate whether the birthday-year is known/given
  *
  * TODO:
  *  - add possibility for favorites
  *
- *  @param date : Date
+ *  @param startDate : StartDate
  *  @param name : String
  *  @param isYearGiven : Boolean
  * @author Procrastimax
  */
 class EventTournament(
-        public var date: Date,
-        public var name: String,
-        public var tournamentDTO: TournamentDTO,
-        var isYearGiven: Boolean = true
-) :
-        EventDate(date, tournamentDTO) {
+        var id: Int,
+        var startDate: Date,
+        var name: String) :
+        EventDate(startDate, id) {
 
     /**
      * Identifier is an identifier for sorting
      */
     enum class Identifier : SortIdentifier {
-        Date {
+        StartDate {
             override fun Identifier(): Int = 0
         },
-        Name {
+        FinishDate {
             override fun Identifier(): Int = 1
         },
-        ShortDescription {
+        Name {
             override fun Identifier(): Int = 2
         },
-        FullDescription {
+        ShortDescription {
             override fun Identifier(): Int = 3
-        }/*,
-        Note {
+        },
+        FullDescription {
             override fun Identifier(): Int = 4
-        }*/,
-        AvatarUri {
+        },
+        Id {
             override fun Identifier(): Int = 5
         },
-        /* Nickname {
-             override fun Identifier(): Int = 6
-         }*/
+        AvatarUri {
+            override fun Identifier(): Int = 6
+        }
     }
 
     var shortDescription: String? = null
 
-/*
-    var note: String? = null
-*/
-
     var fullDescription: String? = null
 
-    var imageUri: String? = null
+    var finishDate: Date? = null
 
-    fun getNicknameOrForename(): String {
-        return if (this.fullDescription != null) {
-            this.fullDescription!!
-        } else {
-            name
-        }
-    }
+    var imageUri: String? = null
 
     /**
      * getTurningAgeValue returns a value which represents the value of a person turning a specific age
@@ -99,17 +85,21 @@ class EventTournament(
      * @return String
      */
     override fun toString(): String {
-        return "$Name${IOHandler.characterDivider_properties}${Identifier.Name}${IOHandler.characterDivider_values}${this.name}${IOHandler.characterDivider_properties}" +
-                "${Identifier.Date}${IOHandler.characterDivider_values}${parseDateToString(
+        return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
+                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
                         Locale.GERMAN
+                )}${IOHandler.tournamentDivider_properties}" +
+                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
+                        this.eventDate,
+                        DateFormat.DEFAULT,
+                        Locale.GERMAN//todo why??? выше то же
                 )}" +
-                "${IOHandler.characterDivider_properties}${Identifier.FullDescription}${IOHandler.characterDivider_values}${this.isYearGiven}" +
                 getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
-                //  getStringFromValue(Identifier.Note, this.note) +
-                getStringFromValue(Identifier.AvatarUri, this.imageUri) //+
-        //  getStringFromValue(Identifier.Nickname, this.fullDescription)
+                getStringFromValue(Identifier.FullDescription, this.fullDescription) +
+                getStringFromValue(Identifier.Id, this.id) +
+                getStringFromValue(Identifier.AvatarUri, this.imageUri)
     }
 
     /**
@@ -119,16 +109,20 @@ class EventTournament(
      * @return String
      */
     fun toStringWithoutImage(): String {
-        return "$Name${IOHandler.characterDivider_properties}${Identifier.Name}${IOHandler.characterDivider_values}${this.name}${IOHandler.characterDivider_properties}" +
-                "${Identifier.Date}${IOHandler.characterDivider_values}${parseDateToString(
+        return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
+                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
                         Locale.GERMAN
+                )}${IOHandler.tournamentDivider_properties}" +
+                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
+                        this.finishDate!!,
+                        DateFormat.DEFAULT,
+                        Locale.GERMAN//todo why??? выше то же
                 )}" +
-                "${IOHandler.characterDivider_properties}${Identifier.FullDescription}${IOHandler.characterDivider_values}${this.isYearGiven}" +
-                getStringFromValue(Identifier.ShortDescription, this.shortDescription)// +
-        //    getStringFromValue(Identifier.Note, this.note) +
-        //   getStringFromValue(Identifier.Nickname, this.fullDescription)
+                getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
+                getStringFromValue(Identifier.Id, this.id) +
+                getStringFromValue(Identifier.FullDescription, this.fullDescription)
     }
 
     companion object {

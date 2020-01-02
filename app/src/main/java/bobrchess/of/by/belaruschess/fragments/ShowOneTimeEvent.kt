@@ -93,7 +93,7 @@ class ShowOneTimeEvent : ShowEventFragment() {
                         oneTimeEvent.name
                     )
 
-                //annual_event next date
+                //annual_event next startDate
                 shareAnnualEventMsg += "\n" + context!!.resources.getString(
                     R.string.share_one_time_event_date_next,
                     EventDate.parseDateToString(

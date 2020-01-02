@@ -8,6 +8,7 @@ import bobrchess.of.by.belaruschess.AlarmReceiver
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.procrastimax.birthdaybuddy.models.*
+import java.time.LocalDateTime
 import java.util.*
 
 object NotificationHandler {
@@ -64,7 +65,7 @@ object NotificationHandler {
                         )
                     }
                 }
-                is AnnualEvent -> {
+                /*is AnnualEvent -> {
                     //do nothing when notifications for this are disabled
                     val isAnnualReminded =
                         IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationOnAnnual)
@@ -99,7 +100,7 @@ object NotificationHandler {
                             ReminderStart.EVENTDATE
                         )
                     }
-                }
+                }*/
                 is OneTimeEvent -> {
                     //do nothing when notifications for this are disabled
                     val isOneTimeReminded =
@@ -176,7 +177,7 @@ object NotificationHandler {
                             + " name: " + event.name
                 )
             }
-            is AnnualEvent -> {
+            /*is AnnualEvent -> {
                 alarmManager.setWindow(
                     AlarmManager.RTC_WAKEUP,
                     notificationTime.time,
@@ -187,7 +188,7 @@ object NotificationHandler {
                     " ---> AnnualEvent notification added on " + notificationTime + " with ID: " +
                             getRequestCode(event, reminderStart) + " name: " + event.name
                 )
-            }
+            }*/
             is OneTimeEvent -> {
 
                 val dayAfterEvent = Calendar.getInstance().apply {
@@ -221,10 +222,10 @@ object NotificationHandler {
                 notificationTime =
                     IOHandler.getStringFromKey(IOHandler.SharedPrefKeys.key_strNotificationTimeBirthday)
             }
-            is AnnualEvent -> {
+            /*is AnnualEvent -> {
                 notificationTime =
                     IOHandler.getStringFromKey(IOHandler.SharedPrefKeys.key_strNotificationTimeAnnual)
-            }
+            }*/
             is OneTimeEvent -> {
                 notificationTime =
                     IOHandler.getStringFromKey(IOHandler.SharedPrefKeys.key_strNotificationTimeOneTime)
@@ -270,7 +271,7 @@ object NotificationHandler {
             cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1)
         }
 
-        return cal.time
+        return Date()/*cal.time*/
     }
 
     fun cancelNotification(context: Context, event: EventDate) {

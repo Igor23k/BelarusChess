@@ -9,7 +9,6 @@ import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
 import android.util.TypedValue
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
@@ -18,14 +17,11 @@ import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
-import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
-import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import com.procrastimax.birthdaybuddy.fragments.*
-import com.procrastimax.birthdaybuddy.models.AnnualEvent
 import com.procrastimax.birthdaybuddy.models.EventTournament
 import com.procrastimax.birthdaybuddy.models.MonthDivider
 import com.procrastimax.birthdaybuddy.models.OneTimeEvent
@@ -54,10 +50,10 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
         IOHandler.registerIO(this)
         lockAppbar()
 
-
         if (!IOHandler.isFirstStart()) {
             //read all data from shared prefs, when app didnt start for the first time
-              //IOHandler.readAll(this)
+            //IOHandler.clearSharedPrefEventData()
+           // IOHandler.readAll(this)
             loadTournaments()//todo заменить на чтение из локал сторейджа
         } else {
             //on first start write standard settings to shared prefs
@@ -65,6 +61,37 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
             addMonthDivider()
             addTestEvent()
         }
+/*
+
+        if (savedInstanceState == null) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(
+                    R.id.fragment_placeholder,
+                    EventListFragment.newInstance()
+            ).commit()
+        }
+
+        //start loading bitmap drawables in other thread to not block ui
+        Thread(Runnable
+        {
+            BitmapHandler.loadAllBitmaps(this)
+            runOnUiThread {
+                if (recyclerView != null) {
+                    recyclerView.adapter!!.notifyDataSetChanged()
+                }
+            }
+        }).start()
+
+        if (intent != null) {
+            if (intent?.getBooleanExtra(FRAGMENT_EXTRA_TITLE_LOADALL, false) == true) {
+                val eventID = intent?.getIntExtra(FRAGMENT_EXTRA_TITLE_EVENTID, -1)
+                val type = intent?.getStringExtra(FRAGMENT_EXTRA_TITLE_TYPE)
+                if (eventID != null && eventID > -1 && type != null) {
+                    startFragments(eventID, type)
+                }
+            }
+            intent = null
+        }*/
     }
 
     fun unlockAppBar() {
@@ -124,13 +151,13 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
                         TournamentInstanceFragment.newInstance()
                     }
                 }
-                is AnnualEvent -> {
-                    if (type == FRAGMENT_TYPE_SHOW) {
-                        ShowAnnualEvent.newInstance()
-                    } else {
-                        AnnualEventInstanceFragment.newInstance()
-                    }
-                }
+                /* is AnnualEvent -> {
+                     if (type == FRAGMENT_TYPE_SHOW) {
+                         ShowAnnualEvent.newInstance()
+                     } else {
+                         AnnualEventInstanceFragment.newInstance()
+                     }
+                 }*/
                 is OneTimeEvent -> {
                     if (type == FRAGMENT_TYPE_SHOW) {
                         ShowOneTimeEvent.newInstance()
@@ -271,27 +298,27 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
             val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
             val date = bdFormat.parse(dateString)
             newFormat.format(date)
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             null
         }
     }
 
     fun showTournaments(tournaments: List<TournamentDTO>) {
-// todo глянуть че за хрень тут в старт дате
         tournaments.forEach {
-            var date = transformDate(it.finishDate)
-            if(!StringUtils.isEmpty(date)) {
-                val event = EventTournament(EventDate.parseStringToDate(date!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!, it)
-                event.name = it.name!!
-                EventHandler.addEvent(
-                        event,
-                        this,
-                        writeAfterAdd = false,
-                        addNewNotification = false,
-                        updateEventList = true,
-                        addBitmap = false
-                )
-            }
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            event.name = it.name!!
+            event.fullDescription = it.fullDescription!!
+            event.shortDescription = it.shortDescription!!
+            event.imageUri = it.image!!
+            event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
+            EventHandler.addEvent(
+                    event,
+                    this,
+                    writeAfterAdd = false,
+                    addNewNotification = false,
+                    updateEventList = true,
+                    addBitmap = false
+            )
         }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(
@@ -360,10 +387,9 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
     private fun addTestEvent() {
         EventHandler.addEvent(
                 EventTournament(
+                        111,
                         EventDate.parseStringToDate("09.02.19", DateFormat.DEFAULT, Locale.GERMAN),
-                        "Belarus Chess",
-                        TournamentDTO(),
-                        false
+                        "Belarus Chess"
                 ),
                 this,
                 true

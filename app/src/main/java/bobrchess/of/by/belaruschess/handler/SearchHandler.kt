@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.handler
 
 import bobrchess.of.by.belaruschess.model.EventDate
-import com.procrastimax.birthdaybuddy.models.AnnualEvent
 import com.procrastimax.birthdaybuddy.models.EventTournament
 import com.procrastimax.birthdaybuddy.models.OneTimeEvent
 
@@ -65,12 +64,12 @@ object SearchHandler {
             }
 
             //only has a description name
-            is AnnualEvent -> {
+          /*  is AnnualEvent -> {
                 return Pair(
                         eventData.eventID,
                         processStringList(splitStringToList(eventData.name)!!.toMutableList())
                 )
-            }
+            }*/
             //only has a description name
             is OneTimeEvent -> {
                 return Pair(

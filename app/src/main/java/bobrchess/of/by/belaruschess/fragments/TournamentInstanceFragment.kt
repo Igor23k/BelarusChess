@@ -101,7 +101,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     /**
-     * editStartDateCalendarview is the TextEdit used for editing/ showing the date of the birthday but reprensented by the android calendar view
+     * editStartDateCalendarview is the TextEdit used for editing/ showing the startDate of the birthday but reprensented by the android calendar view
      * It is lazy initialized
      */
     private val editStartDateCalendarview: TextView by lazy {
@@ -109,7 +109,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     /**
-     * editEndDateCalendarview is the TextEdit used for editing/ showing the date of the birthday but reprensented by the android calendar view
+     * editEndDateCalendarview is the TextEdit used for editing/ showing the startDate of the birthday but reprensented by the android calendar view
      * It is lazy initialized
      */
     private val editEndDateCalendarview: TextView by lazy {
@@ -117,7 +117,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     /**
-     * editDate is the TextEdit used for editing/ showing the date of the birthday
+     * editDate is the TextEdit used for editing/ showing the startDate of the birthday
      * It is lazy initialized
      */
     private val editDate: EditText by lazy {
@@ -184,7 +184,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     /**
-     * switchIsYearGiven is the Switch to indicate wether the user wants to provide a date with a year or without a year
+     * switchIsYearGiven is the Switch to indicate wether the user wants to provide a startDate with a year or without a year
      * It is lazy initialized
      */
     private val switchIsYearGiven: Switch by lazy {
@@ -248,7 +248,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                     }
 
 
-                    // the value which should be assigned to the date edit box
+                    // the value which should be assigned to the startDate edit box
                     val startDate: String?
                     val endDate: String?
 
@@ -590,11 +590,11 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     /**
-     * showStartDatePickerDialog shows a dialog to let the user pick a date for the editStartDateCalendarview
+     * showStartDatePickerDialog shows a dialog to let the user pick a startDate for the editStartDateCalendarview
      */
     private fun showStartDatePickerDialog(showYear: Boolean) {
         val c = Calendar.getInstance()
-        //set calendar to the date which is stored in the edit field, when the edit is not empty
+        //set calendar to the startDate which is stored in the edit field, when the edit is not empty
         if (!editStartDateCalendarview.text.isNullOrBlank()) {
             c.time = this.eventStartDate
         }
@@ -606,7 +606,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             DatePickerDialog(
                 context!!,
                 DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
-                    // Display Selected date in Toast
+                    // Display Selected startDate in Toast
                     c.set(Calendar.YEAR, year_)
                     c.set(Calendar.MONTH, monthOfYear)
                     c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -632,11 +632,11 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     /**
-    * showEndDatePickerDialog shows a dialog to let the user pick a date for the editStartDateCalendarview
+    * showEndDatePickerDialog shows a dialog to let the user pick a startDate for the editStartDateCalendarview
     */
     private fun showEndDatePickerDialog(showYear: Boolean) {
         val c = Calendar.getInstance()
-        //set calendar to the date which is stored in the edit field, when the edit is not empty
+        //set calendar to the startDate which is stored in the edit field, when the edit is not empty
         if (!editEndDateCalendarview.text.isNullOrBlank()) {
             c.time = this.eventEndDate
         }
@@ -648,7 +648,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                 DatePickerDialog(
                         context!!,
                         DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
-                            // Display Selected date in Toast
+                            // Display Selected startDate in Toast
                             c.set(Calendar.YEAR, year_)
                             c.set(Calendar.MONTH, monthOfYear)
                             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -690,7 +690,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             dateRegEx = dateEditRegexNoYear
         }*/
 
-        // date input does not match the required regex -> show error
+        // startDate input does not match the required regex -> show error
         if (!dateInput.matches(dateRegEx)) {
             Toast.makeText(
                 context,
@@ -703,11 +703,11 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             return false
         } else {
 
-            // input matches regex, then set it as birthdayevent date
+            // input matches regex, then set it as birthdayevent startDate
             this.eventStartDate = //if (switchIsYearGiven.isChecked) {
                 EventDate.parseStringToDateWithPattern("ddMMYYYY", dateInput)
           /*  } else {
-                //check if last character in the string is a date seperator char, if not, then append one before adding the year
+                //check if last character in the string is a startDate seperator char, if not, then append one before adding the year
                 if (checkForLastDateSeperatorChar(dateInput)) {
                     EventDate.parseStringToDateWithPattern("ddMMYYYY", "${dateInput}2016")
                 } else {
@@ -807,17 +807,16 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
     }
     override fun tournamentAdded(tournamentDTO: TournamentDTO?) {
-        closeBtnPressed()
         //create new instance from edit fields
           val tournamentEvent = EventTournament(
+                  tournamentDTO!!.id.toInt(),
               this.eventStartDate,
-              tournamentDTO?.name!!,
-                  TournamentDTO(),
-              true
+              tournamentDTO.name!!
           )
 
         tournamentEvent.shortDescription = tournamentDTO.shortDescription
         tournamentEvent.fullDescription = tournamentDTO.fullDescription
+        tournamentEvent.finishDate = eventEndDate//todo проверить что так можно брать, не из сущности, у старт то же самое
         tournamentEvent.imageUri = tournamentDTO.image
 
           //new birthday entry, just add a new entry in map

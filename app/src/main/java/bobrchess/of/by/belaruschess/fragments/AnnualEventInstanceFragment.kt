@@ -13,7 +13,6 @@ import bobrchess.of.by.belaruschess.adapter.EventInstanceFragment
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.models.AnnualEvent
 import kotlinx.android.synthetic.main.fragment_annual_instance.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -61,7 +60,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
     }
 
     /**
-     * editDate is the TextEdit used for editing/ showing the date of the annual_event
+     * editDate is the TextEdit used for editing/ showing the startDate of the annual_event
      * It is lazy initialized
      */
     private val editDate: TextView by lazy {
@@ -77,7 +76,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
     }
 
     /**
-     * switch_isYearGiven is the Switch to indicate whether the user wants to provide a date with a year or without a year
+     * switch_isYearGiven is the Switch to indicate whether the user wants to provide a startDate with a year or without a year
      * It is lazy initialized
      */
     private val switchIsYearGiven: Switch by lazy {
@@ -106,7 +105,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
 
             eventID = (arguments!!.getInt(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID))
             EventHandler.getEventToEventIndex(eventID)?.let { annualEvent ->
-                if (annualEvent is AnnualEvent) {
+               /* if (annualEvent is AnnualEvent) {
 
                     this.eventStartDate = annualEvent.eventDate
 
@@ -168,7 +167,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
                         // Display the alert dialog on app interface
                         dialog.show()
                     }
-                }
+                }*/
             }
         } else {
             setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_add_annual_event))
@@ -208,12 +207,12 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
     }
 
     /**
-     * showDatePickerDialog shows a standard android date picker dialog
-     * The chosen date in the dialog is set to the editDate field
+     * showDatePickerDialog shows a standard android startDate picker dialog
+     * The chosen startDate in the dialog is set to the editDate field
      */
     private fun showDatePickerDialog() {
         val c = Calendar.getInstance()
-        //set calendar to the date which is stored in the edit field, when the edit is not empty
+        //set calendar to the startDate which is stored in the edit field, when the edit is not empty
         if (!editDate.text.isNullOrBlank()) {
             c.time = this.eventStartDate
         }
@@ -225,7 +224,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
             DatePickerDialog(
                 context!!,
                 DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
-                    // Display Selected date in Toast
+                    // Display Selected startDate in Toast
                     c.set(Calendar.YEAR, year_)
                     c.set(Calendar.MONTH, monthOfYear)
                     c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -271,31 +270,31 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
                 .show()
         } else {
 
-            val annualEvent = AnnualEvent(this.eventStartDate, name, isYearGiven)
+         //   val annualEvent = AnnualEvent(this.eventStartDate, name, isYearGiven)
 
-            if (note.isNotBlank()) {
+           /* if (note.isNotBlank()) {
                 annualEvent.note = note
             }
-
+*/
             //new annual event entry, just add a new entry in map
-            if (!isEditAnnualEvent) {
-                EventHandler.addEvent(annualEvent, this.context!!, true)
-                Snackbar
+            /*EventHandler.addEvent(annualEvent, this.context!!, true)
+            Snackbar
                     .make(
-                        view!!,
-                        context!!.resources.getString(
-                            R.string.annual_event_added_notification,
-                            name
-                        ),
-                        Snackbar.LENGTH_LONG
+                            view!!,
+                            context!!.resources.getString(
+                                    R.string.annual_event_added_notification,
+                                    name
+                            ),
+                            Snackbar.LENGTH_LONG
                     )
-                    .show()
+                    .show()*/
+            if (!isEditAnnualEvent) {
                 closeBtnPressed()
 
                 //already annual event entry, overwrite old entry in map
             } else {
                 EventHandler.getEventToEventIndex(eventID)?.let { event ->
-                    if (event is AnnualEvent && wasChangeMade(event)) {
+                   /* if (event is AnnualEvent && wasChangeMade(event)) {
                         EventHandler.changeEventAt(eventID, annualEvent, context!!, true)
                         Snackbar.make(
                             view!!,
@@ -305,7 +304,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
                             ),
                             Snackbar.LENGTH_LONG
                         ).show()
-                    }
+                    }*/
                     closeBtnPressed()
                 }
             }
@@ -318,7 +317,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
      * @param event: AnnualEvent, is the comparative object to check against the TextEdit fields
      * @return Boolean, returns false if nothing has changed
      */
-    private fun wasChangeMade(event: AnnualEvent): Boolean {
+    /*private fun wasChangeMade(event: AnnualEvent): Boolean {
         if (switchIsYearGiven.isChecked) {
             if (editDate.text != event.dateToPrettyString(DateFormat.FULL)) return true
         } else {
@@ -336,7 +335,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
         if (switchIsYearGiven.isChecked != event.hasStartYear) return true
         //if nothing has changed return false
         return false
-    }
+    }*/
 
     companion object {
         /**

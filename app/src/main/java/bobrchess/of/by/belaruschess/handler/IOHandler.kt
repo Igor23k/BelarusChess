@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.BuildConfig
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.model.EventDate
 import com.procrastimax.birthdaybuddy.models.*
 import java.io.File
@@ -76,8 +77,8 @@ object IOHandler {
     private lateinit var sharedPrefEventData: SharedPreferences
     private lateinit var sharedPrefSettings: SharedPreferences
 
-    const val characterDivider_properties = "||"
-    const val characterDivider_values = "::"
+    const val tournamentDivider_properties = "||"
+    const val tournamentDivider_values = "::"
 
     /**
      * registerIO has to be called before any io writing/reading is done
@@ -132,7 +133,7 @@ object IOHandler {
         writeSetting(SharedPrefKeys.key_notificationLightAnnual, 1)
         writeSetting(SharedPrefKeys.key_notificationLightOneTime, 1)
 
-        // use a calendarview for setting the date of events, standard (true)
+        // use a calendarview for setting the startDate of events, standard (true)
         writeSetting(SharedPrefKeys.key_date_as_calendar_view, true)
     }
 
@@ -299,26 +300,28 @@ object IOHandler {
      * @return EventDay?
      */
     fun convertStringToEventDate(context: Context, objectString: String): EventDate? {
-       /* objectString.split(characterDivider_properties).let { stringArray ->
+        objectString.split(tournamentDivider_properties).let { stringArray ->
             if (stringArray.isNotEmpty()) {
                 when (stringArray[0]) {
                     //BIRTHDAY EVENT PARSING
                     (EventTournament.Name) -> {
                         var forename = "-"
-                        var date = "-"
-                        var note: String? = null
-                        var isyeargiven = false
+                        var startDate = "-"
+                        var finishDate = "-"
                         var avatarImageURI: String? = null
                         var shortDescription: String? = null
                         var fullDescription: String? = null
 
                         for (i in 1 until stringArray.size) {
-                            val property = stringArray[i].split(characterDivider_values)
+                            val property = stringArray[i].split(tournamentDivider_values)
 
                             //use identifier
                             when (property[0]) {
-                                EventTournament.Identifier.Date.toString() -> {
-                                    date = property[1]
+                                EventTournament.Identifier.StartDate.toString() -> {
+                                    startDate = property[1]
+                                }
+                                EventTournament.Identifier.FinishDate.toString() -> {
+                                    finishDate = property[1]
                                 }
                                 EventTournament.Identifier.Name.toString() -> {
                                     forename = property[1]
@@ -326,17 +329,11 @@ object IOHandler {
                                 EventTournament.Identifier.ShortDescription.toString() -> {
                                     shortDescription = property[1]
                                 }
-                                EventTournament.Identifier.Note.toString() -> {
-                                    note = property[1]
-                                }
                                 EventTournament.Identifier.FullDescription.toString() -> {
-                                    isyeargiven = property[1].toBoolean()
+                                    fullDescription = property[1]
                                 }
                                 EventTournament.Identifier.AvatarUri.toString() -> {
                                     avatarImageURI = property[1]
-                                }
-                                EventTournament.Identifier.Nickname.toString() -> {
-                                    fullDescription = property[1]
                                 }
                                 else ->
                                     Log.w(
@@ -346,32 +343,35 @@ object IOHandler {
                             }
                         }
 
+                       /* var tournamentDTO : TournamentDTO
+                        tournamentDTO.finishDate = finishDate*/
                         val birthday =
                             EventTournament(
-                                EventDate.parseStringToDate(date, locale = Locale.GERMAN),
-                                forename,
-                                isyeargiven
+                                    2222,
+                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),//todo why?
+                                forename
                             )
+                     //   if (shortDescription != null) birthday.fini = shortDescription
                         if (shortDescription != null) birthday.shortDescription = shortDescription
-                        if (note != null) birthday.note = note
+                      //  if (note != null) birthday.note = note
                         if (avatarImageURI != null) birthday.imageUri = avatarImageURI
                         if (fullDescription != null) birthday.fullDescription = fullDescription
                         return birthday
                     }
                     //ANNUAL EVENT PARSING
-                    (AnnualEvent.Name) -> {
-                        var date = "-"
+                   /* (AnnualEvent.Name) -> {
+                        var startDate = "-"
                         var name = "-"
                         var note: String? = null
                         var hasStartYear = false
 
                         for (i in 1 until stringArray.size) {
-                            val property = stringArray[i].split(characterDivider_values)
+                            val property = stringArray[i].split(tournamentDivider_values)
 
                             //use identifier
                             when (property[0]) {
-                                AnnualEvent.Identifier.Date.toString() -> {
-                                    date = property[1]
+                                AnnualEvent.Identifier.StartDate.toString() -> {
+                                    startDate = property[1]
                                 }
                                 AnnualEvent.Identifier.Name.toString() -> {
                                     name = property[1]
@@ -391,7 +391,7 @@ object IOHandler {
                         }
                         val anniversary =
                             AnnualEvent(
-                                EventDate.parseStringToDate(date, locale = Locale.GERMAN),
+                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),
                                 name,
                                 hasStartYear
                             )
@@ -399,7 +399,7 @@ object IOHandler {
                             anniversary.note = note
                         }
                         return anniversary
-                    }
+                    }*/
                     //ONETIME EVENT PARSING
                     (OneTimeEvent.Name) -> {
                         var date = "-"
@@ -407,7 +407,7 @@ object IOHandler {
                         var note: String? = null
 
                         for (i in 1 until stringArray.size) {
-                            val property = stringArray[i].split(characterDivider_values)
+                            val property = stringArray[i].split(tournamentDivider_values)
 
                             //use identifier
                             when (property[0]) {
@@ -442,7 +442,7 @@ object IOHandler {
                         var month = "-"
 
                         for (i in 1 until stringArray.size) {
-                            val property = stringArray[i].split(characterDivider_values)
+                            val property = stringArray[i].split(tournamentDivider_values)
 
                             //use identifier
                             when (property[0]) {
@@ -517,12 +517,11 @@ object IOHandler {
                 return false
             }
         }
-        return false*/
-        return null
+        return false
     }
 
     fun importEventsFromExternalStorage(context: Context): Boolean {
-       /* //check if external storage is available for reading
+        //check if external storage is available for reading
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
             val storagePath = File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
@@ -576,7 +575,6 @@ object IOHandler {
         } else {
             Toast.makeText(context, R.string.permissions_toast_no_sd, Toast.LENGTH_LONG).show()
             return false
-        }*/
-        return false
+        }
     }
 }

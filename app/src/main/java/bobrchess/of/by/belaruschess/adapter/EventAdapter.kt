@@ -14,12 +14,12 @@ import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.fragments.*
-import com.procrastimax.birthdaybuddy.models.AnnualEvent
+import com.procrastimax.birthdaybuddy.fragments.OneTimeEventInstanceFragment
+import com.procrastimax.birthdaybuddy.fragments.ShowOneTimeEvent
+import com.procrastimax.birthdaybuddy.fragments.TournamentInstanceFragment
 import com.procrastimax.birthdaybuddy.models.EventTournament
 import com.procrastimax.birthdaybuddy.models.MonthDivider
 import com.procrastimax.birthdaybuddy.models.OneTimeEvent
-import kotlinx.android.synthetic.main.annual_event_item_view.view.*
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
 import kotlinx.android.synthetic.main.one_time_event_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.*
@@ -62,9 +62,9 @@ class EventAdapter(private val context: Context, private val fragmentManager: Fr
             is EventTournament -> {
                 return 1
             }
-            is AnnualEvent -> {
+           /* is AnnualEvent -> {
                 return 2
-            }
+            }*/
             is OneTimeEvent -> {
                 return 3
             }
@@ -193,15 +193,15 @@ class EventAdapter(private val context: Context, private val fragmentManager: Fr
                             )
                         }
 
-                        //set date
+                        //set startDate
                         holder.itemView.tv_birthday_event_item_date_value.text =
                             birthday.getPrettyShortStringWithoutYear()
                         holder.itemView.tv_birthday_event_item_date_value.setTextColor(textColor)
 
                         //set years since, if specified
                        // if (birthday.isYearGiven) {
-                         /*   holder.itemView.tv_birthday_event_item_years_since_value.text =
-                                (birthday.getTurningAgeValue()).toString()*///todo
+                            holder.itemView.tv_birthday_event_item_years_since_value.text =
+                                (birthday.id).toString()//todo
                       /*  } else {
                             holder.itemView.tv_birthday_event_item_years_since_value.text = "-"
                         }*/
@@ -223,69 +223,19 @@ class EventAdapter(private val context: Context, private val fragmentManager: Fr
                                 )
                         }
 
-                        //if a birthday has a fullDescription, only show fullDescription
-                        if (birthday.fullDescription != null) {
-
-                            //set forename and shortDescription invisible
-                            holder.itemView.tv_birthday_event_item_forename.visibility =
+                        //set forename and shortDescription invisible
+                        holder.itemView.tv_birthday_event_item_forename.visibility =
                                 TextView.GONE
-                            holder.itemView.tv_birthday_event_item_surname.visibility =
+                        holder.itemView.tv_birthday_event_item_surname.visibility =
                                 TextView.GONE
 
-                            //set fullDescription TextView visible
-                            holder.itemView.tv_birthday_event_item_nickname.visibility =
+                        //set fullDescription TextView visible
+                        holder.itemView.tv_birthday_event_item_nickname.visibility =
                                 TextView.VISIBLE
-                            holder.itemView.tv_birthday_event_item_nickname.setTextColor(textColor)
+                        holder.itemView.tv_birthday_event_item_nickname.setTextColor(textColor)
 
-                            //set fullDescription TextView text
-                            holder.itemView.tv_birthday_event_item_nickname.text = birthday.fullDescription
-
-                        } else {
-                            //when shortDescription is given, set shortDescription and forename
-                            if (birthday.shortDescription != null) {
-                                //set forename and shortDescription invisible
-                                holder.itemView.tv_birthday_event_item_forename.visibility =
-                                    TextView.VISIBLE
-                                holder.itemView.tv_birthday_event_item_surname.visibility =
-                                    TextView.VISIBLE
-
-                                //set fullDescription TextView visible
-                                holder.itemView.tv_birthday_event_item_nickname.visibility =
-                                    TextView.GONE
-
-                                holder.itemView.tv_birthday_event_item_forename.text =
-                                    birthday.name
-                                holder.itemView.tv_birthday_event_item_forename.setTextColor(
-                                    textColor
-                                )
-
-                                //set shortDescription
-                                holder.itemView.tv_birthday_event_item_surname.text =
-                                    birthday.shortDescription
-                                holder.itemView.tv_birthday_event_item_surname.setTextColor(
-                                    textColor
-                                )
-
-                                //when shortDescription is not given, set forename as fullDescription TextView
-                            } else {
-                                //set forename and shortDescription invisible
-                                holder.itemView.tv_birthday_event_item_forename.visibility =
-                                    TextView.GONE
-                                holder.itemView.tv_birthday_event_item_surname.visibility =
-                                    TextView.GONE
-
-                                //set fullDescription TextView visible
-                                holder.itemView.tv_birthday_event_item_nickname.visibility =
-                                    TextView.VISIBLE
-                                holder.itemView.tv_birthday_event_item_nickname.setTextColor(
-                                    textColor
-                                )
-
-                                //set fullDescription TextView text
-                                holder.itemView.tv_birthday_event_item_nickname.text =
-                                    birthday.name
-                            }
-                        }
+                        //set fullDescription TextView text
+                        holder.itemView.tv_birthday_event_item_nickname.text = birthday.name
 
                         val avatarUri = birthday.imageUri
 
@@ -309,7 +259,7 @@ class EventAdapter(private val context: Context, private val fragmentManager: Fr
             2 -> {
                 //check if is birthday event and if the year is given
                 EventHandler.getList()[position].let { annualEvent ->
-                    if (annualEvent is AnnualEvent) {
+                    /*if (annualEvent is AnnualEvent) {
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
@@ -369,7 +319,7 @@ class EventAdapter(private val context: Context, private val fragmentManager: Fr
                             holder.itemView.tv_days_until_annual_value.setTextColor(textColor)
                         }
 
-                        //set date
+                        //set startDate
                         holder.itemView.tv_annual_item_date_value.text =
                             annualEvent.getPrettyShortStringWithoutYear()
                         holder.itemView.tv_annual_item_date_value.setTextColor(textColor)
@@ -400,7 +350,7 @@ class EventAdapter(private val context: Context, private val fragmentManager: Fr
                         //set name
                         holder.itemView.tv_annual_item_name.text = annualEvent.name
                         holder.itemView.tv_annual_item_name.setTextColor(textColor)
-                    }
+                    }*/
                 }
             }
 
@@ -469,7 +419,7 @@ class EventAdapter(private val context: Context, private val fragmentManager: Fr
                             holder.itemView.tv_days_until_one_time_value.setTextColor(textColor)
                         }
 
-                        //set date
+                        //set startDate
                         holder.itemView.tv_one_time_item_date_value.text =
                             oneTimeEvent.getPrettyShortStringWithoutYear()
                         holder.itemView.tv_one_time_item_date_value.setTextColor(textColor)

@@ -1,6 +1,5 @@
 package bobrchess.of.by.belaruschess.model
 
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import com.procrastimax.birthdaybuddy.models.MonthDivider
 import com.procrastimax.birthdaybuddy.models.SortIdentifier
@@ -16,31 +15,37 @@ import java.util.concurrent.TimeUnit
  * A model class to provide basic event data.
  *
  * This is a base class to be derived from.
- * Main functionality is to check if a date is valid.
+ * Main functionality is to check if a startDate is valid.
  * Can be used for other eventType classes f.e. birthdayEvent, anniversaryEvent, ...
- * The used date format used in the app is dd.MM.yyyy
+ * The used startDate format used in the app is dd.MM.yyyy
  *
- * @param _eventDate the date of the event
+ * @param _eventDate the startDate of the event
  * @author Procrastimax
  */
-open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparable<EventDate> {
+open class EventDate: Comparable<EventDate> {
 
-    var eventID: Int = tournamentDTO.id.toInt()
+    var eventID: Int = 0
 
-    var eventDate : Date = Calendar.getInstance().time
-    set(value) {
-        val currCal = Calendar.getInstance()
-        currCal.time = value
-        currCal.set(Calendar.HOUR_OF_DAY, 0)
-        currCal.set(Calendar.MINUTE, 0)
-        currCal.set(Calendar.SECOND, 0)
-        currCal.set(Calendar.MILLISECOND, 0)
-        field = currCal.time
+    constructor(_eventDate: Date, id: Int){
+        eventID = id
+        eventDate = _eventDate
     }
 
-    init {
-     this.eventDate = _eventDate
+    constructor(_eventDate: Date){
+        eventDate = _eventDate
     }
+
+
+    var eventDate: Date = Calendar.getInstance().time
+        set(value) {
+            val currCal = Calendar.getInstance()
+            currCal.time = value
+            currCal.set(Calendar.HOUR_OF_DAY, 0)
+            currCal.set(Calendar.MINUTE, 0)
+            currCal.set(Calendar.SECOND, 0)
+            currCal.set(Calendar.MILLISECOND, 0)
+            field = currCal.time
+        }
 
     /**
      * compareTo is the implementation of the comparable interface
@@ -79,7 +84,7 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
     }
 
     /**
-     * getPrettyShortStringWithoutYear returns a localized date in very short format like 06.02 or 06/02
+     * getPrettyShortStringWithoutYear returns a localized startDate in very short format like 06.02 or 06/02
      * @param locale : Locale = Locale.getDefault()
      * @return String
      */
@@ -104,11 +109,11 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
      */
     override fun toString(): String {
         return "$Name${getStringFromValue(
-            Identifier.Date, parseDateToString(
+                Identifier.Date, parseDateToString(
                 this.eventDate,
                 DateFormat.DEFAULT,
                 Locale.GERMAN
-            )
+        )
         )}"
     }
 
@@ -121,14 +126,14 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
      * @return String
      */
     fun dateToPrettyString(
-        format: Int = DateFormat.SHORT,
-        locale: Locale = Locale.getDefault()
+            format: Int = DateFormat.SHORT,
+            locale: Locale = Locale.getDefault()
     ): String {
         return parseDateToString(this.eventDate, format, locale)
     }
 
     /**
-     * getDaysUntil compares the current date and the member var EventDate and calculates the difference in days
+     * getDaysUntil compares the current startDate and the member var EventDate and calculates the difference in days
      * @return Int
      */
     open fun getDaysUntil(): Int {
@@ -144,19 +149,19 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
             nextYear.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR))
 
             if (nextYear.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH) &&
-                nextYear.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)
+                    nextYear.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)
             ) {
                 return 0
             }
 
             return TimeUnit.MILLISECONDS.toDays(nextYear.timeInMillis - currentDayCal.timeInMillis)
-                .toInt()
+                    .toInt()
         } else {
             val nextYear = Calendar.getInstance()
             nextYear.time = eventDate
             nextYear.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) + 1)
             return TimeUnit.MILLISECONDS.toDays(nextYear.timeInMillis - currentDayCal.timeInMillis)
-                .toInt()
+                    .toInt()
         }
     }
 
@@ -199,8 +204,8 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
     }
 
     /**
-     * getYearsSince returns the difference between the member var EVENTDATE and the current date in years
-     * This function respects the case, that a date which has not occurred in the current year, is decremented by one
+     * getYearsSince returns the difference between the member var EVENTDATE and the current startDate in years
+     * This function respects the case, that a startDate which has not occurred in the current year, is decremented by one
      *
      * @return Int
      */
@@ -218,7 +223,7 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
             (currentCal.get(Calendar.YEAR) - pastDateCal.get(Calendar.YEAR))
         } else {
             val notOccurredDateYear =
-                currentCal.get(Calendar.YEAR) - pastDateCal.get(Calendar.YEAR) - 1
+                    currentCal.get(Calendar.YEAR) - pastDateCal.get(Calendar.YEAR) - 1
             if (notOccurredDateYear < 0) {
                 0
             } else {
@@ -229,7 +234,7 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
 
     /**
      * dateToCurrentYear changes the year member var EVENTDATE to the current year
-     * @return Date
+     * @return StartDate
      */
     private fun dateToCurrentYear(): Date {
         val dateInCurrentYear = Calendar.getInstance()
@@ -241,30 +246,30 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
     companion object {
 
         /**
-         * dateToCurrentTimeContext changes a past date to a current time context
-         * this means, that if it is a yearly event (like a birthday) then this is going to return a date
-         * with the birthday date but with the year changed to the coming year (if the day of the birthday already came)
+         * dateToCurrentTimeContext changes a past startDate to a current time context
+         * this means, that if it is a yearly event (like a birthday) then this is going to return a startDate
+         * with the birthday startDate but with the year changed to the coming year (if the day of the birthday already came)
          * otherwise it changes the year to the current year
          *
          * This is helper function to make it easier to process two near dates
          *
-         * @return Date
+         * @return StartDate
          */
         fun dateToCurrentTimeContext(date: Date): Date {
-            //get instance of calender, assign the past date to it, and change year to current year
-            //this is needed to check if the date is this or next year
+            //get instance of calender, assign the past startDate to it, and change year to current year
+            //this is needed to check if the startDate is this or next year
             val dateInCurrentTimeContext = Calendar.getInstance()
             dateInCurrentTimeContext.time = date
             dateInCurrentTimeContext.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR))
 
-            //if past date with current year is before current day then set year to next year
+            //if past startDate with current year is before current day then set year to next year
             if (dateInCurrentTimeContext.get(Calendar.DAY_OF_YEAR) < Calendar.getInstance().get(
-                    Calendar.DAY_OF_YEAR
-                )
+                            Calendar.DAY_OF_YEAR
+                    )
             ) {
                 dateInCurrentTimeContext.set(
-                    Calendar.YEAR,
-                    Calendar.getInstance().get(Calendar.YEAR) + 1
+                        Calendar.YEAR,
+                        Calendar.getInstance().get(Calendar.YEAR) + 1
                 )
             }
             dateInCurrentTimeContext.set(Calendar.HOUR_OF_DAY, 0)
@@ -276,39 +281,39 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
 
         /**
          * parseLocalizedDateToString parses the member variable EventDate to a localized string in short format
-         * @param date : Date
+         * @param date : StartDate
          * @param format : Int = DateFormat.Short
          * @param locale : Locale = Locale.getDefault()
          * @return String
          */
         @JvmStatic
         fun parseDateToString(
-            date: Date,
-            format: Int = DateFormat.DEFAULT,
-            locale: Locale = Locale.getDefault()
+                date: Date,
+                format: Int = DateFormat.DEFAULT,
+                locale: Locale = Locale.getDefault()
         ): String {
             return DateFormat.getDateInstance(format, locale).format(date)
         }
 
         /**
-         * parseStringToDate parses a string in localized short format to a date which has 00:00:00 as time
+         * parseStringToDate parses a string in localized short format to a startDate which has 00:00:00 as time
          * @param date_string : String
          * @param format : Int = DateFormat.Short
          * @param locale : Locale = Locale.getDefault()
-         * @return Date
+         * @return StartDate
          */
         @JvmStatic
         fun parseStringToDate(
-            date_string: String,
-            format: Int = DateFormat.DEFAULT,
-            locale: Locale = Locale.getDefault()
+                date_string: String,
+                format: Int = DateFormat.DEFAULT,
+                locale: Locale = Locale.getDefault()
         ): Date {
             return DateFormat.getDateInstance(format, locale).parse(date_string)
         }
 
         @JvmStatic
         fun parseStringToTime(
-            timeString: String
+                timeString: String
         ): Date {
             val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
             return sdf.parse(timeString)
@@ -316,7 +321,7 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
 
         @JvmStatic
         fun parseTimeToString(
-            date: Date
+                date: Date
         ): String {
             val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
             return sdf.format(date)
@@ -341,7 +346,7 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
         /**
          * isDateInFuture checks if the member var eventStartDate is in the future (>currentDate)
          * @return Boolean
-         * @param date : Date
+         * @param date : StartDate
          */
         @JvmStatic
         fun isDateInFuture(date: Date): Boolean {
@@ -355,49 +360,49 @@ open class EventDate(_eventDate: Date, tournamentDTO: TournamentDTO) : Comparabl
         @JvmStatic
         fun <T> getStringFromValue(identifier: SortIdentifier, value: T): String {
             return if (value != null) {
-                "${IOHandler.characterDivider_properties}$identifier${IOHandler.characterDivider_values}$value"
+                "${IOHandler.tournamentDivider_properties}$identifier${IOHandler.tournamentDivider_values}$value"
 
             } else ""
         }
 
         @JvmStatic
         fun getLocalizedDayAndMonthString(
-            date: Date,
-            locale: Locale = Locale.getDefault()
+                date: Date,
+                locale: Locale = Locale.getDefault()
         ): String {
             val skeletonPattern = "ddMM"
             val workingFormat =
-                android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
+                    android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
             return SimpleDateFormat(workingFormat, locale).format(date)
         }
 
         @JvmStatic
         fun getLocalizedDayMonthYearString(
-            date: Date,
-            locale: Locale = Locale.getDefault()
+                date: Date,
+                locale: Locale = Locale.getDefault()
         ): String {
             val skeletonPattern = "ddMMYYYY"
             val workingFormat =
-                android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
+                    android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
             return SimpleDateFormat(workingFormat, locale).format(date)
         }
 
         @JvmStatic
         fun getLocalizedDateFormatPatternFromSkeleton(
-            skeleton: String,
-            locale: Locale = Locale.getDefault()
+                skeleton: String,
+                locale: Locale = Locale.getDefault()
         ): String {
             return android.text.format.DateFormat.getBestDateTimePattern(locale, skeleton)
         }
 
         @JvmStatic
         fun parseStringToDateWithPattern(
-            pattern: String,
-            dateString: String,
-            locale: Locale = Locale.getDefault()
+                pattern: String,
+                dateString: String,
+                locale: Locale = Locale.getDefault()
         ): Date {
             val workingFormat =
-                android.text.format.DateFormat.getBestDateTimePattern(locale, pattern)
+                    android.text.format.DateFormat.getBestDateTimePattern(locale, pattern)
             val separatorChar = if (workingFormat.contains("-")) {
                 "-"
             } else if (workingFormat.contains(".")) {

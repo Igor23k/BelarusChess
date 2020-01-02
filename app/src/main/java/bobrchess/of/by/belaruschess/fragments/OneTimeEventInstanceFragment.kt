@@ -60,7 +60,7 @@ class OneTimeEventInstanceFragment : EventInstanceFragment() {
     }
 
     /**
-     * editDate is the TextEdit used for editing/ showing the date of the one time event
+     * editDate is the TextEdit used for editing/ showing the startDate of the one time event
      * It is lazy initialized
      */
     private val editDate: TextView by lazy {
@@ -171,13 +171,13 @@ class OneTimeEventInstanceFragment : EventInstanceFragment() {
     }
 
     /**
-     * showDatePickerDialog shows a standard android date picker dialog
-     * The chosen date in the dialog is set to the editDate field
+     * showDatePickerDialog shows a standard android startDate picker dialog
+     * The chosen startDate in the dialog is set to the editDate field
      */
     private fun showDatePickerDialog() {
         val c = Calendar.getInstance()
 
-        //set calendar to the date which is stored in the edit field, when the edit is not empty
+        //set calendar to the startDate which is stored in the edit field, when the edit is not empty
         if (!editDate.text.isNullOrBlank()) {
             c.time = EventDate.parseStringToDate(editDate.text.toString(), DateFormat.FULL)
         }
@@ -189,7 +189,7 @@ class OneTimeEventInstanceFragment : EventInstanceFragment() {
             DatePickerDialog(
                 context!!,
                 DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
-                    // Display Selected date in Toast
+                    // Display Selected startDate in Toast
                     c.set(Calendar.YEAR, year_)
                     c.set(Calendar.MONTH, monthOfYear)
                     c.set(Calendar.DAY_OF_MONTH, dayOfMonth)

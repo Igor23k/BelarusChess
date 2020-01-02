@@ -1,14 +1,13 @@
 package com.procrastimax.birthdaybuddy.models
 
 import android.util.Log
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class OneTimeEvent(_eventdate: Date, var name: String) : EventDate(_eventdate, TournamentDTO()) {
+class OneTimeEvent(_eventdate: Date, var name: String) : EventDate(_eventdate) {
 
     /**
      * Identifier is an identifier for sorting
@@ -57,7 +56,7 @@ class OneTimeEvent(_eventdate: Date, var name: String) : EventDate(_eventdate, T
     }
 
     /**
-     * dateIsExpired returns false if the date is in the future
+     * dateIsExpired returns false if the startDate is in the future
      * If this returns true, the event expired
      * @return Boolean
      */
@@ -70,9 +69,9 @@ class OneTimeEvent(_eventdate: Date, var name: String) : EventDate(_eventdate, T
     }
 
     override fun toString(): String {
-        return "$Name${IOHandler.characterDivider_properties}" +
-                "${Identifier.Name}${IOHandler.characterDivider_values}${this.name}" +
-                "${IOHandler.characterDivider_properties}${Identifier.Date}${IOHandler.characterDivider_values}${parseDateToString(
+        return "$Name${IOHandler.tournamentDivider_properties}" +
+                "${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}" +
+                "${IOHandler.tournamentDivider_properties}${Identifier.Date}${IOHandler.tournamentDivider_values}${parseDateToString(
                     this.eventDate,
                     DateFormat.DEFAULT,
                     Locale.GERMAN

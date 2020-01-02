@@ -26,13 +26,13 @@ object EventHandler {
 
     /**
      * addEvent adds a EventDay type to the map and has the possibility to write it to the shared preferences after adding it
-     * this orders all events after the date automatically
+     * this orders all events after the startDate automatically
      * also updates the Eventday list after every adding of a new event
      * @param event: EventDay
      * @param context: Context
      * @param writeAfterAdd: Boolean whether this event should be written to shared preferences after adding to list
      * @param addNewNotification : Boolean, whether a new notification should be created after adding this event
-     * @param updateEventList : Boolean, whether to update the EventList, updating the EventList means sorting event values by their date
+     * @param updateEventList : Boolean, whether to update the EventList, updating the EventList means sorting event values by their startDate
      * @param addBitmap : Boolean whether a new bitmap should be added
      */
     fun addEvent(

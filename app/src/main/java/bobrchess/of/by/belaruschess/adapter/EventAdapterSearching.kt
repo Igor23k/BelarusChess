@@ -115,7 +115,7 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
                             true
                         }
 /*
-                        //set date
+                        //set startDate
                         holder.itemView.tv_birthday_event_item_date_value.text =
                             birthdayEvent.getPrettyShortStringWithoutYear()
 

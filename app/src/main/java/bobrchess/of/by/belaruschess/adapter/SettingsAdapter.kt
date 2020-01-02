@@ -96,7 +96,7 @@ class SettingsAdapter(private val context: Context) :
                     )
                 }
 
-                // handle changing of showing calendar view as date input method for birthdays
+                // handle changing of showing calendar view as startDate input method for birthdays
                 holder.itemView.sw_date_as_calendarview.isChecked =
                         IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_date_as_calendar_view)!!
                 holder.itemView.sw_date_as_calendarview.setOnCheckedChangeListener { _, isChecked ->
