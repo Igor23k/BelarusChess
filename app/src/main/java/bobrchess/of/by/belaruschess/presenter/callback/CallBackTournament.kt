@@ -1,6 +1,5 @@
 package bobrchess.of.by.belaruschess.presenter.callback
 
-import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 
 /**

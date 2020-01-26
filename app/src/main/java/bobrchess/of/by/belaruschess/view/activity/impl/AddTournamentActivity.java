@@ -207,15 +207,26 @@ public class AddTournamentActivity extends AbstractActivity implements AddTourna
         return tournamentData;
     }
 
+
     @Override
-    public void setRefereeSpinnerAdapter(List<String> refereeNames) {
+    public void setRefereeSpinnerAdapter(List<UserDTO> referees) {
+
+    }
+
+    @Override
+    public void setPlaceSpinnerAdapter(List<PlaceDTO> places) {
+
+    }
+
+    //@Override
+    public void setRefereeSpinnerAdapter1(List<String> refereeNames) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, refereeNames);
         refereeSpinner.setAdapter(adapter);
     }
 
-    @Override
-    public void setPlaceSpinnerAdapter(List<String> placesNames) {
+    //@Override
+    public void setPlaceSpinnerAdapter1(List<String> placesNames) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, placesNames);
         placeSpinner.setAdapter(adapter);
@@ -279,6 +290,11 @@ public class AddTournamentActivity extends AbstractActivity implements AddTourna
 
     @Override
     public void tournamentAdded(TournamentDTO tournamentDTO) {
+
+    }
+
+    @Override
+    public void removeTournamentFromLocalStorage(long id) {
 
     }
 }

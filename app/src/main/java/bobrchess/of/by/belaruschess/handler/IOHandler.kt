@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.BuildConfig
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.model.EventDate
 import com.procrastimax.birthdaybuddy.models.*
 import java.io.File
@@ -303,7 +302,7 @@ object IOHandler {
         objectString.split(tournamentDivider_properties).let { stringArray ->
             if (stringArray.isNotEmpty()) {
                 when (stringArray[0]) {
-                    //BIRTHDAY EVENT PARSING
+                    //BIRTHDAY EVENT PARSING-
                     (EventTournament.Name) -> {
                         var forename = "-"
                         var startDate = "-"
@@ -311,6 +310,8 @@ object IOHandler {
                         var avatarImageURI: String? = null
                         var shortDescription: String? = null
                         var fullDescription: String? = null
+                        var refereeId: String? = null
+                        var placeId: String? = null
 
                         for (i in 1 until stringArray.size) {
                             val property = stringArray[i].split(tournamentDivider_values)
@@ -335,6 +336,12 @@ object IOHandler {
                                 EventTournament.Identifier.AvatarUri.toString() -> {
                                     avatarImageURI = property[1]
                                 }
+                                EventTournament.Identifier.Referee.toString() -> {
+                                    refereeId = property[1]
+                                }
+                                EventTournament.Identifier.Place.toString() -> {
+                                    placeId = property[1]
+                                }
                                 else ->
                                     Log.w(
                                         "IOHandler",
@@ -342,21 +349,23 @@ object IOHandler {
                                     )
                             }
                         }
-
-                       /* var tournamentDTO : TournamentDTO
-                        tournamentDTO.finishDate = finishDate*/
-                        val birthday =
+                        val tournament =
                             EventTournament(
                                     2222,
                                 EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),//todo why?
                                 forename
                             )
                      //   if (shortDescription != null) birthday.fini = shortDescription
-                        if (shortDescription != null) birthday.shortDescription = shortDescription
+                        if (shortDescription != null) tournament.shortDescription = shortDescription
                       //  if (note != null) birthday.note = note
-                        if (avatarImageURI != null) birthday.imageUri = avatarImageURI
-                        if (fullDescription != null) birthday.fullDescription = fullDescription
-                        return birthday
+                        if (avatarImageURI != null) tournament.imageUri = avatarImageURI
+                        if (fullDescription != null) tournament.fullDescription = fullDescription
+                        if (refereeId != null) tournament.refereeId = refereeId.toLong()
+                        if (placeId != null) {
+                            tournament.placeId = placeId.toInt()
+                        }
+                        tournament.finishDate = EventDate.parseStringToDate(finishDate, locale = Locale.GERMAN)
+                        return tournament
                     }
                     //ANNUAL EVENT PARSING
                    /* (AnnualEvent.Name) -> {

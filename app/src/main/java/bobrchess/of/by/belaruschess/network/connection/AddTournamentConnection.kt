@@ -20,6 +20,26 @@ class AddTournamentConnection {
 
     private var callBack: CallBackAddTournament? = null
 
+    fun removeTournament(id: Long?) {
+        App.getAPI().removeTournament(id!!).enqueue(object : Callback<Long> {
+            override fun onResponse(call: Call<Long>, response: Response<Long>) {
+                if (response.isSuccessful) {
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack!!.onResponse(response.body())
+                    } else {
+                        callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                    }
+                } else {
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                }
+            }
+
+            override fun onFailure(call: Call<Long>, t: Throwable) {
+                callBack!!.onFailure(buildOnFailureResponse())
+            }
+        })
+    }
+
     fun addTournament(tournamentDTO: TournamentDTO, authorizationHeader: String) {
         App.getAPI().addTournament(tournamentDTO).enqueue(object : Callback<TournamentDTO> {
             override fun onResponse(call: Call<TournamentDTO>, response: Response<TournamentDTO>) {

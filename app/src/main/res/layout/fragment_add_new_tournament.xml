@@ -52,7 +52,7 @@
             </FrameLayout>
 
             <ImageView
-                android:id="@+id/iv_tournamet_name"
+                android:id="@+id/iv_tournament_name"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
@@ -71,10 +71,10 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/tournamentName"
                 android:inputType="textPersonName|textCapSentences"
-                android:maxLength="20"
+                android:maxLength="50"
                 android:textColor="@color/dark"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_tournamet_name"
+                app:layout_constraintStart_toEndOf="@+id/iv_tournament_name"
                 app:layout_constraintTop_toBottomOf="@+id/frame_layout_add_avatar_image" />
 
             <EditText
@@ -84,7 +84,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/tournamentShortDescriptionHint"
                 android:inputType="textPersonName|textCapSentences"
-                android:maxLength="20"
+                android:maxLength="100"
                 android:textColor="@color/dark"
                 app:layout_constraintEnd_toEndOf="@+id/e_add_tournament_name"
                 app:layout_constraintStart_toStartOf="@+id/e_add_tournament_name"
@@ -97,7 +97,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/tournamentFullDescriptionHint"
                 android:inputType="textPersonName|textCapSentences"
-                android:maxLength="15"
+                android:maxLength="2000"
                 android:textColor="@color/dark"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@+id/e_add_tournament_short_description"
@@ -270,7 +270,7 @@
                  android:layout_marginTop="24dp"
                  android:layout_marginEnd="8dp"
                  android:layout_marginBottom="24dp"
-                 android:text="@string/btn_birthday_delete"
+                 android:text="@string/btn_tournament_delete"
                  app:layout_constraintBottom_toBottomOf="parent"
                  app:layout_constraintEnd_toEndOf="parent"
                  app:layout_constraintStart_toStartOf="parent"

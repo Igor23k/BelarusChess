@@ -60,15 +60,22 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     @Override
     public void onRefereeResponse(@NonNull List<UserDTO> referees) {
         saveRefereesIndexes(referees);
-        view.setRefereeSpinnerAdapter(Util.Companion.getUsersBasicData(referees));
+        view.setRefereeSpinnerAdapter(referees);
         checkIsViewReady();
     }
 
     @Override
     public void onPlaceResponse(@NonNull List<PlaceDTO> places) {
         savePlacesIndexes(places);
-        view.setPlaceSpinnerAdapter(Util.Companion.getPlacesNames(places));
+        view.setPlaceSpinnerAdapter(places);
         checkIsViewReady();
+    }
+
+    @Override
+    public void onResponse(long removedTournamentId) {
+        if(removedTournamentId != 0){
+            view.removeTournamentFromLocalStorage(removedTournamentId);
+        }
     }
 
     @Override
@@ -106,6 +113,14 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
 
     public void viewIsReady() {
         viewIsReady = true;
+    }
+
+    @Override
+    public void removeTournament(Long id) {
+        if (viewIsReady) {
+            view.showProgress();
+            addTournamentConnection.removeTournament(id);
+        }
     }
 
     @Override

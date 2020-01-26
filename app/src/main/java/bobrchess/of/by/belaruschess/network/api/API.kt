@@ -82,6 +82,10 @@ interface API {
     @GET("/tournament/{id}")
     fun getTournament(@Path("id") id: Int): Call<TournamentDTO>
 
+    //Tournament
+    @DELETE("/tournament/{id}")
+    fun removeTournament(@Path("id") id: Long) : Call<Long>
+
     @GET("/searchUsers")
     fun searchTournaments(@Query("text") text: String): Call<List<TournamentDTO>>
 

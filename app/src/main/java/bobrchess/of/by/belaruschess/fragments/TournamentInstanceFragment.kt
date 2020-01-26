@@ -21,12 +21,16 @@ import android.view.ViewGroup
 import android.widget.*
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.adapter.EventInstanceFragment
+import bobrchess.of.by.belaruschess.dto.PlaceDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
+import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
@@ -201,6 +205,8 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         return inflater.inflate(R.layout.fragment_add_new_tournament, container, false)
     }
 
+    private var refereeId: Int = 0
+    private var placeId: Int = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
@@ -225,7 +231,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         addTournamentPresenter!!.setPackageModel(PackageModel(this.context!!))
         addTournamentPresenter!!.attachView(this)
         addTournamentPresenter!!.loadReferees()
-        addTournamentPresenter!!.loadPlaces()
+        addTournamentPresenter!!.loadPlaces()//я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо
 
    /*     editName.hint =
             "${context?.getText(R.string.event_property_forename)} ${context?.getText(R.string.necessary)}"*/
@@ -234,12 +240,14 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         if (arguments != null) {
             isEditedBirthday = true
 
-            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_birthday))
+            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_tournament))
 
             eventID = (arguments!!.getInt(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID))
-            EventHandler.getEventToEventIndex(eventID)?.let { birthday ->
-                if (birthday is EventTournament) {
-                    this.eventStartDate = birthday.eventDate
+            EventHandler.getEventToEventIndex(eventID)?.let { tournament ->
+                if (tournament is EventTournament) {
+                    refereeId = tournament.refereeId!!.toInt()
+                    placeId = tournament.placeId!!
+                    this.eventStartDate = tournament.eventDate
                     if (this.eventStartDate.after(Calendar.getInstance().time)) {
                         val cal = Calendar.getInstance()
                         cal.time = this.eventStartDate
@@ -252,17 +260,10 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                     val startDate: String?
                     val endDate: String?
 
-                   // if (birthday.isYearGiven) {
-                        startDate =
+                    startDate =
                             EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
-                        endDate =
-                                EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
-                   /* } else {
-                        startDate =
-                            EventDate.getLocalizedDayAndMonthString(this.eventStartDate)
-                        endDate =
-                                EventDate.getLocalizedDayAndMonthString(this.eventStartDate)
-                    }*/
+                    endDate =
+                            EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
 
                     if (!isCalendarViewSelected) {
                         editDate.setText(startDate)
@@ -274,18 +275,16 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                         editEndDateCalendarview.hint = endDate
                     }
 
-                    editShortDescription.setText(birthday.shortDescription)
-                    editName.setText(birthday.name)
+
+                    editShortDescription.setText(tournament.shortDescription)
+                    editName.setText(tournament.name)
                     switchIsYearGiven.isChecked = true//birthday.isYearGiven
-                    tournamentAvatarUri = birthday.imageUri
+                    tournamentAvatarUri = tournament.imageUri
 
-              /*      if (!birthday.note.isNullOrBlank()) {
-                     //   editNote.setText(birthday.note)
-                    }*/
 
-                    if (!birthday.fullDescription.isNullOrBlank()) {
+                    if (!tournament.fullDescription.isNullOrBlank()) {
                         //cb_nickname.isChecked = true
-                        editFullDescription.setText(birthday.fullDescription)
+                        editFullDescription.setText(tournament.fullDescription)
                         editFullDescription.visibility = EditText.VISIBLE
                     }
 
@@ -303,13 +302,13 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                         alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             // delete birthday on positive button
                             Snackbar
-                                .make(
+                                .make(//todo это надо перенести, чтобы показывалось уже после удаления с сервака, и в действие ниже добавить добавление и на сервак тоже
                                     view,
-                                    resources.getString(R.string.person_deleted_notification),
+                                    resources.getString(R.string.tournament_deleted_notification),
                                     Snackbar.LENGTH_LONG
                                 )
                                 .setAction(R.string.undo) {
-                                    EventHandler.addEvent(birthday, contextTemp!!, true)
+                                    EventHandler.addEvent(tournament, contextTemp!!, true)
                                     //get last fragment in stack list, which should be EventListFragment, so we can update the recycler view
                                     val fragment =
                                         (contextTemp as MainActivity).supportFragmentManager.fragments.last()
@@ -320,8 +319,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                                 }
                                 .show()
 
-                            EventHandler.removeEventByID(eventID, contextTemp!!, true)
-                            closeBtnPressed()
+                            addTournamentPresenter?.removeTournament(eventID.toLong())
                         }
 
                         // don't do anything on negative button
@@ -340,7 +338,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             }
             //new birthday is going to be added
         } else {
-            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_add_birthday))
+            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_add_tournament))
             btn_birthday_add_fragment_delete.visibility = Button.INVISIBLE
 
             if (isCalendarViewSelected) {
@@ -547,7 +545,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         if (tournamentName.isBlank() || date.isBlank()) {
             Toast.makeText(
                 context,
-                context!!.resources.getText(R.string.empty_fields_error_birthday),
+                context!!.resources.getText(R.string.empty_fields_error_tournament),
                 Toast.LENGTH_LONG
             )
                 .show()
@@ -676,7 +674,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     private fun showFutureDateErrorToast(context: Context) {
         Toast.makeText(
             context,
-            context.resources.getText(R.string.future_birthday_error),
+            context.resources.getText(R.string.future_tournament_error),
             Toast.LENGTH_LONG
         ).show()
     }
@@ -749,11 +747,40 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         }
     }
 
-    override fun setRefereeSpinnerAdapter(referees: MutableList<String>) {
-        referees.add(0, getString(R.string.chooseReferee))
-        val adapter = ArrayAdapter<String>(this.activity,
-                android.R.layout.simple_spinner_dropdown_item, referees)
+    override fun setRefereeSpinnerAdapter(referees: MutableList<UserDTO>) {
+        val refereeNames = Util.getUsersBasicData(referees)
+        refereeNames.add(0, getString(R.string.chooseReferee))
+        val adapter = ArrayAdapter<String>(this.context!!,
+                android.R.layout.simple_spinner_dropdown_item, refereeNames)
         refereeSpinner.adapter = adapter
+        refereeSpinner.setSelection(getUserIndexById(referees, refereeId) + 1 )
+    }
+
+    override fun setPlaceSpinnerAdapter(places: MutableList<PlaceDTO>?) {
+        val placeNames = Util.getPlacesNames(places!!)
+        placeNames.add(0, getString(R.string.choosePlace))
+        val adapter = ArrayAdapter<String>(this.context!!,
+                android.R.layout.simple_spinner_dropdown_item, placeNames)
+        placeSpinner.adapter = adapter
+        placeSpinner.setSelection(getPlaceIndexById(places, placeId) + 1)
+    }
+
+    private fun getUserIndexById(list: MutableList<UserDTO>, id:Int): Int{
+        for ((i, value) in list.withIndex()){
+            if(value.id?.toInt() == id){
+                return i
+            }
+        }
+        return -1
+    }
+
+    private fun getPlaceIndexById(list: MutableList<PlaceDTO>, id:Int): Int{
+        for ((i, value) in list.withIndex()){
+            if(value.id == id){
+                return i
+            }
+        }
+        return -1
     }
 
     override fun startActivity(tournamentDTO: TournamentDTO?) {//тут надо ззаполниь ну и остальные методы. Прогресс показывать и снимать и тд + дата в неверном формате сохраняется
@@ -789,13 +816,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     override fun addTournament() {
     }
 
-    override fun setPlaceSpinnerAdapter(placeNames: MutableList<String>?) {
-        placeNames?.add(0, getString(R.string.choosePlace))
-        val adapter = ArrayAdapter<String>(this.activity,
-                android.R.layout.simple_spinner_dropdown_item, placeNames)
-        placeSpinner.adapter = adapter
-    }
-
     override fun enableButton() {
     }
 
@@ -806,6 +826,12 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     fun createTournamentEvent(tournamentDTO: TournamentDTO?){
 
     }
+
+    override fun removeTournamentFromLocalStorage(id: Long) {
+        EventHandler.removeEventByID(eventID, context!!, true)
+        closeBtnPressed()
+    }
+
     override fun tournamentAdded(tournamentDTO: TournamentDTO?) {
         //create new instance from edit fields
           val tournamentEvent = EventTournament(
@@ -814,17 +840,20 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
               tournamentDTO.name!!
           )
 
+
         tournamentEvent.shortDescription = tournamentDTO.shortDescription
         tournamentEvent.fullDescription = tournamentDTO.fullDescription
         tournamentEvent.finishDate = eventEndDate//todo проверить что так можно брать, не из сущности, у старт то же самое
         tournamentEvent.imageUri = tournamentDTO.image
+        tournamentEvent.refereeId = tournamentDTO.referee?.id
+        tournamentEvent.placeId = tournamentDTO.place?.id
 
           //new birthday entry, just add a new entry in map
           if (!isEditedBirthday) {
               EventHandler.addEvent(tournamentEvent, this.context!!, true)
               Snackbar.make(
                   view!!,
-                  context!!.resources.getString(R.string.person_added_notification),
+                  context!!.resources.getString(R.string.tournament_added_notification),
                   Snackbar.LENGTH_LONG
               ).show()
               closeBtnPressed()
@@ -836,7 +865,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                       EventHandler.changeEventAt(eventID, tournamentEvent, context!!, true)
                       Snackbar.make(
                           view!!,
-                          context!!.resources.getString(R.string.person_changed_notification),
+                          context!!.resources.getString(R.string.tournament_changed_notification),
                           Snackbar.LENGTH_LONG
                       ).show()
                   }

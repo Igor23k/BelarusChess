@@ -241,7 +241,7 @@ class Util {
             return usersNames
         }
 
-        fun getPlacesNames(places: List<PlaceDTO>): MutableList<String> {
+        fun getPlacesNames(places: MutableList<PlaceDTO>): MutableList<String> {
             val placeNames = ArrayList<String>()
             for (i in places.indices) {
                 places[i].name?.let { placeNames.add(it) }

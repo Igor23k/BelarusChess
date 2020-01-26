@@ -151,14 +151,14 @@
     <string name="alert_dialog_missing_avatar_img_text">Произошла ошибка при попытке загрузить изображение аватара!\nСсылка на изображение будет удалена.</string>
 
     <!-- fragment add new tournament -->
-    <string name="toolbar_title_add_birthday">День рождения</string>
-    <string name="toolbar_title_edit_birthday">День рождения</string>
-    <string name="future_birthday_error">Вы не можете добавлять будущие дни рождения!\nПожалуйста, добавляйте только тех, кто уже родился.</string>
-    <string name="empty_fields_error_birthday">Вы должны заполнить поля Имя и Дата!</string>
-    <string name="person_added_notification">День рождения добавлен</string>
-    <string name="person_changed_notification">День рождения изменён</string>
-    <string name="person_deleted_notification">День рождения удален</string>
-    <string name="btn_birthday_delete">Удалить день рождения</string>
+    <string name="toolbar_title_add_tournament">Турнир</string>
+    <string name="toolbar_title_edit_tournament">Турнир</string>
+    <string name="future_tournament_error">Вы не можете добавлять будущие дни рождения!\nПожалуйста, добавляйте только тех, кто уже родился.</string>
+    <string name="empty_fields_error_tournament">Вы должны заполнить поля Имя и Дата!</string>
+    <string name="tournament_added_notification">Турнир добавлен</string>
+    <string name="tournament_changed_notification">Турнир изменён</string>
+    <string name="tournament_deleted_notification">Турнир удален</string>
+    <string name="btn_tournament_delete">Удалить турнир</string>
     <string name="avatar_btn_clicked_menu_item_select_photo">Галерея</string>
     <!--<string name="avatar_btn_clicked_menu_item_take_new_photo">Take new photo</string>-->
     <string name="avatar_btn_clicked_menu_item_delete_photo">Удалить фото</string>

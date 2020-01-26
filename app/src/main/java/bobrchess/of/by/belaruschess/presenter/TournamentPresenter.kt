@@ -7,6 +7,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity
  */
 
 interface TournamentPresenter : BasePresenter {
+
     fun getTournament(id: Int?)
 
     fun getTournaments()

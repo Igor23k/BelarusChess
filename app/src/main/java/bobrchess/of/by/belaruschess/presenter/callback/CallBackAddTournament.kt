@@ -12,4 +12,5 @@ interface CallBackAddTournament : CallBack {
     fun onResponse(tournamentDTO: TournamentDTO)
     fun onRefereeResponse(referees: List<UserDTO>)
     fun onPlaceResponse(places: List<PlaceDTO>)
+    fun onResponse(removedTournamentId:Long)
 }

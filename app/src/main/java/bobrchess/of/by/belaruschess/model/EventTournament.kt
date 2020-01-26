@@ -1,5 +1,6 @@
 package com.procrastimax.birthdaybuddy.models
 
+import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import java.text.DateFormat
@@ -50,6 +51,12 @@ class EventTournament(
         },
         AvatarUri {
             override fun Identifier(): Int = 6
+        },
+        Referee {
+            override fun Identifier(): Int = 7
+        },
+        Place {
+            override fun Identifier(): Int = 8
         }
     }
 
@@ -60,6 +67,10 @@ class EventTournament(
     var finishDate: Date? = null
 
     var imageUri: String? = null
+
+    var refereeId: Long? = null
+
+    var placeId: Int? = null
 
     /**
      * getTurningAgeValue returns a value which represents the value of a person turning a specific age
@@ -99,7 +110,10 @@ class EventTournament(
                 getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
                 getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.AvatarUri, this.imageUri)
+                getStringFromValue(Identifier.AvatarUri, this.imageUri) +
+                getStringFromValue(Identifier.Referee, this.refereeId) +
+                getStringFromValue(Identifier.Place, this.placeId)
+
     }
 
     /**
@@ -122,7 +136,9 @@ class EventTournament(
                 )}" +
                 getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
                 getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.FullDescription, this.fullDescription)
+                getStringFromValue(Identifier.FullDescription, this.fullDescription) +
+                getStringFromValue(Identifier.Referee, this.refereeId) +
+                getStringFromValue(Identifier.Place, this.placeId)
     }
 
     companion object {

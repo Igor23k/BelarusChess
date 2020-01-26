@@ -1,3 +1,4 @@
+
 package bobrchess.of.by.belaruschess.view.activity.impl
 
 import android.app.ProgressDialog
@@ -50,48 +51,19 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
         IOHandler.registerIO(this)
         lockAppbar()
 
+
         if (!IOHandler.isFirstStart()) {
             //read all data from shared prefs, when app didnt start for the first time
             //IOHandler.clearSharedPrefEventData()
-           // IOHandler.readAll(this)
-            loadTournaments()//todo заменить на чтение из локал сторейджа
+            loadTournamentsFromLocalStorage()
+           // loadTournaments()
         } else {
             //on first start write standard settings to shared prefs
             IOHandler.initializeAllSettings()
             addMonthDivider()
             addTestEvent()
         }
-/*
-
-        if (savedInstanceState == null) {
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(
-                    R.id.fragment_placeholder,
-                    EventListFragment.newInstance()
-            ).commit()
-        }
-
-        //start loading bitmap drawables in other thread to not block ui
-        Thread(Runnable
-        {
-            BitmapHandler.loadAllBitmaps(this)
-            runOnUiThread {
-                if (recyclerView != null) {
-                    recyclerView.adapter!!.notifyDataSetChanged()
-                }
-            }
-        }).start()
-
-        if (intent != null) {
-            if (intent?.getBooleanExtra(FRAGMENT_EXTRA_TITLE_LOADALL, false) == true) {
-                val eventID = intent?.getIntExtra(FRAGMENT_EXTRA_TITLE_EVENTID, -1)
-                val type = intent?.getStringExtra(FRAGMENT_EXTRA_TITLE_TYPE)
-                if (eventID != null && eventID > -1 && type != null) {
-                    startFragments(eventID, type)
-                }
-            }
-            intent = null
-        }*/
+        updateTournamentFragments()
     }
 
     fun unlockAppBar() {
@@ -303,23 +275,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
         }
     }
 
-    fun showTournaments(tournaments: List<TournamentDTO>) {
-        tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
-            event.name = it.name!!
-            event.fullDescription = it.fullDescription!!
-            event.shortDescription = it.shortDescription!!
-            event.imageUri = it.image!!
-            event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
-            EventHandler.addEvent(
-                    event,
-                    this,
-                    writeAfterAdd = false,
-                    addNewNotification = false,
-                    updateEventList = true,
-                    addBitmap = false
-            )
-        }
+    private fun updateTournamentFragments(){
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(
                 R.id.fragment_placeholder,
@@ -347,6 +303,31 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
                 }
             }
             intent = null
+        }
+    }
+
+    fun loadTournamentsFromLocalStorage(){
+        IOHandler.readAll(this)
+    }
+
+    fun showTournaments(tournaments: List<TournamentDTO>) {
+        //разделить тут по методам, вынести отдалельно
+        IOHandler.clearSharedPrefEventData()
+        tournaments.forEach {
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            event.name = it.name!!
+            event.fullDescription = it.fullDescription!!
+            event.shortDescription = it.shortDescription!!
+            event.imageUri = it.image!!
+            event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
+            EventHandler.addEvent(
+                    event,
+                    this,
+                    writeAfterAdd = true,
+                    addNewNotification = false,
+                    updateEventList = true,
+                    addBitmap = false
+            )
         }
     }
 

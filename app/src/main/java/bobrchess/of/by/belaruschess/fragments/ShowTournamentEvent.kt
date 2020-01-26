@@ -145,7 +145,7 @@ class ShowTournamentEvent : ShowEventFragment() {
 
     private fun updateAvatarImage() {
         if (this.iv_avatar != null && this.eventID >= 0 && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = BitmapHandler.getBitmapFromFile(context!!, /*this.eventID*/27)//todo to fix image
+            val bitmap = BitmapHandler.getBitmapFromFile(context!!, this.eventID)
             setBitmapToToolbar(bitmap)
         }
     }
@@ -252,6 +252,7 @@ class ShowTournamentEvent : ShowEventFragment() {
     }
 
     override fun editEvent() {
+
         val bundle = Bundle()
         //do this in more adaptable way
         bundle.putInt(
