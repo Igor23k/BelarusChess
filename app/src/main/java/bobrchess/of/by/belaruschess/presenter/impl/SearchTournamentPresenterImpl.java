@@ -28,7 +28,7 @@ import butterknife.BindView;
 @InjectViewState
 public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournamentContractView> implements CallBackSearchTournament, SearchTournamentPresenter {
 
-    private MainActivity view;
+    private SearchTournamentContractView view;
     private SearchTournamentConnection tournamentConnection;
     private Boolean viewIsReady = false;
     private Integer connectivityStatus = 0;
@@ -52,15 +52,15 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     }
 
     @Override
-    public void searchTournaments(String text) {
+    public void searchTournaments(@NotNull String text) {
         if (viewIsReady) {
             tournamentConnection.searchTournaments(text);
         }
     }
 
     @Override
-    public void attachView(@NotNull MainActivity activity) {
-        view = activity;
+    public void attachView(@NotNull SearchTournamentContractView searchTournamentContractView) {
+        view = searchTournamentContractView;
     }
 
     @Override

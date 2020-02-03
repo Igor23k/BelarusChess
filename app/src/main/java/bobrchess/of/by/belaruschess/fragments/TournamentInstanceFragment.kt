@@ -231,7 +231,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         addTournamentPresenter!!.setPackageModel(PackageModel(this.context!!))
         addTournamentPresenter!!.attachView(this)
         addTournamentPresenter!!.loadReferees()
-        addTournamentPresenter!!.loadPlaces()//я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо
+        addTournamentPresenter!!.loadPlaces()// todo я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо
 
    /*     editName.hint =
             "${context?.getText(R.string.event_property_forename)} ${context?.getText(R.string.necessary)}"*/
@@ -542,21 +542,21 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         val isYearGiven = true//switchIsYearGiven.isChecked
 
 
-        if (tournamentName.isBlank() || date.isBlank()) {
+        /*if (tournamentName.isBlank() || date.isBlank()) {
             Toast.makeText(
                 context,
                 context!!.resources.getText(R.string.empty_fields_error_tournament),
                 Toast.LENGTH_LONG
             )
                 .show()
-        } else {
-            addTournamentPresenter?.addTournament(getTournamentData())
-        }
-
+        } else {*/
+        addTournamentPresenter?.addTournament(getTournamentData())
+       // }
     }
 
     private fun getTournamentData(): TournamentDTO {
         val tournamentData = TournamentDTO()
+        tournamentData.id = eventID.toLong()
         tournamentData.name = editName.text.toString()
         tournamentData.shortDescription = editShortDescription.text.toString()
         tournamentData.fullDescription = editFullDescription.text.toString()

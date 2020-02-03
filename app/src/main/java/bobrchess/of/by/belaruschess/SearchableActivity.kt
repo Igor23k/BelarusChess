@@ -107,7 +107,7 @@ class SearchableActivity : AbstractActivity(), SearchTournamentContractView {
         presenter!!.loadTournaments(count)
     }
 
-    fun showTournaments(tournaments: List<TournamentDTO>) {
+    override fun showTournaments(tournaments: List<TournamentDTO>) {
         displayData()
         this.eventIndexList = this.eventIndexList.distinct().toMutableList()
     }

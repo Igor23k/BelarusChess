@@ -310,7 +310,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
         IOHandler.readAll(this)
     }
 
-    fun showTournaments(tournaments: List<TournamentDTO>) {
+    override fun showTournaments(tournaments: List<TournamentDTO>) {
         //разделить тут по методам, вынести отдалельно
         IOHandler.clearSharedPrefEventData()
         tournaments.forEach {

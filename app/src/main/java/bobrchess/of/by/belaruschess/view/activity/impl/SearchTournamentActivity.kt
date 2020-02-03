@@ -108,7 +108,7 @@ class SearchTournamentActivity : AbstractActivity(), SearchTournamentContractVie
         presenter!!.loadTournaments(count)
     }
 
-    fun showTournaments(tournaments: List<TournamentDTO>) {
+    override fun showTournaments(tournaments: List<TournamentDTO>) {
         tournamentsAdapter!!.clearItems()
         tournamentsAdapter!!.setItems(tournaments)
     }

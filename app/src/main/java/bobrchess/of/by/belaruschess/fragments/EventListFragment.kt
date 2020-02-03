@@ -10,22 +10,37 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.fragments.HelpFragment
+import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
+import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
+import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.model.EventDate
+import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
+import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
+import com.procrastimax.birthdaybuddy.models.EventTournament
+import com.procrastimax.birthdaybuddy.models.OneTimeEvent
 import com.procrastimax.birthdaybuddy.views.EventAdapter
 import com.procrastimax.birthdaybuddy.views.RecycleViewItemDivider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
-class EventListFragment : Fragment() {
+class EventListFragment : Fragment(), SearchTournamentContractView {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: EventAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     private var isFABOpen = false
+
+    private var searchTournamentPresenter: SearchTournamentPresenter? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,6 +122,10 @@ class EventListFragment : Fragment() {
             ft.addToBackStack(null)
             ft.commit()
         }
+
+        searchTournamentPresenter = SearchTournamentPresenterImpl()
+        searchTournamentPresenter!!.attachView(this)
+        searchTournamentPresenter!!.viewIsReady()
     }
 
     override fun onResume() {
@@ -258,6 +277,9 @@ class EventListFragment : Fragment() {
             R.id.toolbar_search -> {
 
             }
+            R.id.action_refresh -> {
+                searchTournamentPresenter?.loadTournaments()
+            }
             R.id.item_help -> {
                 helpClicked()
             }
@@ -324,5 +346,145 @@ class EventListFragment : Fragment() {
         fun newInstance(): EventListFragment {
             return EventListFragment()
         }
+    }
+
+    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun dismissAlertDialog() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showToast(resId: Int?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showToast(message: String?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setConnectionStatus(connectivityStatus: Int?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showTournaments(tournaments: List<TournamentDTO>) {
+        //разделить тут по методам, вынести отдалельно
+        IOHandler.clearSharedPrefEventData()
+        tournaments.forEach {
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            event.name = it.name!!
+            event.fullDescription = it.fullDescription!!
+            event.shortDescription = it.shortDescription!!
+            event.imageUri = it.image!!
+            event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
+            EventHandler.addEvent(
+                    event,
+                    this.context!!,
+                    writeAfterAdd = true,
+                    addNewNotification = false,
+                    updateEventList = true,
+                    addBitmap = false
+            )
+        }
+        updateTournamentFragments();
+    }
+
+    private fun updateTournamentFragments(){
+        val transaction = this.activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(
+                R.id.fragment_placeholder,
+                EventListFragment.newInstance()
+        )?.commit()
+
+
+        //start loading bitmap drawables in other thread to not block ui
+        Thread(Runnable
+        {
+            BitmapHandler.loadAllBitmaps(this.context!!)
+            this.activity?.runOnUiThread {
+                recyclerView.adapter!!.notifyDataSetChanged()
+            }
+        }).start()
+        var intent = this.activity?.intent
+        if (intent != null) {
+            if (intent.getBooleanExtra(MainActivity.FRAGMENT_EXTRA_TITLE_LOADALL, false)) {
+                val eventID = intent?.getIntExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID, -1)
+                val type = intent?.getStringExtra(MainActivity.FRAGMENT_EXTRA_TITLE_TYPE)
+                if (eventID != null && eventID > -1 && type != null) {
+                    startFragments(eventID, type)
+                }
+            }
+            intent = null
+        }
+    }
+
+    private fun startFragments(eventID: Int, type: String) {
+        val bundle = Bundle()
+        //do this in more adaptable way
+        bundle.putInt(
+                MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                eventID
+        )
+
+        EventHandler.getEventToEventIndex(eventID)?.let { event ->
+
+            val eventFragment: Fragment? = when (event) {
+                is EventTournament -> {
+                    if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
+                        ShowTournamentEvent.newInstance()
+                    } else {
+                        TournamentInstanceFragment.newInstance()
+                    }
+                }
+                /* is AnnualEvent -> {
+                     if (type == FRAGMENT_TYPE_SHOW) {
+                         ShowAnnualEvent.newInstance()
+                     } else {
+                         AnnualEventInstanceFragment.newInstance()
+                     }
+                 }*/
+                is OneTimeEvent -> {
+                    if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
+                        ShowOneTimeEvent.newInstance()
+                    } else {
+                        OneTimeEventInstanceFragment.newInstance()
+                    }
+                }
+                else -> {
+                    null
+                }
+            }
+            if (eventFragment != null) {
+                val ft = this.activity?.supportFragmentManager?.beginTransaction()
+                // add arguments to fragment
+                eventFragment.arguments = bundle
+                ft?.replace(
+                        R.id.fragment_placeholder,
+                        eventFragment
+                )
+                ft?.addToBackStack(null)
+                ft?.commit()
+            }
+        }
+    }
+
+    private fun transformDate(dateString: String?): String? {
+        return try {
+            val bdFormat = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
+            val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
+            val date = bdFormat.parse(dateString)
+            newFormat.format(date)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    override fun showProgress() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideProgress() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
