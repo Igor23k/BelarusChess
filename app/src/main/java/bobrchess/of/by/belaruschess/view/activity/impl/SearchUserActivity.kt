@@ -28,6 +28,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 
 class SearchUserActivity : AbstractActivity(), SearchUserContractView {
+
     private var usersRecyclerView: RecyclerView? = null
     private var usersAdapter: UsersAdapter? = null
     private var participantsAdapter: TournamentParticipantsAdapter? = null
@@ -50,11 +51,11 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
         searchButton = toolbar!!.findViewById(R.id.e_search_button)
         queryEditText = toolbar!!.findViewById(R.id.e_query_text)
 
-        searchButton!!.setOnClickListener { presenter!!.searchUsers() }
+        searchButton!!.setOnClickListener { /*presenter!!.searchUsers()*/ }
 
         queryEditText!!.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                presenter!!.searchUsers()
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {//todo
+               // presenter!!.searchUsers()
                 return@OnEditorActionListener true
             }
             false
@@ -132,19 +133,19 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
         presenter!!.loadUsers(count)
     }
 
-    fun showUsers(users: List<UserDTO>) {
+    override fun showUsers(users: MutableList<UserDTO>?) {
         when {
             usersAdapter != null -> {
                 usersAdapter!!.clearItems()
-                usersAdapter!!.setItems(users)
+                usersAdapter!!.setItems(users!!)
             }
             participantsAdapter != null -> {
                 participantsAdapter!!.clearItems()
-                participantsAdapter!!.setItems(users)
+                participantsAdapter!!.setItems(users!!)
             }
             tableAdapter != null -> {
                 tableAdapter!!.clearItems()
-                tableAdapter!!.setItems(users)
+                tableAdapter!!.setItems(users!!)
             }
         }
     }

@@ -7,8 +7,9 @@ import android.content.Intent
 import bobrchess.of.by.belaruschess.AlarmReceiver
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.models.*
-import java.time.LocalDateTime
+import com.procrastimax.birthdaybuddy.models.EventTournament
+import com.procrastimax.birthdaybuddy.models.MonthDivider
+import com.procrastimax.birthdaybuddy.models.OneTimeEvent
 import java.util.*
 
 object NotificationHandler {

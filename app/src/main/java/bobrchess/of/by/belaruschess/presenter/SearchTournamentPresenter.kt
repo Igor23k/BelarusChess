@@ -9,6 +9,6 @@ import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 interface SearchTournamentPresenter : BasePresenter {
     fun loadTournaments()
     fun loadTournaments(count: Int?)
-    fun searchTournaments(test: String)
+    fun searchTournaments(text: String)
     fun attachView(searchTournamentContractView: SearchTournamentContractView)
 }

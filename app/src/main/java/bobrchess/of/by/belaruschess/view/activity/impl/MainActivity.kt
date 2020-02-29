@@ -12,31 +12,42 @@ import android.support.v4.app.Fragment
 import android.util.TypedValue
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
+import bobrchess.of.by.belaruschess.presenter.RankPresenter
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
-import com.procrastimax.birthdaybuddy.fragments.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.procrastimax.birthdaybuddy.fragments.EventListFragment
+import com.procrastimax.birthdaybuddy.fragments.OneTimeEventInstanceFragment
+import com.procrastimax.birthdaybuddy.fragments.ShowOneTimeEvent
+import com.procrastimax.birthdaybuddy.fragments.TournamentInstanceFragment
 import com.procrastimax.birthdaybuddy.models.EventTournament
 import com.procrastimax.birthdaybuddy.models.MonthDivider
 import com.procrastimax.birthdaybuddy.models.OneTimeEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
-import org.springframework.util.StringUtils
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AbstractActivity(), SearchTournamentContractView {
+
+class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPresenterCallBack {
 
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
     private var progressDialog: ProgressDialog? = null
+    private var rankPresenter: RankPresenter? = null
+    private var ranks: List<RankDTO>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,23 +58,27 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
         searchTournamentPresenter!!.attachView(this)
         searchTournamentPresenter!!.viewIsReady()
 
+        rankPresenter = RankPresenterImpl()
+        rankPresenter!!.attachView(this)
+        rankPresenter!!.viewIsReady()
+        rankPresenter!!.getRanks()
+
         EventHandler.clearData()
         IOHandler.registerIO(this)
         lockAppbar()
 
-
         if (!IOHandler.isFirstStart()) {
             //read all data from shared prefs, when app didnt start for the first time
-            //IOHandler.clearSharedPrefEventData()
-            loadTournamentsFromLocalStorage()
-           // loadTournaments()
+            IOHandler.clearSharedPrefEventData()
+           // loadTournamentsFromLocalStorage()
+            loadTournaments()
         } else {
             //on first start write standard settings to shared prefs
             IOHandler.initializeAllSettings()
             addMonthDivider()
             addTestEvent()
         }
-        updateTournamentFragments()
+        //updateTournamentFragments()
     }
 
     fun unlockAppBar() {
@@ -276,10 +291,20 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
     }
 
     private fun updateTournamentFragments(){
+        val bundle = Bundle()
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val jsonList = gson.toJson(ranks)
+        bundle.putString(
+                "ranks",
+                jsonList
+        )
+
         val transaction = supportFragmentManager.beginTransaction()
+        var eventFragment = EventListFragment.newInstance()
+        eventFragment.arguments = bundle
         transaction.replace(
                 R.id.fragment_placeholder,
-                EventListFragment.newInstance()
+                eventFragment
         ).commit()
 
 
@@ -310,6 +335,8 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
         IOHandler.readAll(this)
     }
 
+    var tournamentsAreLoaded = false
+
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         //разделить тут по методам, вынести отдалельно
         IOHandler.clearSharedPrefEventData()
@@ -319,6 +346,8 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
             event.fullDescription = it.fullDescription!!
             event.shortDescription = it.shortDescription!!
             event.imageUri = it.image!!
+            event.refereeId = it.referee?.id
+            event.placeId = it.place?.id
             event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
             EventHandler.addEvent(
                     event,
@@ -328,6 +357,10 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
                     updateEventList = true,
                     addBitmap = false
             )
+        }
+        tournamentsAreLoaded = true
+        if (ranks != null) {
+            updateTournamentFragments()
         }
     }
 
@@ -375,5 +408,16 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView {
                 this,
                 true
         )
+    }
+
+    override fun rankIsLoaded(rankDTO: RankDTO?) {
+
+    }
+
+    override fun ranksAreLoaded(ranks: MutableList<RankDTO>?) {//todo сделать чтобы это выполнилось ТОЧНО раньше чем основной код где это используется
+        this.ranks = ranks
+        if (tournamentsAreLoaded) {
+            updateTournamentFragments()
+        }
     }
 }

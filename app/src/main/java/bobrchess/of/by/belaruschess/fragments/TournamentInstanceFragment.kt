@@ -214,6 +214,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         refereeSpinner.onItemSelectedListener = RefereeItemSelectedListener()
         placeSpinner.onItemSelectedListener = PlaceItemSelectedListener()
 
+
         if (IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_date_as_calendar_view) == false) {
             isCalendarViewSelected = false
             editStartDateCalendarview.visibility = EditText.INVISIBLE
@@ -231,7 +232,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         addTournamentPresenter!!.setPackageModel(PackageModel(this.context!!))
         addTournamentPresenter!!.attachView(this)
         addTournamentPresenter!!.loadReferees()
-        addTournamentPresenter!!.loadPlaces()// todo я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо
+        addTournamentPresenter!!.loadPlaces()// todo я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо ....... хотяяяяяяяяяяяяяяяяяя хз
 
    /*     editName.hint =
             "${context?.getText(R.string.event_property_forename)} ${context?.getText(R.string.necessary)}"*/
@@ -241,6 +242,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             isEditedBirthday = true
 
             setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_tournament))
+
 
             eventID = (arguments!!.getInt(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID))
             EventHandler.getEventToEventIndex(eventID)?.let { tournament ->

@@ -25,6 +25,7 @@
     <string name="action_games">Игры</string>
     <string name="action_table">Таблица</string>
     <string name="action_participants">Участники</string>
+    <string name="action_users">Пользователи</string>
     <string name="action_info">Информация</string>
     <string name="draw">Провести жеребьевку</string>
     <string name="tours">Туры</string>
@@ -137,6 +138,7 @@
     <string name="event_property_year">Год</string>
     <string name="event_property_turns">Исполнится</string>
     <string name="event_property_date">Дата</string>
+    <string name="event_property_birthday">Дата рождения</string>
     <string name="tournament_start_date">Дата начала</string>
     <string name="tournament_end_date">Дата окончания</string>
     <string name="event_property_surname">Фамилия</string>
@@ -145,6 +147,9 @@
     <string name="event_type_birthday">День рождения</string>
     <string name="event_type_annual_event">Ежегодное событие</string>
     <string name="event_type_one_time_event">Разовое событие</string>
+    <string name="rating">Рейтинг</string>
+    <string name="rank">Ранг</string>
+
 
     <!-- tournament event view -->
     <string name="alert_dialog_missing_avatar_img_title">Ошибка при загрузке изображения!</string>

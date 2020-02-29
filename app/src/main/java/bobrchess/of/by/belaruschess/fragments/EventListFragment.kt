@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.fragments.HelpFragment
 import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
@@ -18,10 +20,17 @@ import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
+import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
+import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.procrastimax.birthdaybuddy.models.EventTournament
+import com.procrastimax.birthdaybuddy.models.EventUser
 import com.procrastimax.birthdaybuddy.models.OneTimeEvent
 import com.procrastimax.birthdaybuddy.views.EventAdapter
 import com.procrastimax.birthdaybuddy.views.RecycleViewItemDivider
@@ -31,7 +40,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EventListFragment : Fragment(), SearchTournamentContractView {
+
+class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserContractView {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: EventAdapter
@@ -40,18 +50,32 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
     private var isFABOpen = false
 
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
-
+    private var searchUserPresenter: SearchUserPresenter? = null
+    private var ranks: List<RankDTO>? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_list, container, false)
     }
 
+    var itemsListType = object : TypeToken<List<RankDTO>>() {}.type
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        ranks = Gson().fromJson(arguments?.getString("ranks"), itemsListType)
+
         super.onViewCreated(view, savedInstanceState)
+
+        searchTournamentPresenter = SearchTournamentPresenterImpl()
+        searchTournamentPresenter!!.attachView(this)
+        searchTournamentPresenter!!.viewIsReady()
+
+        searchUserPresenter = SearchUserPresenterImpl()
+        searchUserPresenter!!.attachView(this)
+        searchUserPresenter!!.viewIsReady()
+
         setHasOptionsMenu(true)
         (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         (context as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
@@ -65,21 +89,26 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
         fab_layout_add_birthday.visibility = ConstraintLayout.INVISIBLE
         fab_layout_add_one_time.visibility = ConstraintLayout.INVISIBLE
 
-        viewManager = LinearLayoutManager(view.context)
-        viewAdapter = EventAdapter(view.context, this.fragmentManager!!)
+        init()
+    }
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
+
+    private fun init() {
+        viewManager = LinearLayoutManager(view!!.context)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks)
+
+        recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
             scrollToPosition(traverseForFirstMonthEntry())
         }
-        recyclerView.addItemDecoration(RecycleViewItemDivider(view.context))
+        recyclerView.addItemDecoration(RecycleViewItemDivider(view!!.context))
         recyclerView.setPadding(
-            recyclerView.paddingLeft,
-            recyclerView.paddingTop,
-            recyclerView.paddingRight,
-            (resources.getDimension(R.dimen.fab_margin) + resources.getDimension(R.dimen.fab_size_bigger)).toInt()
+                recyclerView.paddingLeft,
+                recyclerView.paddingTop,
+                recyclerView.paddingRight,
+                (resources.getDimension(R.dimen.fab_margin) + resources.getDimension(R.dimen.fab_size_bigger)).toInt()
         )
 
         fab_show_fab_menu.setOnClickListener {
@@ -94,8 +123,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
             closeFABMenu(true)
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
-                R.id.fragment_placeholder,
-                TournamentInstanceFragment.newInstance()
+                    R.id.fragment_placeholder,
+                    TournamentInstanceFragment.newInstance()
             )
             ft.addToBackStack(null)
             ft.commit()
@@ -105,8 +134,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
             closeFABMenu(true)
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
-                R.id.fragment_placeholder,
-                AnnualEventInstanceFragment.newInstance()
+                    R.id.fragment_placeholder,
+                    AnnualEventInstanceFragment.newInstance()
             )
             ft.addToBackStack(null)
             ft.commit()
@@ -116,16 +145,12 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
             closeFABMenu(true)
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
-                R.id.fragment_placeholder,
-                OneTimeEventInstanceFragment.newInstance()
+                    R.id.fragment_placeholder,
+                    OneTimeEventInstanceFragment.newInstance()
             )
             ft.addToBackStack(null)
             ft.commit()
         }
-
-        searchTournamentPresenter = SearchTournamentPresenterImpl()
-        searchTournamentPresenter!!.attachView(this)
-        searchTournamentPresenter!!.viewIsReady()
     }
 
     override fun onResume() {
@@ -153,34 +178,34 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
         //move layouts
         //move add birthday layout up
         fab_layout_add_birthday.animate()
-            .translationYBy(-resources.getDimension(R.dimen.standard_55) - 20).apply {
-                duration = 100
-            }.withEndAction {
-                fab_layout_add_birthday.animate().translationYBy(20.toFloat()).apply {
-                    duration = 75
+                .translationYBy(-resources.getDimension(R.dimen.standard_55) - 20).apply {
+                    duration = 100
+                }.withEndAction {
+                    fab_layout_add_birthday.animate().translationYBy(20.toFloat()).apply {
+                        duration = 75
+                    }
                 }
-            }
 
         //move add annual event layout up
         fab_layout_add_annual_event.animate()
-            .translationYBy(-resources.getDimension(R.dimen.standard_105) - 40)
-            .apply {
-                duration = 100
-            }.withEndAction {
-                fab_layout_add_annual_event.animate().translationYBy(40.toFloat()).apply {
-                    duration = 75
+                .translationYBy(-resources.getDimension(R.dimen.standard_105) - 40)
+                .apply {
+                    duration = 100
+                }.withEndAction {
+                    fab_layout_add_annual_event.animate().translationYBy(40.toFloat()).apply {
+                        duration = 75
+                    }
                 }
-            }
 
         //move add one time event layout up
         fab_layout_add_one_time.animate()
-            .translationYBy(-resources.getDimension(R.dimen.standard_155) - 60).apply {
-                duration = 100
-            }.withEndAction {
-                fab_layout_add_one_time.animate().translationYBy(60.toFloat()).apply {
-                    duration = 75
+                .translationYBy(-resources.getDimension(R.dimen.standard_155) - 60).apply {
+                    duration = 100
+                }.withEndAction {
+                    fab_layout_add_one_time.animate().translationYBy(60.toFloat()).apply {
+                        duration = 75
+                    }
                 }
-            }
 
         fab_show_fab_menu.animate().duration = 100
         //some fancy overrotated animation
@@ -209,30 +234,30 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
 
         //move add birthday event layout down
         fab_layout_add_birthday.animate()
-            .translationYBy(resources.getDimension(R.dimen.standard_55))
-            .withEndAction {
-                if (!immediateAction) {
-                    fab_layout_add_birthday.visibility = ConstraintLayout.INVISIBLE
+                .translationYBy(resources.getDimension(R.dimen.standard_55))
+                .withEndAction {
+                    if (!immediateAction) {
+                        fab_layout_add_birthday.visibility = ConstraintLayout.INVISIBLE
+                    }
                 }
-            }
 
         //move add annual event layout down
         fab_layout_add_annual_event.animate()
-            .translationYBy(resources.getDimension(R.dimen.standard_105))
-            .withEndAction {
-                if (!immediateAction) {
-                    fab_layout_add_annual_event.visibility = ConstraintLayout.INVISIBLE
+                .translationYBy(resources.getDimension(R.dimen.standard_105))
+                .withEndAction {
+                    if (!immediateAction) {
+                        fab_layout_add_annual_event.visibility = ConstraintLayout.INVISIBLE
+                    }
                 }
-            }
 
         //move add one time event layout down
         fab_layout_add_one_time.animate()
-            .translationYBy(resources.getDimension(R.dimen.standard_155))
-            .withEndAction {
-                if (!immediateAction) {
-                    fab_layout_add_one_time.visibility = ConstraintLayout.INVISIBLE
+                .translationYBy(resources.getDimension(R.dimen.standard_155))
+                .withEndAction {
+                    if (!immediateAction) {
+                        fab_layout_add_one_time.visibility = ConstraintLayout.INVISIBLE
+                    }
                 }
-            }
 
         fab_show_fab_menu.animate().rotationBy(-45.0f).withEndAction {
             if (!immediateAction) {
@@ -277,6 +302,12 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
             R.id.toolbar_search -> {
 
             }
+            R.id.item_show_users -> {
+                EventHandler.clearData()
+                //updateTournamentFragments()
+                searchUserPresenter?.loadUsers()
+            }
+
             R.id.action_refresh -> {
                 searchTournamentPresenter?.loadTournaments()
             }
@@ -310,8 +341,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
         closeFABMenu(true)
         val ft = fragmentManager!!.beginTransaction()
         ft.replace(
-            R.id.fragment_placeholder,
-            HelpFragment.newInstance()
+                R.id.fragment_placeholder,
+                HelpFragment.newInstance()
         )
         ft.addToBackStack(null)
         ft.commit()
@@ -322,8 +353,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
         closeFABMenu(true)
         val ft = fragmentManager!!.beginTransaction()
         ft.replace(
-            R.id.fragment_placeholder,
-            AboutFragment.newInstance()
+                R.id.fragment_placeholder,
+                AboutFragment.newInstance()
         )
         ft.addToBackStack(null)
         ft.commit()
@@ -334,8 +365,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
         closeFABMenu(true)
         val ft = fragmentManager!!.beginTransaction()
         ft.replace(
-            R.id.fragment_placeholder,
-            SettingsFragment.newInstance()
+                R.id.fragment_placeholder,
+                SettingsFragment.newInstance()
         )
         ft.addToBackStack(null)
         ft.commit()
@@ -368,35 +399,70 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+
     override fun showTournaments(tournaments: List<TournamentDTO>) {
-        //разделить тут по методам, вынести отдалельно
-        IOHandler.clearSharedPrefEventData()
+        //todo такой эе метод в мэйн активити, сделать один чтобы был
+        IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         tournaments.forEach {
             val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.fullDescription = it.fullDescription!!
             event.shortDescription = it.shortDescription!!
             event.imageUri = it.image!!
+            event.refereeId = it.referee?.id
+            event.placeId = it.place?.id
             event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
             EventHandler.addEvent(
                     event,
-                    this.context!!,
+                    context!!,
                     writeAfterAdd = true,
                     addNewNotification = false,
                     updateEventList = true,
                     addBitmap = false
             )
         }
-        updateTournamentFragments();
+        updateTournamentFragments()
     }
 
-    private fun updateTournamentFragments(){
+
+    override fun showUsers(users: List<UserDTO>?) {
+        IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
+        users!!.forEach {
+            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate(it.birthday)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!, it.surname!!)
+            event.rankId = it.rank?.id
+            event.rating = it.rating
+            event.imageUri = it.image
+            event.patronymic = it.patronymic
+
+            EventHandler.addEvent(
+                    event,
+                    context!!,
+                    writeAfterAdd = true,
+                    addNewNotification = false,
+                    updateEventList = true,
+                    addBitmap = false
+            )
+        }
+        updateTournamentFragments()
+    }
+
+
+    private fun updateTournamentFragments() {
+        val bundle = Bundle()
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val jsonList = gson.toJson(ranks)
+        bundle.putString(
+                "ranks",
+                jsonList
+        )
+
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
+        var eventFragment = EventListFragment.newInstance()
+        eventFragment.arguments = bundle
         transaction?.replace(
                 R.id.fragment_placeholder,
-                EventListFragment.newInstance()
+                eventFragment
         )?.commit()
-
 
         //start loading bitmap drawables in other thread to not block ui
         Thread(Runnable
@@ -435,6 +501,13 @@ class EventListFragment : Fragment(), SearchTournamentContractView {
                         ShowTournamentEvent.newInstance()
                     } else {
                         TournamentInstanceFragment.newInstance()
+                    }
+                }
+                is EventUser -> {
+                    if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
+                        ShowTournamentEvent.newInstance()//todo
+                    } else {
+                        TournamentInstanceFragment.newInstance()//todo
                     }
                 }
                 /* is AnnualEvent -> {

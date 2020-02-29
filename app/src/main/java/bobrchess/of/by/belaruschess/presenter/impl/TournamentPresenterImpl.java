@@ -22,6 +22,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity;
 
 public class TournamentPresenterImpl implements CallBackTournament, TournamentPresenter {
 
+
     private TournamentActivity view;
     private TournamentConnection tournamentConnection;
     private Boolean viewIsReady = false;

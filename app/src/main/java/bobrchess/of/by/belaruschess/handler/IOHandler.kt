@@ -351,7 +351,7 @@ object IOHandler {
                         }
                         val tournament =
                             EventTournament(
-                                    2222,
+                                    2222,//todo
                                 EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),//todo why?
                                 forename
                             )

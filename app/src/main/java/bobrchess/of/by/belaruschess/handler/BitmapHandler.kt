@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import bobrchess.of.by.belaruschess.R
 import com.procrastimax.birthdaybuddy.models.EventTournament
+import com.procrastimax.birthdaybuddy.models.EventUser
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -35,13 +36,14 @@ object BitmapHandler {
      * @param readBitmapFromGallery : Boolean, when this boolean is true, it forces the function to read a new bitmap from the gallery files
      */
     fun addDrawable(
-        id: Int,
-        uri: Uri,
-        context: Context,
-        scale: Int = STANDARD_SCALING,
-        readBitmapFromGallery: Boolean
+            id: Int,
+            uri: Uri,
+            context: Context,
+            scale: Int = STANDARD_SCALING,
+            readBitmapFromGallery: Boolean
     ): Boolean {
         var success = true
+
 
         //first try to load from files
         //if this doesn't succeed, then try to read from gallery and save edited bitmap to files
@@ -75,10 +77,10 @@ object BitmapHandler {
                 if (event is EventTournament) {
                     event.imageUri = null
                     EventHandler.changeEventAt(
-                        id,
-                        event,
-                        context,
-                        true
+                            id,
+                            event,
+                            context,
+                            true
                     )
                     removeBitmap(id, context)
 
@@ -113,12 +115,22 @@ object BitmapHandler {
             if (EventHandler.getList()[i] is EventTournament) {
                 if ((EventHandler.getList()[i] as EventTournament).imageUri != null) {
                     success =
-                        addDrawable(
-                            EventHandler.getList()[i].eventID,
-                            Uri.parse((EventHandler.getList()[i] as EventTournament).imageUri),
-                            context,
-                            readBitmapFromGallery = false
-                        )
+                            addDrawable(
+                                    EventHandler.getList()[i].eventID,
+                                    Uri.parse((EventHandler.getList()[i] as EventTournament).imageUri),
+                                    context,
+                                    readBitmapFromGallery = false
+                            )
+                }
+            } else if (EventHandler.getList()[i] is EventUser) {
+                if ((EventHandler.getList()[i] as EventUser).imageUri != null) {
+                    success =
+                            addDrawable(
+                                    EventHandler.getList()[i].eventID,
+                                    Uri.parse((EventHandler.getList()[i] as EventUser).imageUri),
+                                    context,
+                                    readBitmapFromGallery = false
+                            )
                 }
             }
         }
@@ -143,10 +155,10 @@ object BitmapHandler {
 
 
     private fun createBitmapFile(
-        context: Context,
-        eventID: Int,
-        bitmap: Bitmap,
-        compressionRate: Int = 100
+            context: Context,
+            eventID: Int,
+            bitmap: Bitmap,
+            compressionRate: Int = 100
     ): Boolean {
         val bitmapDir = context.getDir(this.bitmapFolder, Context.MODE_PRIVATE)
         val outStream = ByteArrayOutputStream()
@@ -197,19 +209,19 @@ object BitmapHandler {
         val halfHeight = bitmap.height / 2
         if (bitmap.width < bitmap.height) {
             return Bitmap.createBitmap(
-                bitmap,
-                0,
-                halfHeight - halfWidth,
-                bitmap.width,
-                bitmap.width
+                    bitmap,
+                    0,
+                    halfHeight - halfWidth,
+                    bitmap.width,
+                    bitmap.width
             )
         } else if (bitmap.width > bitmap.height) {
             return Bitmap.createBitmap(
-                bitmap,
-                halfWidth - halfHeight,
-                0,
-                bitmap.height,
-                bitmap.height
+                    bitmap,
+                    halfWidth - halfHeight,
+                    0,
+                    bitmap.height,
+                    bitmap.height
             )
         }
         return bitmap
@@ -221,10 +233,10 @@ object BitmapHandler {
 
         //then scale bitmap
         return Bitmap.createScaledBitmap(
-            tempBitmap,
-            scale,
-            scale,
-            false
+                tempBitmap,
+                scale,
+                scale,
+                false
         )
     }
 
@@ -261,6 +273,6 @@ object BitmapHandler {
             dialog.dismiss()
         }
         builder.setIcon(R.drawable.ic_error_outline)
-       // builder.show()//todo мб надо удалить это ибо если невалидный урл то падает все
+        // builder.show()//todo мб надо удалить это ибо если невалидный урл то падает все
     }
 }

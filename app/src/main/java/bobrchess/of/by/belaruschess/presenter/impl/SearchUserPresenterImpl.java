@@ -15,6 +15,7 @@ import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
+import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView;
 import bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity;
 import butterknife.BindView;
 
@@ -24,7 +25,7 @@ import butterknife.BindView;
 
 public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPresenter {
 
-    private SearchUserActivity view;
+    private SearchUserContractView view;
     private SearchUserConnection userConnection;
     private Boolean viewIsReady = false;
     private PackageModel packageModel;
@@ -42,7 +43,7 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     @Override
     public void loadUsers() {
         userConnection.getUsers(10);
-    }
+    }//todo
 
     @Override
     public void loadUsers(Integer count) {
@@ -50,16 +51,15 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     }
 
     @Override
-    public void searchUsers() {
+    public void searchUsers(@NotNull String text) {
         if(viewIsReady) {
-            String text = view.getSearchText();
             userConnection.searchUsers(text);
         }
     }
 
     @Override
-    public void attachView(@NotNull SearchUserActivity activity) {
-        view = activity;
+    public void attachView(@NotNull SearchUserContractView searchUserContractView) {
+        view = searchUserContractView;
     }
 
     @Override
@@ -71,6 +71,7 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     public void viewIsReady() {
         viewIsReady = true;
     }
+
 
     @Override
     public void onResponse(@NotNull List<UserDTO> usersDTO) {

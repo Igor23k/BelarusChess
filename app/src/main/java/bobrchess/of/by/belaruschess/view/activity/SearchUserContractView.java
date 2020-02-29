@@ -9,5 +9,6 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
  */
 
 public interface SearchUserContractView extends BaseContractView {
+    void showUsers(List<UserDTO> users);
 
 }

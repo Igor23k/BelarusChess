@@ -4,9 +4,7 @@ import android.content.Context
 import android.net.Uri
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.models.EventTournament
-import com.procrastimax.birthdaybuddy.models.MonthDivider
-import com.procrastimax.birthdaybuddy.models.SortIdentifier
+import com.procrastimax.birthdaybuddy.models.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.util.*
 
@@ -55,12 +53,19 @@ object EventHandler {
 
         this.event_map[event.eventID] = event
 
-        if (event is EventTournament && addBitmap) {
+        if (((event is EventTournament) || (event is EventUser)) && addBitmap) {
+            var imageUri:String? = null
+            if(event is EventTournament) {
+                imageUri = event.imageUri
+            }
+            if(event is EventUser) {
+                imageUri = event.imageUri
+            }
             Thread(Runnable {
-                if (event.imageUri != null) {
+                if (imageUri != null) {
                     BitmapHandler.addDrawable(
                             event.eventID,
-                            Uri.parse(event.imageUri),
+                            Uri.parse(imageUri),
                             context,
                             readBitmapFromGallery = false,
                             //150dp because the app_bar height is 300dp
@@ -81,6 +86,7 @@ object EventHandler {
         if (event !is MonthDivider && addNewNotification) {
             NotificationHandler.scheduleNotification(context, event)
         }
+
 
         if (updateEventList) {
             this.event_list = getSortedListBy()
