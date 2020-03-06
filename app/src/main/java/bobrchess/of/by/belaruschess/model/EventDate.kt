@@ -1,8 +1,6 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import com.procrastimax.birthdaybuddy.models.MonthDivider
-import com.procrastimax.birthdaybuddy.models.SortIdentifier
 import java.math.RoundingMode
 import java.text.DateFormat
 import java.text.DecimalFormat

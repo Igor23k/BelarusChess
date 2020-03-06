@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.fragments
+package bobrchess.of.by.belaruschess.fragments
 
 
 import android.os.Bundle
@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.views.AboutAdapter
+import bobrchess.of.by.belaruschess.adapter.AboutAdapter
 
 class AboutFragment : Fragment() {
 

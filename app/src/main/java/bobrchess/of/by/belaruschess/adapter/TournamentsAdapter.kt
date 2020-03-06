@@ -1,4 +1,4 @@
-package bobrchess.of.by.colibritweet.adapter
+package bobrchess.of.by.belaruschess.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

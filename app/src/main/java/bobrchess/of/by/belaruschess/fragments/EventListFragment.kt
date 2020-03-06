@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.fragments
+package bobrchess.of.by.belaruschess.fragments
 
 import android.app.SearchManager
 import android.content.Context
@@ -13,8 +13,6 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
-import bobrchess.of.by.belaruschess.fragments.HelpFragment
-import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
@@ -29,11 +27,12 @@ import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.procrastimax.birthdaybuddy.models.EventTournament
-import com.procrastimax.birthdaybuddy.models.EventUser
-import com.procrastimax.birthdaybuddy.models.OneTimeEvent
-import com.procrastimax.birthdaybuddy.views.EventAdapter
-import com.procrastimax.birthdaybuddy.views.RecycleViewItemDivider
+import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.EventUser
+import bobrchess.of.by.belaruschess.model.OneTimeEvent
+import bobrchess.of.by.belaruschess.adapter.EventAdapter
+import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
+import com.procrastimax.birthdaybuddy.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -300,11 +299,16 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         when (item?.itemId) {
 
             R.id.toolbar_search -> {
-
+                //todo
             }
+
+            R.id.item_show_tournaments -> {
+                EventHandler.clearData()
+                searchTournamentPresenter?.loadTournaments()
+            }
+
             R.id.item_show_users -> {
                 EventHandler.clearData()
-                //updateTournamentFragments()
                 searchUserPresenter?.loadUsers()
             }
 
@@ -457,7 +461,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         )
 
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
-        var eventFragment = EventListFragment.newInstance()
+        var eventFragment = newInstance()
         eventFragment.arguments = bundle
         transaction?.replace(
                 R.id.fragment_placeholder,
@@ -505,9 +509,9 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                 }
                 is EventUser -> {
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
-                        ShowTournamentEvent.newInstance()//todo
+                        ShowUserEvent.newInstance()
                     } else {
-                        TournamentInstanceFragment.newInstance()//todo
+                        UserInstanceFragment.newInstance()//todo
                     }
                 }
                 /* is AnnualEvent -> {

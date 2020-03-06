@@ -17,7 +17,7 @@ import bobrchess.of.by.belaruschess.presenter.impl.GamesListPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
 import bobrchess.of.by.belaruschess.util.Constants.Companion.GAME_PARAMETER
 import bobrchess.of.by.belaruschess.view.activity.GamesListContractView
-import bobrchess.of.by.colibritweet.adapter.GamesAdapter
+import bobrchess.of.by.belaruschess.adapter.GamesAdapter
 import butterknife.ButterKnife
 
 class GamesListActivity : AbstractActivity(), GamesListContractView {

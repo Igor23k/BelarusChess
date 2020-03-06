@@ -1,4 +1,4 @@
-package bobrchess.of.by.belaruschess.adapter
+package bobrchess.of.by.belaruschess.fragments
 
 import android.content.BroadcastReceiver
 import android.content.Context

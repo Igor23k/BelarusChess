@@ -1,8 +1,8 @@
 package bobrchess.of.by.belaruschess.handler
 
 import bobrchess.of.by.belaruschess.model.EventDate
-import com.procrastimax.birthdaybuddy.models.EventTournament
-import com.procrastimax.birthdaybuddy.models.OneTimeEvent
+import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.OneTimeEvent
 
 /**
  * SearchHandler is a singleton class to retrieve event item indexes from specific search terms

@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.views
+package bobrchess.of.by.belaruschess.adapter
 
 import android.content.Context
 import android.os.Bundle
@@ -15,13 +15,13 @@ import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.fragments.OneTimeEventInstanceFragment
-import com.procrastimax.birthdaybuddy.fragments.ShowOneTimeEvent
-import com.procrastimax.birthdaybuddy.fragments.TournamentInstanceFragment
-import com.procrastimax.birthdaybuddy.models.EventTournament
-import com.procrastimax.birthdaybuddy.models.EventUser
-import com.procrastimax.birthdaybuddy.models.MonthDivider
-import com.procrastimax.birthdaybuddy.models.OneTimeEvent
+import bobrchess.of.by.belaruschess.fragments.OneTimeEventInstanceFragment
+import bobrchess.of.by.belaruschess.fragments.ShowOneTimeEvent
+import bobrchess.of.by.belaruschess.fragments.TournamentInstanceFragment
+import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.EventUser
+import bobrchess.of.by.belaruschess.model.MonthDivider
+import bobrchess.of.by.belaruschess.model.OneTimeEvent
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
 import kotlinx.android.synthetic.main.one_time_event_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.*

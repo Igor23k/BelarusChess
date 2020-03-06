@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.fragments
+package bobrchess.of.by.belaruschess.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

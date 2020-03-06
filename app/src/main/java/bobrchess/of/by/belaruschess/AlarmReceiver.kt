@@ -16,8 +16,8 @@ import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.handler.NotificationHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.models.EventTournament
-import com.procrastimax.birthdaybuddy.models.OneTimeEvent
+import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.OneTimeEvent
 
 class AlarmReceiver : BroadcastReceiver() {
 

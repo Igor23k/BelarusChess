@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.views
+package bobrchess.of.by.belaruschess.adapter
 
 import android.Manifest
 import android.app.AlertDialog

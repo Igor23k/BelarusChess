@@ -1,0 +1,3989 @@
+Index: app/src/main/java/bobrchess/of/by/belaruschess/handler/EventHandler.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/handler/EventHandler.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/handler/EventHandler.kt	(date 1582220437745)
+@@ -21,6 +21,8 @@
+      * the data is stored in pairs of EventDay and the index of this dataset in the map as an int
+      */
+     private var event_list: List<EventDate> = emptyList()
++    private var user_list: List<EventDate> = emptyList()
++
+ 
+     private var event_map: MutableMap<Int, EventDate> = emptyMap<Int, EventDate>().toMutableMap()
+ 
+Index: app/src/main/java/bobrchess/of/by/belaruschess/presenter/impl/RegistrationPresenterImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/presenter/impl/RegistrationPresenterImpl.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/presenter/impl/RegistrationPresenterImpl.kt	(date 1581868531854)
+@@ -127,7 +127,7 @@
+ 
+     private fun setUserData(@NonNull userDTO: UserDTO) {
+         if (selectedRankIndex != NOT_SELECTED_INDEX) {
+-            if(selectedGenderIndex != ABSENCE_INDEX){
++            if(selectedGenderIndex != ABSENCE_INDEX){//todo
+ 
+             }
+             userDTO.rank = ranksIndexes[selectedRankIndex.minus(2)]
+Index: app/src/main/java/bobrchess/of/by/belaruschess/view/activity/SearchUserContractView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/view/activity/SearchUserContractView.java	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/view/activity/SearchUserContractView.java	(date 1580928971507)
+@@ -2,6 +2,7 @@
+ 
+ import java.util.List;
+ 
++import bobrchess.of.by.belaruschess.dto.TournamentDTO;
+ import bobrchess.of.by.belaruschess.dto.UserDTO;
+ 
+ /**
+@@ -9,5 +10,6 @@
+  */
+ 
+ public interface SearchUserContractView extends BaseContractView {
+-
++    void showUsers(List<UserDTO> users);
++    String getSearchText();
+ }
+Index: app/src/main/java/bobrchess/of/by/belaruschess/handler/UserBitmapHandler.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/handler/UserBitmapHandler.kt	(date 1582060921219)
++++ app/src/main/java/bobrchess/of/by/belaruschess/handler/UserBitmapHandler.kt	(date 1582060921219)
+@@ -0,0 +1,266 @@
++package bobrchess.of.by.belaruschess.handler
++
++import android.app.AlertDialog
++import android.content.Context
++import android.content.res.Resources
++import android.graphics.Bitmap
++import android.graphics.BitmapFactory
++import android.graphics.Canvas
++import android.graphics.drawable.BitmapDrawable
++import android.graphics.drawable.Drawable
++import android.net.Uri
++import android.provider.MediaStore
++import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
++import bobrchess.of.by.belaruschess.R
++import com.procrastimax.birthdaybuddy.models.EventUser
++import java.io.ByteArrayOutputStream
++import java.io.File
++import java.io.FileOutputStream
++
++object UserBitmapHandler {
++
++    private var bitmapFolder = "Bitmaps"
++
++    private var drawable_map: MutableMap<Int, Bitmap> = emptyMap<Int, Bitmap>().toMutableMap()
++
++    private const val STANDARD_SCALING = 64 * 6
++
++    /**
++     * addDrawable adds a drawable to the drawable_map by reading a bitmap from the storage
++     *
++     * @param id : Int is the index for referencing in the UserHandler MAP not the list
++     * @param uri : Uri
++     * @param context : Context
++     * @param scale : Int
++     * @param readBitmapFromGallery : Boolean, when this boolean is true, it forces the function to read a new bitmap from the gallery files
++     */
++    fun addDrawable(
++            id: Int,
++            uri: Uri,
++            context: Context,
++            scale: Int = STANDARD_SCALING,
++            readBitmapFromGallery: Boolean
++    ): Boolean {
++        var success = true
++
++        //first try to load from files
++        //if this doesn't succeed, then try to read from gallery and save edited bitmap to files
++        if ((checkExistingBitmapInFiles(context, id) != null) && (!readBitmapFromGallery)) {
++            var bitmap = getBitmapFromFile(context, id)
++            if (bitmap != null) {
++                // create circular bitmap from saved squared
++                bitmap = getCircularBitmap(bitmap, context.resources)
++                drawable_map[id] = bitmap
++                return true
++            }
++        } else {
++            try {
++                var bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
++                //scale (square bitmap)
++                bitmap = getScaledBitmap(bitmap, scale)
++
++                //if the above succeeded, then save bitmap to files
++                createBitmapFile(context, id, bitmap, 100)
++
++                //round bitmap
++                bitmap = getCircularBitmap(bitmap, context.resources)
++
++                drawable_map[id] = bitmap
++
++                //catch any exception, not nice but mostly like a FileNotFountException, when an image was deleted or moved
++                //when this exception is caught, then delete uri reference in EventDate instance +  inform the user
++            } catch (e: Exception) {
++                e.printStackTrace()
++                val event = UserHandler.getEventToEventIndex(id)
++                if (event is EventUser) {
++                    event.imageUri = null
++                    UserHandler.changeEventAt(
++                            id,
++                            event,
++                            context,
++                            true
++                    )
++                    removeBitmap(id, context)
++
++                    showMissingImageAlertDialog(context)
++                }
++                success = false
++            }
++        }
++
++        return success
++    }
++
++    fun removeAllDrawables(context: Context) {
++        this.drawable_map.clear()
++        context.getDir(this.bitmapFolder, Context.MODE_PRIVATE)?.deleteRecursively()
++    }
++
++    fun removeBitmap(id: Int, context: Context) {
++        val event = UserHandler.getEventToEventIndex(id)
++        if (event != null) {
++            drawable_map.toMutableMap().remove(id)
++            removeBitmapFromFiles(context, event.eventID)
++        }
++    }
++
++    /**
++     * loadAllDrawables iterates through userHandler eventlist and loads all drawables into this map
++     */
++    fun loadAllBitmaps(context: Context): Boolean {
++        var success = true
++        for (i in 0 until UserHandler.getList().size) {
++            if (UserHandler.getList()[i] is EventUser) {
++                if ((UserHandler.getList()[i] as EventUser).imageUri != null) {
++                    success =
++                            addDrawable(
++                                    UserHandler.getList()[i].eventID,
++                                    Uri.parse((UserHandler.getList()[i] as EventUser).imageUri),
++                                    context,
++                                    readBitmapFromGallery = false
++                            )
++                }
++            }
++        }
++        return success
++    }
++
++    fun getBitmapAt(index: Int): Bitmap? {
++        if (drawable_map.isNotEmpty()) {
++            return drawable_map[index]
++        }
++        return null
++    }
++
++    fun getBitmapFromFile(context: Context, eventID: Int): Bitmap? {
++        return if (checkExistingBitmapInFiles(context, eventID) != null) {
++            val bitmapDir = context.getDir(this.bitmapFolder, Context.MODE_PRIVATE)
++            BitmapFactory.decodeFile(bitmapDir.absolutePath + File.separator.toString() + "$eventID.png")
++        } else {
++            null
++        }
++    }
++
++
++    private fun createBitmapFile(
++            context: Context,
++            eventID: Int,
++            bitmap: Bitmap,
++            compressionRate: Int = 100
++    ): Boolean {
++        val bitmapDir = context.getDir(this.bitmapFolder, Context.MODE_PRIVATE)
++        val outStream = ByteArrayOutputStream()
++        bitmap.compress(Bitmap.CompressFormat.PNG, compressionRate, outStream)
++
++        val bitmapFile = File(bitmapDir.absolutePath + File.separator.toString() + "$eventID.png")
++
++        return try {
++            val fos = FileOutputStream(bitmapFile)
++            fos.write(outStream.toByteArray())
++
++            fos.flush()
++            fos.close()
++
++            true
++        } catch (e: Exception) {
++            e.printStackTrace()
++
++            false
++        }
++    }
++
++    private fun checkExistingBitmapInFiles(context: Context, eventID: Int): File? {
++        context.getDir(this.bitmapFolder, Context.MODE_PRIVATE).let {
++            if (it != null) {
++                val bitmapFile = File(it.absolutePath + File.separator + "$eventID.png")
++                return if (bitmapFile.exists()) {
++                    bitmapFile
++                } else {
++                    null
++                }
++            }
++        }
++        return null
++    }
++
++    private fun removeBitmapFromFiles(context: Context, eventID: Int) {
++        val bitmapFile = checkExistingBitmapInFiles(context, eventID)
++        bitmapFile?.delete()
++    }
++
++    /**
++     * getSquaredBitmap square given bitmap
++     * this is important for nice looking circular images for avatar images
++     */
++    private fun getSquaredBitmap(bitmap: Bitmap): Bitmap {
++        val halfWidth = bitmap.width / 2
++        val halfHeight = bitmap.height / 2
++        if (bitmap.width < bitmap.height) {
++            return Bitmap.createBitmap(
++                    bitmap,
++                    0,
++                    halfHeight - halfWidth,
++                    bitmap.width,
++                    bitmap.width
++            )
++        } else if (bitmap.width > bitmap.height) {
++            return Bitmap.createBitmap(
++                    bitmap,
++                    halfWidth - halfHeight,
++                    0,
++                    bitmap.height,
++                    bitmap.height
++            )
++        }
++        return bitmap
++    }
++
++    fun getScaledBitmap(bitmap: Bitmap, scale: Int = STANDARD_SCALING): Bitmap {
++        //first square bitmap
++        val tempBitmap = getSquaredBitmap(bitmap)
++
++        //then scale bitmap
++        return Bitmap.createScaledBitmap(
++                tempBitmap,
++                scale,
++                scale,
++                false
++        )
++    }
++
++    fun getCircularBitmap(bitmap: Bitmap, resources: Resources): Bitmap {
++        RoundedBitmapDrawableFactory.create(resources, bitmap).let {
++            it.isCircular = true
++            return drawableToBitmap(it)
++        }
++    }
++
++    private fun drawableToBitmap(drawable: Drawable): Bitmap {
++        if (drawable is BitmapDrawable) {
++            return drawable.bitmap
++        }
++
++        var width = drawable.intrinsicWidth
++        width = if (width > 0) width else 1
++        var height = drawable.intrinsicHeight
++        height = if (height > 0) height else 1
++
++        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
++        val canvas = Canvas(bitmap)
++        drawable.setBounds(0, 0, canvas.width, canvas.height)
++        drawable.draw(canvas)
++
++        return bitmap
++    }
++
++    private fun showMissingImageAlertDialog(context: Context) {
++        val builder = AlertDialog.Builder(context)
++        builder.setTitle(R.string.alert_dialog_missing_avatar_img_title)
++        builder.setMessage(R.string.alert_dialog_missing_avatar_img_text)
++        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
++            dialog.dismiss()
++        }
++        builder.setIcon(R.drawable.ic_error_outline)
++        // builder.show()//todo мб надо удалить это ибо если невалидный урл то падает все
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/MainActivity.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/MainActivity.kt	(date 1582220437783)
+@@ -28,7 +28,6 @@
+ import com.procrastimax.birthdaybuddy.models.OneTimeEvent
+ import kotlinx.android.synthetic.main.activity_main.*
+ import kotlinx.android.synthetic.main.fragment_event_list.*
+-import org.springframework.util.StringUtils
+ import java.text.DateFormat
+ import java.text.SimpleDateFormat
+ import java.util.*
+@@ -279,7 +278,7 @@
+         val transaction = supportFragmentManager.beginTransaction()
+         transaction.replace(
+                 R.id.fragment_placeholder,
+-                EventListFragment.newInstance()
++                TournamentListFragment.newInstance()
+         ).commit()
+ 
+ 
+Index: app/src/main/res/menu/toolbar_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/toolbar_main.xml	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/res/menu/toolbar_main.xml	(date 1580756842516)
+@@ -16,9 +16,9 @@
+         app:showAsAction="always|collapseActionView"></item>
+ 
+     <item
+-        android:id="@+id/item_add_tournament"
++        android:id="@+id/item_show_users"
+         android:orderInCategory="2"
+-        android:title="@string/addTournament"
++        android:title="@string/action_users"
+         app:showAsAction="never" />
+ 
+     <item
+Index: app/src/main/resources/messages_blr_BLR.properties
+===================================================================
+--- app/src/main/resources/messages_blr_BLR.properties	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/resources/messages_be_BY.properties	(date 1565114197242)
+Index: app/src/main/java/bobrchess/of/by/belaruschess/fragments/UserInstanceFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/fragments/UserInstanceFragment.kt	(date 1582220437692)
++++ app/src/main/java/bobrchess/of/by/belaruschess/fragments/UserInstanceFragment.kt	(date 1582220437692)
+@@ -0,0 +1,875 @@
++package com.procrastimax.birthdaybuddy.fragments
++
++import android.app.Activity
++import android.app.AlertDialog
++import android.app.DatePickerDialog
++import android.content.Context
++import android.content.Intent
++import android.graphics.Color
++import android.net.Uri
++import android.os.Bundle
++import android.provider.MediaStore
++import android.support.constraint.ConstraintLayout
++import android.support.design.widget.BottomSheetDialog
++import android.support.design.widget.Snackbar
++import android.support.v4.content.ContextCompat
++import android.text.Editable
++import android.text.TextWatcher
++import android.view.LayoutInflater
++import android.view.View
++import android.view.ViewGroup
++import android.widget.*
++import bobrchess.of.by.belaruschess.R
++import bobrchess.of.by.belaruschess.adapter.EventInstanceFragment
++import bobrchess.of.by.belaruschess.dto.PlaceDTO
++import bobrchess.of.by.belaruschess.dto.TournamentDTO
++import bobrchess.of.by.belaruschess.dto.UserDTO
++import bobrchess.of.by.belaruschess.handler.BitmapHandler
++import bobrchess.of.by.belaruschess.handler.EventHandler
++import bobrchess.of.by.belaruschess.handler.IOHandler
++import bobrchess.of.by.belaruschess.model.EventDate
++import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
++import bobrchess.of.by.belaruschess.util.Util
++import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
++import bobrchess.of.by.belaruschess.view.activity.PackageModel
++import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
++import com.procrastimax.birthdaybuddy.models.EventTournament
++import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
++import kotlinx.android.synthetic.main.fragment_event_list.*
++import java.text.DateFormat
++import java.text.SimpleDateFormat
++import java.util.*
++
++
++/**
++ *
++ * TournamentInstanceFragment is a fragment class for adding/editing an instance of EventTournament
++ * This fragment shows up, when the users wants to add a new EventTournament or edit an existing one
++ * The fragment consists of several TextEdits to manage user data input
++ *
++ * This class inherits from android.support.v4.app.Fragment
++ *
++ * TODO:
++ *  - add possibility to take new pictures with camera
++ */
++class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView {
++
++    /**
++     * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventTournament
++     */
++    private var isEditedBirthday: Boolean = false
++
++    /**
++     * eventID is the index of the clicked item in EventListFragments RecyclerView, this is handy to get the birthday instance from the EventHandler
++     */
++    var eventID = -1
++
++    /**
++     * tournamentAvatarUri is a string to store the user picked image for the avatar
++     */
++    private var tournamentAvatarUri: String? = null
++
++    /**
++     * avatarImgWasEdited is a boolean flag to store the information whether the avatar img has been changed
++     */
++    private var avatarImgWasEdited = false
++
++    /**
++     * REQUEST_IMAGE_GET is an intent code used for open the photo gallery
++     */
++    private val REQUEST_IMAGE_GET = 1
++
++    /**
++     * editName is the TextEdit used for editing/ showing the forename of the birthday
++     * It is lazy initialized
++     */
++    private val editName: EditText by lazy {
++        view!!.findViewById<EditText>(R.id.e_add_tournament_name)
++    }
++
++    /**
++     * editFullDescription is the TextEdit used for editing/ showing the fullDescription of the birthday
++     * It is lazy initialized
++     */
++    private val editFullDescription: EditText by lazy {
++        view!!.findViewById<EditText>(R.id.e_add_tournament_full_description)
++    }
++
++    /**
++     * editShortDescription is the TextEdit used for editing/ showing the shortDescription of the birthday
++     * It is lazy initialized
++     */
++    private val editShortDescription: EditText by lazy {
++        view!!.findViewById<EditText>(R.id.e_add_tournament_short_description)
++    }
++
++    /**
++     * editStartDateCalendarview is the TextEdit used for editing/ showing the startDate of the birthday but reprensented by the android calendar view
++     * It is lazy initialized
++     */
++    private val editStartDateCalendarview: TextView by lazy {
++        view!!.findViewById<TextView>(R.id.t_add_tournament_start_date)
++    }
++
++    /**
++     * editEndDateCalendarview is the TextEdit used for editing/ showing the startDate of the birthday but reprensented by the android calendar view
++     * It is lazy initialized
++     */
++    private val editEndDateCalendarview: TextView by lazy {
++        view!!.findViewById<TextView>(R.id.t_add_tournament_end_date)
++    }
++
++    /**
++     * editDate is the TextEdit used for editing/ showing the startDate of the birthday
++     * It is lazy initialized
++     */
++    private val editDate: EditText by lazy {
++        view!!.findViewById<EditText>(R.id.e_add_tournament_start_date)
++    }
++
++    /**
++     * editNote is the TextEdit used for editing/ showing the note of the birthday
++     * It is lazy initialized
++     */
++//    private val editNote: EditText by lazy {
++//        view!!.findViewById<EditText>(R.id.edit_add_fragment_note)
++//    }
++
++    private val refereeSpinner: Spinner by lazy {
++        view!!.findViewById<Spinner>(R.id.s_refereeSpinner1)
++    }
++
++    private val placeSpinner: Spinner by lazy {
++        view!!.findViewById<Spinner>(R.id.s_placeSpinner1)
++    }
++
++    inner class PlaceItemSelectedListener : AdapterView.OnItemSelectedListener {
++        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
++            addTournamentPresenter?.setSelectedPlaceIndex(position)
++        }
++
++        override fun onNothingSelected(arg: AdapterView<*>) {
++
++        }
++    }
++
++    inner class RefereeItemSelectedListener : AdapterView.OnItemSelectedListener {
++        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
++            addTournamentPresenter?.setSelectedRefereeIndex(position)
++        }
++
++        override fun onNothingSelected(arg: AdapterView<*>) {
++
++        }
++    }
++
++    private var addTournamentPresenter: AddTournamentPresenterImpl? = null
++
++    private fun getDateRegexFromDateFormatSkeletonPattern(skeletonPattern: String): Regex {
++        val dateFormatPattern = EventDate.getLocalizedDateFormatPatternFromSkeleton(skeletonPattern)
++        var dateRegex = dateFormatPattern
++
++        var dateRegexArray = dateRegex.split("""\W""".toRegex())
++        dateRegexArray = dateRegexArray.map {
++            it.replace("""[a-zA-Z]""".toRegex(), """\\d""")
++        }
++
++        dateRegex = dateRegexArray.joinToString("""\W""")
++
++        return dateRegex.toRegex()
++    }
++
++    private val dateEditRegexNoYear by lazy {
++        getDateRegexFromDateFormatSkeletonPattern("ddMM")
++    }
++    private val dateEditRegexWithYear by lazy {
++        getDateRegexFromDateFormatSkeletonPattern("ddMMYYYY")
++    }
++
++    /**
++     * switchIsYearGiven is the Switch to indicate wether the user wants to provide a startDate with a year or without a year
++     * It is lazy initialized
++     */
++    private val switchIsYearGiven: Switch by lazy {
++        view!!.findViewById<Switch>(R.id.sw_is_start_year_given)
++    }
++
++    private var isCalendarViewSelected: Boolean = true
++
++    override fun onCreateView(
++        inflater: LayoutInflater, container: ViewGroup?,
++        savedInstanceState: Bundle?
++    ): View? {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_add_new_tournament, container, false)
++    }
++
++    private var refereeId: Int = 0
++    private var placeId: Int = 0
++    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
++        super.onViewCreated(view, savedInstanceState)
++        setHasOptionsMenu(false)
++
++        refereeSpinner.onItemSelectedListener = RefereeItemSelectedListener()
++        placeSpinner.onItemSelectedListener = PlaceItemSelectedListener()
++
++        if (IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_date_as_calendar_view) == false) {
++            isCalendarViewSelected = false
++            editStartDateCalendarview.visibility = EditText.INVISIBLE
++            editEndDateCalendarview.visibility = EditText.INVISIBLE
++            editDate.visibility = EditText.VISIBLE
++
++        } else {
++            isCalendarViewSelected = true
++            editStartDateCalendarview.visibility = EditText.VISIBLE
++            editEndDateCalendarview.visibility = EditText.VISIBLE
++            editDate.visibility = EditText.INVISIBLE
++        }
++
++        addTournamentPresenter = AddTournamentPresenterImpl(this)
++        addTournamentPresenter!!.setPackageModel(PackageModel(this.context!!))
++        addTournamentPresenter!!.attachView(this)
++        addTournamentPresenter!!.loadReferees()
++        addTournamentPresenter!!.loadPlaces()// todo я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо
++
++   /*     editName.hint =
++            "${context?.getText(R.string.event_property_forename)} ${context?.getText(R.string.necessary)}"*/
++
++        //retrieve fragment parameter when edited instance
++        if (arguments != null) {
++            isEditedBirthday = true
++
++            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_tournament))
++
++            eventID = (arguments!!.getInt(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID))
++            EventHandler.getEventToEventIndex(eventID)?.let { tournament ->
++                if (tournament is EventTournament) {
++                    refereeId = tournament.refereeId!!.toInt()
++                    placeId = tournament.placeId!!
++                    this.eventStartDate = tournament.eventDate
++                    if (this.eventStartDate.after(Calendar.getInstance().time)) {
++                        val cal = Calendar.getInstance()
++                        cal.time = this.eventStartDate
++                        cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
++                        this.eventStartDate = cal.time
++                    }
++
++
++                    // the value which should be assigned to the startDate edit box
++                    val startDate: String?
++                    val endDate: String?
++
++                    startDate =
++                            EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
++                    endDate =
++                            EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
++
++                    if (!isCalendarViewSelected) {
++                        editDate.setText(startDate)
++                        editDate.hint = startDate
++                    } else {
++                        editStartDateCalendarview.text = startDate
++                        editStartDateCalendarview.hint = startDate
++                        editEndDateCalendarview.text = endDate
++                        editEndDateCalendarview.hint = endDate
++                    }
++
++
++                    editShortDescription.setText(tournament.shortDescription)
++                    editName.setText(tournament.name)
++                    switchIsYearGiven.isChecked = true//birthday.isYearGiven
++                    tournamentAvatarUri = tournament.imageUri
++
++
++                    if (!tournament.fullDescription.isNullOrBlank()) {
++                        //cb_nickname.isChecked = true
++                        editFullDescription.setText(tournament.fullDescription)
++                        editFullDescription.visibility = EditText.VISIBLE
++                    }
++
++                    //title.text = resources.getText(R.string.toolbar_title_edit_birthday)
++                    btn_birthday_add_fragment_delete.visibility = Button.VISIBLE
++                    //delete functionality
++                    btn_birthday_add_fragment_delete.setOnClickListener {
++                        val alertBuilder = AlertDialog.Builder(context)
++                        alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_birthday))
++                        alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message))
++
++                        val contextTemp = context
++
++                        // Set a positive button and its click listener on alert dialog
++                        alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
++                            // delete birthday on positive button
++                            Snackbar
++                                .make(//todo это надо перенести, чтобы показывалось уже после удаления с сервака, и в действие ниже добавить добавление и на сервак тоже
++                                    view,
++                                    resources.getString(R.string.tournament_deleted_notification),
++                                    Snackbar.LENGTH_LONG
++                                )
++                                .setAction(R.string.undo) {
++                                    EventHandler.addEvent(tournament, contextTemp!!, true)
++                                    //get last fragment in stack list, which should be TournamentListFragment, so we can update the recycler view
++                                    val fragment =
++                                        (contextTemp as MainActivity).supportFragmentManager.fragments.last()
++                                    if (fragment is TournamentListFragment) {
++                                        fragment.recyclerView.adapter!!.notifyDataSetChanged()
++                                        fragment.tv_no_events.visibility = TextView.GONE
++                                    }
++                                }
++                                .show()
++
++                            addTournamentPresenter?.removeTournament(eventID.toLong())
++                        }
++
++                        // don't do anything on negative button
++                        alertBuilder.setNegativeButton(resources.getString(R.string.no)) { _, _ ->
++                        }
++
++                        // Finally, make the alert dialog using builder
++                        val dialog: AlertDialog = alertBuilder.create()
++
++                        // Display the alert dialog on app interface
++                        dialog.show()
++                    }
++                }
++
++                this.updateAvatarImage()
++            }
++            //new birthday is going to be added
++        } else {
++            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_add_tournament))
++            btn_birthday_add_fragment_delete.visibility = Button.INVISIBLE
++
++            if (isCalendarViewSelected) {
++                editStartDateCalendarview.hint =
++                    EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
++                editEndDateCalendarview.hint =
++                        EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
++            } else {
++                editDate.hint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
++            }
++        }
++
++        editDate.setOnFocusChangeListener { editTextView, hasFocus ->
++            if (!hasFocus) {
++                if (!validateAndSetEditTextDateInput((editTextView as EditText).text.toString())) {
++                    editTextView.setTextColor(Color.RED)
++                } else {
++                    editDate.setTextColor(
++                        ContextCompat.getColor(
++                            context!!,
++                            R.color.textVeryDark
++                        )
++                    )
++                }
++            }
++        }
++
++        editDate.addTextChangedListener(object : TextWatcher {
++            override fun afterTextChanged(s: Editable?) {
++            }
++
++            override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
++            }
++
++            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
++                if (s != null) {
++                    //if (switchIsYearGiven.isChecked) {
++                        if (!dateEditRegexWithYear.matches(s)) {
++                            editDate.setTextColor(Color.RED)
++                        } else {
++                            editDate.setTextColor(
++                                ContextCompat.getColor(
++                                    context!!,
++                                    R.color.textVeryDark
++                                )
++                            )
++                        }
++                  /*  } else {
++                        if (!dateEditRegexNoYear.matches(s)) {
++                            editDate.setTextColor(Color.RED)
++                        } else {
++                            editDate.setTextColor(
++                                ContextCompat.getColor(
++                                    context!!,
++                                    R.color.textVeryDark
++                                )
++                            )
++                        }
++                    }*/
++                }
++            }
++        })
++
++        editStartDateCalendarview.setOnClickListener {
++            showStartDatePickerDialog(true/*switchIsYearGiven.isChecked*/)
++        }
++
++        editEndDateCalendarview.setOnClickListener {
++            showEndDatePickerDialog(true/*switchIsYearGiven.isChecked*/)
++        }
++
++        //add image from gallery
++        this.frame_layout_add_avatar_image.setOnClickListener {
++            val bottomSheetDialog =
++                layoutInflater.inflate(R.layout.fragment_bottom_sheet_dialog, null)
++
++            val dialog = BottomSheetDialog(context!!)
++            dialog.setContentView(bottomSheetDialog)
++
++            dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_choose).apply {
++                this?.setOnClickListener {
++                    dialog.dismiss()
++                    getImageFromFiles()
++                }
++            }
++
++            dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
++                this?.setOnClickListener {
++                    dialog.dismiss()
++                    if (isEditedBirthday && tournamentAvatarUri != null && (EventHandler.getEventToEventIndex(
++                            eventID
++                        ) as EventTournament).imageUri != null
++                    ) {
++                        iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
++                        avatarImgWasEdited = true
++                        tournamentAvatarUri = null
++                        BitmapHandler.removeBitmap(eventID, context!!)
++                    } else {
++                        iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
++                        tournamentAvatarUri = null
++                    }
++                }
++            }
++
++            dialog.show()
++        }
++
++       /* switchIsYearGiven.setOnCheckedChangeListener { _, isChecked ->
++            val dateText: String
++            val dateHint: String
++            //year is given
++            if (isChecked) {
++                val cal = Calendar.getInstance()
++                if (this.eventStartDate.after(cal.time)) {
++                    cal.time = this.eventStartDate
++                    cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
++                    this.eventStartDate = cal.time
++                }
++
++                dateText =
++                    EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
++                dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
++
++                //year is not given
++            } else {
++                dateText = EventDate.getLocalizedDayAndMonthString(this.eventStartDate)
++                dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMM")
++            }
++
++            if (isCalendarViewSelected) {
++                if (editStartDateCalendarview.text.isNotBlank()) editStartDateCalendarview.text = dateText
++                editStartDateCalendarview.hint = dateHint
++            } else {
++                if (editDate.text.isNotBlank()) editDate.setText(dateText)
++                editDate.hint = dateHint
++            }
++        }*/
++    }
++
++    /**
++     * getImageFromFiles opens an intent to request a photo from the gallery
++     * This function is called after the user clicks on the iv_add_avatar_btn
++     */
++    private fun getImageFromFiles(): String {
++        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
++            type = "image/*"
++        }
++        intent.addFlags(
++            Intent.FLAG_GRANT_READ_URI_PERMISSION
++        )
++        if (intent.resolveActivity(context!!.packageManager) != null) {
++            startActivityForResult(intent, REQUEST_IMAGE_GET)
++        }
++        return "0"
++    }
++
++    /**
++     * onActivityResult is the result of the gallery intent, here the uri of the photo is processed
++     */
++    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
++        super.onActivityResult(requestCode, resultCode, data)
++        //handle image/photo file choosing
++        if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
++            val fullPhotoUri: Uri = data!!.data!!
++
++            Thread(Runnable {
++                val bitmap =
++                    MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
++                (context as MainActivity).runOnUiThread {
++                    iv_add_avatar_btn.setImageBitmap(
++                        BitmapHandler.getCircularBitmap(
++                            BitmapHandler.getScaledBitmap(
++                                bitmap
++                            ), resources
++                        )
++                    )
++                }
++            }).start()
++
++            tournamentAvatarUri = fullPhotoUri.toString()
++            avatarImgWasEdited = true
++        }
++    }
++
++    /**
++     * acceptBtnPressed is a function which is called when the toolbars accept button is pressed
++     */
++    override fun acceptBtnPressed() {
++        val tournamentName = editName.text.toString()
++        val tournamentShortDescription = editShortDescription.text.toString()
++
++        val date = if (isCalendarViewSelected) {
++            editStartDateCalendarview.text.toString()
++        } else {
++            if (!validateAndSetEditTextDateInput(editDate.text.toString())) return
++            editDate.text.toString()
++        }
++
++      //  val note = editNote.text.toString()
++        val tournamentFullDescription = editFullDescription.text.toString()
++        val isYearGiven = true//switchIsYearGiven.isChecked
++
++
++        /*if (tournamentName.isBlank() || date.isBlank()) {
++            Toast.makeText(
++                context,
++                context!!.resources.getText(R.string.empty_fields_error_tournament),
++                Toast.LENGTH_LONG
++            )
++                .show()
++        } else {*/
++        addTournamentPresenter?.addTournament(getTournamentData())
++       // }
++    }
++
++    private fun getTournamentData(): TournamentDTO {
++        val tournamentData = TournamentDTO()
++        tournamentData.id = eventID.toLong()
++        tournamentData.name = editName.text.toString()
++        tournamentData.shortDescription = editShortDescription.text.toString()
++        tournamentData.fullDescription = editFullDescription.text.toString()
++        tournamentData.countPlayersInTeam = 1
++        tournamentData.image = tournamentAvatarUri
++        tournamentData.startDate = convertDateToString(eventStartDate)
++        tournamentData.finishDate = convertDateToString(eventEndDate)
++        return tournamentData
++    }
++
++    fun convertDateToString(date: Date):String {
++       // var pattern = "yyyy-MM-dd HH:mm:00"
++        var pattern = "dd/MM/yyyy"
++        var df = SimpleDateFormat(pattern)
++        var dateString = df.format(date)
++        return dateString
++    }
++
++    private fun updateAvatarImage() {
++        if (this.iv_add_avatar_btn != null && this.eventID >= 0) {
++            //load maybe already existent avatar photo
++            EventHandler.getEventToEventIndex(eventID)?.let { event ->
++                if (event is EventTournament && event.imageUri != null) {
++                    this.iv_add_avatar_btn.setImageBitmap(BitmapHandler.getBitmapAt(eventID))
++                    this.iv_add_avatar_btn.isEnabled = true
++                }
++            }
++        }
++    }
++
++    /**
++     * showStartDatePickerDialog shows a dialog to let the user pick a startDate for the editStartDateCalendarview
++     */
++    private fun showStartDatePickerDialog(showYear: Boolean) {
++        val c = Calendar.getInstance()
++        //set calendar to the startDate which is stored in the edit field, when the edit is not empty
++        if (!editStartDateCalendarview.text.isNullOrBlank()) {
++            c.time = this.eventStartDate
++        }
++        val year = c.get(Calendar.YEAR)
++        val month = c.get(Calendar.MONTH)
++        val day = c.get(Calendar.DAY_OF_MONTH)
++
++        val dpd =
++            DatePickerDialog(
++                context!!,
++                DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
++                    // Display Selected startDate in Toast
++                    c.set(Calendar.YEAR, year_)
++                    c.set(Calendar.MONTH, monthOfYear)
++                    c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
++
++                  /*  if (c.time.after(Calendar.getInstance().time) && showYear) {
++                        showFutureDateErrorToast(view.context)
++                    } else {*/
++                        this.eventStartDate = c.time
++                        if (showYear) {
++                            editStartDateCalendarview.text =
++                                EventDate.getLocalizedDayMonthYearString(c.time)
++                        } else {
++                            editStartDateCalendarview.text =
++                                EventDate.getLocalizedDayAndMonthString(c.time)
++                        }
++                    //}
++                },
++                year,
++                month,
++                day
++            )
++        dpd.show()
++    }
++
++    /**
++    * showEndDatePickerDialog shows a dialog to let the user pick a startDate for the editStartDateCalendarview
++    */
++    private fun showEndDatePickerDialog(showYear: Boolean) {
++        val c = Calendar.getInstance()
++        //set calendar to the startDate which is stored in the edit field, when the edit is not empty
++        if (!editEndDateCalendarview.text.isNullOrBlank()) {
++            c.time = this.eventEndDate
++        }
++        val year = c.get(Calendar.YEAR)
++        val month = c.get(Calendar.MONTH)
++        val day = c.get(Calendar.DAY_OF_MONTH)
++
++        val dpd =
++                DatePickerDialog(
++                        context!!,
++                        DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
++                            // Display Selected startDate in Toast
++                            c.set(Calendar.YEAR, year_)
++                            c.set(Calendar.MONTH, monthOfYear)
++                            c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
++
++                          /*  if (c.time.after(Calendar.getInstance().time) && showYear) {
++                                showFutureDateErrorToast(view.context)
++                            } else {*/
++                                this.eventStartDate = c.time
++                                if (showYear) {
++                                    editEndDateCalendarview.text =
++                                            EventDate.getLocalizedDayMonthYearString(c.time)
++                                } else {
++                                    editEndDateCalendarview.text =
++                                            EventDate.getLocalizedDayAndMonthString(c.time)
++                                }
++                           // }
++                        },
++                        year,
++                        month,
++                        day
++                )
++        dpd.show()
++    }
++
++    private fun showFutureDateErrorToast(context: Context) {
++        Toast.makeText(
++            context,
++            context.resources.getText(R.string.future_tournament_error),
++            Toast.LENGTH_LONG
++        ).show()
++    }
++
++    private fun validateAndSetEditTextDateInput(dateInput: String): Boolean {
++        if (dateInput.isBlank()) return false
++        val dateRegEx: Regex?
++     //  if (switchIsYearGiven.isChecked) {
++            dateRegEx = dateEditRegexWithYear
++      /*  } else {
++            dateRegEx = dateEditRegexNoYear
++        }*/
++
++        // startDate input does not match the required regex -> show error
++        if (!dateInput.matches(dateRegEx)) {
++            Toast.makeText(
++                context,
++                resources.getString(
++                    R.string.verification_edit_date_input,
++                    editDate.hint.toString()
++                ),
++                Toast.LENGTH_LONG
++            ).show()
++            return false
++        } else {
++
++            // input matches regex, then set it as birthdayevent startDate
++            this.eventStartDate = //if (switchIsYearGiven.isChecked) {
++                EventDate.parseStringToDateWithPattern("ddMMYYYY", dateInput)
++          /*  } else {
++                //check if last character in the string is a startDate seperator char, if not, then append one before adding the year
++                if (checkForLastDateSeperatorChar(dateInput)) {
++                    EventDate.parseStringToDateWithPattern("ddMMYYYY", "${dateInput}2016")
++                } else {
++                    EventDate.parseStringToDateWithPattern("ddMMYYYY", """${dateInput}/2016""")
++                }
++            }*/
++            if (this.eventStartDate.before(
++                    EventDate.parseStringToDate(
++                        "01.01.0001",
++                        DateFormat.DATE_FIELD,
++                        Locale.GERMAN
++                    )
++                )
++            ) {
++                Toast.makeText(context, "Man this is too old!", Toast.LENGTH_SHORT).show()
++                this.eventStartDate =
++                    EventDate.parseStringToDate("01.01.0001", DateFormat.DATE_FIELD, Locale.GERMAN)
++            }
++        }
++        return true
++    }
++
++    private fun checkForLastDateSeperatorChar(dateString: String): Boolean {
++        return (dateString.last().toString().matches("""\W""".toRegex()))
++    }
++
++    companion object {
++        /**
++         * BIRTHDAY_INSTANCE_FRAGMENT_TAG is the fragments tag as String
++         */
++        const val BIRTHDAY_INSTANCE_FRAGMENT_TAG = "BIRTHDAY_INSTANCE"
++
++        /**
++         * newInstance returns a new instance of TournamentInstanceFragment
++         */
++        @JvmStatic
++        fun newInstance(): UserInstanceFragment {
++            return UserInstanceFragment()
++        }
++    }
++
++    override fun setRefereeSpinnerAdapter(referees: MutableList<UserDTO>) {
++        val refereeNames = Util.getUsersBasicData(referees)
++        refereeNames.add(0, getString(R.string.chooseReferee))
++        val adapter = ArrayAdapter<String>(this.context!!,
++                android.R.layout.simple_spinner_dropdown_item, refereeNames)
++        refereeSpinner.adapter = adapter
++        refereeSpinner.setSelection(getUserIndexById(referees, refereeId) + 1 )
++    }
++
++    override fun setPlaceSpinnerAdapter(places: MutableList<PlaceDTO>?) {
++        val placeNames = Util.getPlacesNames(places!!)
++        placeNames.add(0, getString(R.string.choosePlace))
++        val adapter = ArrayAdapter<String>(this.context!!,
++                android.R.layout.simple_spinner_dropdown_item, placeNames)
++        placeSpinner.adapter = adapter
++        placeSpinner.setSelection(getPlaceIndexById(places, placeId) + 1)
++    }
++
++    private fun getUserIndexById(list: MutableList<UserDTO>, id:Int): Int{
++        for ((i, value) in list.withIndex()){
++            if(value.id?.toInt() == id){
++                return i
++            }
++        }
++        return -1
++    }
++
++    private fun getPlaceIndexById(list: MutableList<PlaceDTO>, id:Int): Int{
++        for ((i, value) in list.withIndex()){
++            if(value.id == id){
++                return i
++            }
++        }
++        return -1
++    }
++
++    override fun startActivity(tournamentDTO: TournamentDTO?) {//тут надо ззаполниь ну и остальные методы. Прогресс показывать и снимать и тд + дата в неверном формате сохраняется
++    }
++
++    override fun dismissAlertDialog() {
++    }
++
++    override fun showToast(resId: Int?) {
++    }
++
++    override fun showToast(message: String?) {
++    }
++
++    override fun disableButton() {
++    }
++
++    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
++    }
++
++    override fun showProgress() {
++    }
++
++    override fun hideProgress() {
++    }
++
++    override fun setConnectionStatus(connectivityStatus: Int?) {
++    }
++
++    override fun showIncorrectTournamentNameText() {
++    }
++
++    override fun addTournament() {
++    }
++
++    override fun enableButton() {
++    }
++
++    override fun dialogConfirmButtonClicked() {
++
++    }
++
++    fun createTournamentEvent(tournamentDTO: TournamentDTO?){
++
++    }
++
++    override fun removeTournamentFromLocalStorage(id: Long) {
++        EventHandler.removeEventByID(eventID, context!!, true)
++        closeBtnPressed()
++    }
++
++    override fun tournamentAdded(tournamentDTO: TournamentDTO?) {
++        //create new instance from edit fields
++          val tournamentEvent = EventTournament(
++                  tournamentDTO!!.id.toInt(),
++              this.eventStartDate,
++              tournamentDTO.name!!
++          )
++
++
++        tournamentEvent.shortDescription = tournamentDTO.shortDescription
++        tournamentEvent.fullDescription = tournamentDTO.fullDescription
++        tournamentEvent.finishDate = eventEndDate//todo проверить что так можно брать, не из сущности, у старт то же самое
++        tournamentEvent.imageUri = tournamentDTO.image
++        tournamentEvent.refereeId = tournamentDTO.referee?.id
++        tournamentEvent.placeId = tournamentDTO.place?.id
++
++          //new birthday entry, just add a new entry in map
++          if (!isEditedBirthday) {
++              EventHandler.addEvent(tournamentEvent, this.context!!, true)
++              Snackbar.make(
++                  view!!,
++                  context!!.resources.getString(R.string.tournament_added_notification),
++                  Snackbar.LENGTH_LONG
++              ).show()
++              closeBtnPressed()
++
++              //already existent birthday entry, overwrite old entry in map
++          } else {
++              EventHandler.getEventToEventIndex(eventID)?.let { event ->
++                  if (event is EventTournament) {
++                      EventHandler.changeEventAt(eventID, tournamentEvent, context!!, true)
++                      Snackbar.make(
++                          view!!,
++                          context!!.resources.getString(R.string.tournament_changed_notification),
++                          Snackbar.LENGTH_LONG
++                      ).show()
++                  }
++                  closeBtnPressed()
++              }
++          }
++    }
++}
+Index: app/src/main/java/bobrchess/of/by/belaruschess/handler/UserIOHandler.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/handler/UserIOHandler.kt	(date 1582220437771)
++++ app/src/main/java/bobrchess/of/by/belaruschess/handler/UserIOHandler.kt	(date 1582220437771)
+@@ -0,0 +1,591 @@
++package bobrchess.of.by.belaruschess.handler
++
++import android.content.Context
++import android.content.SharedPreferences
++import android.os.Environment
++import android.util.Log
++import android.widget.Toast
++import bobrchess.of.by.belaruschess.BuildConfig
++import bobrchess.of.by.belaruschess.R
++import bobrchess.of.by.belaruschess.model.EventDate
++import com.procrastimax.birthdaybuddy.models.EventTournament
++import com.procrastimax.birthdaybuddy.models.MonthDivider
++import com.procrastimax.birthdaybuddy.models.OneTimeEvent
++import java.io.File
++import java.util.*
++
++
++/**
++ * DataHandler is a singleton and is used to store/read event data from shared preferences
++ * It stores all data in shared preferences and the has to be initialized by getting the main context
++ *
++ * All events are saved as an key, value pair. In which the key is an integer value and the value is a EventDate
++ */
++
++//todo закомментил все тк. пока что отложил сохранение в локальный сторейдж
++object UserIOHandler {
++
++    object SharedPrefKeys {
++        const val key_firstStart = "isFirstStart"
++
++        //birthday settings
++        const val key_isNotificationOnBirthday = "isNotificationOnBirthday"
++        const val key_isNotificationSoundOnBirthday = "isNotificationSoundOnBirthday"
++        const val key_isNotificationVibrationOnBirthday = "isNotificationVibrationOnBirthday"
++        const val key_strNotificationTimeBirthday = "strNotificationTimeBirthday"
++
++        const val key_isRemindedDay_month_beforeBirthday = "isRemindedDay_month_beforeBirthday"
++        const val key_isRemindedDay_week_beforeBirthday = "isRemindedDay_week_beforeBirthday"
++        const val key_isRemindedDay_day_beforeBirthday = "isRemindedDay_day_beforeBirthday"
++        const val key_isRemindedDay_eventdayBirthday = "isRemindedDay_eventdayBirthday"
++
++        const val key_notificationLightBirthday = "notificationLightBirthday"
++
++        //annual event settings
++        const val key_isNotificationOnAnnual = "isNotificationOnAnnual"
++        const val key_isNotificationSoundOnAnnual = "isNotificationSoundOnAnnual"
++        const val key_isNotificationVibrationOnAnnual = "isNotificationVibrationOnAnnual"
++        const val key_strNotificationTimeAnnual = "strNotificationTimeAnnual"
++
++        const val key_isRemindedDay_month_beforeAnnual = "isRemindedDay_month_beforeAnnual"
++        const val key_isRemindedDay_week_beforeAnnual = "isRemindedDay_week_beforeAnnual"
++        const val key_isRemindedDay_day_beforeAnnual = "isRemindedDay_day_beforeAnnual"
++        const val key_isRemindedDay_eventdayAnnual = "isRemindedDay_eventdayAnnual"
++
++        const val key_notificationLightAnnual = "notificationLightAnnual"
++
++        // one time event settings
++        const val key_isNotificationOnOneTime = "isNotificationOnOneTime"
++        const val key_isNotificationSoundOnOneTime = "isNotificationSoundOnOneTime"
++        const val key_isNotificationVibrationOnOneTime = "isNotificationVibrationOnOneTime"
++        const val key_strNotificationTimeOneTime = "strNotificationTimeOneTime"
++
++        const val key_isRemindedDay_month_beforeOneTime = "isRemindedDay_month_beforeOneTime"
++        const val key_isRemindedDay_week_beforeOneTime = "isRemindedDay_week_beforeOneTime"
++        const val key_isRemindedDay_day_beforeOneTime = "isRemindedDay_day_beforeOneTime"
++        const val key_isRemindedDay_eventdayOneTime = "isRemindedDay_eventdayOneTime"
++
++        const val key_notificationLightOneTime = "notificationLightOneTime"
++
++        // extra settings
++        const val key_date_as_calendar_view = "dateAsCalendarView"
++    }
++
++    //Filename of shared preference to store event data and settings data
++    private const val fileNameEventData = BuildConfig.APPLICATION_ID + ".EventData"
++    private const val fileNameSettings = BuildConfig.APPLICATION_ID + ".Settings"
++
++    private lateinit var sharedPrefEventData: SharedPreferences
++    private lateinit var sharedPrefSettings: SharedPreferences
++
++    const val tournamentDivider_properties = "||"
++    const val tournamentDivider_values = "::"
++
++    /**
++     * registerIO has to be called before any io writing/reading is done
++     * This function has to get the main context to use shared preferences
++     *
++     * @param context : Context
++     */
++    fun registerIO(context: Context) {
++        sharedPrefEventData = context.getSharedPreferences(fileNameEventData, Context.MODE_PRIVATE)
++        sharedPrefSettings = context.getSharedPreferences(fileNameSettings, Context.MODE_PRIVATE)
++    }
++
++    fun initializeAllSettings() {
++        //notifications on
++        writeSetting(SharedPrefKeys.key_isNotificationOnBirthday, true)
++        writeSetting(SharedPrefKeys.key_isNotificationOnAnnual, true)
++        writeSetting(SharedPrefKeys.key_isNotificationOnOneTime, true)
++
++        //notification sound off
++        writeSetting(SharedPrefKeys.key_isNotificationSoundOnBirthday, false)
++        writeSetting(SharedPrefKeys.key_isNotificationSoundOnAnnual, false)
++        writeSetting(SharedPrefKeys.key_isNotificationSoundOnOneTime, false)
++
++        //notification vibration on
++        writeSetting(SharedPrefKeys.key_isNotificationVibrationOnBirthday, true)
++        writeSetting(SharedPrefKeys.key_isNotificationVibrationOnAnnual, true)
++        writeSetting(SharedPrefKeys.key_isNotificationVibrationOnOneTime, true)
++
++        //notification time to 12:00
++        writeSetting(SharedPrefKeys.key_strNotificationTimeBirthday, "12:00")
++        writeSetting(SharedPrefKeys.key_strNotificationTimeAnnual, "12:00")
++        writeSetting(SharedPrefKeys.key_strNotificationTimeOneTime, "12:00")
++
++        //notification reminder days
++        writeSetting(SharedPrefKeys.key_isRemindedDay_month_beforeBirthday, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_week_beforeBirthday, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_day_beforeBirthday, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_eventdayBirthday, true)
++
++        writeSetting(SharedPrefKeys.key_isRemindedDay_month_beforeAnnual, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_week_beforeAnnual, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_day_beforeAnnual, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_eventdayAnnual, true)
++
++        writeSetting(SharedPrefKeys.key_isRemindedDay_month_beforeOneTime, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_week_beforeOneTime, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_day_beforeOneTime, true)
++        writeSetting(SharedPrefKeys.key_isRemindedDay_eventdayOneTime, true)
++
++        //notification lights to 1
++        writeSetting(SharedPrefKeys.key_notificationLightBirthday, 1)
++        writeSetting(SharedPrefKeys.key_notificationLightAnnual, 1)
++        writeSetting(SharedPrefKeys.key_notificationLightOneTime, 1)
++
++        // use a calendarview for setting the startDate of events, standard (true)
++        writeSetting(SharedPrefKeys.key_date_as_calendar_view, true)
++    }
++
++    private fun settingsContainsKey(key: String): Boolean {
++        return (sharedPrefSettings.contains(key))
++    }
++
++    fun <T> writeSetting(key: String, value: T) {
++        //only try to write when the type matches
++        val editor = sharedPrefSettings.edit()
++        when (value) {
++            is String -> {
++                editor.putString(key, value as String)
++            }
++            is Boolean -> {
++                editor.putBoolean(key, value as Boolean)
++            }
++            is Int -> {
++                editor.putInt(key, value as Int)
++            }
++            is Float -> {
++                editor.putFloat(key, value as Float)
++            }
++        }
++        editor.apply()
++    }
++
++    fun getStringFromKey(key: String): String? {
++        return if (::sharedPrefSettings.isInitialized) {
++            sharedPrefSettings.getString(key, null)
++        } else null
++    }
++
++    fun getIntFromKey(key: String): Int? {
++        return if (settingsContainsKey(key)) {
++            sharedPrefSettings.getInt(key, -1)
++        } else {
++            null
++        }
++    }
++
++    fun getBooleanFromKey(key: String): Boolean? {
++        return if (settingsContainsKey(key)) {
++            sharedPrefSettings.getBoolean(key, false)
++        } else {
++            if (key == SharedPrefKeys.key_date_as_calendar_view) {
++                writeSetting(key, true)
++                return true
++            }
++            null
++        }
++    }
++
++    fun isFirstStart(): Boolean {
++        //when the key doesn't exist -> its the first start, so we have to invert the contains function
++        return if (!settingsContainsKey(SharedPrefKeys.key_firstStart)) {
++            Log.i("IOHandler", "shared pref files didn't exist before")
++            val sharedPrefEditor = sharedPrefSettings.edit()
++            //change key value to false bc its not the first start anymore
++            //initialize first export/import with true
++            sharedPrefEditor.putBoolean(SharedPrefKeys.key_firstStart, false)
++            sharedPrefEditor.apply()
++            true
++        } else false
++    }
++
++    /**
++     * writeEventToFile writes a single event with a key to the shared preferences
++     * @param key : Int
++     * @param event : EventDay
++     */
++    fun writeEventToFile(key: Int, event: EventDate) {
++        val sharedPrefEditor = sharedPrefEventData.edit()
++        sharedPrefEditor.putString(key.toString(), event.toString())
++        sharedPrefEditor.apply()
++    }
++
++    /**
++     * removeEventFromFile removes an entry fro the shared preferences by using the key
++     * @param key : Int
++     */
++    fun removeEventFromFile(key: Int) {
++        val sharedPrefEditor = sharedPrefEventData.edit()
++        sharedPrefEditor.remove(key.toString())
++        sharedPrefEditor.apply()
++    }
++
++    fun clearSharedPrefEventData() {
++        val sharedPrefEdit = sharedPrefEventData.edit()
++        sharedPrefEdit.clear()
++        sharedPrefEdit.apply()
++    }
++
++    /**
++     * getHighestIndex returns the max index value of shared pref keys
++     */
++    fun getHighestIndex(): Int {
++        var highest = 0
++        if (::sharedPrefEventData.isInitialized) {
++            sharedPrefEventData.all.keys.forEach {
++                if (it.toInt() > highest) {
++                    highest = it.toInt()
++                }
++            }
++        }
++        return highest
++    }
++
++    /**
++     * readAll reads all shared preferences and returns them as a Map<Int, EventDay>
++     *
++     * @return Map<Int, EventDay>
++     */
++    fun readAll(context: Context) {
++        var eventCounter = 0
++        sharedPrefEventData.all.forEach {
++            if (!isFirstStart()) {
++                if (it.value is String) {
++                    eventCounter++
++                    var event =
++                        convertStringToEventDate(context, it.value as String)
++                    event!!.eventID = it.key.toInt()
++
++                    //check for onetimeevents
++                    if (event is OneTimeEvent) {
++                        //when onetimeevent expired, remove from shared prefs and null it, so it doesnt get added in the map
++                        if (event.dateIsExpired()) {
++                            sharedPrefEventData.edit().remove(it.key).apply()
++                            event = null
++                        }
++                    }
++                    if (event != null) {
++                        //when iterator is last element, add new element and update eventlist
++                        if (eventCounter == sharedPrefEventData.all.size) {
++                            UserHandler.addEvent(
++                                event,
++                                context,
++                                writeAfterAdd = false,
++                                addNewNotification = false,
++                                updateEventList = true,
++                                addBitmap = false
++                            )
++                        } else {
++                            UserHandler.addEvent(
++                                event,
++                                context,
++                                writeAfterAdd = false,
++                                addNewNotification = false,
++                                updateEventList = false,
++                                addBitmap = false
++                            )
++                        }
++                    }
++                }
++            }
++        }
++    }
++
++    /**
++     * convertStringToEventDay reads an string and returns a object of base class EventDay
++     * It can return derived types from EventDay with the typification string at the start of every string
++     * @param context : Context
++     * @param objectString : String
++     * @return EventDay?
++     */
++    fun convertStringToEventDate(context: Context, objectString: String): EventDate? {
++        objectString.split(tournamentDivider_properties).let { stringArray ->
++            if (stringArray.isNotEmpty()) {
++                when (stringArray[0]) {
++                    //BIRTHDAY EVENT PARSING-
++                    (EventTournament.Name) -> {
++                        var forename = "-"
++                        var startDate = "-"
++                        var finishDate = "-"
++                        var avatarImageURI: String? = null
++                        var shortDescription: String? = null
++                        var fullDescription: String? = null
++                        var refereeId: String? = null
++                        var placeId: String? = null
++
++                        for (i in 1 until stringArray.size) {
++                            val property = stringArray[i].split(tournamentDivider_values)
++
++                            //use identifier
++                            when (property[0]) {
++                                EventTournament.Identifier.StartDate.toString() -> {
++                                    startDate = property[1]
++                                }
++                                EventTournament.Identifier.FinishDate.toString() -> {
++                                    finishDate = property[1]
++                                }
++                                EventTournament.Identifier.Name.toString() -> {
++                                    forename = property[1]
++                                }
++                                EventTournament.Identifier.ShortDescription.toString() -> {
++                                    shortDescription = property[1]
++                                }
++                                EventTournament.Identifier.FullDescription.toString() -> {
++                                    fullDescription = property[1]
++                                }
++                                EventTournament.Identifier.AvatarUri.toString() -> {
++                                    avatarImageURI = property[1]
++                                }
++                                EventTournament.Identifier.Referee.toString() -> {
++                                    refereeId = property[1]
++                                }
++                                EventTournament.Identifier.Place.toString() -> {
++                                    placeId = property[1]
++                                }
++                                else ->
++                                    Log.w(
++                                        "IOHandler",
++                                        "Could not find identifier when trying to parse EventTournament"
++                                    )
++                            }
++                        }
++                        val tournament =
++                            EventTournament(
++                                    2222,
++                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),//todo why?
++                                forename
++                            )
++                     //   if (shortDescription != null) birthday.fini = shortDescription
++                        if (shortDescription != null) tournament.shortDescription = shortDescription
++                      //  if (note != null) birthday.note = note
++                        if (avatarImageURI != null) tournament.imageUri = avatarImageURI
++                        if (fullDescription != null) tournament.fullDescription = fullDescription
++                        if (refereeId != null) tournament.refereeId = refereeId.toLong()
++                        if (placeId != null) {
++                            tournament.placeId = placeId.toInt()
++                        }
++                        tournament.finishDate = EventDate.parseStringToDate(finishDate, locale = Locale.GERMAN)
++                        return tournament
++                    }
++                    //ANNUAL EVENT PARSING
++                   /* (AnnualEvent.Name) -> {
++                        var startDate = "-"
++                        var name = "-"
++                        var note: String? = null
++                        var hasStartYear = false
++
++                        for (i in 1 until stringArray.size) {
++                            val property = stringArray[i].split(tournamentDivider_values)
++
++                            //use identifier
++                            when (property[0]) {
++                                AnnualEvent.Identifier.StartDate.toString() -> {
++                                    startDate = property[1]
++                                }
++                                AnnualEvent.Identifier.Name.toString() -> {
++                                    name = property[1]
++                                }
++                                AnnualEvent.Identifier.HasStartYear.toString() -> {
++                                    hasStartYear = property[1].toBoolean()
++                                }
++                                AnnualEvent.Identifier.Note.toString() -> {
++                                    note = property[1]
++                                }
++                                else ->
++                                    Log.w(
++                                        "IOHandler",
++                                        "Could not find identifier when trying to parse AnnualEvent"
++                                    )
++                            }
++                        }
++                        val anniversary =
++                            AnnualEvent(
++                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),
++                                name,
++                                hasStartYear
++                            )
++                        if (note != null) {
++                            anniversary.note = note
++                        }
++                        return anniversary
++                    }*/
++                    //ONETIME EVENT PARSING
++                    (OneTimeEvent.Name) -> {
++                        var date = "-"
++                        var name = "-"
++                        var note: String? = null
++
++                        for (i in 1 until stringArray.size) {
++                            val property = stringArray[i].split(tournamentDivider_values)
++
++                            //use identifier
++                            when (property[0]) {
++                                OneTimeEvent.Identifier.Date.toString() -> {
++                                    date = property[1]
++                                }
++                                OneTimeEvent.Identifier.Name.toString() -> {
++                                    name = property[1]
++                                }
++                                OneTimeEvent.Identifier.Note.toString() -> {
++                                    note = property[1]
++                                }
++                                else ->
++                                    Log.w(
++                                        "IOHandler",
++                                        "Could not find identifier when trying to parse OneTimeEvent"
++                                    )
++                            }
++                        }
++                        val oneTimeEvent = OneTimeEvent(
++                            EventDate.parseStringToDate(date, locale = Locale.GERMAN),
++                            name
++                        )
++                        if (note != null) {
++                            oneTimeEvent.note = note
++                        }
++                        return oneTimeEvent
++                    }
++                    //MONTHDIVIDER EVENT PARSING
++                    (MonthDivider.Name) -> {
++                        var date = "-"
++                        var month = "-"
++
++                        for (i in 1 until stringArray.size) {
++                            val property = stringArray[i].split(tournamentDivider_values)
++
++                            //use identifier
++                            when (property[0]) {
++                                MonthDivider.Identifier.Date.toString() -> {
++                                    date = property[1]
++                                }
++                                MonthDivider.Identifier.MonthName.toString() -> {
++                                    val cal = Calendar.getInstance()
++                                    cal.time =
++                                        EventDate.parseStringToDate(date, locale = Locale.GERMAN)
++                                    month =
++                                        context.resources.getStringArray(R.array.month_names)[cal.get(
++                                            Calendar.MONTH
++                                        )]
++                                }
++                                else ->
++                                    Log.w(
++                                        "IOHandler",
++                                        "Could not find identifier when trying to parse EventMonthDivider"
++                                    )
++                            }
++                        }
++                        return MonthDivider(
++                            EventDate.parseStringToDate(
++                                date,
++                                locale = Locale.GERMAN
++                            ), month
++                        )
++                    }
++                    else -> {
++                        return null
++                    }
++                }
++            } else {
++                return null
++            }
++        }
++    }
++
++    fun writeAllEventsToExternalStorage(context: Context): Boolean {
++        if (UserHandler.getList().isNotEmpty()) {
++            //check if external storage is available for reading and writing
++            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
++                val storagePath =
++                    File(
++                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
++                        "birthdaybuddy"
++                    )
++
++                //when folder creating did not succeed
++                if (!storagePath.mkdirs() && !storagePath.exists()) {
++                    Log.e("IOHANDLER", "Directory not created")
++                    Toast.makeText(
++                        context,
++                        R.string.permissions_toast_export_error,
++                        Toast.LENGTH_LONG
++                    ).show()
++                    return false
++                } else {
++                    val savedData = File(storagePath.absolutePath + "/events.txt")
++                    if (savedData.exists()) {
++                        savedData.delete()
++                    }
++                    savedData.createNewFile()
++                    savedData.writeText(UserHandler.getEventsAsStringList().apply {
++                        println(this)
++                    })
++                    return true
++                }
++            } else {
++                Toast.makeText(context, R.string.permissions_toast_no_sd, Toast.LENGTH_LONG).show()
++                return false
++            }
++        }
++        return false
++    }
++
++    fun importEventsFromExternalStorage(context: Context): Boolean {
++        //check if external storage is available for reading
++        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
++            val storagePath = File(
++                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
++                "birthdaybuddy"
++            )
++            //when folder finding did not succeed
++            if (!storagePath.exists()) {
++                Log.e("IOHANDLER", "Directory not existent/ readable")
++                Toast.makeText(context, R.string.permissions_toast_import_error, Toast.LENGTH_LONG)
++                    .show()
++                return false
++            } else {
++                try {
++                    val data = File(storagePath.absolutePath + "/events.txt")
++                    data.readLines().apply {
++                        this.forEach {
++                            convertStringToEventDate(context, it).let { event ->
++                                if (event != null) {
++
++                                    //only add onetimevents which are not expired
++                                    if (!(event is OneTimeEvent && event.dateIsExpired())) {
++                                        UserHandler.addEvent(
++                                            event,
++                                            context,
++                                            writeAfterAdd = true,
++                                            addNewNotification = true,
++                                            //only update EventList sorting when last line reached
++                                            updateEventList = (it == this.last())
++                                        )
++                                    }
++                                }
++                            }
++                        }
++                    }
++                } catch (e: Exception) {
++                    Log.e("IOHANDLER", e.localizedMessage)
++                    Toast.makeText(
++                        context,
++                        R.string.permissions_toast_import_error,
++                        Toast.LENGTH_LONG
++                    ).show()
++                    Toast.makeText(context, R.string.error_retry_save_file, Toast.LENGTH_LONG)
++                        .show()
++
++                    // try again writing all current events
++                    writeAllEventsToExternalStorage(context)
++                    return false
++                }
++                return true
++            }
++        } else {
++            Toast.makeText(context, R.string.permissions_toast_no_sd, Toast.LENGTH_LONG).show()
++            return false
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/content_users.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/content_users.xml	(date 1582227194398)
++++ app/src/main/res/layout/content_users.xml	(date 1582227194398)
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    app:layout_behavior="@string/appbar_scrolling_view_behavior"
++    tools:context=".view.activity.impl.UsersActivity"
++    tools:showIn="@layout/activity_users">
++
++    <FrameLayout
++        android:id="@+id/fragment_placeholder_users"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"></FrameLayout>
++</android.support.constraint.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/bobrchess/of/by/belaruschess/model/EventUser.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/model/EventUser.kt	(date 1582220437775)
++++ app/src/main/java/bobrchess/of/by/belaruschess/model/EventUser.kt	(date 1582220437775)
+@@ -0,0 +1,147 @@
++package com.procrastimax.birthdaybuddy.models
++
++import bobrchess.of.by.belaruschess.dto.UserDTO
++import bobrchess.of.by.belaruschess.handler.IOHandler
++import bobrchess.of.by.belaruschess.model.EventDate
++import java.text.DateFormat
++import java.util.*
++
++/**
++ * EventTournament is model class to store basic data about a persons birthday
++ *
++ * It inherits from EventDay, so it uses a StartDate, and Strings for the name of the described person
++ * ShortDescription cant be null, if it shouldn't be set, use "0" to mark the shortDescription as unwanted property when f.e. don't show it in UI
++ * isYearGiven is flag to indicate whether the birthday-year is known/given
++ *
++ * TODO:
++ *  - add possibility for favorites
++ *
++ *  @param startDate : StartDate
++ *  @param name : String
++ *  @param isYearGiven : Boolean
++ * @author Procrastimax
++ */
++class EventUser(
++        var id: Int,
++        var startDate: Date,
++        var name: String) :
++        EventDate(startDate, id) {
++
++    /**
++     * Identifier is an identifier for sorting
++     */
++    enum class Identifier : SortIdentifier {
++        StartDate {
++            override fun Identifier(): Int = 0
++        },
++        FinishDate {
++            override fun Identifier(): Int = 1
++        },
++        Name {
++            override fun Identifier(): Int = 2
++        },
++        ShortDescription {
++            override fun Identifier(): Int = 3
++        },
++        FullDescription {
++            override fun Identifier(): Int = 4
++        },
++        Id {
++            override fun Identifier(): Int = 5
++        },
++        AvatarUri {
++            override fun Identifier(): Int = 6
++        },
++        Referee {
++            override fun Identifier(): Int = 7
++        },
++        Place {
++            override fun Identifier(): Int = 8
++        }
++    }
++
++    var shortDescription: String? = null
++
++    var fullDescription: String? = null
++
++    var finishDate: Date? = null
++
++    var imageUri: String? = null
++
++    var refereeId: Long? = null
++
++    var placeId: Int? = null
++
++    /**
++     * getTurningAgeValue returns a value which represents the value of a person turning a specific age
++     * This respects that on a birthday-day a person is still turning the age beforehand and not the age+1
++     */
++    /* fun getTurningAgeValue(): Int {
++         val currCal = Calendar.getInstance()
++
++         if (currCal.get(Calendar.DAY_OF_MONTH) == this.getDayOfMonth() && currCal.get(Calendar.MONTH) == this.getMonth() && currCal.get(
++                 Calendar.YEAR
++             ) == this.getYear()
++         ) {
++             return 0
++         }
++
++         return getYearsSince() + 1
++     }*/
++
++    /**
++     * toString returns EventTournament as string representation
++     * This is "optimized" for Serialization, so THE FIRST WORD HAS TO BE THE TYPIFICATION f.e. "Birthday"
++     * returned string follows the pattern TYPE|FORENAME|SURNAME|EVENTDATE|ISYEARGIVEN|NOTE|AVATARURI|NICKNAME
++     * @return String
++     */
++    override fun toString(): String {
++        return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
++                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
++                        this.eventDate,
++                        DateFormat.DEFAULT,
++                        Locale.GERMAN
++                )}${IOHandler.tournamentDivider_properties}" +
++                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
++                        this.eventDate,
++                        DateFormat.DEFAULT,
++                        Locale.GERMAN//todo why??? выше то же
++                )}" +
++                getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
++                getStringFromValue(Identifier.FullDescription, this.fullDescription) +
++                getStringFromValue(Identifier.Id, this.id) +
++                getStringFromValue(Identifier.AvatarUri, this.imageUri) +
++                getStringFromValue(Identifier.Referee, this.refereeId) +
++                getStringFromValue(Identifier.Place, this.placeId)
++
++    }
++
++    /**
++     * toString returns EventTournament as string representation but excludes a possible avatar uri
++     * This is "optimized" for Serialization, so THE FIRST WORD HAS TO BE THE TYPIFICATION f.e. "Birthday"
++     * returned string follows the pattern TYPE|FORENAME|SURNAME|EVENTDATE|ISYEARGIVEN|NOTE|NICKNAME
++     * @return String
++     */
++    fun toStringWithoutImage(): String {
++        return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
++                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
++                        this.eventDate,
++                        DateFormat.DEFAULT,
++                        Locale.GERMAN
++                )}${IOHandler.tournamentDivider_properties}" +
++                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
++                        this.finishDate!!,
++                        DateFormat.DEFAULT,
++                        Locale.GERMAN//todo why??? выше то же
++                )}" +
++                getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
++                getStringFromValue(Identifier.Id, this.id) +
++                getStringFromValue(Identifier.FullDescription, this.fullDescription) +
++                getStringFromValue(Identifier.Referee, this.refereeId) +
++                getStringFromValue(Identifier.Place, this.placeId)
++    }
++
++    companion object {
++        const val Name: String = "EventUser"
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/SearchUserActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/SearchUserActivity.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/SearchUserActivity.kt	(date 1580929185709)
+@@ -120,7 +120,7 @@
+ 
+     }
+ 
+-    fun getSearchText(): String {
++    override fun getSearchText(): String {
+         return queryEditText!!.text.toString()
+     }
+ 
+@@ -132,7 +132,7 @@
+         presenter!!.loadUsers(count)
+     }
+ 
+-    fun showUsers(users: List<UserDTO>) {
++    override fun showUsers(users: List<UserDTO>) {
+         when {
+             usersAdapter != null -> {
+                 usersAdapter!!.clearItems()
+Index: app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/RegistrationActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/RegistrationActivity.java	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/RegistrationActivity.java	(date 1581868599859)
+@@ -261,7 +261,7 @@
+     @Override
+     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth,
+                           int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+-        birthday = year + "-" + monthOfYear + "-" + dayOfMonth;
++        birthday = dayOfMonth+ "/" + monthOfYear + "/" + year;
+     }
+ 
+     public class GenderItemSelectedListener implements AdapterView.OnItemSelectedListener {
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/AndroidManifest.xml	(date 1582220437212)
+@@ -21,10 +21,10 @@
+         tools:ignore="GoogleAppIndexingWarning"><!--to check if needed-->
+         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.MainOldActivity" />
+         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity">
+-            <intent-filter>
++            <!--<intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+-            </intent-filter>
++            </intent-filter>-->
+         </activity>
+         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity" />
+         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity" />
+@@ -35,9 +35,8 @@
+         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.GameActivity" />
+         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AddTournamentActivity" />
+ 
+-        <!-- Main activity -->
+         <activity
+-            android:name=".view.activity.impl.MainActivity"
++            android:name=".view.activity.impl.UsersActivity"
+             android:label="@string/app_name"
+             android:launchMode="singleTask"
+             android:screenOrientation="portrait"
+@@ -53,6 +52,22 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
++
++        <!-- Main activity -->
++        <activity
++            android:name=".view.activity.impl.MainActivity"
++            android:label="@string/app_name"
++            android:launchMode="singleTask"
++            android:screenOrientation="portrait"
++            android:theme="@style/AppTheme.NoActionBar"
++            android:windowSoftInputMode="adjustResize">
++
++            <!-- enable the search widget to send searches to SearchableActivity -->
++            <meta-data
++                android:name="android.app.default_searchable"
++                android:value=".SearchableActivity" />
++
++        </activity>
+ 
+         <!-- Search activity -->
+         <activity
+Index: app/src/main/java/bobrchess/of/by/belaruschess/fragments/AnnualEventInstanceFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/fragments/AnnualEventInstanceFragment.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/fragments/AnnualEventInstanceFragment.kt	(date 1582220437363)
+@@ -47,7 +47,7 @@
+ 
+     /**
+      * eventID is the id the AnnualEvent has in the EventHandler - EventList
+-     * In other words this id is the index of the clicked item from the EventListFragment RecyclerView
++     * In other words this id is the index of the clicked item from the TournamentListFragment RecyclerView
+      */
+     var eventID = -1
+ 
+@@ -151,7 +151,7 @@
+                                     //get last fragment in stack list, when its eventlistfragment, we can update the recycler view
+                                     val fragment =
+                                         (contextTemp as MainActivity).supportFragmentManager.fragments.last()
+-                                    if (fragment is EventListFragment) {
++                                    if (fragment is TournamentListFragment) {
+                                         fragment.recyclerView.adapter!!.notifyDataSetChanged()
+                                         fragment.tv_no_events.visibility = TextView.GONE
+                                     }
+Index: app/src/main/java/bobrchess/of/by/belaruschess/fragments/TournamentInstanceFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/fragments/TournamentInstanceFragment.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/fragments/TournamentInstanceFragment.kt	(date 1582220437637)
+@@ -29,7 +29,6 @@
+ import bobrchess.of.by.belaruschess.handler.IOHandler
+ import bobrchess.of.by.belaruschess.model.EventDate
+ import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
+-import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
+ import bobrchess.of.by.belaruschess.util.Util
+ import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
+ import bobrchess.of.by.belaruschess.view.activity.PackageModel
+@@ -309,10 +308,10 @@
+                                 )
+                                 .setAction(R.string.undo) {
+                                     EventHandler.addEvent(tournament, contextTemp!!, true)
+-                                    //get last fragment in stack list, which should be EventListFragment, so we can update the recycler view
++                                    //get last fragment in stack list, which should be TournamentListFragment, so we can update the recycler view
+                                     val fragment =
+                                         (contextTemp as MainActivity).supportFragmentManager.fragments.last()
+-                                    if (fragment is EventListFragment) {
++                                    if (fragment is TournamentListFragment) {
+                                         fragment.recyclerView.adapter!!.notifyDataSetChanged()
+                                         fragment.tv_no_events.visibility = TextView.GONE
+                                     }
+Index: app/src/main/java/bobrchess/of/by/belaruschess/fragments/UserListFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/fragments/UserListFragment.kt	(date 1582227747869)
++++ app/src/main/java/bobrchess/of/by/belaruschess/fragments/UserListFragment.kt	(date 1582227747869)
+@@ -0,0 +1,486 @@
++package com.procrastimax.birthdaybuddy.fragments
++
++import android.app.SearchManager
++import android.content.Context
++import android.content.Intent
++import android.os.Bundle
++import android.support.constraint.ConstraintLayout
++import android.support.v4.app.Fragment
++import android.support.v7.widget.LinearLayoutManager
++import android.support.v7.widget.RecyclerView
++import android.view.*
++import android.widget.TextView
++import bobrchess.of.by.belaruschess.R
++import bobrchess.of.by.belaruschess.dto.UserDTO
++import bobrchess.of.by.belaruschess.fragments.HelpFragment
++import bobrchess.of.by.belaruschess.fragments.ShowUserEvent
++import bobrchess.of.by.belaruschess.handler.UserBitmapHandler
++import bobrchess.of.by.belaruschess.handler.UserHandler
++import bobrchess.of.by.belaruschess.model.EventDate
++import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
++import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
++import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
++import bobrchess.of.by.belaruschess.view.activity.impl.UsersActivity
++import com.procrastimax.birthdaybuddy.models.EventUser
++import com.procrastimax.birthdaybuddy.models.OneTimeEvent
++import com.procrastimax.birthdaybuddy.views.EventAdapter
++import com.procrastimax.birthdaybuddy.views.RecycleViewItemDivider
++import kotlinx.android.synthetic.main.activity_users.*
++import kotlinx.android.synthetic.main.fragment_event_list.*
++import java.text.DateFormat
++import java.text.SimpleDateFormat
++import java.util.*
++
++class UserListFragment : Fragment(), SearchUserContractView {
++
++    private lateinit var recyclerView: RecyclerView
++    private lateinit var viewAdapter: EventAdapter
++    private lateinit var viewManager: RecyclerView.LayoutManager
++
++    private var isFABOpen = false
++
++    private var searchUserPresenter: SearchUserPresenter? = null
++
++
++    override fun onCreateView(
++        inflater: LayoutInflater, container: ViewGroup?,
++        savedInstanceState: Bundle?
++    ): View? {
++        // Inflate the layout for this fragment
++        return inflater.inflate(R.layout.fragment_event_list, container, false)
++    }
++
++    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
++        super.onViewCreated(view, savedInstanceState)
++        setHasOptionsMenu(true)
++        (context as UsersActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
++        (context as UsersActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
++
++        (context as UsersActivity).scrollable_toolbar.isTitleEnabled = false
++        (context as UsersActivity).toolbar_users.title = getString(R.string.app_name)
++
++        isFABOpen = false
++
++        fab_layout_add_annual_event.visibility = ConstraintLayout.INVISIBLE
++        fab_layout_add_birthday.visibility = ConstraintLayout.INVISIBLE
++        fab_layout_add_one_time.visibility = ConstraintLayout.INVISIBLE
++
++        viewManager = LinearLayoutManager(view.context)
++        viewAdapter = EventAdapter(view.context, this.fragmentManager!!)
++
++        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
++            setHasFixedSize(true)
++            layoutManager = viewManager
++            adapter = viewAdapter
++            scrollToPosition(traverseForFirstMonthEntry())
++        }
++        recyclerView.addItemDecoration(RecycleViewItemDivider(view.context))
++        recyclerView.setPadding(
++            recyclerView.paddingLeft,
++            recyclerView.paddingTop,
++            recyclerView.paddingRight,
++            (resources.getDimension(R.dimen.fab_margin) + resources.getDimension(R.dimen.fab_size_bigger)).toInt()
++        )
++
++        fab_show_fab_menu.setOnClickListener {
++            if (isFABOpen) {
++                closeFABMenu()
++            } else {
++                showFABMenu()
++            }
++        }
++
++        fab_add_birthday.setOnClickListener {
++            closeFABMenu(true)
++            val ft = fragmentManager!!.beginTransaction()
++            ft.replace(
++                R.id.fragment_placeholder_users,
++                UserInstanceFragment.newInstance()
++            )
++            ft.addToBackStack(null)
++            ft.commit()
++        }
++
++        fab_add_annual_event.setOnClickListener {
++            closeFABMenu(true)
++            val ft = fragmentManager!!.beginTransaction()
++            ft.replace(
++                R.id.fragment_placeholder_users,
++                AnnualEventInstanceFragment.newInstance()
++            )
++            ft.addToBackStack(null)
++            ft.commit()
++        }
++
++        fab_layout_add_one_time.setOnClickListener {
++            closeFABMenu(true)
++            val ft = fragmentManager!!.beginTransaction()
++            ft.replace(
++                R.id.fragment_placeholder_users,
++                OneTimeEventInstanceFragment.newInstance()
++            )
++            ft.addToBackStack(null)
++            ft.commit()
++        }
++
++        searchUserPresenter = SearchUserPresenterImpl()
++        searchUserPresenter!!.attachView(this)
++        searchUserPresenter!!.viewIsReady()
++    }
++
++    override fun onResume() {
++        super.onResume()
++        //when no items except of the 12 month items are in the event list, then display text message
++        if (UserHandler.getList().size - 12 == 0) {
++            tv_no_events.visibility = TextView.VISIBLE
++        } else {
++            tv_no_events.visibility = TextView.GONE
++        }
++    }
++
++    private fun showFABMenu() {
++        isFABOpen = true
++        fab_show_fab_menu.isClickable = false
++        //show layouts
++        fab_layout_add_annual_event.visibility = ConstraintLayout.VISIBLE
++        fab_layout_add_birthday.visibility = ConstraintLayout.VISIBLE
++        fab_layout_add_one_time.visibility = ConstraintLayout.VISIBLE
++
++        this.recyclerView.animate().alpha(0.15f).apply {
++            duration = 175
++        }
++
++        //move layouts
++        //move add birthday layout up
++        fab_layout_add_birthday.animate()
++            .translationYBy(-resources.getDimension(R.dimen.standard_55) - 20).apply {
++                duration = 100
++            }.withEndAction {
++                fab_layout_add_birthday.animate().translationYBy(20.toFloat()).apply {
++                    duration = 75
++                }
++            }
++
++        //move add annual event layout up
++        fab_layout_add_annual_event.animate()
++            .translationYBy(-resources.getDimension(R.dimen.standard_105) - 40)
++            .apply {
++                duration = 100
++            }.withEndAction {
++                fab_layout_add_annual_event.animate().translationYBy(40.toFloat()).apply {
++                    duration = 75
++                }
++            }
++
++        //move add one time event layout up
++        fab_layout_add_one_time.animate()
++            .translationYBy(-resources.getDimension(R.dimen.standard_155) - 60).apply {
++                duration = 100
++            }.withEndAction {
++                fab_layout_add_one_time.animate().translationYBy(60.toFloat()).apply {
++                    duration = 75
++                }
++            }
++
++        fab_show_fab_menu.animate().duration = 100
++        //some fancy overrotated animation
++        fab_show_fab_menu.animate().rotationBy(80.0f).withEndAction {
++            fab_show_fab_menu.animate().rotationBy(-35.0f).apply {
++                duration = 75
++            }.withEndAction {
++                fab_show_fab_menu.isClickable = true
++            }
++        }
++        //disable all click events on eventview adapter
++        viewAdapter.isClickable = false
++    }
++
++    /**
++     * @param immediateAction : Boolean indicates wether an action should take place after the animation
++     */
++    private fun closeFABMenu(immediateAction: Boolean = false) {
++        isFABOpen = false
++        //show layouts
++        if (!immediateAction) {
++            fab_show_fab_menu.isClickable = false
++        }
++
++        this.recyclerView.animate().alpha(1.0f)
++
++        //move add birthday event layout down
++        fab_layout_add_birthday.animate()
++            .translationYBy(resources.getDimension(R.dimen.standard_55))
++            .withEndAction {
++                if (!immediateAction) {
++                    fab_layout_add_birthday.visibility = ConstraintLayout.INVISIBLE
++                }
++            }
++
++        //move add annual event layout down
++        fab_layout_add_annual_event.animate()
++            .translationYBy(resources.getDimension(R.dimen.standard_105))
++            .withEndAction {
++                if (!immediateAction) {
++                    fab_layout_add_annual_event.visibility = ConstraintLayout.INVISIBLE
++                }
++            }
++
++        //move add one time event layout down
++        fab_layout_add_one_time.animate()
++            .translationYBy(resources.getDimension(R.dimen.standard_155))
++            .withEndAction {
++                if (!immediateAction) {
++                    fab_layout_add_one_time.visibility = ConstraintLayout.INVISIBLE
++                }
++            }
++
++        fab_show_fab_menu.animate().rotationBy(-45.0f).withEndAction {
++            if (!immediateAction) {
++                fab_show_fab_menu.isClickable = true
++            }
++        }
++        viewAdapter.isClickable = true
++    }
++
++    /**
++     * traverseForFirstMonthEntry is a function to get the position of the month item position of the current month
++     */
++    private fun traverseForFirstMonthEntry(): Int {
++        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
++        for (i in 0 until UserHandler.getList().size) {
++            if (UserHandler.getList()[i].getMonth() == currentMonth)
++                return i
++        }
++        return 0
++    }
++
++    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
++        super.onCreateOptionsMenu(menu, inflater)
++        inflater?.inflate(R.menu.toolbar_main, menu)
++
++        // Get the SearchView and set the searchable configuration
++        val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
++        (menu?.findItem(R.id.toolbar_search)?.actionView as android.support.v7.widget.SearchView).apply {
++            //Assume current activity is the searchable activity
++            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
++
++            setIconifiedByDefault(true)
++
++            //submit button in action bar disabled
++            isSubmitButtonEnabled = false
++        }
++    }
++
++    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
++        when (item?.itemId) {
++
++            R.id.toolbar_search -> {
++
++            }
++            R.id.item_show_users -> {
++            //todo
++                val intent = Intent(this.context, UsersActivity::class.java)
++                startActivity(intent)
++            }
++            R.id.action_refresh -> {
++                searchUserPresenter?.loadUsers()
++            }
++            R.id.item_help -> {
++                helpClicked()
++            }
++            R.id.item_about -> {
++                aboutClicked()
++            }
++            R.id.item_settings -> {
++                settingsClicked()
++            }
++        }
++        return super.onOptionsItemSelected(item)
++    }
++
++    private fun helpClicked() {
++        //open help fragment
++        closeFABMenu(true)
++        val ft = fragmentManager!!.beginTransaction()
++        ft.replace(
++            R.id.fragment_placeholder_users,
++            HelpFragment.newInstance()
++        )
++        ft.addToBackStack(null)
++        ft.commit()
++    }
++
++    private fun aboutClicked() {
++        //open about fragment
++        closeFABMenu(true)
++        val ft = fragmentManager!!.beginTransaction()
++        ft.replace(
++            R.id.fragment_placeholder_users,
++            AboutFragment.newInstance()
++        )
++        ft.addToBackStack(null)
++        ft.commit()
++    }
++
++    private fun settingsClicked() {
++        //open settings fragment
++        closeFABMenu(true)
++        val ft = fragmentManager!!.beginTransaction()
++        ft.replace(
++            R.id.fragment_placeholder_users,
++            SettingsFragment.newInstance()
++        )
++        ft.addToBackStack(null)
++        ft.commit()
++    }
++
++    companion object {
++        @JvmStatic
++        fun newInstance(): UserListFragment {
++            return UserListFragment()
++        }
++    }
++
++    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    override fun dismissAlertDialog() {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    override fun showToast(resId: Int?) {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    override fun showToast(message: String?) {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    override fun setConnectionStatus(connectivityStatus: Int?) {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    override fun getSearchText(): String {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    override fun showUsers(users: List<UserDTO>) {
++        //разделить тут по методам, вынести отдалельно
++        users.forEach {//todo
++            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate(it.birthday)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
++            event.name = it.name!!
++            event.fullDescription = "hahahahaha"
++            event.shortDescription = "hahahahaha"
++            event.imageUri = it.image!!
++            event.finishDate = EventDate.parseStringToDate(transformDate(it.birthday)!!, DateFormat.DEFAULT, Locale.GERMAN)
++            UserHandler.addEvent(
++                    event,
++                    this.context!!,
++                    writeAfterAdd = false,
++                    addNewNotification = false,
++                    updateEventList = true,
++                    addBitmap = false
++            )
++        }
++        updateUserFragments()
++    }
++
++    private fun updateUserFragments(){
++        val transaction = this.activity?.supportFragmentManager?.beginTransaction()
++        transaction?.replace(
++                R.id.fragment_placeholder_users,
++                newInstance()
++        )?.commit()
++
++
++        //start loading bitmap drawables in other thread to not block ui
++        Thread(Runnable
++        {
++            UserBitmapHandler.loadAllBitmaps(this.context!!)
++            this.activity?.runOnUiThread {
++                recyclerView.adapter!!.notifyDataSetChanged()
++            }
++        }).start()
++        var intent = this.activity?.intent
++        if (intent != null) {
++            if (intent.getBooleanExtra(UsersActivity.FRAGMENT_EXTRA_TITLE_LOADALL, false)) {
++                val eventID = intent.getIntExtra(UsersActivity.FRAGMENT_EXTRA_TITLE_EVENTID, -1)
++                val type = intent.getStringExtra(UsersActivity.FRAGMENT_EXTRA_TITLE_TYPE)
++                if (eventID != null && eventID > -1 && type != null) {
++                    startFragments(eventID, type)
++                }
++            }
++            intent = null
++        }
++    }
++
++    private fun startFragments(eventID: Int, type: String) {
++        val bundle = Bundle()
++        //do this in more adaptable way
++        bundle.putInt(
++                UsersActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
++                eventID
++        )
++
++        UserHandler.getEventToEventIndex(eventID)?.let { event ->
++
++            val eventFragment: Fragment? = when (event) {
++                is EventUser -> {//todo
++                    if (type == UsersActivity.FRAGMENT_TYPE_SHOW) {
++                        ShowUserEvent.newInstance()
++                    } else {//todo
++                        UserInstanceFragment.newInstance()
++                    }
++                }
++                /* is AnnualEvent -> {
++                     if (type == FRAGMENT_TYPE_SHOW) {
++                         ShowAnnualEvent.newInstance()
++                     } else {
++                         AnnualEventInstanceFragment.newInstance()
++                     }
++                 }*/
++                is OneTimeEvent -> {
++                    if (type == UsersActivity.FRAGMENT_TYPE_SHOW) {
++                        ShowOneTimeEvent.newInstance()
++                    } else {
++                        OneTimeEventInstanceFragment.newInstance()
++                    }
++                }
++                else -> {
++                    null
++                }
++            }
++            if (eventFragment != null) {
++                val ft = this.activity?.supportFragmentManager?.beginTransaction()
++                // add arguments to fragment
++                eventFragment.arguments = bundle
++                ft?.replace(
++                        R.id.fragment_placeholder_users,
++                        eventFragment
++                )
++                ft?.addToBackStack(null)
++                ft?.commit()
++            }
++        }
++    }
++
++    private fun transformDate(dateString: String?): String? {
++        return try {
++            val bdFormat = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
++            val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
++            val date = bdFormat.parse(dateString)
++            newFormat.format(date)
++        } catch (e: Exception) {
++            null
++        }
++    }
++
++    override fun showProgress() {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    override fun hideProgress() {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++}
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/res/values/strings.xml	(date 1580756842571)
+@@ -26,6 +26,7 @@
+     <string name="action_games">Games</string>
+     <string name="action_table">Table</string>
+     <string name="action_participants">Participants</string>
++    <string name="action_users">Users</string>
+     <string name="action_info">Info</string>
+     <string name="draw">Draw</string>
+     <string name="tours">Tours</string>
+Index: app/src/main/java/bobrchess/of/by/belaruschess/fragments/OneTimeEventInstanceFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/fragments/OneTimeEventInstanceFragment.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/fragments/OneTimeEventInstanceFragment.kt	(date 1582220437431)
+@@ -47,7 +47,7 @@
+ 
+     /**
+      * eventID is the id the one-time event has in the EventHandler - eventlist
+-     * In other words this id is the index of the clicked item from the EventListFragment recyclerview
++     * In other words this id is the index of the clicked item from the TournamentListFragment recyclerview
+      */
+     var eventID = -1
+ 
+@@ -137,10 +137,10 @@
+                                         oneTimeEvent, contextTemp!!,
+                                         true
+                                     )
+-                                    //get last fragment in stack list, which should be EventListFragment, so we can update the recycler view
++                                    //get last fragment in stack list, which should be TournamentListFragment, so we can update the recycler view
+                                     val fragment =
+                                         (contextTemp as MainActivity).supportFragmentManager.fragments.last()
+-                                    if (fragment is EventListFragment) {
++                                    if (fragment is TournamentListFragment) {
+                                         fragment.recyclerView.adapter!!.notifyDataSetChanged()
+                                         fragment.tv_no_events.visibility = TextView.GONE
+                                     }
+Index: app/src/main/res/layout/activity_users.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_users.xml	(date 1582220437791)
++++ app/src/main/res/layout/activity_users.xml	(date 1582220437791)
+@@ -0,0 +1,56 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/main_coordinator_layout"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context=".view.activity.impl.MainActivity">
++
++    <android.support.design.widget.AppBarLayout
++        android:id="@+id/app_bar"
++        android:layout_width="match_parent"
++        android:layout_height="300dp"
++        android:elevation="3dp"
++        android:fitsSystemWindows="false"
++        android:minHeight="?attr/actionBarSize"
++        android:stateListAnimator="@drawable/appbar_always_elevated"
++        app:expanded="false">
++
++        <android.support.design.widget.CollapsingToolbarLayout
++            android:id="@+id/scrollable_toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:elevation="3dp"
++            android:fitsSystemWindows="true"
++            app:contentScrim="?attr/colorPrimary"
++            app:expandedTitleMarginBottom="16dp"
++            app:expandedTitleMarginEnd="48dp"
++            app:expandedTitleMarginStart="16dp"
++            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
++            app:titleEnabled="false">
++
++            <ImageView
++                android:id="@+id/collapsable_toolbar_iv"
++                android:layout_width="match_parent"
++                android:layout_height="match_parent"
++                android:fitsSystemWindows="true"
++                android:scaleType="centerCrop"
++                app:layout_collapseMode="parallax"
++                tools:ignore="ContentDescription" />
++
++            <android.support.v7.widget.Toolbar
++                android:id="@+id/toolbar_users"
++                android:layout_width="match_parent"
++                android:layout_height="?attr/actionBarSize"
++                android:elevation="3dp"
++                android:minHeight="?attr/actionBarSize"
++                app:layout_collapseMode="pin" />
++
++        </android.support.design.widget.CollapsingToolbarLayout>
++
++    </android.support.design.widget.AppBarLayout>
++
++    <include layout="@layout/content_users" />
++
++</android.support.design.widget.CoordinatorLayout>
+\ No newline at end of file
+Index: app/src/main/java/bobrchess/of/by/belaruschess/fragments/EventListFragment.kt
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/fragments/EventListFragment.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/fragments/TournamentListFragment.kt	(date 1582220437670)
+@@ -2,6 +2,7 @@
+ 
+ import android.app.SearchManager
+ import android.content.Context
++import android.content.Intent
+ import android.os.Bundle
+ import android.support.constraint.ConstraintLayout
+ import android.support.v4.app.Fragment
+@@ -21,6 +22,7 @@
+ import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
+ import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
+ import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
++import bobrchess.of.by.belaruschess.view.activity.impl.UsersActivity
+ import com.procrastimax.birthdaybuddy.models.EventTournament
+ import com.procrastimax.birthdaybuddy.models.OneTimeEvent
+ import com.procrastimax.birthdaybuddy.views.EventAdapter
+@@ -31,7 +33,7 @@
+ import java.text.SimpleDateFormat
+ import java.util.*
+ 
+-class EventListFragment : Fragment(), SearchTournamentContractView {
++class TournamentListFragment : Fragment(), SearchTournamentContractView {
+ 
+     private lateinit var recyclerView: RecyclerView
+     private lateinit var viewAdapter: EventAdapter
+@@ -271,11 +273,17 @@
+         }
+     }
+ 
++
+     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+         when (item?.itemId) {
+ 
+             R.id.toolbar_search -> {
+ 
++            }
++            R.id.item_show_users -> {
++            //тута
++                val intent = Intent(this.context, UsersActivity::class.java)
++                startActivity(intent)
+             }
+             R.id.action_refresh -> {
+                 searchTournamentPresenter?.loadTournaments()
+@@ -343,8 +351,8 @@
+ 
+     companion object {
+         @JvmStatic
+-        fun newInstance(): EventListFragment {
+-            return EventListFragment()
++        fun newInstance(): TournamentListFragment {
++            return TournamentListFragment()
+         }
+     }
+ 
+@@ -394,7 +402,7 @@
+         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
+         transaction?.replace(
+                 R.id.fragment_placeholder,
+-                EventListFragment.newInstance()
++                newInstance()
+         )?.commit()
+ 
+ 
+@@ -409,8 +417,8 @@
+         var intent = this.activity?.intent
+         if (intent != null) {
+             if (intent.getBooleanExtra(MainActivity.FRAGMENT_EXTRA_TITLE_LOADALL, false)) {
+-                val eventID = intent?.getIntExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID, -1)
+-                val type = intent?.getStringExtra(MainActivity.FRAGMENT_EXTRA_TITLE_TYPE)
++                val eventID = intent.getIntExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID, -1)
++                val type = intent.getStringExtra(MainActivity.FRAGMENT_EXTRA_TITLE_TYPE)
+                 if (eventID != null && eventID > -1 && type != null) {
+                     startFragments(eventID, type)
+                 }
+Index: app/src/main/java/bobrchess/of/by/belaruschess/presenter/impl/SearchUserPresenterImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/presenter/impl/SearchUserPresenterImpl.java	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/presenter/impl/SearchUserPresenterImpl.java	(date 1580928970217)
+@@ -15,6 +15,7 @@
+ import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser;
+ import bobrchess.of.by.belaruschess.util.Util;
+ import bobrchess.of.by.belaruschess.view.activity.PackageModel;
++import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView;
+ import bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity;
+ import butterknife.BindView;
+ 
+@@ -24,7 +25,7 @@
+ 
+ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPresenter {
+ 
+-    private SearchUserActivity view;
++    private SearchUserContractView view;
+     private SearchUserConnection userConnection;
+     private Boolean viewIsReady = false;
+     private PackageModel packageModel;
+@@ -58,8 +59,8 @@
+     }
+ 
+     @Override
+-    public void attachView(@NotNull SearchUserActivity activity) {
+-        view = activity;
++    public void attachView(@NotNull SearchUserContractView searchUserContractView) {
++        view = searchUserContractView;
+     }
+ 
+     @Override
+Index: app/src/main/res/values-ru/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values-ru/strings.xml	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/res/values-ru/strings.xml	(date 1580756842355)
+@@ -25,6 +25,7 @@
+     <string name="action_games">Игры</string>
+     <string name="action_table">Таблица</string>
+     <string name="action_participants">Участники</string>
++    <string name="action_users">Пользователи</string>
+     <string name="action_info">Информация</string>
+     <string name="draw">Провести жеребьевку</string>
+     <string name="tours">Туры</string>
+Index: app/src/main/res/layout/fragment_show_user_event.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_show_user_event.xml	(date 1582226837649)
++++ app/src/main/res/layout/fragment_show_user_event.xml	(date 1582226837649)
+@@ -0,0 +1,111 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.widget.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:nestedScrollingEnabled="true">
++
++    <android.support.constraint.ConstraintLayout
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++
++        <ImageView
++            android:id="@+id/iv_avatar"
++            android:layout_width="128dp"
++            android:layout_height="128dp"
++            android:layout_marginStart="8dp"
++            android:layout_marginTop="16dp"
++            android:layout_marginEnd="8dp"
++            android:tint="@color/darkGrey"
++            android:visibility="gone"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="parent"
++            app:srcCompat="@drawable/ic_birthday_person"
++            tools:ignore="ContentDescription" />
++
++        <TextView
++            android:id="@+id/user_name"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="16dp"
++            android:layout_marginTop="32dp"
++            android:layout_marginEnd="16dp"
++            android:textSize="24sp"
++            android:textStyle="bold"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintHorizontal_bias="0.0"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
++            tools:text="Forename" />
++
++        <TextView
++            android:id="@+id/user_short_description"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="8dp"
++            android:layout_marginEnd="16dp"
++            android:textSize="24sp"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintHorizontal_bias="0.0"
++            app:layout_constraintStart_toStartOf="@+id/user_name"
++            app:layout_constraintTop_toBottomOf="@+id/user_name"
++            tools:text="Surname" />
++
++        <TextView
++            android:id="@+id/user_start_date"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="16dp"
++            android:layout_marginEnd="16dp"
++            android:textSize="18sp"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintHorizontal_bias="0.0"
++            app:layout_constraintStart_toStartOf="@+id/user_short_description"
++            app:layout_constraintTop_toBottomOf="@+id/user_short_description"
++            tools:text="Date" />
++
++        <TextView
++            android:id="@+id/user_full_description"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="16dp"
++            android:layout_marginEnd="16dp"
++            android:layout_marginBottom="8dp"
++            android:textSize="18sp"
++            app:layout_constraintBottom_toBottomOf="parent"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintHorizontal_bias="0.0"
++            app:layout_constraintStart_toStartOf="@+id/tv_show_birthday_years_old"
++            app:layout_constraintTop_toBottomOf="@+id/tv_show_birthday_years_old"
++            tools:text="Note" />
++
++        <TextView
++            android:id="@+id/tv_show_birthday_days"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="16dp"
++            android:layout_marginEnd="16dp"
++            android:textSize="18sp"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintHorizontal_bias="0.0"
++            app:layout_constraintStart_toStartOf="@+id/user_start_date"
++            app:layout_constraintTop_toBottomOf="@+id/user_start_date"
++            tools:text="Days" />
++
++        <TextView
++            android:id="@+id/tv_show_birthday_years_old"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="16dp"
++            android:layout_marginEnd="16dp"
++            android:textSize="18sp"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintHorizontal_bias="0.0"
++            app:layout_constraintStart_toStartOf="@+id/tv_show_birthday_days"
++            app:layout_constraintTop_toBottomOf="@+id/tv_show_birthday_days"
++            tools:text="Years" />
++
++    </android.support.constraint.ConstraintLayout>
++</android.widget.ScrollView>
+\ No newline at end of file
+Index: app/src/main/java/bobrchess/of/by/belaruschess/fragments/ShowUserEvent.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/fragments/ShowUserEvent.kt	(date 1582226837430)
++++ app/src/main/java/bobrchess/of/by/belaruschess/fragments/ShowUserEvent.kt	(date 1582226837430)
+@@ -0,0 +1,286 @@
++package bobrchess.of.by.belaruschess.fragments
++
++
++import android.content.Intent
++import android.graphics.Bitmap
++import android.os.Bundle
++import android.support.design.widget.AppBarLayout
++import android.support.v4.content.ContextCompat
++import android.view.LayoutInflater
++import android.view.View
++import android.view.ViewGroup
++import android.widget.ImageView
++import android.widget.TextView
++import bobrchess.of.by.belaruschess.R
++import bobrchess.of.by.belaruschess.handler.BitmapHandler
++import bobrchess.of.by.belaruschess.handler.EventHandler
++import bobrchess.of.by.belaruschess.handler.UserHandler
++import bobrchess.of.by.belaruschess.model.EventDate
++import bobrchess.of.by.belaruschess.view.activity.impl.UsersActivity
++import com.procrastimax.birthdaybuddy.fragments.ShowEventFragment
++import com.procrastimax.birthdaybuddy.fragments.UserInstanceFragment
++import com.procrastimax.birthdaybuddy.models.EventUser
++import kotlinx.android.synthetic.main.activity_main.*
++import kotlinx.android.synthetic.main.fragment_show_user_event.*
++import java.text.DateFormat
++
++/**
++ * ShowUserEvent is a fragment to show all known data from a instance of EventTournament
++ *
++ * TODO:
++ * - add tiny animation for opening this fragment
++ */
++class ShowUserEvent : ShowEventFragment() {
++
++    override fun onCreateView(
++        inflater: LayoutInflater, container: ViewGroup?,
++        savedInstanceState: Bundle?
++    ): View? {
++        (context as UsersActivity).unlockAppBar()
++        return inflater.inflate(R.layout.fragment_show_user_event, container, false)
++    }
++
++    /**
++     * updateUI updates all TextViews and other views to the current instance(Anniversary, Birthday) data
++     */
++
++    override fun updateUI() {
++        (context as UsersActivity).scrollable_toolbar.isTitleEnabled = true
++        UserHandler.getEventToEventIndex(eventID)?.let { userEvent ->
++            if (userEvent is EventUser) {
++                    this.user_name.text = userEvent.name
++                    this.user_short_description.visibility = TextView.VISIBLE
++                    this.user_short_description.text = userEvent.shortDescription
++
++                var scrollRange = -1
++                (context as UsersActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
++                    if (scrollRange == -1) {
++                        scrollRange = appbarLayout.totalScrollRange
++                    }
++                    if (context != null) {
++                        if (scrollRange + verticalOffset == 0) {
++                            setToolbarTitle(context!!.resources.getString(R.string.app_name))
++                        } else {
++                            setToolbarTitle(userEvent.name!!)
++                        }
++                    }
++                })
++
++                //only set expanded title color to white, when background is not white, background is white when no avatar image is set
++                if (userEvent.imageUri != null) {
++                    (context as UsersActivity).scrollable_toolbar.setExpandedTitleColor(
++                        ContextCompat.getColor(
++                            context!!,
++                            R.color.white
++                        )
++                    )
++                } else {
++                    (context as UsersActivity).scrollable_toolbar.setExpandedTitleColor(
++                        ContextCompat.getColor(
++                            context!!,
++                            R.color.darkGrey
++                        )
++                    )
++                }
++
++                val date: String
++                date = userEvent.dateToPrettyString(DateFormat.FULL)
++
++                tv_show_birthday_years_old.text = userEvent.fullDescription
++
++                user_start_date.text = date
++                   // context!!.resources.getString(R.string.person_show_date, startDate)
++
++             /*   //show adapted string for 1 day, not 1 days
++                when (userEvent.getDaysUntil()) {
++                    0 -> {
++                        tv_show_birthday_days.text = resources.getString(
++                            R.string.person_days_until_today,
++                            userEvent.getName()
++                        )
++                    }
++                    1 -> {
++                        tv_show_birthday_days.text =
++                            resources.getQuantityString(
++                                R.plurals.person_days_until,
++                                userEvent.getDaysUntil(),
++                                userEvent.getName(),
++                                userEvent.getDaysUntil(),
++                                EventDate.parseDateToString(
++                                    EventDate.dateToCurrentTimeContext(userEvent.eventDate),
++                                    DateFormat.FULL
++                                ), userEvent.getWeeksUntilAsString()
++                            )
++                    }
++                    else -> {
++                        tv_show_birthday_days.text =
++                            resources.getQuantityString(
++                                R.plurals.person_days_until,
++                                userEvent.getDaysUntil(),
++                                userEvent.getName(),
++                                userEvent.getDaysUntil(),
++                                EventDate.parseDateToString(
++                                    EventDate.dateToCurrentTimeContext(userEvent.eventDate),
++                                    DateFormat.FULL
++                                ), userEvent.getWeeksUntilAsString()
++                            )
++                    }
++                }*/
++
++               /* if (!userEvent.note.isNullOrBlank()) {
++                    this.tv_show_birthday_note.text =
++                        "${resources.getString(R.string.event_property_note)}: ${userEvent.note}"
++                    this.tv_show_birthday_note.visibility = TextView.VISIBLE
++                } else {
++                    this.tv_show_birthday_note.visibility = TextView.GONE
++                }*/
++                updateAvatarImage()
++            }
++        }
++    }
++
++    override fun onDetach() {
++        closeExpandableToolbar()
++        super.onDetach()
++    }
++
++    private fun updateAvatarImage() {
++        if (this.iv_avatar != null && this.eventID >= 0 && (context as UsersActivity).collapsable_toolbar_iv != null) {
++            val bitmap = BitmapHandler.getBitmapFromFile(context!!, this.eventID)
++            setBitmapToToolbar(bitmap)
++        }
++    }
++
++    private fun setBitmapToToolbar(bitmap: Bitmap?) {
++        (context as UsersActivity).collapsable_toolbar_iv.visibility = ImageView.VISIBLE
++        if (bitmap != null) {
++            (context as UsersActivity).collapsable_toolbar_iv.setImageBitmap(bitmap)
++            (context as UsersActivity).collapsable_toolbar_iv.scaleType =
++                ImageView.ScaleType.CENTER_CROP
++            (context as UsersActivity).app_bar.setExpanded(true, true)
++        } else {
++            (context as UsersActivity).app_bar.setExpanded(false, false)
++            (context as UsersActivity).collapsable_toolbar_iv.scaleType =
++                ImageView.ScaleType.FIT_CENTER
++            (context as UsersActivity).collapsable_toolbar_iv.setImageResource(R.drawable.ic_birthday_person)
++        }
++    }
++
++    private fun closeExpandableToolbar() {
++        setToolbarTitle(context!!.resources.getString(R.string.app_name))
++        (context as UsersActivity).collapsable_toolbar_iv.visibility = ImageView.GONE
++        (context as UsersActivity).lockAppbar()
++    }
++
++    /**
++     * shareEvent a function which is called after the share button has been pressed
++     * It provides a simple intent to share data as plain text in other apps
++     */
++    override fun shareEvent() {
++        EventHandler.getEventToEventIndex(eventID)?.let { birthday ->
++            if (birthday is EventUser) {
++                val intent = Intent(Intent.ACTION_SEND)
++                intent.type = "text/plain"
++                var shareBirthdayMsg =
++                    if (birthday.fullDescription != null) {
++                        context!!.resources.getString(
++                            R.string.share_birthday_name,
++                            "${birthday.name} \"${birthday.fullDescription}\" ${birthday.shortDescription}"
++                        )
++                    } else if (birthday.shortDescription != null) {
++                        context!!.resources.getString(
++                            R.string.share_birthday_name,
++                            "${birthday.name} ${birthday.shortDescription}"
++                        )
++                    } else {
++                        context!!.resources.getString(
++                            R.string.share_birthday_name,
++                            birthday.name
++                        )
++                    }
++
++             //   if (birthday.isYearGiven) {
++                    //startDate person was born
++                    shareBirthdayMsg += "\n" + context!!.resources.getString(
++                        R.string.share_birthday_date_start,
++                        EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
++                    )
++          //      }
++
++                //next birthday
++                shareBirthdayMsg += "\n" + context!!.resources.getString(
++                    R.string.share_birthday_date_next,
++                    EventDate.parseDateToString(
++                        EventDate.dateToCurrentTimeContext(birthday.eventDate),
++                        DateFormat.FULL
++                    )
++                )
++
++                val daysUntil = birthday.getDaysUntil()
++                shareBirthdayMsg += if (daysUntil == 0) {
++                    //today
++                    "\n" + context!!.resources.getString(
++                        R.string.share_birthday_days_today
++                    )
++                } else {
++                    // in X days
++                    "\n" + context!!.resources.getQuantityString(
++                        R.plurals.share_birthday_days,
++                        daysUntil,
++                        daysUntil
++                    )
++                }
++
++               // if (birthday.isYearGiven) {
++                    //person will be years old
++                    shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
++                        R.plurals.person_years_old,
++                        birthday.getYearsSince() + 1,
++                        birthday.name,
++                        birthday.getYearsSince() + 1
++                    )
++                //}
++
++                intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
++                startActivity(
++                    Intent.createChooser(
++                        intent,
++                        resources.getString(R.string.intent_share_chooser_title)
++                    )
++                )
++            }
++        }
++    }
++
++    override fun editEvent() {
++
++        val bundle = Bundle()
++        //do this in more adaptable way
++        bundle.putInt(
++                UsersActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
++            eventID
++        )
++        val ft = (context as UsersActivity).supportFragmentManager.beginTransaction()
++        // add arguments to fragment
++        val newBirthdayFragment = UserInstanceFragment.newInstance()
++        newBirthdayFragment.arguments = bundle
++        ft.replace(
++            R.id.fragment_placeholder_users,
++            newBirthdayFragment,
++            UserInstanceFragment.BIRTHDAY_INSTANCE_FRAGMENT_TAG
++        )
++        ft.addToBackStack(null)
++        ft.commit()
++        closeExpandableToolbar()
++    }
++
++    companion object {
++        /**
++         * newInstance returns a new instance of EventUser
++         */
++        @JvmStatic
++        fun newInstance(): ShowUserEvent {
++            return ShowUserEvent()
++        }
++    }
++}
+Index: app/src/main/java/bobrchess/of/by/belaruschess/handler/UserHandler.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/handler/UserHandler.kt	(date 1582220437769)
++++ app/src/main/java/bobrchess/of/by/belaruschess/handler/UserHandler.kt	(date 1582220437769)
+@@ -0,0 +1,250 @@
++package bobrchess.of.by.belaruschess.handler
++
++import android.content.Context
++import android.net.Uri
++import bobrchess.of.by.belaruschess.model.EventDate
++import bobrchess.of.by.belaruschess.view.activity.impl.UsersActivity
++import com.procrastimax.birthdaybuddy.models.EventUser
++import com.procrastimax.birthdaybuddy.models.MonthDivider
++import com.procrastimax.birthdaybuddy.models.SortIdentifier
++import kotlinx.android.synthetic.main.fragment_event_list.*
++import java.util.*
++
++/**
++ * EventHandler singleton object map to store all occurring EventDates (birthdays, anniversaries, etc.)
++ * This is useful to compare all objects more easily, f.e. when you want to traverse all entries in event dates
++ */
++object UserHandler {
++
++    /**
++     * event_list a list used for sorted viewing of the maps content
++     * the data is stored in pairs of EventDay and the index of this dataset in the map as an int
++     */
++    private var event_list: List<EventDate> = emptyList()
++    private var user_list: List<EventDate> = emptyList()
++
++
++    private var event_map: MutableMap<Int, EventDate> = emptyMap<Int, EventDate>().toMutableMap()
++
++    /**
++     * addEvent adds a EventDay type to the map and has the possibility to write it to the shared preferences after adding it
++     * this orders all events after the startDate automatically
++     * also updates the Eventday list after every adding of a new event
++     * @param event: EventDay
++     * @param context: Context
++     * @param writeAfterAdd: Boolean whether this event should be written to shared preferences after adding to list
++     * @param addNewNotification : Boolean, whether a new notification should be created after adding this event
++     * @param updateEventList : Boolean, whether to update the EventList, updating the EventList means sorting event values by their startDate
++     * @param addBitmap : Boolean whether a new bitmap should be added
++     */
++    fun addEvent(
++            event: EventDate,
++            context: Context,
++            writeAfterAdd: Boolean = true,
++            addNewNotification: Boolean = true,
++            updateEventList: Boolean = true,
++            addBitmap: Boolean = true
++
++    ) {
++
++        if (event !is MonthDivider) {
++            val cal = Calendar.getInstance()
++            cal.time = event.eventDate
++            cal.set(Calendar.HOUR_OF_DAY, 0)
++            cal.set(Calendar.SECOND, 1)
++            event.eventDate = cal.time
++        }
++
++        this.event_map[event.eventID] = event
++
++        if (event is EventUser && addBitmap) {
++            Thread(Runnable {
++                if (event.imageUri != null) {
++                    UserBitmapHandler.addDrawable(
++                            event.eventID,
++                            Uri.parse(event.imageUri),
++                            context,
++                            readBitmapFromGallery = false,
++                            //150dp because the app_bar height is 300dp
++                            scale = UsersActivity.convertDpToPx(context, 150f)
++                    )
++                }
++                if (context is UsersActivity) {
++                    context.runOnUiThread {
++                        if (context.recyclerView != null) {
++                            context.recyclerView.adapter?.notifyDataSetChanged()
++                        }
++                    }
++                }
++            }).start()
++        }
++
++        //set hour of day from all other events except MonthDivider to 12h (month divider is at 0h), so when sorting month divider is always at first
++        if (event !is MonthDivider && addNewNotification) {
++            NotificationHandler.scheduleNotification(context, event)
++        }
++
++        if (updateEventList) {
++            this.event_list = getSortedListBy()
++        }
++
++        if (writeAfterAdd) {
++            UserIOHandler.writeEventToFile(event.eventID, event)
++        }
++    }
++
++    /**
++     * changeEventAt changes event at key position
++     *
++     * @param ID : Int
++     * @param newEvent : EventDay
++     */
++    fun changeEventAt(
++            ID: Int,
++            newEvent: EventDate,
++            context: Context,
++            writeAfterChange: Boolean = false
++    ) {
++        getEventToEventIndex(ID)?.let { oldEvent ->
++            newEvent.eventID = ID
++            //set hour of day from all other events except monthdivider to 12h (month divider is at 0h), so when sorting month divider is always at first
++            if (newEvent !is MonthDivider) {
++                val cal = Calendar.getInstance()
++                cal.time = newEvent.eventDate
++                cal.set(Calendar.HOUR_OF_DAY, 0)
++                cal.set(Calendar.SECOND, 1)
++                newEvent.eventDate = cal.time
++            }
++
++            NotificationHandler.cancelNotification(context, oldEvent)
++            NotificationHandler.scheduleNotification(context, newEvent)
++
++            this.event_map[ID] = newEvent
++
++            if (newEvent is EventUser) {
++                if (newEvent.imageUri != null) {
++                    val newEventImageUri = newEvent.imageUri
++                    //remove old drawable if one exists
++                    if ((oldEvent as EventUser).imageUri != null) {
++                        UserBitmapHandler.removeBitmap(oldEvent.eventID, context)
++                    }
++                    //force BitmapHandler to load new avatar image from gallery, in case there is already an existant bitmap
++                    UserBitmapHandler.addDrawable(
++                            ID,
++                            Uri.parse(newEventImageUri),
++                            context,
++                            readBitmapFromGallery = true,
++                            scale = UsersActivity.convertDpToPx(context, 150f)
++                    )
++                }
++            }
++            this.event_list = getSortedListBy()
++
++            if (writeAfterChange) {
++                UserIOHandler.writeEventToFile(ID, newEvent)
++            }
++        }
++    }
++
++    /**
++     * removeEventByKey removes an event from the by using a key
++     *
++     * @param index : Int
++     * @param context : Context
++     * @param writeChange : Boolean
++     */
++    fun removeEventByID(index: Int, context: Context, writeChange: Boolean = false) {
++        getEventToEventIndex(index)?.let { event ->
++
++            if (event is EventUser) {
++                UserBitmapHandler.removeBitmap(index, context)
++            }
++
++            NotificationHandler.cancelNotification(context, event)
++
++            if (writeChange) {
++                UserIOHandler.removeEventFromFile(event.eventID)
++            }
++
++            this.event_map.remove(index)
++            this.event_list = this.getSortedListBy()
++        }
++    }
++
++    fun clearData() {
++        if (this.event_list.isNotEmpty()) {
++            this.event_map.clear()
++            this.event_list = getSortedListBy()
++        }
++    }
++
++    /**
++     * getEventToEventIndex returns the value with type EventDay? to a given integer key
++     * @param index : Int
++     * @return EventDay?
++     */
++    fun getEventToEventIndex(index: Int): EventDate? {
++        if (event_map.containsKey(index))
++            return event_map[index]
++        return null
++    }
++
++    fun deleteAllEntriesAndImages(context: Context, writeAfterAdd: Boolean) {
++        this.event_list.forEach {
++            NotificationHandler.cancelNotification(context, it)
++        }
++        this.clearData()
++        UserBitmapHandler.removeAllDrawables(context)
++        if (writeAfterAdd) {
++            UserIOHandler.clearSharedPrefEventData()
++        }
++    }
++
++    /**
++     * containsKey checks if the given key is present in the map
++     *
++     * @param index: Int
++     * @return Boolean
++     */
++    private fun containsIndex(index: Int): Boolean {
++        return event_map.containsKey(index)
++    }
++
++    fun getList(): List<EventDate> {
++        return this.event_list
++    }
++
++    fun getEventsAsStringList(): String {
++        var eventString = ""
++        val tempList = event_list.toMutableList()
++        tempList.forEach {
++            //don't save Monthdividers bc they are created with the first start of the app
++            if (it !is MonthDivider) {
++                //removing avatar image
++                if (it is EventUser) {
++                    eventString += it.toStringWithoutImage() + "\n"
++                } else {
++                    eventString += it.toString() + "\n"
++                }
++            }
++        }
++        return eventString
++    }
++
++    /**
++     * getSortValueListBy returns the map as a value list which is sorted by specific attributes given by an enum identifier
++     * If the identifier is unknown, than an empty value list is returned
++     *
++     * @param identifier : SortIdentifier
++     * @return List<EventDay>
++     */
++    private fun getSortedListBy(
++            identifier: SortIdentifier = EventDate.Identifier.Date
++    ): List<EventDate> {
++        if (identifier == EventDate.Identifier.Date) {
++            return event_map.values.sorted()
++        } else {
++            return emptyList()
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/bobrchess/of/by/belaruschess/presenter/SearchUserPresenter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/presenter/SearchUserPresenter.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/presenter/SearchUserPresenter.kt	(date 1580928583412)
+@@ -1,6 +1,6 @@
+ package bobrchess.of.by.belaruschess.presenter
+ 
+-import bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity
++import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
+ 
+ /**
+  * Created by Igor on 12.04.2018.
+@@ -13,5 +13,5 @@
+ 
+     fun searchUsers()
+ 
+-    fun attachView(activity: SearchUserActivity)
++    fun attachView(searchUserContractView: SearchUserContractView)
+ }
+Index: app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/UsersActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/UsersActivity.kt	(date 1582227838050)
++++ app/src/main/java/bobrchess/of/by/belaruschess/view/activity/impl/UsersActivity.kt	(date 1582227838050)
+@@ -0,0 +1,349 @@
++
++package bobrchess.of.by.belaruschess.view.activity.impl
++
++import android.app.ProgressDialog
++import android.content.Context
++import android.content.Intent
++import android.content.pm.PackageManager
++import android.os.Bundle
++import android.support.design.widget.AppBarLayout
++import android.support.design.widget.CoordinatorLayout
++import android.support.v4.app.Fragment
++import android.util.TypedValue
++import android.widget.Toast
++import bobrchess.of.by.belaruschess.R
++import bobrchess.of.by.belaruschess.dto.UserDTO
++import bobrchess.of.by.belaruschess.fragments.ShowUserEvent
++import bobrchess.of.by.belaruschess.handler.UserBitmapHandler
++import bobrchess.of.by.belaruschess.handler.UserHandler
++import bobrchess.of.by.belaruschess.handler.UserIOHandler
++import bobrchess.of.by.belaruschess.model.EventDate
++import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
++import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
++import bobrchess.of.by.belaruschess.util.Constants
++import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
++import com.procrastimax.birthdaybuddy.fragments.OneTimeEventInstanceFragment
++import com.procrastimax.birthdaybuddy.fragments.ShowOneTimeEvent
++import com.procrastimax.birthdaybuddy.fragments.UserInstanceFragment
++import com.procrastimax.birthdaybuddy.fragments.UserListFragment
++import com.procrastimax.birthdaybuddy.models.EventUser
++import com.procrastimax.birthdaybuddy.models.MonthDivider
++import com.procrastimax.birthdaybuddy.models.OneTimeEvent
++import kotlinx.android.synthetic.main.activity_users.*
++import kotlinx.android.synthetic.main.fragment_event_list.*
++import java.text.DateFormat
++import java.text.SimpleDateFormat
++import java.util.*
++
++class UsersActivity : AbstractActivity(), SearchUserContractView {
++
++    private var searchUserPresenter: SearchUserPresenter? = null
++    private var progressDialog: ProgressDialog? = null
++
++    override fun onCreate(savedInstanceState: Bundle?) {
++        super.onCreate(savedInstanceState)
++        setContentView(R.layout.activity_users)
++        setSupportActionBar(toolbar_users)
++
++        searchUserPresenter = SearchUserPresenterImpl()
++        searchUserPresenter!!.attachView(this)
++        searchUserPresenter!!.viewIsReady()
++
++        UserHandler.clearData()
++        UserIOHandler.registerIO(this)
++        lockAppbar()
++
++
++        if (!UserIOHandler.isFirstStart()) {
++            //loadUsers()
++            addMonthDivider()
++            addTestUser()
++        } else {
++            //on first start write standard settings to shared prefs
++            UserIOHandler.initializeAllSettings()
++            addMonthDivider()
++            addTestUser()
++        }
++        updateUserFragments()
++    }
++
++    fun unlockAppBar() {
++        app_bar.isActivated = true
++        setAppBarDragging(true)
++    }
++
++    fun lockAppbar() {
++        this.app_bar.setExpanded(false, false)
++        app_bar.isActivated = false
++        setAppBarDragging(false)
++    }
++
++    private fun setAppBarDragging(isEnabled: Boolean) {
++        val params = this.app_bar.layoutParams as CoordinatorLayout.LayoutParams
++        val behavior = AppBarLayout.Behavior()
++        behavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
++            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
++                return isEnabled
++            }
++        })
++        params.behavior = behavior
++    }
++
++    override fun onNewIntent(intent: Intent?) {
++        super.onNewIntent(intent)
++        val eventID = intent?.getIntExtra(FRAGMENT_EXTRA_TITLE_EVENTID, -1)
++        val type = intent?.getStringExtra(FRAGMENT_EXTRA_TITLE_TYPE)
++        if (toolbar_users.menu.findItem(R.id.toolbar_search)?.actionView != null) {
++
++            (toolbar_users.menu.findItem(R.id.toolbar_search)?.actionView as android.support.v7.widget.SearchView).apply {
++                //close search view
++                toolbar_users.collapseActionView()
++            }
++
++            if (eventID != null && eventID > -1 && type != null) {
++                startFragments(eventID, type)
++            }
++        }
++    }
++
++    private fun startFragments(eventID: Int, type: String) {
++        val bundle = Bundle()
++        //do this in more adaptable way
++        bundle.putInt(
++                FRAGMENT_EXTRA_TITLE_EVENTID,
++                eventID
++        )
++
++        UserHandler.getEventToEventIndex(eventID)?.let { event ->
++
++            val eventFragment: Fragment? = when (event) {
++                is EventUser -> {//todo tototoodododotodotdotodotdotodtodotod
++                    if (type == FRAGMENT_TYPE_SHOW) {
++                        ShowUserEvent.newInstance()
++                    } else {
++                        UserInstanceFragment.newInstance()
++                    }
++                }
++                is OneTimeEvent -> {
++                    if (type == FRAGMENT_TYPE_SHOW) {
++                        ShowOneTimeEvent.newInstance()
++                    } else {
++                        OneTimeEventInstanceFragment.newInstance()
++                    }
++                }
++                else -> {
++                    null
++                }
++            }
++            if (eventFragment != null) {
++                val ft = supportFragmentManager.beginTransaction()
++                // add arguments to fragment
++                eventFragment.arguments = bundle
++                ft.replace(
++                        R.id.fragment_placeholder_users,
++                        eventFragment
++                )
++                ft.addToBackStack(null)
++                ft.commit()
++            }
++        }
++    }
++
++    /**
++     * addMonthDivider adds all 12 month dividers (dividers between events to group them in month groups)
++     */
++
++    fun addMonthDivider() {
++        val cal = Calendar.getInstance()
++        cal.set(Calendar.YEAR, 1)
++        cal.set(Calendar.DAY_OF_MONTH, 1)
++        cal.set(Calendar.HOUR_OF_DAY, 0)
++        cal.set(Calendar.MINUTE, 0)
++        cal.set(Calendar.SECOND, 0)
++        for (i in 0 until 12) {
++            cal.set(Calendar.MONTH, i)
++            UserHandler.addEvent(
++                    MonthDivider(cal.time, resources.getStringArray(R.array.month_names)[i]),
++                    this,
++                    true
++            )
++        }
++    }
++
++    /**
++     * onRequestPermissionsResult is the callback function after requesting the users permission for android permissions
++     * In this case we request READ/WRITE rights on external storage and handle exporting/ importing event data from the external storage
++     */
++    override fun onRequestPermissionsResult(
++            requestCode: Int,
++            permissions: Array<out String>,
++            grantResults: IntArray) {
++        when (requestCode) {
++            //writing to external
++            6001 -> {
++                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
++                    writeDataToExternal()
++                } else {
++                    Toast.makeText(
++                            this,
++                            R.string.permissions_toast_denied_write,
++                            Toast.LENGTH_LONG
++                    ).show()
++                }
++            }
++            //reading from external
++            6002 -> {
++                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
++                    importDataFromExternal()
++                } else {
++                    Toast.makeText(
++                            this,
++                            R.string.permissions_toast_denied_read,
++                            Toast.LENGTH_LONG
++                    ).show()
++                }
++            }
++        }
++        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
++    }
++
++    companion object {
++        fun convertPxToDp(context: Context, px: Float): Float {
++            val metrics = context.resources.displayMetrics
++            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px, metrics)
++        }
++
++        fun convertDpToPx(context: Context, dp: Float): Int {
++            val metrics = context.resources.displayMetrics
++            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics).toInt()
++        }
++
++        const val FRAGMENT_TYPE_SHOW = "SHOW"
++        const val FRAGMENT_TYPE_EDIT = "EDIT"
++
++        const val FRAGMENT_EXTRA_TITLE_TYPE = "TYPE"
++        const val FRAGMENT_EXTRA_TITLE_EVENTID = "EVENTID"
++        const val FRAGMENT_EXTRA_TITLE_EVENTSTRING = "EVENTSTRING"
++        const val FRAGMENT_EXTRA_TITLE_NOTIFICATIONID = "NOTIFICATIONID"
++        const val FRAGMENT_EXTRA_TITLE_POSITION = "POSITION"
++        const val FRAGMENT_EXTRA_TITLE_LOADALL = "LOADALL"
++    }
++
++    private fun loadUsers() {
++        searchUserPresenter!!.loadUsers()
++    }
++
++    private fun loadUsers(count: Int) {
++        searchUserPresenter!!.loadUsers(count)
++    }
++
++    override fun showProgress() {
++        progressDialog = ProgressDialog.show(this, Constants.EMPTY_STRING, this.getString(R.string.please_wait))
++    }
++
++    override fun hideProgress() {
++        if (progressDialog != null) {
++            progressDialog!!.dismiss()
++        }
++    }
++
++    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
++
++    }
++
++    override fun dialogConfirmButtonClicked() {
++
++    }
++
++    override fun setConnectionStatus(connectivityStatus: Int?) {
++        searchUserPresenter?.setConnectivityStatus(connectivityStatus)
++    }
++
++    private fun transformDate(dateString: String?): String? {
++        return try {
++            val bdFormat = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
++            val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
++            val date = bdFormat.parse(dateString)
++            newFormat.format(date)
++        } catch (e: Exception) {
++            null
++        }
++    }
++
++    private fun updateUserFragments(){
++        val transaction = supportFragmentManager.beginTransaction()
++        transaction.replace(
++                R.id.fragment_placeholder_users,
++                UserListFragment.newInstance()
++        ).commit()
++
++
++        //start loading bitmap drawables in other thread to not block ui
++        Thread(Runnable
++        {
++            UserBitmapHandler.loadAllBitmaps(this)
++            runOnUiThread {
++                if (recyclerView != null) {
++                    recyclerView.adapter!!.notifyDataSetChanged()
++                }
++            }
++        }).start()
++
++        if (intent != null) {
++            if (intent?.getBooleanExtra(FRAGMENT_EXTRA_TITLE_LOADALL, false) == true) {
++                val eventID = intent?.getIntExtra(FRAGMENT_EXTRA_TITLE_EVENTID, -1)
++                val type = intent?.getStringExtra(FRAGMENT_EXTRA_TITLE_TYPE)
++                if (eventID != null && eventID > -1 && type != null) {
++                    startFragments(eventID, type)
++                }
++            }
++            intent = null
++        }
++    }
++
++
++    override fun showUsers(users: List<UserDTO>) {
++       // IOHandler.clearSharedPrefEventData()
++        users.forEach {
++            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate(it.birthday)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
++            event.name = it.name!!
++           // event.fullDescription = it.fullDescription!!
++           // event.shortDescription = it.shortDescription!!
++            event.imageUri = it.image
++            event.finishDate = EventDate.parseStringToDate(transformDate(it.birthday)!!, DateFormat.DEFAULT, Locale.GERMAN)
++            UserHandler.addEvent(
++                    event,
++                    this,
++                    writeAfterAdd = false,
++                    addNewNotification = false,
++                    updateEventList = true,
++                    addBitmap = false
++            )
++        }
++        updateUserFragments()
++    }
++
++    fun writeDataToExternal() {
++
++    }
++
++    fun importDataFromExternal() {
++
++    }
++
++    override fun getSearchText(): String {
++        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
++    }
++
++    private fun addTestUser() {
++        UserHandler.addEvent(
++                EventUser(
++                        111,
++                        EventDate.parseStringToDate("09.02.19", DateFormat.DEFAULT, Locale.GERMAN),
++                        "Belarus Chess"
++                ),
++                this,
++                true
++        )
++    }
++}
+Index: app/src/main/java/bobrchess/of/by/belaruschess/util/Constants.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/bobrchess/of/by/belaruschess/util/Constants.kt	(revision cdf173e9b5470c9b9d00af265224da245e12676f)
++++ app/src/main/java/bobrchess/of/by/belaruschess/util/Constants.kt	(date 1580153138640)
+@@ -91,8 +91,8 @@
+         val KEY_INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS = "incorrect_tournament_team_count_points"
+ 
+ 
+-        //val HOST = "http://192.168.100.2:8080"
+-        val HOST = "http://192.168.43.96:8080"
++        val HOST = "http://192.168.100.2:8080"
++        //val HOST = "http://192.168.43.96:8080"
+ 
+ 
+         @JvmField

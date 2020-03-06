@@ -1,10 +1,9 @@
-package bobrchess.of.by.belaruschess
+package bobrchess.of.by.belaruschess.view.activity.impl
 
 import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
@@ -16,9 +15,8 @@ import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
-import bobrchess.of.by.belaruschess.view.activity.impl.AbstractActivity
-import com.procrastimax.birthdaybuddy.views.EventAdapterSearching
-import com.procrastimax.birthdaybuddy.views.RecycleViewItemDivider
+import bobrchess.of.by.belaruschess.adapter.EventAdapterSearching
+import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
 import kotlinx.android.synthetic.main.activity_searchable.*
 
 /**

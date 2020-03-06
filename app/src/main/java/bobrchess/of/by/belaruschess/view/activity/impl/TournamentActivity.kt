@@ -19,8 +19,6 @@ import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.GameDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.fragments.OneFragment
-import bobrchess.of.by.belaruschess.fragments.TwoFragment
 import bobrchess.of.by.belaruschess.presenter.TournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
@@ -28,7 +26,7 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.GAME_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_REQUEST
 import bobrchess.of.by.belaruschess.view.activity.TournamentContractView
-import bobrchess.of.by.colibritweet.adapter.GamesAdapter
+import bobrchess.of.by.belaruschess.adapter.GamesAdapter
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -226,11 +224,6 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
 
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(OneFragment(), "1")
-        adapter.addFragment(TwoFragment(), "2")
-        adapter.addFragment(TwoFragment(), "3")
-        adapter.addFragment(TwoFragment(), "4")
-        adapter.addFragment(TwoFragment(), "5")
         viewPager.adapter = adapter
     }
 

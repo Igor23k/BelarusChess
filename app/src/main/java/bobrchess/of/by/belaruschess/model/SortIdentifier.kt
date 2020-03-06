@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.models
+package bobrchess.of.by.belaruschess.model
 
 /**
  * SortIdentifier is an interface which is used by enum classes from EventDay and its inherited subclasses

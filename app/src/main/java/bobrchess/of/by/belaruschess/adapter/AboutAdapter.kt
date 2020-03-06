@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.views
+package bobrchess.of.by.belaruschess.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -23,12 +23,12 @@ class AboutAdapter(private val context: Context) : RecyclerView.Adapter<Recycler
     class AboutCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val itemList = listOf(
-        AboutInstance.OpenSource,
-        AboutInstance.License,
-        AboutInstance.Contact,
-        AboutInstance.App,
-        AboutInstance.Version,
-        AboutInstance.BuildNumber
+            AboutInstance.OpenSource,
+            AboutInstance.License,
+            AboutInstance.Contact,
+            AboutInstance.App,
+            AboutInstance.Version,
+            AboutInstance.BuildNumber
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewtype: Int): RecyclerView.ViewHolder {

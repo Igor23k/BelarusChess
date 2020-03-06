@@ -8,7 +8,9 @@ import android.widget.Toast
 import bobrchess.of.by.belaruschess.BuildConfig
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.model.EventDate
-import com.procrastimax.birthdaybuddy.models.*
+import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.MonthDivider
+import bobrchess.of.by.belaruschess.model.OneTimeEvent
 import java.io.File
 import java.util.*
 

@@ -27,7 +27,7 @@ import java.text.DateFormat
  * TODO:
  * - add tiny animation for opening this fragment
  */
-class ShowTournamentEvent : ShowEventFragment() {
+class ShowUserEvent : ShowEventFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -276,8 +276,8 @@ class ShowTournamentEvent : ShowEventFragment() {
          * newInstance returns a new instance of EventTournament
          */
         @JvmStatic
-        fun newInstance(): ShowTournamentEvent {
-            return ShowTournamentEvent()
+        fun newInstance(): ShowUserEvent {
+            return ShowUserEvent()
         }
     }
 }

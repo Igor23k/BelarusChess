@@ -12,8 +12,8 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import bobrchess.of.by.belaruschess.R
-import com.procrastimax.birthdaybuddy.models.EventTournament
-import com.procrastimax.birthdaybuddy.models.EventUser
+import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.EventUser
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream

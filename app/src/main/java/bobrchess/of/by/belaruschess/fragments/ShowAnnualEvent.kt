@@ -1,17 +1,12 @@
-package com.procrastimax.birthdaybuddy.fragments
+package bobrchess.of.by.belaruschess.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.handler.EventHandler
-import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import kotlinx.android.synthetic.main.fragment_show_annual_event.*
-import java.text.DateFormat
 
 /**
  * ShowAnnualEvent is a fragment to show all known data from an instance of EventTournament

@@ -51,7 +51,7 @@ import java.util.*
  * TODO:
  *  - add possibility to take new pictures with camera
  */
-class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContractView {
+class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView {
 
     /**
      * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventTournament
@@ -742,8 +742,8 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
          * newInstance returns a new instance of TournamentInstanceFragment
          */
         @JvmStatic
-        fun newInstance(): TournamentInstanceFragment {
-            return TournamentInstanceFragment()
+        fun newInstance(): UserInstanceFragment {
+            return UserInstanceFragment()
         }
     }
 

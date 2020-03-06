@@ -1,7 +1,6 @@
-package com.procrastimax.birthdaybuddy.models
+package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.model.EventDate
 import java.text.DateFormat
 import java.util.*
 

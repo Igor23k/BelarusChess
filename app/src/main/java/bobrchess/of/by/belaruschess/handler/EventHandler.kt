@@ -2,7 +2,7 @@ package bobrchess.of.by.belaruschess.handler
 
 import android.content.Context
 import android.net.Uri
-import bobrchess.of.by.belaruschess.model.EventDate
+import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.procrastimax.birthdaybuddy.models.*
 import kotlinx.android.synthetic.main.fragment_event_list.*

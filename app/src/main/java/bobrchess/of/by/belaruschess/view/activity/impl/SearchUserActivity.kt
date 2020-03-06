@@ -21,9 +21,9 @@ import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_PARTICIPANTS_
 import bobrchess.of.by.belaruschess.util.Util.Companion.TOURNAMENT_TABLE_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.USER_INFO
 import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
-import bobrchess.of.by.colibritweet.adapter.TournamentParticipantsAdapter
-import bobrchess.of.by.colibritweet.adapter.TournamentTableAdapter
-import bobrchess.of.by.colibritweet.adapter.UsersAdapter
+import bobrchess.of.by.belaruschess.adapter.TournamentParticipantsAdapter
+import bobrchess.of.by.belaruschess.adapter.TournamentTableAdapter
+import bobrchess.of.by.belaruschess.adapter.UsersAdapter
 import butterknife.BindView
 import butterknife.ButterKnife
 

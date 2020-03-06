@@ -56,7 +56,7 @@
 
         <!-- Search activity -->
         <activity
-            android:name=".SearchableActivity"
+            android:name=".view.activity.impl.SearchableActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

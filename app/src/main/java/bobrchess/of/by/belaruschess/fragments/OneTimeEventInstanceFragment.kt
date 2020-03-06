@@ -1,4 +1,4 @@
-package com.procrastimax.birthdaybuddy.fragments
+package bobrchess.of.by.belaruschess.fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -12,11 +12,10 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.adapter.EventInstanceFragment
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.procrastimax.birthdaybuddy.models.OneTimeEvent
+import bobrchess.of.by.belaruschess.model.OneTimeEvent
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import kotlinx.android.synthetic.main.fragment_one_time_event_instance.*
 import java.text.DateFormat

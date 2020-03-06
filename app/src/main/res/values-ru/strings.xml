@@ -26,6 +26,7 @@
     <string name="action_table">Таблица</string>
     <string name="action_participants">Участники</string>
     <string name="action_users">Пользователи</string>
+    <string name="action_tournaments">Tournaments</string>
     <string name="action_info">Информация</string>
     <string name="draw">Провести жеребьевку</string>
     <string name="tours">Туры</string>

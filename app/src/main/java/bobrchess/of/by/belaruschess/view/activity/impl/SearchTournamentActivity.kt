@@ -1,6 +1,5 @@
 package bobrchess.of.by.belaruschess.view.activity.impl
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -17,9 +16,8 @@ import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
-import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
-import bobrchess.of.by.colibritweet.adapter.TournamentsAdapter
+import bobrchess.of.by.belaruschess.adapter.TournamentsAdapter
 import butterknife.ButterKnife
 
 /**

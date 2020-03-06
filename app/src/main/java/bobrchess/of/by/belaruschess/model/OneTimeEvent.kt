@@ -1,8 +1,7 @@
-package com.procrastimax.birthdaybuddy.models
+package bobrchess.of.by.belaruschess.model
 
 import android.util.Log
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.model.EventDate
 import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -77,7 +76,7 @@ class OneTimeEvent(_eventdate: Date, var name: String) : EventDate(_eventdate) {
                     Locale.GERMAN
                 )}" +
                 getStringFromValue(
-                    Identifier.Note,
+                        Identifier.Note,
                     this.note
                 )
     }
