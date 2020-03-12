@@ -500,7 +500,7 @@ object IOHandler {
                 val storagePath =
                     File(
                         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                        "birthdaybuddy"
+                        "belaruschess"
                     )
 
                 //when folder creating did not succeed
@@ -536,7 +536,7 @@ object IOHandler {
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
             val storagePath = File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                "birthdaybuddy"
+                "belaruschess"
             )
             //when folder finding did not succeed
             if (!storagePath.exists()) {

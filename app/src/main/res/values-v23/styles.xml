@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionOverflowButtonStyle">@style/BirthdayBuddyOverFlowButtonStyle</item>
+        <item name="actionOverflowButtonStyle">@style/BelarusChessOverFlowButtonStyle</item>
         <item name="android:textColorPrimary">@color/darkGrey</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
@@ -17,7 +17,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="BirthdayBuddyOverFlowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+    <style name="BelarusChessOverFlowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/darkGrey</item>
     </style>
 

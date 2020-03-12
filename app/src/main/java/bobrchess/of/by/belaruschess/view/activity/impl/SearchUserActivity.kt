@@ -24,6 +24,7 @@ import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.belaruschess.adapter.TournamentParticipantsAdapter
 import bobrchess.of.by.belaruschess.adapter.TournamentTableAdapter
 import bobrchess.of.by.belaruschess.adapter.UsersAdapter
+import bobrchess.of.by.belaruschess.outdated.MainOldActivity
 import butterknife.BindView
 import butterknife.ButterKnife
 

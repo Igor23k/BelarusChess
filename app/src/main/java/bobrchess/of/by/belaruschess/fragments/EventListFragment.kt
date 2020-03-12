@@ -32,7 +32,6 @@ import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
 import bobrchess.of.by.belaruschess.adapter.EventAdapter
 import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
-import com.procrastimax.birthdaybuddy.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat

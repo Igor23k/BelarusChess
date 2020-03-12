@@ -181,17 +181,17 @@ class ShowTournamentEvent : ShowEventFragment() {
                 var shareBirthdayMsg =
                     if (birthday.fullDescription != null) {
                         context!!.resources.getString(
-                            R.string.share_birthday_name,
+                            R.string.share_tournament_name,
                             "${birthday.name} \"${birthday.fullDescription}\" ${birthday.shortDescription}"
                         )
                     } else if (birthday.shortDescription != null) {
                         context!!.resources.getString(
-                            R.string.share_birthday_name,
+                            R.string.share_tournament_name,
                             "${birthday.name} ${birthday.shortDescription}"
                         )
                     } else {
                         context!!.resources.getString(
-                            R.string.share_birthday_name,
+                            R.string.share_tournament_name,
                             birthday.name
                         )
                     }
@@ -199,14 +199,14 @@ class ShowTournamentEvent : ShowEventFragment() {
              //   if (birthday.isYearGiven) {
                     //startDate person was born
                     shareBirthdayMsg += "\n" + context!!.resources.getString(
-                        R.string.share_birthday_date_start,
+                        R.string.share_tournament_date_start,
                         EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
                     )
           //      }
 
                 //next birthday
                 shareBirthdayMsg += "\n" + context!!.resources.getString(
-                    R.string.share_birthday_date_next,
+                    R.string.share_tournament_date_next,
                     EventDate.parseDateToString(
                         EventDate.dateToCurrentTimeContext(birthday.eventDate),
                         DateFormat.FULL
@@ -217,12 +217,12 @@ class ShowTournamentEvent : ShowEventFragment() {
                 shareBirthdayMsg += if (daysUntil == 0) {
                     //today
                     "\n" + context!!.resources.getString(
-                        R.string.share_birthday_days_today
+                        R.string.share_tournament_days_today
                     )
                 } else {
                     // in X days
                     "\n" + context!!.resources.getQuantityString(
-                        R.plurals.share_birthday_days,
+                        R.plurals.share_tournament_days,
                         daysUntil,
                         daysUntil
                     )

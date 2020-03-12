@@ -1,4 +1,4 @@
-package bobrchess.of.by.belaruschess.view.activity.impl
+package bobrchess.of.by.belaruschess.outdated
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -20,8 +20,8 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.REQUEST_CODE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT_PARAMETER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.USER_INFO
-import bobrchess.of.by.belaruschess.view.activity.MainOldContractView
 import bobrchess.of.by.belaruschess.adapter.TournamentsAdapter
+import bobrchess.of.by.belaruschess.view.activity.impl.*
 import com.squareup.picasso.Picasso
 
 class MainOldActivity : AbstractActivity(), MainOldContractView {

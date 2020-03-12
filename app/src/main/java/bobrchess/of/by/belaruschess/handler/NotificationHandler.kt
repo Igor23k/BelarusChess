@@ -14,7 +14,7 @@ import java.util.*
 
 object NotificationHandler {
 
-    const val CHANNEL_ID = "channel-birthdaybuddy"
+    const val CHANNEL_ID = "channel-belaruschess"
 
     private const val NOTIFICATION_WINDOW_LENGTH: Long = 10000
 

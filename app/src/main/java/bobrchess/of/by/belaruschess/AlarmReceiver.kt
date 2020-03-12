@@ -144,7 +144,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 var defaults = Notification.DEFAULT_ALL
 
                 val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_birthdaybuddy_icon_status_bar)
+                    .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     // Set the intent that will fire when the user taps the notification
                     .setContentIntent(pendingIntent)
@@ -156,21 +156,21 @@ class AlarmReceiver : BroadcastReceiver() {
                 if (event.fullDescription != null) {
                     builder.setContentTitle(
                         context.getString(
-                            R.string.notification_title_birthday,
+                            R.string.notification_title_tournament,
                             event.fullDescription
                         )
                     )
                 } else if (event.shortDescription != null) {
                     builder.setContentTitle(
                         context.getString(
-                            R.string.notification_title_birthday,
+                            R.string.notification_title_tournament,
                             "${event.name} ${event.shortDescription}"
                         )
                     )
                 } else {
                     builder.setContentTitle(
                         context.getString(
-                            R.string.notification_title_birthday,
+                            R.string.notification_title_tournament,
                             event.name
                         )
                     )
@@ -208,7 +208,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 var defaults = Notification.DEFAULT_ALL
 
                 val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_birthdaybuddy_icon_status_bar)
+                    .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
                     .setContentTitle(
                         context.getString(
                             R.string.notification_title_annual_event,
@@ -252,7 +252,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 var defaults = Notification.DEFAULT_ALL
 
                 val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_birthdaybuddy_icon_status_bar)
+                    .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
                     .setContentTitle(
                         context.getString(
                             R.string.notification_title_one_time_event,

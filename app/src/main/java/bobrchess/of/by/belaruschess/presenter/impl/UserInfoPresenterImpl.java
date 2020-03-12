@@ -12,7 +12,7 @@ import bobrchess.of.by.belaruschess.network.connection.UserInfoConnection;
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUserInfo;
 import bobrchess.of.by.belaruschess.util.Util;
-import bobrchess.of.by.belaruschess.view.activity.impl.MainOldActivity;
+import bobrchess.of.by.belaruschess.outdated.MainOldActivity;
 
 /**
  * Created by Igor on 11.04.2018.

@@ -293,7 +293,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                     //delete functionality
                     btn_birthday_add_fragment_delete.setOnClickListener {
                         val alertBuilder = AlertDialog.Builder(context)
-                        alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_birthday))
+                        alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_tournament))
                         alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message))
 
                         val contextTemp = context

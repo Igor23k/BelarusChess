@@ -85,7 +85,7 @@
     <string name="title_activity_main">Range Picker</string>
     <string name="time">Time</string>
     <string name="date">Date</string>
-    <string name="tournament">Дата рождения</string>
+    <string name="tournament">Турнир</string>
     <string name="tournament_team_type">Командный турнир</string>
 
     <string name="take_photo">Сфотографировать</string>
@@ -171,7 +171,7 @@
     <string name="verification_edit_date_input">Введенная дата не соответствует требуемому формату даты!\nПожалуйста, используйте формат как: %1$s</string>
 
     <!-- alert dialog delete -->
-    <string name="alert_dialog_title_delete_birthday">Удалить день рождения</string>
+    <string name="alert_dialog_title_delete_tournament">Удалить день рождения</string>
     <string name="alert_dialog_body_message">Вы уверены, что хотите удалить этот день рождения?</string>
 
     <!-- fragment show tournament -->
@@ -191,22 +191,22 @@
     </plurals>
 
     <!-- sharing strings tournament -->
-    <string name="share_birthday_name">%1$s</string>
-    <string name="share_birthday_date_start">Дата рождения: %1$s</string>
-    <string name="share_birthday_date_next">Следующий день рождения: %1$s</string>
-    <string name="share_birthday_days_today">Это сегодня!</string>
-    <plurals name="share_birthday_days">
+    <string name="share_tournament_name">%1$s</string>
+    <string name="share_tournament_date_start">Дата рождения: %1$s</string>
+    <string name="share_tournament_date_next">Следующий день рождения: %1$s</string>
+    <string name="share_tournament_days_today">Это сегодня!</string>
+    <plurals name="share_tournament_days">
         <item quantity="one">В %1$d день</item>
         <item quantity="few">Через %1$d дня</item>
         <item quantity="many">Через %1$d дней</item>
     </plurals>
 
     <!-- tournament event notifications -->
-    <string name="notification_title_birthday">%1$s</string>
-    <string name="notification_content_birthday_future">День рождения %1$ s  в %2$d дней.</string>
-    <string name="notification_content_birthday_tomorrow">завтра %1$ s день рождения!</string>
-    <string name="notification_content_birthday_today">СЕГОДНЯ %1$ s День рождения!</string>
-    <string name="notification_content_birthday_years_old">%1$s становится %2$d лет</string>
+    <string name="notification_title_tournament">%1$s</string>
+    <string name="notification_content_tournament_future">День рождения %1$ s  в %2$d дней.</string>
+    <string name="notification_content_tournament_tomorrow">завтра %1$ s день рождения!</string>
+    <string name="notification_content_tournament_today">СЕГОДНЯ %1$ s День рождения!</string>
+    <string name="notification_content_tournament_years_old">%1$s становится %2$d лет</string>
 
     <!--- ANNUAL EVENT -->
     <!-- annual event view -->
@@ -346,7 +346,7 @@
     <!-- main menu -->
     <string name="main_menu_item_about">О проекте</string>
     <string name="main_menu_item_help">Помощь</string>
-    <string name="fab_event_list_birthday_title">Новый день рождения</string>
+    <string name="fab_event_list_tournament_title">Новый день рождения</string>
     <string name="fab_event_list_annual_event_title">Новое ежегодное событие</string>
     <string name="fab_event_list_one_time_event_title">Новое разовое событие</string>
 
@@ -377,18 +377,18 @@
 
     <string name="dialog_export_data_title">Сохранение событий</string>
     <string name="dialog_import_data_title">Импорт событий</string>
-    <string name="dialog_import_data_text">Это приведёт к попытке импорта данных из внешнего хранилища.\n\nЕсли что-то идёт не так, проверьте наличие файлов событий в этой папке: %1$s/birthdaybuddy</string>
-    <string name="dialog_export_data_text">Это приведёт к попытке сохранить все ваши данные в текстовом виде во внешнем хранилище. Оттуда вы сможете восстановить данные в любое время. Изображение не будут сохранены.\nЕсли ваше внешнее хранилище - SD-карта, вы можете импортировать данные с разных телефонов\n\n: %1$s/birthdaybuddy</string>
+    <string name="dialog_import_data_text">Это приведёт к попытке импорта данных из внешнего хранилища.\n\nЕсли что-то идёт не так, проверьте наличие файлов событий в этой папке: %1$s/belaruschess</string>
+    <string name="dialog_export_data_text">Это приведёт к попытке сохранить все ваши данные в текстовом виде во внешнем хранилище. Оттуда вы сможете восстановить данные в любое время. Изображение не будут сохранены.\nЕсли ваше внешнее хранилище - SD-карта, вы можете импортировать данные с разных телефонов\n\n: %1$s/belaruschess</string>
 
     <!-- help texts -->
     <string name="help_title_reason">Почему стоит использовать это приложение?</string>
-    <string name="help_title_Birthday">Как я могу добавить турнир?</string>
+    <string name="help_title_tournament">Как я могу добавить турнир?</string>
     <string name="help_title_Annual">Зачем мне подтверждать свои персональные данные?</string>
     <string name="help_title_OneTime">Какие обновления ожидаются в будущем?</string>
     <string name="help_title_support">Как я могу поддержать разработку?</string>
     <string name="help_title_notifications">Уведомления о моих событиях отображаются неправильно!</string>
-    <string name="help_content_reason">Задача этого приложения - напоминать вам о предстоящих днях рождения или годовщинах. Но почему бы не использовать для этого Facebook или Календарь Google?\nЭто приложение имеет некоторые преимущества. Во-первых: оно не требует наличия дополнительной учетной записи. Также здесь нет никакой рекламы и надоедливых всплывающих окон.\nЕщё одним важным моментом является конфиденциальность. В отличие от многих других приложений, BirthdayBuddy хранит ваши данные только локально на устройстве. Никто, кроме вас, не видит, что вы записываете здесь.</string>
-    <string name="help_content_Birthday">День рождения - праздник, происходящий один раз в году для каждого человека. BirthdayBuddy даёт вам возможность ввести год рождения, чтобы в дальнейшем вы могли видеть возраст человека. Кроме того, вы можете добавить к каждому человеку описание или свои заметки, а также псевдоним. Приложение напоминает о днях рождения каждый год(если вы не измените это в настройках).</string>
+    <string name="help_content_reason">Задача этого приложения - напоминать вам о предстоящих днях рождения или годовщинах. Но почему бы не использовать для этого Facebook или Календарь Google?\nЭто приложение имеет некоторые преимущества. Во-первых: оно не требует наличия дополнительной учетной записи. Также здесь нет никакой рекламы и надоедливых всплывающих окон.\nЕщё одним важным моментом является конфиденциальность. В отличие от многих других приложений, BelaruChess хранит ваши данные только локально на устройстве. Никто, кроме вас, не видит, что вы записываете здесь.</string>
+    <string name="help_content_tournament">День рождения - праздник, происходящий один раз в году для каждого человека. BelaruChess даёт вам возможность ввести год рождения, чтобы в дальнейшем вы могли видеть возраст человека. Кроме того, вы можете добавить к каждому человеку описание или свои заметки, а также псевдоним. Приложение напоминает о днях рождения каждый год(если вы не измените это в настройках).</string>
     <string name="help_content_Annual">Ежегодные события - это то, что происходит каждый год. Это может быть, к примеру, годовщина свадьбы друга. Вы можете указать начальную дату с годом, чтобы знать, сколько лет прошло с тех пор. Приложение будет напоминать вам о таких событиях каждый год (если вы не измените это в настройках).</string>
     <string name="help_content_OneTime">Разовые события - это события, которые произойдут в будущем (например, вечеринки или разовые специальные мероприятия). На следующий день после события оно автоматически удаляется!</string>
     <string name="help_content_support">Для меня разработка программ и приложений для других - интересное занятие. И еще интереснее, если пользователям нравится приложение или они справедливо критикуют что-либо из его функций. Рекомендую всем, кто хочет поддержать меня, каким-либо образом оценить это приложение. Если вам этого недостаточно, вы также можете участвовать в разработке проекта через GitHub (см. «О программе»). В противном случае, я был бы очень рад небольшому пожертвованию на PayPal (https://www.paypal.me/Procrastimax). Это поможет мне в разработке следующих проектов для вас ;)</string>
