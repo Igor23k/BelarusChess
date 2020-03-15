@@ -37,6 +37,26 @@ class CountryConnection {
         })
     }
 
+    fun getCountries() {
+        App.getAPI().countries.enqueue(object : Callback<List<CountryDTO>> {
+            override fun onResponse(call: Call<List<CountryDTO>>, response: Response<List<CountryDTO>>) {
+                if (response.isSuccessful) {
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack!!.onResponse(response.body())
+                    } else {
+                        callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                    }
+                } else {
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                }
+            }
+
+            override fun onFailure(call: Call<List<CountryDTO>>, t: Throwable) {
+                callBack!!.onFailure(Util.buildOnFailureResponse())
+            }
+        })
+    }
+
     fun attachPresenter(callBack: CallBackCountry) {
         this.callBack = callBack
     }

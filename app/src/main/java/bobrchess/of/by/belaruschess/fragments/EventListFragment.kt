@@ -32,6 +32,7 @@ import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
 import bobrchess.of.by.belaruschess.adapter.EventAdapter
 import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
+import bobrchess.of.by.belaruschess.dto.CountryDTO
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -50,6 +51,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
     private var searchUserPresenter: SearchUserPresenter? = null
     private var ranks: List<RankDTO>? = null
+    private var countries: List<CountryDTO>? = null
+    private var users: List<UserDTO>? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -59,10 +62,15 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         return inflater.inflate(R.layout.fragment_event_list, container, false)
     }
 
-    var itemsListType = object : TypeToken<List<RankDTO>>() {}.type
+
+    var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
+    var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
+    var userItemsListType = object : TypeToken<List<UserDTO>>() {}.type
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        ranks = Gson().fromJson(arguments?.getString("ranks"), itemsListType)
+        ranks = Gson().fromJson(arguments?.getString("ranks"), rankItemsListType)
+        countries = Gson().fromJson(arguments?.getString("countries"), countryItemsListType)
+        users = Gson().fromJson(arguments?.getString("users"), userItemsListType)
 
         super.onViewCreated(view, savedInstanceState)
 
@@ -93,7 +101,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks, countries, users)
 
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).apply {
             setHasFixedSize(true)
@@ -427,12 +435,14 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         updateTournamentFragments()
     }
 
-
     override fun showUsers(users: List<UserDTO>?) {
+        this.users = users
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         users!!.forEach {
             val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate(it.birthday)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!, it.surname!!)
             event.rankId = it.rank?.id
+            event.countryId = it.country?.id
+            event.coachId = it.coach?.id
             event.rating = it.rating
             event.imageUri = it.image
             event.patronymic = it.patronymic
@@ -449,14 +459,25 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         updateTournamentFragments()
     }
 
-
     private fun updateTournamentFragments() {
         val bundle = Bundle()
         val gson = GsonBuilder().setPrettyPrinting().create()
-        val jsonList = gson.toJson(ranks)
+        val ranksList = gson.toJson(ranks)
+        val countriesList = gson.toJson(countries)
+        val usersList = gson.toJson(users)
         bundle.putString(
                 "ranks",
-                jsonList
+                ranksList
+        )
+
+        bundle.putString(
+                "countries",
+                countriesList
+        )
+
+        bundle.putString(
+                "users",
+                usersList
         )
 
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()

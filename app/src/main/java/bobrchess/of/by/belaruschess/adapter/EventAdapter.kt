@@ -10,18 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
+import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.fragments.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import bobrchess.of.by.belaruschess.fragments.OneTimeEventInstanceFragment
-import bobrchess.of.by.belaruschess.fragments.ShowOneTimeEvent
-import bobrchess.of.by.belaruschess.fragments.TournamentInstanceFragment
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.model.MonthDivider
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
 import kotlinx.android.synthetic.main.one_time_event_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.*
@@ -39,11 +39,15 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var context: Context? = null
     private var fragmentManager: FragmentManager? = null
     private var ranks: List<RankDTO>? = null
+    private var countries: List<CountryDTO>? = null
+    private var users: List<UserDTO>? = null
 
-    constructor(context: Context, fragmentManager: FragmentManager, ranks: List<RankDTO>?) : this() {
+    constructor(context: Context, fragmentManager: FragmentManager, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?) : this() {
         this.context = context
         this.fragmentManager = fragmentManager
         this.ranks = ranks
+        this.countries = countries
+        this.users = users
     }
     var isClickable: Boolean = true
 
@@ -299,7 +303,29 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 )
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
-                                val newBirthdayFragment = ShowTournamentEvent.newInstance()
+                                val newBirthdayFragment = ShowUserEvent.newInstance()
+
+
+                                val gson = GsonBuilder().setPrettyPrinting().create()
+                                val ranksList = gson.toJson(ranks)
+                                val countriesList = gson.toJson(countries)
+                                val coach = user.coachId?.toInt()?.let { it1 -> users?.get(it1) }
+                                if(coach != null) {
+                                    bundle.putString(
+                                            "coach",
+                                            gson.toJson(coach)
+                                    )
+                                }
+                                bundle.putString(
+                                        "ranks",
+                                        ranksList
+                                )
+
+                                bundle.putString(
+                                        "countries",
+                                        countriesList
+                                )
+
                                 newBirthdayFragment.arguments = bundle
                                 ft.replace(
                                         R.id.fragment_placeholder,

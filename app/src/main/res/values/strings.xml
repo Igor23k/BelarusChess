@@ -68,7 +68,10 @@
     <string name="userRating_number">1900</string>
     <string name="user_full_name_placeholder">%1$s %2$s</string>
     <string name="dash">-</string>
-    <string name="absence">Absence</string>//bug перевести нормально(отсутствие выбора)
+    <string name="absence">Absence</string>
+    <string name="rank_absence">Rank is absence</string>
+    <string name="coach_absence">Coach is absence</string>
+    <string name="coach">Coach:</string>
     <string name="notSelected">Not selected</string>
     <string name="chooseReferee">Choose a referee</string>
     <string name="choosePlace">Choose a place</string>

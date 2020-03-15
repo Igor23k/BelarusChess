@@ -50,6 +50,12 @@ class EventUser(
         },
         RankId {
             override fun Identifier(): Int = 7
+        },
+        CountryId {
+            override fun Identifier(): Int = 8
+        },
+        CoachId {
+            override fun Identifier(): Int = 9
         }
     }
 
@@ -58,6 +64,8 @@ class EventUser(
     var imageUri: String? = null
     var rating: Int? = null
     var rankId: Int? = null
+    var countryId: Int? = null
+    var coachId: Long? = null
 
 
     /**
@@ -78,7 +86,9 @@ class EventUser(
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.AvatarUri, this.imageUri) +
                 getStringFromValue(Identifier.Rating, this.rating) +
-                getStringFromValue(Identifier.RankId, this.rankId)
+                getStringFromValue(Identifier.RankId, this.rankId) +
+                getStringFromValue(Identifier.CountryId, this.countryId) +
+                getStringFromValue(Identifier.CoachId, this.coachId)
     }
 
     /**
@@ -98,7 +108,9 @@ class EventUser(
                 getStringFromValue(Identifier.Patronymic, this.patronymic) +
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.Rating, this.rating) +
-                getStringFromValue(Identifier.RankId, this.rankId)
+                getStringFromValue(Identifier.RankId, this.rankId) +
+                getStringFromValue(Identifier.CountryId, this.countryId) +
+                getStringFromValue(Identifier.CoachId, this.coachId)
     }
 
     companion object {

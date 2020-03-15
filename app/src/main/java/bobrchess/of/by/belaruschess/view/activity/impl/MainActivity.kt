@@ -12,13 +12,13 @@ import android.support.v4.app.Fragment
 import android.util.TypedValue
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.fragments.ShowTournamentEvent
+import bobrchess.of.by.belaruschess.fragments.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.presenter.RankPresenter
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
@@ -27,13 +27,10 @@ import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import com.google.gson.GsonBuilder
-import bobrchess.of.by.belaruschess.fragments.EventListFragment
-import bobrchess.of.by.belaruschess.fragments.OneTimeEventInstanceFragment
-import bobrchess.of.by.belaruschess.fragments.ShowOneTimeEvent
-import bobrchess.of.by.belaruschess.fragments.TournamentInstanceFragment
-import bobrchess.of.by.belaruschess.model.EventTournament
-import bobrchess.of.by.belaruschess.model.MonthDivider
-import bobrchess.of.by.belaruschess.model.OneTimeEvent
+import bobrchess.of.by.belaruschess.model.*
+import bobrchess.of.by.belaruschess.presenter.CountryPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.CountryPresenterImpl
+import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -41,12 +38,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPresenterCallBack {
+class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPresenterCallBack, CountryPresenterCallBack {
 
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
     private var progressDialog: ProgressDialog? = null
     private var rankPresenter: RankPresenter? = null
-    private var ranks: List<RankDTO>? = null
+    private var countryPresenter: CountryPresenter? = null
+    private var ranks: List<RankDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
+    private var countries: List<CountryDTO>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +60,11 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         rankPresenter!!.attachView(this)
         rankPresenter!!.viewIsReady()
         rankPresenter!!.getRanks()
+
+        countryPresenter = CountryPresenterImpl()
+        countryPresenter!!.attachView(this)
+        countryPresenter!!.viewIsReady()
+        countryPresenter!!.getCountries()
 
         EventHandler.clearData()
         IOHandler.registerIO(this)
@@ -135,6 +139,13 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
                         ShowTournamentEvent.newInstance()
                     } else {
                         TournamentInstanceFragment.newInstance()
+                    }
+                }
+                is EventUser -> {
+                    if (type == FRAGMENT_TYPE_SHOW) {
+                        ShowUserEvent.newInstance()
+                    } else {
+                        UserInstanceFragment.newInstance()
                     }
                 }
                 /* is AnnualEvent -> {
@@ -292,10 +303,16 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
     private fun updateTournamentFragments(){
         val bundle = Bundle()
         val gson = GsonBuilder().setPrettyPrinting().create()
-        val jsonList = gson.toJson(ranks)
+        val ranksList = gson.toJson(ranks)
+        val countriesList = gson.toJson(countries)
         bundle.putString(
                 "ranks",
-                jsonList
+                ranksList
+        )
+
+        bundle.putString(
+                "countries",
+                countriesList
         )
 
         val transaction = supportFragmentManager.beginTransaction()
@@ -335,6 +352,8 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
     }
 
     var tournamentsAreLoaded = false
+    var countriesAreLoaded = false
+    var ranksAreLoaded = false
 
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         //разделить тут по методам, вынести отдалельно
@@ -413,9 +432,24 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
 
     }
 
+    override fun countryIsLoaded(countryDTO: CountryDTO?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun countriesAreLoaded(list: MutableList<CountryDTO>?) {
+        this.countries = list
+        countriesAreLoaded = true
+        updateFragments()
+    }
+
     override fun ranksAreLoaded(ranks: MutableList<RankDTO>?) {//todo сделать чтобы это выполнилось ТОЧНО раньше чем основной код где это используется
         this.ranks = ranks
-        if (tournamentsAreLoaded) {
+        ranksAreLoaded = true
+        updateFragments()
+    }
+
+    private fun updateFragments() {
+        if(ranksAreLoaded && tournamentsAreLoaded && countriesAreLoaded) {
             updateTournamentFragments()
         }
     }

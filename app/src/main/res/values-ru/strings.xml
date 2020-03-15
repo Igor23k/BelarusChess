@@ -68,6 +68,9 @@
     <string name="position_number">Место:</string>
     <string name="dash">-</string>
     <string name="absence">Отсутствует</string>
+    <string name="rank_absence">Звание отсутствует</string>
+    <string name="coach_absence">Тренер отсутствует</string>
+    <string name="coach">Тренер:</string>
     <string name="notSelected">Не выбрано</string>
     <string name="chooseReferee">Выберите судью</string>
     <string name="choosePlace">Выберите место</string>
@@ -176,7 +179,7 @@
 
     <!-- fragment show tournament -->
     <string name="intent_share_chooser_title">Поделиться записью</string>
-    <string name="person_show_date">Дата рождения:\n%1$s</string>
+    <string name="person_show_date">Дата рождения: %1$s</string>
     <string name="person_days_until_today">День рождения у %1$s сегодня!</string>
     <plurals name="person_days_until">
         <item quantity="one">Следующий день рождения через %2$d день - %3$s.</item>

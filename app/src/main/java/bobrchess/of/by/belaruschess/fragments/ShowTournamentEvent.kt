@@ -45,9 +45,9 @@ class ShowTournamentEvent : ShowEventFragment() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
         EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
             if (tournamentEvent is EventTournament) {
-                    this.tournament_name.text = tournamentEvent.name
-                    this.tournament_short_description.visibility = TextView.VISIBLE
-                    this.tournament_short_description.text = tournamentEvent.shortDescription
+                    this.user_rank.text = tournamentEvent.name
+                    this.user_coach.visibility = TextView.VISIBLE
+                    this.user_coach.text = tournamentEvent.shortDescription
 
                 var scrollRange = -1
                 (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
@@ -85,7 +85,7 @@ class ShowTournamentEvent : ShowEventFragment() {
 
                 tv_show_birthday_years_old.text = tournamentEvent.fullDescription
 
-                tournament_start_date.text = date
+                user_start_date.text = date
                    // context!!.resources.getString(R.string.person_show_date, startDate)
 
              /*   //show adapted string for 1 day, not 1 days
