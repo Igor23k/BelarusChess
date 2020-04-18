@@ -15,11 +15,14 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.MonthDivider
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.*
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
+import kotlinx.android.synthetic.main.tournament_result_event_item_view.view.*
 
 class EventAdapterSearching(private val context: Context, private val eventIDs: List<Int>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class BirthdayEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class TournamentEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    class OneTimeEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     class EventMonthDividerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -54,12 +57,12 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
                 val itemView =
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.tournament_event_item_view, parent, false)
-                return BirthdayEventViewHolder(itemView)
+                return TournamentEventViewHolder(itemView)
             }
             else -> {
                 //Default is birthday event
                 val itemView = View(context)
-                return BirthdayEventViewHolder(itemView)
+                return TournamentEventViewHolder(itemView)
             }
         }
     }
@@ -199,24 +202,24 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
                         //when called from MainActivity
                         if (context is MainActivity) {
                             if (avatarUri != null) {
-                                holder.itemView.iv_birthday_event_item_image.setImageBitmap(
+                                holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
                                     BitmapHandler.getBitmapAt(
                                         birthdayEvent.eventID
                                     )
                                 )
                             } else {
-                                holder.itemView.iv_birthday_event_item_image.setImageResource(R.drawable.ic_birthday_person)
+                                holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)
                             }
                         } else {
                             //called from search activity
                             if (avatarUri != null) {
-                                holder.itemView.iv_birthday_event_item_image.setImageBitmap(
+                                holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
                                     BitmapHandler.getBitmapAt(
                                         birthdayEvent.eventID
                                     )
                                 )
                             } else {
-                                holder.itemView.iv_birthday_event_item_image.setImageResource(R.drawable.ic_birthday_person)
+                                holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)
                             }
                         }
                     }

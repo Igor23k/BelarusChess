@@ -26,7 +26,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/user_rank"
+            android:id="@+id/user_country_and_rank_and_rating"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -38,7 +38,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
-            tools:text="Forename" />
+            tools:text="Belarus, Kandidate, 2000" />
 
         <TextView
             android:id="@+id/user_coach"
@@ -49,12 +49,12 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/user_rank"
-            app:layout_constraintTop_toBottomOf="@+id/user_rank"
-            tools:text="Surname" />
+            app:layout_constraintStart_toStartOf="@+id/user_country_and_rank_and_rating"
+            app:layout_constraintTop_toBottomOf="@+id/user_country_and_rank_and_rating"
+            tools:text="Coach is absence" />
 
         <TextView
-            android:id="@+id/user_start_date"
+            android:id="@+id/user_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -64,10 +64,10 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/user_coach"
             app:layout_constraintTop_toBottomOf="@+id/user_coach"
-            tools:text="Date" />
+            tools:text="Born on 11 снежня 2014 г." />
 
         <TextView
-            android:id="@+id/user_full_description"
+            android:id="@+id/user_tournaments_results"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -77,12 +77,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_show_birthday_years_old"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_birthday_years_old"
-            tools:text="Note" />
+            app:layout_constraintStart_toStartOf="@+id/something"
+            app:layout_constraintTop_toBottomOf="@+id/something"
+            tools:text="User tournaments results" />
 
         <TextView
-            android:id="@+id/tv_show_birthday_days"
+            android:id="@+id/something"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -90,11 +90,23 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/user_start_date"
-            app:layout_constraintTop_toBottomOf="@+id/user_start_date"
-            tools:text="Days" />
+            app:layout_constraintStart_toStartOf="@+id/user_birthday"
+            app:layout_constraintTop_toBottomOf="@+id/user_birthday"
+            tools:text="SOMETHING HERE" />
 
-        <TextView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewTournamentsResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintBottom_toBottomOf="@+id/something"
+            app:layout_constraintEnd_toEndOf="@+id/something"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/something"
+            app:layout_constraintTop_toTopOf="@+id/something"
+            app:layout_constraintVertical_bias="0.0" />
+      <!--  <TextView
             android:id="@+id/tv_show_birthday_years_old"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,7 +117,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tv_show_birthday_days"
             app:layout_constraintTop_toBottomOf="@+id/tv_show_birthday_days"
-            tools:text="Years" />
+            tools:text="Years" />-->
 
     </android.support.constraint.ConstraintLayout>
 </android.widget.ScrollView>

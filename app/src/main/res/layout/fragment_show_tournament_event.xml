@@ -26,7 +26,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/user_rank"
+            android:id="@+id/user_country_and_rank_and_rating"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -49,12 +49,12 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/user_rank"
-            app:layout_constraintTop_toBottomOf="@+id/user_rank"
+            app:layout_constraintStart_toStartOf="@+id/user_country_and_rank_and_rating"
+            app:layout_constraintTop_toBottomOf="@+id/user_country_and_rank_and_rating"
             tools:text="Surname" />
 
         <TextView
-            android:id="@+id/user_start_date"
+            android:id="@+id/user_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -67,7 +67,7 @@
             tools:text="Date" />
 
         <TextView
-            android:id="@+id/user_full_description"
+            android:id="@+id/user_tournaments_results"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -82,7 +82,7 @@
             tools:text="Note" />
 
         <TextView
-            android:id="@+id/tv_show_birthday_days"
+            android:id="@+id/something"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -90,8 +90,8 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/user_start_date"
-            app:layout_constraintTop_toBottomOf="@+id/user_start_date"
+            app:layout_constraintStart_toStartOf="@+id/user_birthday"
+            app:layout_constraintTop_toBottomOf="@+id/user_birthday"
             tools:text="Days" />
 
         <TextView
@@ -103,8 +103,8 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_show_birthday_days"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_birthday_days"
+            app:layout_constraintStart_toStartOf="@+id/something"
+            app:layout_constraintTop_toBottomOf="@+id/something"
             tools:text="Years" />
 
     </android.support.constraint.ConstraintLayout>

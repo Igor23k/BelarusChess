@@ -71,7 +71,7 @@ class TournamentActivity : AbstractActivity(), TournamentContractView {
 
 
         presenter = TournamentPresenterImpl()
-        presenter!!.attachView(this)
+   //     presenter!!.attachView(this)
         setSupportActionBar(toolbar)
         presenter!!.viewIsReady()
         //loadTournamentData()

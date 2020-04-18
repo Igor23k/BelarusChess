@@ -52,12 +52,16 @@ object EventHandler {
 
         this.event_map[event.eventID] = event
 
-        if (((event is EventTournament) || (event is EventUser)) && addBitmap) {
-            var imageUri:String? = null
-            if(event is EventTournament) {
+
+        if (((event is EventTournament) || (event is EventUser) || (event is EventTournamentResult)) && addBitmap) {
+            var imageUri: String? = null
+            if (event is EventTournament) {
                 imageUri = event.imageUri
             }
-            if(event is EventUser) {
+            if (event is EventUser) {
+                imageUri = event.imageUri
+            }
+            if (event is EventTournamentResult) {
                 imageUri = event.imageUri
             }
             Thread(Runnable {

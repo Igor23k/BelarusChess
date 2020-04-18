@@ -9,28 +9,31 @@ import java.util.List;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentResultDTO;
 import bobrchess.of.by.belaruschess.network.connection.UserInfoConnection;
+import bobrchess.of.by.belaruschess.presenter.TournamentsResultPresenter;
 import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUserInfo;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
+import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView;
 import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView;
 
 /**
  * Created by Igor on 11.04.2018.
  */
 
-public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresenter {
+public class TournamentsResultPresenterImpl implements CallBackUserInfo, TournamentsResultPresenter {
 
-    private UserInfoContractView contractView;
+    private TournamentsResultContractView contractView;
     private UserInfoConnection userInfoConnection;
     private Boolean viewIsReady = false;
     private Integer connectivityStatus = 0;
     private PackageModel packageModel;
 
-    public UserInfoPresenterImpl() {
+    public TournamentsResultPresenterImpl() {
         userInfoConnection = new UserInfoConnection();
         userInfoConnection.attachPresenter(this);
     }
+
 
     @Override
     public void onResponse(@NonNull List<TournamentResultDTO> tournamentResults) {
@@ -39,20 +42,17 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
 
     @Override
     public void onFailure(@NonNull ErrorDTO errorDTO) {
-        contractView.hideProgress();
-        contractView.showToast(errorDTO.getError());
+
     }
 
     @Override
-    public void attachView(@NonNull UserInfoContractView contractView) {
+    public void attachView(@NonNull TournamentsResultContractView contractView) {
         this.contractView = contractView;
     }
 
     @Override
     public void loadUserTournamentsResults() {
-        if (viewIsReady) {
-            userInfoConnection.getTournamentsResults();
-        }
+        userInfoConnection.getTournamentsResults();
     }
 
     public void detachView() {
@@ -60,7 +60,6 @@ public class UserInfoPresenterImpl implements CallBackUserInfo, UserInfoPresente
     }
 
     public void viewIsReady() {
-        viewIsReady = true;
     }
 
     @Override

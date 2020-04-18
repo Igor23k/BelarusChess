@@ -148,6 +148,8 @@
     <string name="event_type_one_time_event">One time event</string>
     <string name="rating">Rating</string>
     <string name="rank">Rank</string>
+    <string name="place">Place</string>
+    <string name="points">Points</string>
 
     <!-- tournament event view -->
     <string name="alert_dialog_missing_avatar_img_title">Error when trying to load image!</string>

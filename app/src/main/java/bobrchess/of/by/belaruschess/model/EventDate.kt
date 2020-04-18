@@ -1,6 +1,7 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import org.springframework.util.StringUtils
 import java.math.RoundingMode
 import java.text.DateFormat
 import java.text.DecimalFormat
@@ -20,16 +21,16 @@ import java.util.concurrent.TimeUnit
  * @param _eventDate the startDate of the event
  * @author Procrastimax
  */
-open class EventDate: Comparable<EventDate> {
+open class EventDate : Comparable<EventDate> {
 
     var eventID: Int = 0
 
-    constructor(_eventDate: Date, id: Int){
+    constructor(_eventDate: Date, id: Int) {
         eventID = id
         eventDate = _eventDate
     }
 
-    constructor(_eventDate: Date){
+    constructor(_eventDate: Date) {
         eventDate = _eventDate
     }
 
@@ -306,11 +307,14 @@ open class EventDate: Comparable<EventDate> {
          */
         @JvmStatic
         fun parseStringToDate(
-                date_string: String,
+                date_string: String?,
                 format: Int = DateFormat.DEFAULT,
                 locale: Locale = Locale.getDefault()
         ): Date {
-            return DateFormat.getDateInstance(format, locale).parse(date_string)
+            if (!StringUtils.isEmpty(date_string)) {
+                return DateFormat.getDateInstance(format, locale).parse(date_string)
+            }
+            return Date();
         }
 
         @JvmStatic

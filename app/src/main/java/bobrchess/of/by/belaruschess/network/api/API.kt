@@ -30,6 +30,12 @@ interface API {
     @get:GET("/tournaments")
     val tournaments: Call<List<TournamentDTO>>
 
+    @GET("/tournamentsResultByUser/{userId}/{limit}")
+    fun getTournamentsResultByUser(@Path("userId") id: Int, @Path("limit") limit: Int): Call<List<TournamentResultDTO>>
+
+    @GET("/tournamentsResultByUser/{userId}")
+    fun getTournamentsResultByUser(@Path("userId") id: Int): Call<List<TournamentResultDTO>>
+
     @get:GET("/games")
     val games: Call<List<GameDTO>>
 

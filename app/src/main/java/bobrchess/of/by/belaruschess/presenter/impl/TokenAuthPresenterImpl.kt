@@ -82,7 +82,11 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
                         view!!.unsuccessfulTokenAuth()
                     }
                 }
-            }//сделать дефолтное действие если ничего не нашел
+            }
+            else -> {
+                onServerUnavailable()//todo сделать другое дефолтное действие? хз
+            }
+
         }
     }
 

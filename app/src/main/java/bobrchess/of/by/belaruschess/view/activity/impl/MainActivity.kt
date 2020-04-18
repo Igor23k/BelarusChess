@@ -1,4 +1,3 @@
-
 package bobrchess.of.by.belaruschess.view.activity.impl
 
 import android.app.ProgressDialog
@@ -15,22 +14,17 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
 import bobrchess.of.by.belaruschess.fragments.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.presenter.RankPresenter
-import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
-import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
-import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
-import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
-import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import com.google.gson.GsonBuilder
 import bobrchess.of.by.belaruschess.model.*
-import bobrchess.of.by.belaruschess.presenter.CountryPresenter
-import bobrchess.of.by.belaruschess.presenter.impl.CountryPresenterImpl
-import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
+import bobrchess.of.by.belaruschess.presenter.*
+import bobrchess.of.by.belaruschess.presenter.impl.*
+import bobrchess.of.by.belaruschess.view.activity.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -46,6 +40,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
     private var countryPresenter: CountryPresenter? = null
     private var ranks: List<RankDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
     private var countries: List<CountryDTO>? = null
+    private var userTournamentsResult: List<TournamentResultDTO>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,14 +67,13 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
 
         if (!IOHandler.isFirstStart()) {
             //read all data from shared prefs, when app didnt start for the first time
-            IOHandler.clearSharedPrefEventData()
-           // loadTournamentsFromLocalStorage()
+            IOHandler.clearSharedPrefEventData()//todo
+            // loadTournamentsFromLocalStorage()
             loadTournaments()
         } else {
             //on first start write standard settings to shared prefs
             IOHandler.initializeAllSettings()
             addMonthDivider()
-            addTestEvent()
         }
         //updateTournamentFragments()
     }
@@ -124,60 +118,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
     }
 
     private fun startFragments(eventID: Int, type: String) {
-        val bundle = Bundle()
-        //do this in more adaptable way
-        bundle.putInt(
-                FRAGMENT_EXTRA_TITLE_EVENTID,
-                eventID
-        )
 
-        EventHandler.getEventToEventIndex(eventID)?.let { event ->
-
-            val eventFragment: Fragment? = when (event) {
-                is EventTournament -> {
-                    if (type == FRAGMENT_TYPE_SHOW) {
-                        ShowTournamentEvent.newInstance()
-                    } else {
-                        TournamentInstanceFragment.newInstance()
-                    }
-                }
-                is EventUser -> {
-                    if (type == FRAGMENT_TYPE_SHOW) {
-                        ShowUserEvent.newInstance()
-                    } else {
-                        UserInstanceFragment.newInstance()
-                    }
-                }
-                /* is AnnualEvent -> {
-                     if (type == FRAGMENT_TYPE_SHOW) {
-                         ShowAnnualEvent.newInstance()
-                     } else {
-                         AnnualEventInstanceFragment.newInstance()
-                     }
-                 }*/
-                is OneTimeEvent -> {
-                    if (type == FRAGMENT_TYPE_SHOW) {
-                        ShowOneTimeEvent.newInstance()
-                    } else {
-                        OneTimeEventInstanceFragment.newInstance()
-                    }
-                }
-                else -> {
-                    null
-                }
-            }
-            if (eventFragment != null) {
-                val ft = supportFragmentManager.beginTransaction()
-                // add arguments to fragment
-                eventFragment.arguments = bundle
-                ft.replace(
-                        R.id.fragment_placeholder,
-                        eventFragment
-                )
-                ft.addToBackStack(null)
-                ft.commit()
-            }
-        }
     }
 
     /**
@@ -300,11 +241,12 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         }
     }
 
-    private fun updateTournamentFragments(){
+    private fun updateTournamentFragments() {
         val bundle = Bundle()
         val gson = GsonBuilder().setPrettyPrinting().create()
         val ranksList = gson.toJson(ranks)
         val countriesList = gson.toJson(countries)
+        val userTournamentsList = gson.toJson(userTournamentsResult)
         bundle.putString(
                 "ranks",
                 ranksList
@@ -313,6 +255,11 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         bundle.putString(
                 "countries",
                 countriesList
+        )
+
+        bundle.putString(
+                "tournamentsResult",
+                userTournamentsList
         )
 
         val transaction = supportFragmentManager.beginTransaction()
@@ -347,7 +294,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         }
     }
 
-    fun loadTournamentsFromLocalStorage(){
+    fun loadTournamentsFromLocalStorage() {
         IOHandler.readAll(this)
     }
 
@@ -416,18 +363,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         }*/
     }
 
-    private fun addTestEvent() {
-        EventHandler.addEvent(
-                EventTournament(
-                        111,
-                        EventDate.parseStringToDate("09.02.19", DateFormat.DEFAULT, Locale.GERMAN),
-                        "Belarus Chess"
-                ),
-                this,
-                true
-        )
-    }
-
     override fun rankIsLoaded(rankDTO: RankDTO?) {
 
     }
@@ -449,7 +384,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
     }
 
     private fun updateFragments() {
-        if(ranksAreLoaded && tournamentsAreLoaded && countriesAreLoaded) {
+        if (ranksAreLoaded && tournamentsAreLoaded && countriesAreLoaded) {
             updateTournamentFragments()
         }
     }

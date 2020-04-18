@@ -12,6 +12,7 @@ import com.google.gson.JsonParser
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import org.springframework.util.StringUtils
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -279,6 +280,17 @@ class Util {
 
         fun isConnected(status: Int?): Boolean {
             return status != TYPE_NOT_CONNECTED
+        }
+
+        fun transformDate(dateString: String?): String? {
+            return try {
+                val bdFormat = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
+                val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
+                val date = bdFormat.parse(dateString)
+                newFormat.format(date)
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }

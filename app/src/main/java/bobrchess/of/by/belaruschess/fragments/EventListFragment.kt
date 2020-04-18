@@ -10,35 +10,28 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.adapter.EventAdapter
+import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
+import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.model.EventDate
+import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
+import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import bobrchess.of.by.belaruschess.model.EventTournament
-import bobrchess.of.by.belaruschess.model.EventUser
-import bobrchess.of.by.belaruschess.model.OneTimeEvent
-import bobrchess.of.by.belaruschess.adapter.EventAdapter
-import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
-import bobrchess.of.by.belaruschess.dto.CountryDTO
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
-
 
 class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserContractView {
 
@@ -52,6 +45,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
     private var searchUserPresenter: SearchUserPresenter? = null
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
+    private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
 
     override fun onCreateView(
@@ -61,7 +55,6 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_list, container, false)
     }
-
 
     var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
@@ -101,7 +94,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks, countries, users)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks, countries, users, userTournamentsResult)
 
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).apply {
             setHasFixedSize(true)
@@ -116,6 +109,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                 recyclerView.paddingRight,
                 (resources.getDimension(R.dimen.fab_margin) + resources.getDimension(R.dimen.fab_size_bigger)).toInt()
         )
+
 
         fab_show_fab_menu.setOnClickListener {
             if (isFABOpen) {
@@ -410,7 +404,6 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         //todo такой эе метод в мэйн активити, сделать один чтобы был
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
@@ -432,7 +425,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                     addBitmap = false
             )
         }
-        updateTournamentFragments()
+        updateFragments()
     }
 
     override fun showUsers(users: List<UserDTO>?) {
@@ -456,15 +449,17 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                     addBitmap = false
             )
         }
-        updateTournamentFragments()
+        updateFragments()
     }
 
-    private fun updateTournamentFragments() {
+    private fun updateFragments() {
         val bundle = Bundle()
         val gson = GsonBuilder().setPrettyPrinting().create()
         val ranksList = gson.toJson(ranks)
         val countriesList = gson.toJson(countries)
         val usersList = gson.toJson(users)
+        val userTournamentsList = gson.toJson(userTournamentsResult)
+
         bundle.putString(
                 "ranks",
                 ranksList
@@ -478,6 +473,11 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         bundle.putString(
                 "users",
                 usersList
+        )
+
+        bundle.putString(
+                "tournamentsResult",
+                userTournamentsList
         )
 
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
@@ -527,6 +527,13 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                         TournamentInstanceFragment.newInstance()
                     }
                 }
+                is EventTournamentResult -> {
+                    if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
+                        ShowTournamentEvent.newInstance()
+                    } else {
+                        TournamentInstanceFragment.newInstance()
+                    }
+                }
                 is EventUser -> {
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
                         ShowUserEvent.newInstance()
@@ -534,13 +541,6 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                         UserInstanceFragment.newInstance()//todo
                     }
                 }
-                /* is AnnualEvent -> {
-                     if (type == FRAGMENT_TYPE_SHOW) {
-                         ShowAnnualEvent.newInstance()
-                     } else {
-                         AnnualEventInstanceFragment.newInstance()
-                     }
-                 }*/
                 is OneTimeEvent -> {
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
                         ShowOneTimeEvent.newInstance()
@@ -563,17 +563,6 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                 ft?.addToBackStack(null)
                 ft?.commit()
             }
-        }
-    }
-
-    private fun transformDate(dateString: String?): String? {
-        return try {
-            val bdFormat = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
-            val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
-            val date = bdFormat.parse(dateString)
-            newFormat.format(date)
-        } catch (e: Exception) {
-            null
         }
     }
 

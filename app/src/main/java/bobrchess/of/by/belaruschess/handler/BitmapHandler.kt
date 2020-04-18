@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.EventTournamentResult
 import bobrchess.of.by.belaruschess.model.EventUser
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -128,6 +129,16 @@ object BitmapHandler {
                             addDrawable(
                                     EventHandler.getList()[i].eventID,
                                     Uri.parse((EventHandler.getList()[i] as EventUser).imageUri),
+                                    context,
+                                    readBitmapFromGallery = false
+                            )
+                }
+            } else if (EventHandler.getList()[i] is EventTournamentResult) {
+                if ((EventHandler.getList()[i] as EventTournamentResult).imageUri != null) {
+                    success =
+                            addDrawable(
+                                    EventHandler.getList()[i].eventID,
+                                    Uri.parse((EventHandler.getList()[i] as EventTournamentResult).imageUri),
                                     context,
                                     readBitmapFromGallery = false
                             )

@@ -22,17 +22,20 @@ import android.widget.*
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.PlaceDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
+import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
+import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import bobrchess.of.by.belaruschess.model.EventTournament
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -211,7 +214,6 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
 
         refereeSpinner.onItemSelectedListener = RefereeItemSelectedListener()
         placeSpinner.onItemSelectedListener = PlaceItemSelectedListener()
-
 
         if (IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_date_as_calendar_view) == false) {
             isCalendarViewSelected = false

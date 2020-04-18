@@ -6,20 +6,28 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.adapter.EventAdapter
+import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.RankDTO
+import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
+import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.EventTournamentResult
 import bobrchess.of.by.belaruschess.model.EventUser
+import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -27,6 +35,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_user_event.*
 import org.springframework.util.StringUtils
 import java.text.DateFormat
+import java.util.*
 
 /**
  * ShowTournamentEvent is a fragment to show all known data from a instance of EventTournament
@@ -36,12 +45,42 @@ import java.text.DateFormat
  */
 class ShowUserEvent : ShowEventFragment() {
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewAdapter: EventAdapter
+    private var isFABOpen = false
+
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
+    private var userTournamentsResult: ArrayList<TournamentResultDTO>? = null
     private var coach: UserDTO? = null
+
     var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
+    var userTournamentsResultItemsListType = object : TypeToken<List<TournamentResultDTO>>() {}.type
     var userItemsListType = object : TypeToken<UserDTO>() {}.type
+
+
+    private fun showTournamentsResults() {
+        IOHandler.clearSharedPrefEventData()
+        EventHandler.clearData()
+        var id = 0
+        userTournamentsResult?.forEach {
+            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            event.position = it.position
+            event.points = it.points
+            event.imageUri = "content://com.android.providers.media.documents/document/image%3A231741"
+            EventHandler.addEvent(
+                    event,
+                    context!!,
+                    writeAfterAdd = true,
+                    addNewNotification = false,
+                    updateEventList = true,
+                    addBitmap = false
+            )
+        }
+    }
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -49,9 +88,47 @@ class ShowUserEvent : ShowEventFragment() {
     ): View? {
         ranks = Gson().fromJson(arguments?.getString("ranks"), rankItemsListType)
         countries = Gson().fromJson(arguments?.getString("countries"), countryItemsListType)
+        userTournamentsResult = Gson().fromJson(arguments?.getString("tournamentsResult"), userTournamentsResultItemsListType)//удалить
         coach = Gson().fromJson(arguments?.getString("coach"), userItemsListType)
         (context as MainActivity).unlockAppBar()
-        return inflater.inflate(R.layout.fragment_show_tournament_event, container, false)
+        return inflater.inflate(R.layout.fragment_show_user_event, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+        showTournamentsResults()
+    }
+
+    private fun init() {
+        viewManager = LinearLayoutManager(view!!.context)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks, countries, null, userTournamentsResult)
+        recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerViewTournamentsResults).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+            scrollToPosition(traverseForFirstMonthEntry())
+        }
+
+        recyclerView.addItemDecoration(RecycleViewItemDivider(view!!.context))
+        recyclerView.setPadding(
+                recyclerView.paddingLeft,
+                recyclerView.paddingTop,
+                recyclerView.paddingRight,
+                (resources.getDimension(R.dimen.fab_margin) + resources.getDimension(R.dimen.fab_size_bigger)).toInt()
+        )
+    }
+
+    /**
+     * traverseForFirstMonthEntry is a function to get the position of the month item position of the current month
+     */
+    private fun traverseForFirstMonthEntry(): Int {
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        for (i in 0 until EventHandler.getList().size) {
+            if (EventHandler.getList()[i].getMonth() == currentMonth)
+                return i
+        }
+        return 0
     }
 
     /**
@@ -68,7 +145,7 @@ class ShowUserEvent : ShowEventFragment() {
                 }
                 val country = userEvent.countryId?.minus(1)?.let { countries?.get(it)?.name }
 
-                this.user_rank.text = "$country, $rank, ${userEvent.rating}"
+                this.user_country_and_rank_and_rating.text = "$country, $rank, ${userEvent.rating}"
 
 
                 this.user_coach.visibility = TextView.VISIBLE
@@ -112,54 +189,11 @@ class ShowUserEvent : ShowEventFragment() {
                 val date: String
                 date = userEvent.dateToPrettyString(DateFormat.LONG)
 
-                tv_show_birthday_years_old.text = "haha"//userEvent.surname
+                userTournamentsResult?.forEach{
+                    // user_tournaments_results.text = "Name - " + it.name + " Points - " + it.points +  " Position - " + it.position
+                }
 
-                user_start_date.text = resources.getString(R.string.person_show_date, date)
-                // context!!.resources.getString(R.string.person_show_date, startDate)
-
-                /*   //show adapted string for 1 day, not 1 days
-                   when (userEvent.getDaysUntil()) {
-                       0 -> {
-                           tv_show_birthday_days.text = resources.getString(
-                               R.string.person_days_until_today,
-                               userEvent.getName()
-                           )
-                       }
-                       1 -> {
-                           tv_show_birthday_days.text =
-                               resources.getQuantityString(
-                                   R.plurals.person_days_until,
-                                   userEvent.getDaysUntil(),
-                                   userEvent.getName(),
-                                   userEvent.getDaysUntil(),
-                                   EventDate.parseDateToString(
-                                       EventDate.dateToCurrentTimeContext(userEvent.eventDate),
-                                       DateFormat.FULL
-                                   ), userEvent.getWeeksUntilAsString()
-                               )
-                       }
-                       else -> {
-                           tv_show_birthday_days.text =
-                               resources.getQuantityString(
-                                   R.plurals.person_days_until,
-                                   userEvent.getDaysUntil(),
-                                   userEvent.getName(),
-                                   userEvent.getDaysUntil(),
-                                   EventDate.parseDateToString(
-                                       EventDate.dateToCurrentTimeContext(userEvent.eventDate),
-                                       DateFormat.FULL
-                                   ), userEvent.getWeeksUntilAsString()
-                               )
-                       }
-                   }*/
-
-                /* if (!userEvent.note.isNullOrBlank()) {
-                     this.tv_show_birthday_note.text =
-                         "${resources.getString(R.string.event_property_note)}: ${userEvent.note}"
-                     this.tv_show_birthday_note.visibility = TextView.VISIBLE
-                 } else {
-                     this.tv_show_birthday_note.visibility = TextView.GONE
-                 }*/
+                user_birthday.text = resources.getString(R.string.person_show_date, date)
                 updateAvatarImage()
             }
         }

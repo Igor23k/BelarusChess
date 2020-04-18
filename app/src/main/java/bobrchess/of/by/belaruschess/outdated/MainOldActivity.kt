@@ -59,7 +59,7 @@ class MainOldActivity : AbstractActivity(), MainOldContractView {
 
         toolbar = findViewById(R.id.toolbar)
         presenter = UserInfoPresenterImpl()
-        presenter!!.attachView(this)
+       // presenter!!.attachView(this) //todo хз нужна эта активите теперь или нет
 
         setSupportActionBar(toolbar)
 
@@ -71,7 +71,7 @@ class MainOldActivity : AbstractActivity(), MainOldContractView {
     }
 
     private fun loadUserTournaments() {
-        presenter!!.loadUserTournaments()
+        presenter!!.loadUserTournamentsResults()
     }
 
     override fun displayUserTournaments(tournaments: List<TournamentDTO>) {

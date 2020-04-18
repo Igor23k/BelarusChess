@@ -153,7 +153,8 @@
     <string name="event_type_one_time_event">Разовое событие</string>
     <string name="rating">Рейтинг</string>
     <string name="rank">Ранг</string>
-
+    <string name="place">Место</string>
+    <string name="points">Очки</string>
 
     <!-- tournament event view -->
     <string name="alert_dialog_missing_avatar_img_title">Ошибка при загрузке изображения!</string>

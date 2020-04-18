@@ -51,7 +51,7 @@ class RecycleViewItemDivider(private val context: Context) : RecyclerView.ItemDe
      */
     private fun isDecorated(view: View, parent: RecyclerView): Boolean {
         val holder: RecyclerView.ViewHolder = parent.getChildViewHolder(view)
-        return ((holder is EventAdapter.BirthdayEventViewHolder) || (holder is EventAdapter.AnnualEventViewHolder) || (holder is EventAdapter.OneTimeEventViewHolder) ||
-                (holder is EventAdapterSearching.BirthdayEventViewHolder)/* || (holder is EventAdapterSearching.AnnualEventViewHolder)*/ /*|| (holder is EventAdapterSearching.OneTimeEventViewHolder)*/)
+        return ((holder is EventAdapter.TournamentEventViewHolder) || (holder is EventAdapter.OneTimeEventViewHolder) ||
+                (holder is EventAdapterSearching.TournamentEventViewHolder) ||  (holder is EventAdapterSearching.OneTimeEventViewHolder))
     }
 }

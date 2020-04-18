@@ -44,7 +44,7 @@ class TournamentConnection {
                 if (response.isSuccessful) {
                     callBack!!.onResponse(response.body())
                 } else {
-                    //тут нужно блок экрана снимать и тд
+                    //todo тут нужно блок экрана снимать и тд
                 }
             }
 

@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.network.connection
 
 import bobrchess.of.by.belaruschess.App
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUserInfo
 import bobrchess.of.by.belaruschess.util.Util
 import org.apache.commons.httpclient.HttpStatus
@@ -17,9 +18,9 @@ class UserInfoConnection {
 
     private var callBack: CallBackUserInfo? = null
 
-    fun getTournaments() {
-        App.getAPI().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
-            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
+    fun getTournamentsResults() {
+        App.getAPI().getTournamentsResultByUser(4).enqueue(object : Callback<List<TournamentResultDTO>> {
+            override fun onResponse(call: Call<List<TournamentResultDTO>>, response: Response<List<TournamentResultDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -31,7 +32,7 @@ class UserInfoConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
+            override fun onFailure(call: Call<List<TournamentResultDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
