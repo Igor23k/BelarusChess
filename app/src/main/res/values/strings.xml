@@ -57,6 +57,7 @@
     <string name="connection_error">Connection error!</string>
     <string name="incorrect_email">Incorrect email! Please, try again.</string>
     <string name="incorrect_rating">Incorrect rating! Please, try again.</string>
+    <string name="incorrect_data">Incorrect data! Please, try again.</string>
     <string name="incorrect_tournament_name">Incorrect tournament name! Please, try again.</string>
     <string name="incorrect_password">Incorrect password! Please, enter more than 4 characters.</string>
     <string name="description">Description</string>

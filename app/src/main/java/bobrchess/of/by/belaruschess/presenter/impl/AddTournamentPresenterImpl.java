@@ -58,7 +58,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     }
 
     @Override
-    public void onRefereeResponse(@NonNull List<UserDTO> referees) {
+    public void onRefereeResponse(@NonNull List<? extends UserDTO> referees) {
         saveRefereesIndexes(referees);
         view.setRefereeSpinnerAdapter(referees);
         checkIsViewReady();
@@ -149,7 +149,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
         }
     }
 
-    private void saveRefereesIndexes(List<UserDTO> referees) {
+    private void saveRefereesIndexes(List<? extends UserDTO> referees) {
         for (int i = 0; i < referees.size(); i++) {
             refereesIndexes.put(i, referees.get(i));
         }

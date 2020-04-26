@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.R;
+import bobrchess.of.by.belaruschess.dto.RegistrationUserDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.outdated.MainOldActivity;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
@@ -57,8 +58,8 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
     @BindView(R.id.e_email_input)
     EditText emailText;
 
-    /*@BindView(R.id.e_number_input)
-    EditText mobileText;*/
+    @BindView(R.id.e_number_input)
+    EditText mobileText;
 
     @BindView(R.id.e_password_input)
     EditText passwordText;
@@ -183,6 +184,10 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
             presenter.registration(getUserData());
         } catch (NumberFormatException e) {
             showToast(R.string.incorrect_rating);
+            enableButton();
+        } catch (Exception e) {
+            showToast(R.string.incorrect_data);
+            enableButton();
         }
     }
 
@@ -208,17 +213,18 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
         registrationButton.setEnabled(false);
     }
 
-    public UserDTO getUserData() throws NumberFormatException {
-        UserDTO userData = new UserDTO();
+    public RegistrationUserDTO getUserData() throws NumberFormatException {
+        RegistrationUserDTO userData = new RegistrationUserDTO();
         userData.setName(nameText.getText().toString());
         userData.setSurname(surnameText.getText().toString());
         userData.setPatronymic(patronymicText.getText().toString());
         userData.setEmail(emailText.getText().toString());
-        userData.setPhoneNumber("29292834");
+        userData.setPhoneNumber(mobileText.getText().toString());
         userData.setPassword(passwordText.getText().toString());
+        userData.setReEnterPassword(reEnterPasswordText.getText().toString());
         userData.setRating(Integer.parseInt(ratingText.getText().toString()));
         userData.setBirthday(birthday);
-        //  userData.setImage(getUploadedImage());
+        //  userData.setImage(getUploadedImage()); //todo
         return userData;
     }
 

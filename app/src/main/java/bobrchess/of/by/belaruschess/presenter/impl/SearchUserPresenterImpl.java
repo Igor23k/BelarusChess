@@ -72,10 +72,10 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
         viewIsReady = true;
     }
 
-
     @Override
-    public void onResponse(@NotNull List<UserDTO> usersDTO) {
-        view.showUsers(usersDTO);
+    public void onResponse(@NotNull List<? extends UserDTO> users) {
+        view.showUsers(users);
+
     }
 
     @Override

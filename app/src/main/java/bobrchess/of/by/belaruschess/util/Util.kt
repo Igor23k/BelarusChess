@@ -214,10 +214,10 @@ class Util {
             return false
         }
 
-        fun getUsersBasicData(users: MutableList<UserDTO>): MutableList<String> {
+        fun getUsersBasicData(users: MutableList<out UserDTO>?): MutableList<String> {
             val usersNames = ArrayList<String>()
             var user: UserDTO
-            for (i in users.indices) {
+            for (i in users!!.indices) {
                 user = users[i]
                 var rank = user.rank?.abbreviation
                 rank = if (!StringUtils.isEmpty(rank)) " ($rank)" else ""

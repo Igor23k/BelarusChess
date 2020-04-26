@@ -55,6 +55,7 @@
     <string name="connection_error">Ошибка соединения!</string>
     <string name="incorrect_email">Неверный email! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_rating">Неверный рейтинг! Пожалуйста, попробуйте еще раз.</string>
+    <string name="incorrect_data">Неверные данные! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_tournament_name">Неверное имя турнира! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_password">Неверный пароль! Подалуйста, введите более 4 символов.</string>
     <string name="nick">Ник</string>

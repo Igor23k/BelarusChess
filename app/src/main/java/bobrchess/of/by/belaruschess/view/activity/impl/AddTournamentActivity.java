@@ -209,7 +209,7 @@ public class AddTournamentActivity extends AbstractActivity implements AddTourna
 
 
     @Override
-    public void setRefereeSpinnerAdapter(List<UserDTO> referees) {
+    public void setRefereeSpinnerAdapter(List<? extends UserDTO> referees) {
 
     }
 

@@ -10,9 +10,11 @@ import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.INTERNAL_SERVER_ERROR
+import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_SERVER_UNAVAILABLE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.SERVER_UNAVAILABLE
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
+import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import bobrchess.of.by.belaruschess.util.Validator
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
@@ -99,11 +101,11 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     }
 
     override fun onServerUnavailable() {
-        when {
-            connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-            !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
-            else -> view!!.showSnackBar(viewComponent!!, R.string.serverIsUnavailable)
-        }
+         when {
+             connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+             !viewIsReady!! -> view!!.showAlertDialog(getInternalizedMessage(KEY_SERVER_UNAVAILABLE), R.string.serverIsUnavailableMessage, R.string.retry, false)
+             else -> view!!.showSnackBar(viewComponent!!, getInternalizedMessage(KEY_SERVER_UNAVAILABLE))
+         }
     }
 
     override fun loadSpinnersData() {
@@ -111,25 +113,30 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         loadCoaches()
     }
 
-    override fun registration(userDTO: UserDTO) {
+    override fun registration(userDTO: RegistrationUserDTO) {
         view!!.disableButton()
-        setUserData(userDTO)
         try {
+            fillUserBySpinnerValues(userDTO)
             Validator.validateUserData(userDTO)
+            setUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
-            userConnection.registration(userDTO)
+            userConnection.registration(UserDTO(userDTO))
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
             view!!.showSnackBar(viewComponent!!, e.localizedMessage)
         }
     }
 
-    private fun setUserData(@NonNull userDTO: UserDTO) {
-        if (selectedRankIndex != NOT_SELECTED_INDEX) {
-            if(selectedGenderIndex != ABSENCE_INDEX){
+    private fun fillUserBySpinnerValues(userDTO: RegistrationUserDTO) {
+        userDTO.selectedCoachIndex = selectedCoachIndex
+        userDTO.selectedCountryIndex = selectedCountryIndex
+        userDTO.selectedRankIndex = selectedRankIndex
+        userDTO.selectedGenderIndex = selectedGenderIndex
+    }
 
-            }
+    private fun setUserData(@NonNull userDTO: UserDTO) {
+        if (selectedRankIndex != NOT_SELECTED_INDEX && selectedGenderIndex != ABSENCE_INDEX) {
             userDTO.rank = ranksIndexes[selectedRankIndex.minus(2)]
         }
         if (selectedCountryIndex != NOT_SELECTED_INDEX) {

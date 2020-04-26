@@ -9,9 +9,11 @@ class Constants {
     companion object {
 
 
+
         val KEY_INVALID_EMAIL_OR_PASSWORD = "invalid_email_or_password"
         val KEY_UNSUCCESSFUL_REQUEST = "unsuccessful_request"
         val SERVER_UNAVAILABLE = "Server is unavailable"
+        val KEY_SERVER_UNAVAILABLE = "server_is_unavailable"
         val INTERNAL_SERVER_ERROR = "Internal Server Error"
         val KEY_SERVER_UNAVAILABLE_JSON_FORMAT = "server_unavailable_json_format"
         val KEY_TOKEN_IS_EXPIRED = "token_is_expired"
@@ -41,9 +43,14 @@ class Constants {
         val KEY_INCORRECT_USER_STATUS = "incorrect_user_status"
         val KEY_INCORRECT_USER_EMAIL = "incorrect_user_email"
         val KEY_INCORRECT_USER_PASSWORD = "incorrect_user_password"
+        val KEY_INCORRECT_USER_RE_ENTER_PASSWORD = "incorrect_user_re_enter_password"
         val KEY_INCORRECT_USER_RATING_BIG = "incorrect_user_rating_big"
         val KEY_INCORRECT_USER_RATING_SMALL = "incorrect_user_rating_small"
         val KEY_INCORRECT_USER_PHONE_NUMBER = "incorrect_user_phone_number"
+        val KEY_RANK_IS_NOT_SELECTED = "rank_is_not_selected"
+        val KEY_GENDER_IS_NOT_SELECTED = "gender_is_not_selected"
+        val KEY_COUNTRY_IS_NOT_SELECTED = "country_is_not_selected"
+        val KEY_COACH_IS_NOT_SELECTED = "coach_is_not_selected"
 
         val KEY_INCORRECT_COUNTRY_ID = "incorrect_country_id"
         val KEY_INCORRECT_COUNTRY_NAME = "incorrect_country_name"
@@ -91,8 +98,8 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS = "incorrect_tournament_team_count_points"
 
 
-        val HOST = "http://192.168.100.2:8080"
-        //val HOST = "http://192.168.43.96:8080"
+        //val HOST = "http://192.168.100.12:8080"
+        val HOST = "http://192.168.43.96:8080"
 
 
         @JvmField

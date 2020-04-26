@@ -69,7 +69,7 @@ class ShowUserEvent : ShowEventFragment() {
             val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.position = it.position
             event.points = it.points
-            event.imageUri = "content://com.android.providers.media.documents/document/image%3A231741"
+            event.imageUri = it.image
             EventHandler.addEvent(
                     event,
                     context!!,

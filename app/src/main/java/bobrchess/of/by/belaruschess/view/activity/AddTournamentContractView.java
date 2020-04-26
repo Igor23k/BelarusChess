@@ -15,7 +15,7 @@ import bobrchess.of.by.belaruschess.dto.UserDTO;
 public interface AddTournamentContractView extends MvpView, BaseContractView, ButtonContractView{
     void showIncorrectTournamentNameText();
     void addTournament();
-    void setRefereeSpinnerAdapter(List<UserDTO> referees);
+    void setRefereeSpinnerAdapter(List<? extends UserDTO> referees);
     void setPlaceSpinnerAdapter(List<PlaceDTO> places);
     void startActivity(TournamentDTO tournamentDTO);
     void tournamentAdded(TournamentDTO tournamentDTO);

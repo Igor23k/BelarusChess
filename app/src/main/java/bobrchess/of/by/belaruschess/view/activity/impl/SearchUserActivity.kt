@@ -134,7 +134,7 @@ class SearchUserActivity : AbstractActivity(), SearchUserContractView {
         presenter!!.loadUsers(count)
     }
 
-    override fun showUsers(users: MutableList<UserDTO>?) {
+    override fun showUsers(users: MutableList<out UserDTO>?) {
         when {
             usersAdapter != null -> {
                 usersAdapter!!.clearItems()

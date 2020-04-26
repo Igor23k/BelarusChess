@@ -11,9 +11,10 @@ import org.springframework.util.StringUtils
 
 object Validator {
     @Throws(IncorrectDataException::class)
-    fun validateUserData(userDTO: UserDTO?): Boolean {
+    fun validateUserData(userDTO: RegistrationUserDTO?): Boolean {
         val email = userDTO?.email
         val password = userDTO?.password
+        val reEnterPassword = userDTO?.reEnterPassword
         val name = userDTO?.name
         val surname = userDTO?.surname
         val patronymic = userDTO?.patronymic
@@ -21,9 +22,12 @@ object Validator {
         val birthdate = userDTO?.birthday
         val status = userDTO?.status
         val phoneNumber = userDTO?.phoneNumber
-        val coach = userDTO?.coach
+        val coach = userDTO?.selectedCoachIndex
+        val rank = userDTO?.selectedRankIndex
+        val country = userDTO?.selectedCountryIndex
+        val isMale = userDTO?.selectedGenderIndex
 
-        validatePassword(password)
+        validateRegistrationPassword(password, reEnterPassword)
         validateEmail(email)
 
         if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 30) {
@@ -47,6 +51,18 @@ object Validator {
         if (StringUtils.isEmpty(phoneNumber)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PHONE_NUMBER))
         }
+        if (rank == 0) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_RANK_IS_NOT_SELECTED))
+        }
+        if (isMale == 0) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_GENDER_IS_NOT_SELECTED))
+        }
+        if (country == 0) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
+        }
+        if (coach == 0) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COACH_IS_NOT_SELECTED))
+        }
 
         return true
     }
@@ -69,8 +85,16 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
+    private fun validateRegistrationPassword(password: String?, reEnterPassword: String?) {
+        validatePassword(password)
+        if (!password.equals(reEnterPassword)) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_RE_ENTER_PASSWORD))
+        }
+    }
+
+    @Throws(IncorrectDataException::class)
     private fun validatePassword(password: String?) {
-        if (StringUtils.isEmpty(password) || password?.length!! < 6) {//todo bug проверить что совпадают пароли
+        if (StringUtils.isEmpty(password) || password?.length!! < 6) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PASSWORD))
         }
     }

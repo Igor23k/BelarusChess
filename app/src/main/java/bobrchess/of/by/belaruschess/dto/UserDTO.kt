@@ -6,7 +6,7 @@ import java.io.Serializable
  * Created by Igor on 05.04.2018.
  */
 
-class UserDTO : Serializable {
+open class UserDTO : Serializable {
 
     var id: Long? = null
     var name: String? = null
@@ -19,7 +19,7 @@ class UserDTO : Serializable {
     var password: String? = null
     var beCoach: Boolean = false
     var beOrganizer: Boolean = false
-    var beMale: Boolean = false
+    var beMale: Boolean? = null
     var rank: RankDTO? = null
     var country: CountryDTO? = null
     var rating: Int? = null
@@ -27,9 +27,29 @@ class UserDTO : Serializable {
     var places: List<PlaceDTO>? = null
     var image: String? = null
 
+    constructor(userDTO: UserDTO) {
+        this.id = userDTO.id
+        this.name = userDTO.name
+        this.surname = userDTO.surname
+        this.patronymic = userDTO.patronymic
+        this.birthday = userDTO.birthday
+        this.email = userDTO.email
+        this.status = userDTO.status
+        this.phoneNumber = userDTO.phoneNumber
+        this.password = userDTO.password
+        this.beCoach = userDTO.beCoach
+        this.beOrganizer = userDTO.beOrganizer
+        this.beMale = userDTO.beMale
+        this.rank = userDTO.rank
+        this.country = userDTO.country
+        this.rating = userDTO.rating
+        this.coach = userDTO.coach
+        this.places = userDTO.places
+        this.image = userDTO.image
+    }
     constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?,
                 email: String?, status: String?, phoneNumber: String?, password: String?,
-                beCoach: Boolean, beOrganizer: Boolean, beMale: Boolean, rank: RankDTO?,
+                beCoach: Boolean, beOrganizer: Boolean, beMale: Boolean?, rank: RankDTO?,
                 country: CountryDTO?, rating: Int?, coach: UserDTO?,
                 places: List<PlaceDTO>?, image: String) {
         this.id = id
@@ -43,7 +63,7 @@ class UserDTO : Serializable {
         this.password = password
         this.beCoach = beCoach
         this.beOrganizer = beOrganizer
-        this.beMale = beMale
+        this.beMale = beMale//todo
         this.rank = rank
         this.country = country
         this.rating = rating

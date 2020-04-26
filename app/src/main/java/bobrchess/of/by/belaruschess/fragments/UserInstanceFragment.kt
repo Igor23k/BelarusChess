@@ -22,7 +22,6 @@ import android.widget.*
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.PlaceDTO
 import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
@@ -30,11 +29,9 @@ import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
-import bobrchess.of.by.belaruschess.presenter.impl.UserInfoPresenterImpl
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
-import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
@@ -199,8 +196,8 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
     private var isCalendarViewSelected: Boolean = true
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_new_tournament, container, false)
@@ -234,8 +231,8 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
         addTournamentPresenter!!.loadReferees()
         addTournamentPresenter!!.loadPlaces()// todo я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо ....... хотяяяяяяяяяяяяяяяяяя хз
 
-   /*     editName.hint =
-            "${context?.getText(R.string.event_property_forename)} ${context?.getText(R.string.necessary)}"*/
+        /*     editName.hint =
+                 "${context?.getText(R.string.event_property_forename)} ${context?.getText(R.string.necessary)}"*/
 
         //retrieve fragment parameter when edited instance
         if (arguments != null) {
@@ -304,22 +301,22 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
                         alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             // delete birthday on positive button
                             Snackbar
-                                .make(//todo это надо перенести, чтобы показывалось уже после удаления с сервака, и в действие ниже добавить добавление и на сервак тоже
-                                    view,
-                                    resources.getString(R.string.tournament_deleted_notification),
-                                    Snackbar.LENGTH_LONG
-                                )
-                                .setAction(R.string.undo) {
-                                    EventHandler.addEvent(tournament, contextTemp!!, true)
-                                    //get last fragment in stack list, which should be EventListFragment, so we can update the recycler view
-                                    val fragment =
-                                        (contextTemp as MainActivity).supportFragmentManager.fragments.last()
-                                    if (fragment is EventListFragment) {
-                                        fragment.recyclerView.adapter!!.notifyDataSetChanged()
-                                        fragment.tv_no_events.visibility = TextView.GONE
+                                    .make(//todo это надо перенести, чтобы показывалось уже после удаления с сервака, и в действие ниже добавить добавление и на сервак тоже
+                                            view,
+                                            resources.getString(R.string.tournament_deleted_notification),
+                                            Snackbar.LENGTH_LONG
+                                    )
+                                    .setAction(R.string.undo) {
+                                        EventHandler.addEvent(tournament, contextTemp!!, true)
+                                        //get last fragment in stack list, which should be EventListFragment, so we can update the recycler view
+                                        val fragment =
+                                                (contextTemp as MainActivity).supportFragmentManager.fragments.last()
+                                        if (fragment is EventListFragment) {
+                                            fragment.recyclerView.adapter!!.notifyDataSetChanged()
+                                            fragment.tv_no_events.visibility = TextView.GONE
+                                        }
                                     }
-                                }
-                                .show()
+                                    .show()
 
                             addTournamentPresenter?.removeTournament(eventID.toLong())
                         }
@@ -345,7 +342,7 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
 
             if (isCalendarViewSelected) {
                 editStartDateCalendarview.hint =
-                    EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
+                        EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
                 editEndDateCalendarview.hint =
                         EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
             } else {
@@ -359,10 +356,10 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
                     editTextView.setTextColor(Color.RED)
                 } else {
                     editDate.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.textVeryDark
-                        )
+                            ContextCompat.getColor(
+                                    context!!,
+                                    R.color.textVeryDark
+                            )
                     )
                 }
             }
@@ -378,28 +375,28 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s != null) {
                     //if (switchIsYearGiven.isChecked) {
-                        if (!dateEditRegexWithYear.matches(s)) {
-                            editDate.setTextColor(Color.RED)
-                        } else {
-                            editDate.setTextColor(
+                    if (!dateEditRegexWithYear.matches(s)) {
+                        editDate.setTextColor(Color.RED)
+                    } else {
+                        editDate.setTextColor(
                                 ContextCompat.getColor(
-                                    context!!,
-                                    R.color.textVeryDark
+                                        context!!,
+                                        R.color.textVeryDark
                                 )
-                            )
-                        }
-                  /*  } else {
-                        if (!dateEditRegexNoYear.matches(s)) {
-                            editDate.setTextColor(Color.RED)
-                        } else {
-                            editDate.setTextColor(
-                                ContextCompat.getColor(
-                                    context!!,
-                                    R.color.textVeryDark
-                                )
-                            )
-                        }
-                    }*/
+                        )
+                    }
+                    /*  } else {
+                          if (!dateEditRegexNoYear.matches(s)) {
+                              editDate.setTextColor(Color.RED)
+                          } else {
+                              editDate.setTextColor(
+                                  ContextCompat.getColor(
+                                      context!!,
+                                      R.color.textVeryDark
+                                  )
+                              )
+                          }
+                      }*/
                 }
             }
         })
@@ -415,7 +412,7 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
         //add image from gallery
         this.frame_layout_add_avatar_image.setOnClickListener {
             val bottomSheetDialog =
-                layoutInflater.inflate(R.layout.fragment_bottom_sheet_dialog, null)
+                    layoutInflater.inflate(R.layout.fragment_bottom_sheet_dialog, null)
 
             val dialog = BottomSheetDialog(context!!)
             dialog.setContentView(bottomSheetDialog)
@@ -431,8 +428,8 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
                 this?.setOnClickListener {
                     dialog.dismiss()
                     if (isEditedBirthday && tournamentAvatarUri != null && (EventHandler.getEventToEventIndex(
-                            eventID
-                        ) as EventTournament).imageUri != null
+                                    eventID
+                            ) as EventTournament).imageUri != null
                     ) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         avatarImgWasEdited = true
@@ -448,36 +445,36 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
             dialog.show()
         }
 
-       /* switchIsYearGiven.setOnCheckedChangeListener { _, isChecked ->
-            val dateText: String
-            val dateHint: String
-            //year is given
-            if (isChecked) {
-                val cal = Calendar.getInstance()
-                if (this.eventStartDate.after(cal.time)) {
-                    cal.time = this.eventStartDate
-                    cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
-                    this.eventStartDate = cal.time
-                }
+        /* switchIsYearGiven.setOnCheckedChangeListener { _, isChecked ->
+             val dateText: String
+             val dateHint: String
+             //year is given
+             if (isChecked) {
+                 val cal = Calendar.getInstance()
+                 if (this.eventStartDate.after(cal.time)) {
+                     cal.time = this.eventStartDate
+                     cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
+                     this.eventStartDate = cal.time
+                 }
 
-                dateText =
-                    EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
-                dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
+                 dateText =
+                     EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
+                 dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
 
-                //year is not given
-            } else {
-                dateText = EventDate.getLocalizedDayAndMonthString(this.eventStartDate)
-                dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMM")
-            }
+                 //year is not given
+             } else {
+                 dateText = EventDate.getLocalizedDayAndMonthString(this.eventStartDate)
+                 dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMM")
+             }
 
-            if (isCalendarViewSelected) {
-                if (editStartDateCalendarview.text.isNotBlank()) editStartDateCalendarview.text = dateText
-                editStartDateCalendarview.hint = dateHint
-            } else {
-                if (editDate.text.isNotBlank()) editDate.setText(dateText)
-                editDate.hint = dateHint
-            }
-        }*/
+             if (isCalendarViewSelected) {
+                 if (editStartDateCalendarview.text.isNotBlank()) editStartDateCalendarview.text = dateText
+                 editStartDateCalendarview.hint = dateHint
+             } else {
+                 if (editDate.text.isNotBlank()) editDate.setText(dateText)
+                 editDate.hint = dateHint
+             }
+         }*/
     }
 
     /**
@@ -489,7 +486,7 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
             type = "image/*"
         }
         intent.addFlags(
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
         )
         if (intent.resolveActivity(context!!.packageManager) != null) {
             startActivityForResult(intent, REQUEST_IMAGE_GET)
@@ -508,14 +505,14 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
 
             Thread(Runnable {
                 val bitmap =
-                    MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
+                        MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
                 (context as MainActivity).runOnUiThread {
                     iv_add_avatar_btn.setImageBitmap(
-                        BitmapHandler.getCircularBitmap(
-                            BitmapHandler.getScaledBitmap(
-                                bitmap
-                            ), resources
-                        )
+                            BitmapHandler.getCircularBitmap(
+                                    BitmapHandler.getScaledBitmap(
+                                            bitmap
+                                    ), resources
+                            )
                     )
                 }
             }).start()
@@ -539,7 +536,7 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
             editDate.text.toString()
         }
 
-      //  val note = editNote.text.toString()
+        //  val note = editNote.text.toString()
         val tournamentFullDescription = editFullDescription.text.toString()
         val isYearGiven = true//switchIsYearGiven.isChecked
 
@@ -553,7 +550,7 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
                 .show()
         } else {*/
         addTournamentPresenter?.addTournament(getTournamentData())
-       // }
+        // }
     }
 
     private fun getTournamentData(): TournamentDTO {
@@ -569,8 +566,8 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
         return tournamentData
     }
 
-    fun convertDateToString(date: Date):String {
-       // var pattern = "yyyy-MM-dd HH:mm:00"
+    fun convertDateToString(date: Date): String {
+        // var pattern = "yyyy-MM-dd HH:mm:00"
         var pattern = "dd/MM/yyyy"
         var df = SimpleDateFormat(pattern)
         var dateString = df.format(date)
@@ -603,37 +600,37 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         val dpd =
-            DatePickerDialog(
-                context!!,
-                DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
-                    // Display Selected startDate in Toast
-                    c.set(Calendar.YEAR, year_)
-                    c.set(Calendar.MONTH, monthOfYear)
-                    c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                DatePickerDialog(
+                        context!!,
+                        DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
+                            // Display Selected startDate in Toast
+                            c.set(Calendar.YEAR, year_)
+                            c.set(Calendar.MONTH, monthOfYear)
+                            c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                  /*  if (c.time.after(Calendar.getInstance().time) && showYear) {
-                        showFutureDateErrorToast(view.context)
-                    } else {*/
-                        this.eventStartDate = c.time
-                        if (showYear) {
-                            editStartDateCalendarview.text =
-                                EventDate.getLocalizedDayMonthYearString(c.time)
-                        } else {
-                            editStartDateCalendarview.text =
-                                EventDate.getLocalizedDayAndMonthString(c.time)
-                        }
-                    //}
-                },
-                year,
-                month,
-                day
-            )
+                            /*  if (c.time.after(Calendar.getInstance().time) && showYear) {
+                                  showFutureDateErrorToast(view.context)
+                              } else {*/
+                            this.eventStartDate = c.time
+                            if (showYear) {
+                                editStartDateCalendarview.text =
+                                        EventDate.getLocalizedDayMonthYearString(c.time)
+                            } else {
+                                editStartDateCalendarview.text =
+                                        EventDate.getLocalizedDayAndMonthString(c.time)
+                            }
+                            //}
+                        },
+                        year,
+                        month,
+                        day
+                )
         dpd.show()
     }
 
     /**
-    * showEndDatePickerDialog shows a dialog to let the user pick a startDate for the editStartDateCalendarview
-    */
+     * showEndDatePickerDialog shows a dialog to let the user pick a startDate for the editStartDateCalendarview
+     */
     private fun showEndDatePickerDialog(showYear: Boolean) {
         val c = Calendar.getInstance()
         //set calendar to the startDate which is stored in the edit field, when the edit is not empty
@@ -653,18 +650,18 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
                             c.set(Calendar.MONTH, monthOfYear)
                             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                          /*  if (c.time.after(Calendar.getInstance().time) && showYear) {
-                                showFutureDateErrorToast(view.context)
-                            } else {*/
-                                this.eventStartDate = c.time
-                                if (showYear) {
-                                    editEndDateCalendarview.text =
-                                            EventDate.getLocalizedDayMonthYearString(c.time)
-                                } else {
-                                    editEndDateCalendarview.text =
-                                            EventDate.getLocalizedDayAndMonthString(c.time)
-                                }
-                           // }
+                            /*  if (c.time.after(Calendar.getInstance().time) && showYear) {
+                                  showFutureDateErrorToast(view.context)
+                              } else {*/
+                            this.eventStartDate = c.time
+                            if (showYear) {
+                                editEndDateCalendarview.text =
+                                        EventDate.getLocalizedDayMonthYearString(c.time)
+                            } else {
+                                editEndDateCalendarview.text =
+                                        EventDate.getLocalizedDayAndMonthString(c.time)
+                            }
+                            // }
                         },
                         year,
                         month,
@@ -675,56 +672,56 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
 
     private fun showFutureDateErrorToast(context: Context) {
         Toast.makeText(
-            context,
-            context.resources.getText(R.string.future_tournament_error),
-            Toast.LENGTH_LONG
+                context,
+                context.resources.getText(R.string.future_tournament_error),
+                Toast.LENGTH_LONG
         ).show()
     }
 
     private fun validateAndSetEditTextDateInput(dateInput: String): Boolean {
         if (dateInput.isBlank()) return false
         val dateRegEx: Regex?
-     //  if (switchIsYearGiven.isChecked) {
-            dateRegEx = dateEditRegexWithYear
-      /*  } else {
-            dateRegEx = dateEditRegexNoYear
-        }*/
+        //  if (switchIsYearGiven.isChecked) {
+        dateRegEx = dateEditRegexWithYear
+        /*  } else {
+              dateRegEx = dateEditRegexNoYear
+          }*/
 
         // startDate input does not match the required regex -> show error
         if (!dateInput.matches(dateRegEx)) {
             Toast.makeText(
-                context,
-                resources.getString(
-                    R.string.verification_edit_date_input,
-                    editDate.hint.toString()
-                ),
-                Toast.LENGTH_LONG
+                    context,
+                    resources.getString(
+                            R.string.verification_edit_date_input,
+                            editDate.hint.toString()
+                    ),
+                    Toast.LENGTH_LONG
             ).show()
             return false
         } else {
 
             // input matches regex, then set it as birthdayevent startDate
             this.eventStartDate = //if (switchIsYearGiven.isChecked) {
-                EventDate.parseStringToDateWithPattern("ddMMYYYY", dateInput)
-          /*  } else {
-                //check if last character in the string is a startDate seperator char, if not, then append one before adding the year
-                if (checkForLastDateSeperatorChar(dateInput)) {
-                    EventDate.parseStringToDateWithPattern("ddMMYYYY", "${dateInput}2016")
-                } else {
-                    EventDate.parseStringToDateWithPattern("ddMMYYYY", """${dateInput}/2016""")
-                }
-            }*/
+                    EventDate.parseStringToDateWithPattern("ddMMYYYY", dateInput)
+            /*  } else {
+                  //check if last character in the string is a startDate seperator char, if not, then append one before adding the year
+                  if (checkForLastDateSeperatorChar(dateInput)) {
+                      EventDate.parseStringToDateWithPattern("ddMMYYYY", "${dateInput}2016")
+                  } else {
+                      EventDate.parseStringToDateWithPattern("ddMMYYYY", """${dateInput}/2016""")
+                  }
+              }*/
             if (this.eventStartDate.before(
-                    EventDate.parseStringToDate(
-                        "01.01.0001",
-                        DateFormat.DATE_FIELD,
-                        Locale.GERMAN
+                            EventDate.parseStringToDate(
+                                    "01.01.0001",
+                                    DateFormat.DATE_FIELD,
+                                    Locale.GERMAN
+                            )
                     )
-                )
             ) {
                 Toast.makeText(context, "Man this is too old!", Toast.LENGTH_SHORT).show()
                 this.eventStartDate =
-                    EventDate.parseStringToDate("01.01.0001", DateFormat.DATE_FIELD, Locale.GERMAN)
+                        EventDate.parseStringToDate("01.01.0001", DateFormat.DATE_FIELD, Locale.GERMAN)
             }
         }
         return true
@@ -749,14 +746,15 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
         }
     }
 
-    override fun setRefereeSpinnerAdapter(referees: MutableList<UserDTO>) {
+    override fun setRefereeSpinnerAdapter(referees: MutableList<out UserDTO>?) {
         val refereeNames = Util.getUsersBasicData(referees)
         refereeNames.add(0, getString(R.string.chooseReferee))
         val adapter = ArrayAdapter<String>(this.context!!,
                 android.R.layout.simple_spinner_dropdown_item, refereeNames)
         refereeSpinner.adapter = adapter
-        refereeSpinner.setSelection(getUserIndexById(referees, refereeId) + 1 )
+        refereeSpinner.setSelection(getUserIndexById(referees, refereeId) + 1)
     }
+
 
     override fun setPlaceSpinnerAdapter(places: MutableList<PlaceDTO>?) {
         val placeNames = Util.getPlacesNames(places!!)
@@ -767,18 +765,18 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
         placeSpinner.setSelection(getPlaceIndexById(places, placeId) + 1)
     }
 
-    private fun getUserIndexById(list: MutableList<UserDTO>, id:Int): Int{
-        for ((i, value) in list.withIndex()){
-            if(value.id?.toInt() == id){
+    private fun getUserIndexById(list: MutableList<out UserDTO>?, id: Int): Int {
+        for ((i, value) in list!!.withIndex()) {
+            if (value.id?.toInt() == id) {
                 return i
             }
         }
         return -1
     }
 
-    private fun getPlaceIndexById(list: MutableList<PlaceDTO>, id:Int): Int{
-        for ((i, value) in list.withIndex()){
-            if(value.id == id){
+    private fun getPlaceIndexById(list: MutableList<PlaceDTO>, id: Int): Int {
+        for ((i, value) in list.withIndex()) {
+            if (value.id == id) {
                 return i
             }
         }
@@ -825,7 +823,7 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
 
     }
 
-    fun createTournamentEvent(tournamentDTO: TournamentDTO?){
+    fun createTournamentEvent(tournamentDTO: TournamentDTO?) {
 
     }
 
@@ -836,11 +834,11 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
 
     override fun tournamentAdded(tournamentDTO: TournamentDTO?) {
         //create new instance from edit fields
-          val tournamentEvent = EventTournament(
-                  tournamentDTO!!.id.toInt(),
-              this.eventStartDate,
-              tournamentDTO.name!!
-          )
+        val tournamentEvent = EventTournament(
+                tournamentDTO!!.id.toInt(),
+                this.eventStartDate,
+                tournamentDTO.name!!
+        )
 
 
         tournamentEvent.shortDescription = tournamentDTO.shortDescription
@@ -850,29 +848,29 @@ class UserInstanceFragment : EventInstanceFragment(), AddTournamentContractView 
         tournamentEvent.refereeId = tournamentDTO.referee?.id
         tournamentEvent.placeId = tournamentDTO.place?.id
 
-          //new birthday entry, just add a new entry in map
-          if (!isEditedBirthday) {
-              EventHandler.addEvent(tournamentEvent, this.context!!, true)
-              Snackbar.make(
-                  view!!,
-                  context!!.resources.getString(R.string.tournament_added_notification),
-                  Snackbar.LENGTH_LONG
-              ).show()
-              closeBtnPressed()
+        //new birthday entry, just add a new entry in map
+        if (!isEditedBirthday) {
+            EventHandler.addEvent(tournamentEvent, this.context!!, true)
+            Snackbar.make(
+                    view!!,
+                    context!!.resources.getString(R.string.tournament_added_notification),
+                    Snackbar.LENGTH_LONG
+            ).show()
+            closeBtnPressed()
 
-              //already existent birthday entry, overwrite old entry in map
-          } else {
-              EventHandler.getEventToEventIndex(eventID)?.let { event ->
-                  if (event is EventTournament) {
-                      EventHandler.changeEventAt(eventID, tournamentEvent, context!!, true)
-                      Snackbar.make(
-                          view!!,
-                          context!!.resources.getString(R.string.tournament_changed_notification),
-                          Snackbar.LENGTH_LONG
-                      ).show()
-                  }
-                  closeBtnPressed()
-              }
-          }
+            //already existent birthday entry, overwrite old entry in map
+        } else {
+            EventHandler.getEventToEventIndex(eventID)?.let { event ->
+                if (event is EventTournament) {
+                    EventHandler.changeEventAt(eventID, tournamentEvent, context!!, true)
+                    Snackbar.make(
+                            view!!,
+                            context!!.resources.getString(R.string.tournament_changed_notification),
+                            Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                closeBtnPressed()
+            }
+        }
     }
 }
