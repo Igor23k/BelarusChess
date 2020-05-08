@@ -44,14 +44,14 @@ class PackageModel(private val context: Context) {
         return prefs.getString(propertyName, null)
     }
 
-    fun buildAlertDialog(@StringRes title: Int, @StringRes message: Int, @StringRes buttonText: Int, cancelable: Boolean): AlertDialog {
+   /* fun buildAlertDialog(@StringRes title: Int, @StringRes message: Int, @StringRes buttonText: Int, cancelable: Boolean): AlertDialog {
         return android.app.AlertDialog.Builder(context, R.style.AlertDialogStyle)
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(cancelable)
                 .setPositiveButton(buttonText, null)
                 .create()
-    }
+    }*///todo
 
     fun showToast(resId: Int?) {
         val toast = Toast.makeText(context, resId!!, Toast.LENGTH_SHORT)

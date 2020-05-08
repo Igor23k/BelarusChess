@@ -13,7 +13,7 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <ImageView android:src="@drawable/logo"
+        <ImageView android:src="@drawable/logo5"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginBottom="24dp"
@@ -30,8 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userName"
-                android:text="Igor"/>
+                android:hint="@string/userName"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- ShortDescription Label -->
@@ -44,8 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userSurname"
-                android:text="Kozlov"/>
+                android:hint="@string/userSurname"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Patronymic Label -->
@@ -58,8 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userPatronymic"
-                android:text="Sergeevich"/>
+                android:hint="@string/userPatronymic"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Rating Label -->
@@ -72,11 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="@string/userRating"
-                android:text="2000"/>
+                android:hint="@string/userRating"/>
         </android.support.design.widget.TextInputLayout>
-
-
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout
@@ -88,8 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="@string/email"
-                android:text="www.bk.ru@mail1.ru"/>
+                android:hint="@string/email"/>
         </android.support.design.widget.TextInputLayout>
 
         <Spinner
@@ -127,13 +120,6 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content" />
 
-     <!--   <Button
-            android:id="@+id/tournamentDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tournament" />-->
-
-
         <!-- mobile number -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -144,7 +130,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="345676678"
                 android:hint="@string/phoneNumber" />
         </android.support.design.widget.TextInputLayout>
 
@@ -160,8 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="@string/password"
-                android:text="qwerty"/>
+                android:hint="@string/password"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Re-enter Label -->
@@ -174,8 +158,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="@string/renterPassword"
-                android:text="qwerty"/>
+                android:hint="@string/renterPassword"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
@@ -195,59 +178,6 @@
             android:text="@string/isMember"
             android:gravity="center"
             android:textSize="16sp"/>
-
-        <!--<Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Select Image and upload to server" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Below image is fetched from server"
-            android:layout_marginTop="5dp"
-            android:textSize="23sp"
-            android:gravity="center"
-            android:textColor="#000"/>
-
-        <ImageView
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher"
-            android:id="@+id/iv"/>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </LinearLayout>
 
 </ScrollView>

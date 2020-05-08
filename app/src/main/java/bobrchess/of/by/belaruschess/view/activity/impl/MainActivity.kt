@@ -7,21 +7,31 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
-import android.support.v4.app.Fragment
 import android.util.TypedValue
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
-import bobrchess.of.by.belaruschess.fragments.*
+import bobrchess.of.by.belaruschess.fragments.EventListFragment
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.model.EventDate
+import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.MonthDivider
+import bobrchess.of.by.belaruschess.presenter.CountryPresenter
+import bobrchess.of.by.belaruschess.presenter.PlacePresenter
+import bobrchess.of.by.belaruschess.presenter.RankPresenter
+import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.CountryPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.PlacePresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
+import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack
+import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
+import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import com.google.gson.GsonBuilder
-import bobrchess.of.by.belaruschess.model.*
-import bobrchess.of.by.belaruschess.presenter.*
-import bobrchess.of.by.belaruschess.presenter.impl.*
-import bobrchess.of.by.belaruschess.view.activity.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -40,11 +50,13 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     private var places: List<PlaceDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
+    private var userData: UserDTO? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        userData = intent.getSerializableExtra("user") as UserDTO
 
         searchTournamentPresenter = SearchTournamentPresenterImpl()
         searchTournamentPresenter!!.attachView(this)
@@ -254,6 +266,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         val placesList = gson.toJson(places)
         val countriesList = gson.toJson(countries)
         val userTournamentsList = gson.toJson(userTournamentsResult)
+        val userData = gson.toJson(userData)
         bundle.putString(
                 "places",
                 placesList
@@ -272,6 +285,10 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         bundle.putString(
                 "tournamentsResult",
                 userTournamentsList
+        )
+        bundle.putString(
+                "user",
+                userData
         )
 
         val transaction = supportFragmentManager.beginTransaction()

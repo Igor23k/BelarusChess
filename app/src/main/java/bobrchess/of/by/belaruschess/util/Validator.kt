@@ -23,12 +23,11 @@ object Validator {
         val patronymic = userDTO?.patronymic
         val rating = userDTO?.rating
         val birthdate = userDTO?.birthday
-        val status = userDTO?.status//todo видимо нужно удалить статус
         val phoneNumber = userDTO?.phoneNumber
         val coach = userDTO?.selectedCoachIndex
         val rank = userDTO?.selectedRankIndex
         val country = userDTO?.selectedCountryIndex
-        val isMale = userDTO?.selectedGenderIndex
+        val isMale = userDTO?.selectedGenderIndex//todo добавить валидацию остальных полей если нужно
 
         validateRegistrationPassword(password, reEnterPassword)
         validateEmail(email)

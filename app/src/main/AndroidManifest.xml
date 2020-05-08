@@ -17,9 +17,10 @@
         android:restoreAnyVersion="true"
         android:roundIcon="@drawable/ic_belarus_chess_icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning"><!--to check if needed-->
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity">
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -40,10 +41,6 @@
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Search activity -->

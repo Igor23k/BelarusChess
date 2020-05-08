@@ -14,10 +14,10 @@ open class UserDTO : Serializable {
     var patronymic: String? = null
     var birthday: String? = null
     var email: String? = null
-    var status: String? = null
     var phoneNumber: String? = null
     var password: String? = null
     var beCoach: Boolean = false
+    var beAdmin: Boolean = false
     var beOrganizer: Boolean = false
     var beMale: Boolean? = null
     var rank: RankDTO? = null
@@ -34,10 +34,10 @@ open class UserDTO : Serializable {
         this.patronymic = userDTO.patronymic
         this.birthday = userDTO.birthday
         this.email = userDTO.email
-        this.status = userDTO.status
         this.phoneNumber = userDTO.phoneNumber
         this.password = userDTO.password
         this.beCoach = userDTO.beCoach
+        this.beAdmin = userDTO.beAdmin
         this.beOrganizer = userDTO.beOrganizer
         this.beMale = userDTO.beMale
         this.rank = userDTO.rank
@@ -48,8 +48,8 @@ open class UserDTO : Serializable {
         this.image = userDTO.image
     }
     constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?,
-                email: String?, status: String?, phoneNumber: String?, password: String?,
-                beCoach: Boolean, beOrganizer: Boolean, beMale: Boolean?, rank: RankDTO?,
+                email: String?, phoneNumber: String?, password: String?,
+                beCoach: Boolean, beOrganizer: Boolean, beAdmin: Boolean, beMale: Boolean?, rank: RankDTO?,
                 country: CountryDTO?, rating: Int?, coach: UserDTO?,
                 places: List<PlaceDTO>?, image: String) {
         this.id = id
@@ -58,12 +58,12 @@ open class UserDTO : Serializable {
         this.patronymic = patronymic
         this.birthday = birthday
         this.email = email
-        this.status = status
         this.phoneNumber = phoneNumber
         this.password = password
         this.beCoach = beCoach
         this.beOrganizer = beOrganizer
-        this.beMale = beMale//todo
+        this.beAdmin = beAdmin
+        this.beMale = beMale
         this.rank = rank
         this.country = country
         this.rating = rating

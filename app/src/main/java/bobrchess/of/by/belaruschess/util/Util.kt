@@ -111,7 +111,6 @@ class Util {
                 userDTO.email = "ww@dd.ek"
                 userDTO.country = testCountry2
                 userDTO.rank = testRank
-                userDTO.status = "My best status"
                 userDTO.phoneNumber = "29373692"
                 userDTO.name = "Ihar"
                 userDTO.surname = "Kazlou"
@@ -129,7 +128,6 @@ class Util {
                 userDTO.email = "ww@dd.ek1"
                 userDTO.country = testCountry
                 userDTO.rank = testRank
-                userDTO.status = "My best status1"
                 userDTO.phoneNumber = "293736921"
                 userDTO.name = "Ihar1"
                 userDTO.surname = "Kazlou1"

@@ -30,7 +30,7 @@ class EventUser(
         Id {
             override fun Identifier(): Int = 4
         },
-        AvatarUri {
+        ImageUri {
             override fun Identifier(): Int = 5
         },
         Rating {
@@ -44,9 +44,29 @@ class EventUser(
         },
         CoachId {
             override fun Identifier(): Int = 9
+        },
+        Email {
+            override fun Identifier(): Int = 10
+        },
+        PhoneNumber {
+            override fun Identifier(): Int = 11
+        },
+        BeCoach {
+            override fun Identifier(): Int = 12
+        },
+        BeAdmin {
+            override fun Identifier(): Int = 13
+        },
+        BeOrganizer {
+            override fun Identifier(): Int = 14
+        },
+        BeMale {
+            override fun Identifier(): Int = 15
+        },
+        Places {
+            override fun Identifier(): Int = 16
         }
     }
-
 
     var patronymic: String? = null
     var imageUri: String? = null
@@ -54,14 +74,14 @@ class EventUser(
     var rankId: Int? = null
     var countryId: Int? = null
     var coachId: Long? = null
+    var email: Long? = null
+    var phoneNumber: Long? = null
+    var beCoach: Long? = null
+    var beAdmin: Long? = null
+    var beOrganizer: Long? = null
+    var beMale: Long? = null
+    var places: Long? = null
 
-
-    /**
-     * toString returns EventTournament as string representation
-     * This is "optimized" for Serialization, so THE FIRST WORD HAS TO BE THE TYPIFICATION f.e. "Birthday"
-     * returned string follows the pattern TYPE|FORENAME|SURNAME|EVENTDATE|ISYEARGIVEN|NOTE|AVATARURI|NICKNAME
-     * @return String
-     */
     override fun toString(): String {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
                 "${Identifier.Birthday}${IOHandler.tournamentDivider_values}${parseDateToString(
@@ -72,33 +92,17 @@ class EventUser(
                 getStringFromValue(Identifier.Surname, this.surname) +
                 getStringFromValue(Identifier.Patronymic, this.patronymic) +
                 getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.AvatarUri, this.imageUri) +
+                getStringFromValue(Identifier.ImageUri, this.imageUri) +
                 getStringFromValue(Identifier.Rating, this.rating) +
                 getStringFromValue(Identifier.RankId, this.rankId) +
                 getStringFromValue(Identifier.CountryId, this.countryId) +
-                getStringFromValue(Identifier.CoachId, this.coachId)
-    }
-
-    /**
-     * toString returns EventTournament as string representation but excludes a possible avatar uri
-     * This is "optimized" for Serialization, so THE FIRST WORD HAS TO BE THE TYPIFICATION f.e. "Birthday"
-     * returned string follows the pattern TYPE|FORENAME|SURNAME|EVENTDATE|ISYEARGIVEN|NOTE|NICKNAME
-     * @return String
-     */
-    fun toStringWithoutImage(): String {
-        return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
-                "${Identifier.Birthday}${IOHandler.tournamentDivider_values}${parseDateToString(
-                        this.eventDate,
-                        DateFormat.DEFAULT,
-                        Locale.GERMAN
-                )}${IOHandler.tournamentDivider_properties}" +
-                getStringFromValue(Identifier.Surname, this.surname) +
-                getStringFromValue(Identifier.Patronymic, this.patronymic) +
-                getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.Rating, this.rating) +
-                getStringFromValue(Identifier.RankId, this.rankId) +
-                getStringFromValue(Identifier.CountryId, this.countryId) +
-                getStringFromValue(Identifier.CoachId, this.coachId)
+                getStringFromValue(Identifier.CoachId, this.coachId) +
+                getStringFromValue(Identifier.PhoneNumber, this.phoneNumber) +
+                getStringFromValue(Identifier.BeCoach, this.beCoach) +
+                getStringFromValue(Identifier.BeAdmin, this.beAdmin) +
+                getStringFromValue(Identifier.BeOrganizer, this.beOrganizer) +
+                getStringFromValue(Identifier.Email, this.email) +
+                getStringFromValue(Identifier.BeMale, this.beMale)
     }
 
     companion object {

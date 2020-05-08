@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#1a1a1a</color>
+    <color name="colorPrimaryLight">#262626</color>
+    <color name="colorAccent">#cf3f5c</color>
+
+    <color name="recycler_view_item_ripple_dark">#4d4d4d</color>
+    <color name="recycler_view_item_background_dark">@color/colorPrimaryDark</color>
+
+    <color name="recycler_view_item_ripple">#666666</color>
+    <color name="recycler_view_item_background">@color/colorPrimary</color>
+
+    <color name="horizontal_divider_line">#464e53</color>
+
+    <color name="month_divider_background_color">@color/colorPrimaryLight</color>
+    <color name="month_divider_text_color">#ffffff</color>
+
+    <color name="event_item_view_title_right">#9fa7ad</color>
+
+    <!-- Grey color values -->
+    <color name="brightGrey">#757575</color>
+    <color name="veryBrightGrey">#424242</color>
+    <color name="darkGrey">#f1f2f3</color>
+    <color name="textDark">#f1f2f3</color>
+    <color name="textVeryDark">#e3e6e8</color>
+    <color name="dark">#dddddd</color>
+    <color name="white">#212121</color>
+
+    <!-- NOTIFICATION LIGHTS -->
+    <color name="notification_light_white">#ffffff</color>
+    <color name="notification_light_red">#ff0000</color>
+    <color name="notification_light_green">#00ff00</color>
+    <color name="notification_light_blue">#0066ff</color>
+</resources>

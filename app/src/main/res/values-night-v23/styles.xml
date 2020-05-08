@@ -5,10 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>BelarusChess
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="actionOverflowButtonStyle">@style/BelarusChessOverFlowButtonStyle</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:textColorPrimary">@color/darkGrey</item>
-        <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 

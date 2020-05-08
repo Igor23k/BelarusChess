@@ -67,18 +67,6 @@ class EventPlace(
                 getStringFromValue(Identifier.ImageUri, this.imageUri)
     }
 
-    fun toStringWithoutImage(): String {
-        return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
-                getStringFromValue(Identifier.Name, this.name) +
-                getStringFromValue(Identifier.City, this.city) +
-                getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.Street, this.street) +
-                getStringFromValue(Identifier.Country, this.countryId) +
-                getStringFromValue(Identifier.Building, this.building) +
-                getStringFromValue(Identifier.Capacity, this.capacity) +
-                getStringFromValue(Identifier.Approved, this.approved)
-    }
-
     companion object {
         const val Name: String = "EventTournament"
     }

@@ -101,7 +101,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     override fun onServerUnavailable() {
          when {
              connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-             !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailableMessage, R.string.serverIsUnavailableMessage, R.string.retry, false)
+             !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
              else -> view!!.showSnackBar(viewComponent!!, getInternalizedMessage(KEY_SERVER_UNAVAILABLE))
          }
     }
@@ -146,8 +146,9 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         if (selectedGenderIndex != NOT_SELECTED_INDEX) {
             userDTO.beMale = isMale(selectedGenderIndex - 1)
         }
-        userDTO.beCoach = true// todo bug думать, думать
-        userDTO.beOrganizer = true
+        userDTO.beCoach = false
+        userDTO.beOrganizer = false
+        userDTO.beAdmin = false
     }
 
     override fun setConnectivityStatus(status: Int?) {

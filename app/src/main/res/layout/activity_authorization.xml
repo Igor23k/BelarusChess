@@ -9,10 +9,10 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="86dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
-        <ImageView android:src="@drawable/logo"
+        <ImageView android:src="@drawable/logo5"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginBottom="24dp"
@@ -23,13 +23,13 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="58dp"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/e_email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:text="igork@bk.ru"
+                android:text="igork@bk.ru"/>//todo
                 android:hint="@string/email" />
         </android.support.design.widget.TextInputLayout>
 
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:text="qwerty"
+                android:text="qwerty"/>//todo
                 android:hint="@string/password"/>
         </android.support.design.widget.TextInputLayout>
 

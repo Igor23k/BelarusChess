@@ -4,11 +4,11 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
-import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.adapter.EventAdapter
 import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
@@ -56,6 +56,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Sear
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
+    private var userData: UserDTO? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -69,12 +70,15 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Sear
     var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
     var userItemsListType = object : TypeToken<List<UserDTO>>() {}.type
+    var userItemType = object : TypeToken<UserDTO>() {}.type
+    var fabIsVisible = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         places = Gson().fromJson(arguments?.getString("places"), placeItemsListType)
         ranks = Gson().fromJson(arguments?.getString("ranks"), rankItemsListType)
         countries = Gson().fromJson(arguments?.getString("countries"), countryItemsListType)
         users = Gson().fromJson(arguments?.getString("users"), userItemsListType)
+        userData = Gson().fromJson(arguments?.getString("user"), userItemType)//todo сделатть это все константами и в других классах
 
         super.onViewCreated(view, savedInstanceState)
 
@@ -98,6 +102,13 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Sear
         (context as MainActivity).toolbar.title = getString(R.string.app_name)
 
         isFABOpen = false
+
+        if (userData != null) {
+            fabIsVisible = userData!!.beOrganizer || userData!!.beAdmin
+        }
+        if (!fabIsVisible) {
+            view.findViewById<FloatingActionButton>(R.id.fab_show_fab_menu).hide()
+        }
 
         fab_layout_add_place.visibility = ConstraintLayout.INVISIBLE
         fab_layout_add_tournament.visibility = ConstraintLayout.INVISIBLE
@@ -171,11 +182,11 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Sear
     override fun onResume() {
         super.onResume()
         //when no items except of the 12 month items are in the event list, then display text message
-       /* if (EventHandler.getList().size - 12 == 0) {
-            tv_no_events.visibility = TextView.VISIBLE
-        } else {
-            tv_no_events.visibility = TextView.GONE
-        }*/
+        /* if (EventHandler.getList().size - 12 == 0) {
+             tv_no_events.visibility = TextView.VISIBLE
+         } else {
+             tv_no_events.visibility = TextView.GONE
+         }*/
         registerInternetCheckReceiver()
     }
 
@@ -183,16 +194,20 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Sear
         isFABOpen = true
         fab_show_fab_menu.isClickable = false
         //show layouts
-        fab_layout_add_place.visibility = ConstraintLayout.VISIBLE
-        fab_layout_add_tournament.visibility = ConstraintLayout.VISIBLE
-        fab_layout_add_one_time.visibility = ConstraintLayout.VISIBLE
-
+        if (fabIsVisible) {
+            if (userData!!.beAdmin) {//todo уточнить только ли админу или всем тренерам дать права
+                fab_layout_add_place.visibility = ConstraintLayout.VISIBLE
+            }
+            if (userData!!.beOrganizer) {
+                fab_layout_add_tournament.visibility = ConstraintLayout.VISIBLE
+            }
+            fab_layout_add_one_time.visibility = ConstraintLayout.VISIBLE
+        }
         this.recyclerView.animate().alpha(0.15f).apply {
             duration = 175
         }
 
         //move layouts
-        //move add birthday layout up
         fab_layout_add_tournament.animate()
                 .translationYBy(-resources.getDimension(R.dimen.standard_55) - 20).apply {
                     duration = 100
@@ -222,6 +237,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Sear
                         duration = 75
                     }
                 }
+
 
         fab_show_fab_menu.animate().duration = 100
         //some fancy overrotated animation

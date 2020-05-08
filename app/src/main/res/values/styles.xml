@@ -1,125 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionOverflowButtonStyle">@style/BelarusChessOverFlowButtonStyle</item>
+        <item name="android:textColorPrimary">@color/dark</item>
+        <item name="android:statusBarColor">@color/darkGrey</item>
     </style>
 
-    <style name="TextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">@style/Text</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="TextView.Primary">
-        <item name="android:textAppearance">@style/Text.Primary</item>
+    <style name="BelarusChessOverFlowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/dark</item>
     </style>
 
-    <style name="TextView.Secondary">
-        <item name="android:textAppearance">@style/Text.Secondary</item>
-    </style>
-
-    <style name="Text">
-        <item name="android:textSize">16sp</item>
-        <item name="fontFamily">sans-serif</item>
-    </style>
-
-    <style name="Text.Primary">
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="Text.Secondary">
-        <item name="android:textColor">@color/gray_dove_light</item>
-    </style>
-
-    <style name="TextView.Primary.Header">
-        <item name="android:textAppearance">@style/Text.Primary.Header</item>
-    </style>
-
-    <style name="Text.Primary.Header">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Text.Primary.Bold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextView.Primary.Bold">
-        <item name="android:textAppearance">@style/Text.Primary.Bold</item>
-    </style>
-
-    <style name="TextIcon" parent="TextView.Secondary">
-        <item name="fontFamily">@font/font_awesome</item>
-    </style>
-
-    <style name="HalfWidth">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.5</item>
-    </style>
-
-    <style name="FortyPercentWidth">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.4</item>
-    </style>
-
-    <style name="ThirdWidth">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.3</item>
-    </style>
-
-    <style name="QuarterWidth">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.25</item>
-    </style>
-
-    <style name="Toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="android:background">?attr/colorPrimary</item>
-    </style>
-
-
-    //registration and auth-n activity
-    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/accent</item>
-
-        <item name="android:windowBackground">@color/colorPrimary</item>
-
-        <item name="colorControlNormal">@color/iron</item>
-        <item name="colorControlActivated">@color/white</item>
-        <item name="colorControlHighlight">@color/white</item>
-        <item name="android:textColorHint">@color/iron</item>
-
-        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="AppTheme.AddEntity" parent="AppTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
-        <item name="colorAccent">@color/white</item>
-        <item name="android:textColorPrimary">@color/iron</item>
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
-    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:colorAccent">@color/colorPrimaryDark</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textColorPrimary">@color/gray_dove_light</item>
-        <item name="android:background">@color/white</item>
-    </style>
 </resources>

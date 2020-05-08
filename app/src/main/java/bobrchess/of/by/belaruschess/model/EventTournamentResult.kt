@@ -58,25 +58,6 @@ class EventTournamentResult(
                 getStringFromValue(Identifier.Image, this.imageUri)
     }
 
-    /**
-     * toString returns EventTournament as string representation but excludes a possible avatar uri
-     * This is "optimized" for Serialization, so THE FIRST WORD HAS TO BE THE TYPIFICATION f.e. "Birthday"
-     * returned string follows the pattern TYPE|FORENAME|SURNAME|EVENTDATE|ISYEARGIVEN|NOTE|NICKNAME
-     * @return String
-     */
-    fun toStringWithoutImage(): String {
-        return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
-                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
-                        this.eventDate,
-                        DateFormat.DEFAULT,
-                        Locale.GERMAN
-                )}${IOHandler.tournamentDivider_properties}" +
-                getStringFromValue(Identifier.Name, this.name) +
-                getStringFromValue(Identifier.Position, this.position) +
-                getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.Points, this.points)
-    }
-
     companion object {
         const val Name: String = "EventTournamentResult"
     }

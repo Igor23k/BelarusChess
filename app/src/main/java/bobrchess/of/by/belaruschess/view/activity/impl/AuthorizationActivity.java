@@ -51,6 +51,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     private ProgressDialog progressDialog;
     private boolean tokenAuthFailed = false;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
         tokenAuthPresenter.setPackageModel(getPackageModel());
         registerInternetCheckReceiver();
 
-        if (tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном
+        if (!tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном
             tokenAuthPresenter.tokenAuthorization();
         } else {
             initActivityData();
@@ -80,7 +81,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     private void initButtonsListeners() {
         loginButton.setOnClickListener(v -> {
             final ProgressDialog progressDialog = new ProgressDialog(AuthorizationActivity.this,
-                    R.style.AppTheme_Dark_Dialog);
+                    R.style.AppTheme_NoActionBar);
             progressDialog.setIndeterminate(true);
             authorization();
         });

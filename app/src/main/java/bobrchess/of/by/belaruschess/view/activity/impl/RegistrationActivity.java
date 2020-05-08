@@ -110,7 +110,7 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
     private void initButtonsListeners() {
         registrationButton.setOnClickListener(v -> {
             final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this,
-                    R.style.AppTheme_Dark_Dialog);
+                    R.style.AppTheme_NoActionBar);
             progressDialog.setIndeterminate(true);
             registration();
         });
@@ -223,7 +223,6 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
         userData.setReEnterPassword(reEnterPasswordText.getText().toString());
         userData.setRating(Integer.parseInt(ratingText.getText().toString()));
         userData.setBirthday(birthday);
-        //  userData.setImage(getUploadedImage()); //todo
         return userData;
     }
 
