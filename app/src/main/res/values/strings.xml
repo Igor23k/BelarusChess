@@ -28,6 +28,7 @@
     <string name="action_participants">Participants</string>
     <string name="action_users">Users</string>
     <string name="action_tournaments">Tournaments</string>
+    <string name="action_places">Places</string>
     <string name="action_info">Info</string>
     <string name="draw">Draw</string>
     <string name="tours">Tours</string>
@@ -38,10 +39,17 @@
     <string name="email">Email</string>
     <string name="userName">Name</string>
     <string name="tournamentName">Tournament name</string>
+    <string name="placeName">Place name</string>
     <string name="tournamentShortDescription">Tournament short description</string>
     <string name="tournamentShortDescriptionHint">Short description</string>
     <string name="tournamentFullDescription">Tournament full description</string>
     <string name="tournamentFullDescriptionHint">Full description</string>
+    <string name="placeCity">Place city</string>
+    <string name="placeCityHint">City</string>
+    <string name="placeStreet">Place street</string>
+    <string name="placeStreetHint">Street</string>
+    <string name="placeCapacityHint">Capacity</string>
+    <string name="placeBuildingHint">Building</string>
     <string name="userSurname">Surname</string>
     <string name="userPatronymic">Patronymic</string>
     <string name="userAddress">Address</string>
@@ -57,6 +65,7 @@
     <string name="connection_error">Connection error!</string>
     <string name="incorrect_email">Incorrect email! Please, try again.</string>
     <string name="incorrect_rating">Incorrect rating! Please, try again.</string>
+    <string name="incorrect_capacity">Incorrect capacity! Please, try again.</string>
     <string name="incorrect_data">Incorrect data! Please, try again.</string>
     <string name="incorrect_tournament_name">Incorrect tournament name! Please, try again.</string>
     <string name="incorrect_password">Incorrect password! Please, enter more than 4 characters.</string>
@@ -75,9 +84,9 @@
     <string name="coach">Coach:</string>
     <string name="notSelected">Not selected</string>
     <string name="chooseReferee">Choose a referee</string>
+    <string name="chooseCountry">Choose a country</string>
     <string name="choosePlace">Choose a place</string>
     <string name="retry">Retry</string>
-    <string name="internalServerError">Internal server error</string>
     <string name="incorrectEmailOrPassword">Incorrect email or password!</string>
     <string name="serverIsUnavailable">Server is unavailable</string>
     <string name="serverIsUnavailableMessage">Sorry, we are not ready right now. Please, try again later</string>
@@ -133,13 +142,17 @@
     </string-array>
 
     <!-- TOURNAMENT -->
-    <string name="event_property_days">Days</string>
+    <string name="tournament_property_place">City</string>
     <string name="event_property_years">Years</string>
     <string name="event_property_year">Year</string>
-    <string name="event_property_turns">turns</string>
-    <string name="event_property_date">Date</string>
+    <string name="tournament_property_games_count">Games</string>
+    <string name="place_property_capacity">Capacity</string>
+    <string name="place_property_country">Country</string>
+    <string name="place_property_city">City</string>
+    <string name="tournament_property_date">Date</string>
     <string name="event_property_birthday">Birthday</string>
     <string name="tournament_start_date">Start date</string>
+    <string name="place_name">Name</string>
     <string name="tournament_end_date">End date</string>
     <string name="event_property_surname">Surname</string>
     <string name="event_property_nickname">Nickname</string>
@@ -151,20 +164,28 @@
     <string name="rank">Rank</string>
     <string name="place">Place</string>
     <string name="points">Points</string>
+    <string name="capacity">Capacity</string>
 
     <!-- tournament event view -->
     <string name="alert_dialog_missing_avatar_img_title">Error when trying to load image!</string>
     <string name="alert_dialog_missing_avatar_img_text">There occurred an error when trying to load an avatar image.\nThe image reference is going to be deleted.</string>
 
     <!-- fragment add new tournament -->
-    <string name="toolbar_title_add_tournament">Add new tournament</string>
+    <string name="toolbar_title_add_tournament">Add tournament</string>
     <string name="toolbar_title_edit_tournament">Edit tournament</string>
+    <string name="toolbar_title_add_user">Add user</string>
+    <string name="toolbar_title_add_place">Add place</string>
+    <string name="toolbar_title_edit_place">Edit place</string>
     <string name="future_tournament_error">You can\'t add future tournaments!\nPlease only use tournament dates in the past.</string>
     <string name="empty_fields_error_tournament">Make sure to fill fields forename and date!</string>
     <string name="tournament_added_notification">Tournament added</string>
     <string name="tournament_changed_notification">Tournament changed</string>
     <string name="tournament_deleted_notification">Tournament deleted</string>
+    <string name="place_added_notification">Place added</string>
+    <string name="place_changed_notification">Place changed</string>
+    <string name="place_deleted_notification">Place deleted</string>
     <string name="btn_tournament_delete">Delete tournament</string>
+    <string name="btn_place_delete">Delete place</string>
     <string name="verification_edit_date_input">The date input does not match the required date format!\nPlease use a format like: %1$s</string>
 
     <string name="avatar_btn_clicked_menu_item_select_photo">Choose from gallery</string>
@@ -173,7 +194,9 @@
 
     <!-- alert dialog delete -->
     <string name="alert_dialog_title_delete_tournament">Delete tournament</string>
-    <string name="alert_dialog_body_message">Are you sure you want to delete this tournament?</string>
+    <string name="alert_dialog_title_delete_place">Delete place</string>
+    <string name="alert_dialog_body_message_place">Are you sure you want to delete this place?</string>
+    <string name="alert_dialog_body_message_tournament">Are you sure you want to delete this tournament?</string>
 
     <!-- fragment show tournament -->
     <string name="intent_share_chooser_title">Choose your app to share</string>
@@ -187,6 +210,16 @@
     <plurals name="person_years_old">
         <item quantity="one">%1$s turns %2$d</item>
         <item quantity="other">%1$s turns %2$d</item>
+    </plurals>
+
+    <!-- sharing strings place -->
+    <string name="share_place_name">%1$s</string>
+    <string name="share_place_date_start">Born on: %1$s</string>
+    <string name="share_place_date_next">Next place: %1$s</string>
+    <string name="share_place_days_today">That is today!</string>
+    <plurals name="share_place_days">
+        <item quantity="one">In %1$d day</item>
+        <item quantity="other">In %1$d days</item>
     </plurals>
 
     <!-- sharing strings tournament -->
@@ -341,9 +374,10 @@
     <!-- main menu -->
     <string name="main_menu_item_about">About</string>
     <string name="main_menu_item_help">Help</string>
-    <string name="fab_event_list_tournament_title">New tournament</string>
-    <string name="fab_event_list_annual_event_title">New annual event</string>
-    <string name="fab_event_list_one_time_event_title">New one-time event</string>
+    <string name="fab_event_list_tournament_title">Add new tournament</string>
+    <string name="fab_event_list_place_title">Add new tournament</string>
+    <string name="fab_event_list_annual_event_title">Add new annual event</string>
+    <string name="fab_event_list_one_time_event_title">Add new one-time event</string>
 
     <!-- settings -->
     <string name="settings_title">Settings</string>

@@ -16,10 +16,7 @@ import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.adapter.EventAdapter
 import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
-import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
@@ -38,7 +35,7 @@ import java.text.DateFormat
 import java.util.*
 
 /**
- * ShowTournamentEvent is a fragment to show all known data from a instance of EventTournament
+ * ShowUserEvent is a fragment to show all known data from a instance of EventUser
  *
  * TODO:
  * - add tiny animation for opening this fragment
@@ -51,15 +48,16 @@ class ShowUserEvent : ShowEventFragment() {
     private var isFABOpen = false
 
     private var ranks: List<RankDTO>? = null
+    private var places: List<PlaceDTO>? = null
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: ArrayList<TournamentResultDTO>? = null
     private var coach: UserDTO? = null
 
+    var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
     var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
     var userTournamentsResultItemsListType = object : TypeToken<List<TournamentResultDTO>>() {}.type
     var userItemsListType = object : TypeToken<UserDTO>() {}.type
-
 
     private fun showTournamentsResults() {
         IOHandler.clearSharedPrefEventData()
@@ -86,9 +84,10 @@ class ShowUserEvent : ShowEventFragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        places = Gson().fromJson(arguments?.getString("places"), placeItemsListType)
         ranks = Gson().fromJson(arguments?.getString("ranks"), rankItemsListType)
         countries = Gson().fromJson(arguments?.getString("countries"), countryItemsListType)
-        userTournamentsResult = Gson().fromJson(arguments?.getString("tournamentsResult"), userTournamentsResultItemsListType)//удалить
+        userTournamentsResult = Gson().fromJson(arguments?.getString("tournamentsResult"), userTournamentsResultItemsListType)//todo удалить
         coach = Gson().fromJson(arguments?.getString("coach"), userItemsListType)
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_user_event, container, false)
@@ -102,7 +101,7 @@ class ShowUserEvent : ShowEventFragment() {
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks, countries, null, userTournamentsResult)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null, userTournamentsResult)
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerViewTournamentsResults).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -312,26 +311,8 @@ class ShowUserEvent : ShowEventFragment() {
         }
     }
 
-    override fun editEvent() {
+    override fun editEvent() {//todo удалить кнопку когда показывается пользователь (и плэйс для не админов)
 
-        val bundle = Bundle()
-        //do this in more adaptable way
-        bundle.putInt(
-                MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                eventID
-        )
-        val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
-        // add arguments to fragment
-        val newBirthdayFragment = TournamentInstanceFragment.newInstance()
-        newBirthdayFragment.arguments = bundle
-        ft.replace(
-                R.id.fragment_placeholder,
-                newBirthdayFragment,
-                TournamentInstanceFragment.BIRTHDAY_INSTANCE_FRAGMENT_TAG
-        )
-        ft.addToBackStack(null)
-        ft.commit()
-        closeExpandableToolbar()
     }
 
     companion object {

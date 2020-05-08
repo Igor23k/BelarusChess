@@ -30,12 +30,12 @@ open class EventDate : Comparable<EventDate> {
         eventDate = _eventDate
     }
 
-    constructor(_eventDate: Date) {
+    constructor(_eventDate: Date?) {
         eventDate = _eventDate
     }
 
 
-    var eventDate: Date = Calendar.getInstance().time
+    var eventDate: Date? = Calendar.getInstance().time
         set(value) {
             val currCal = Calendar.getInstance()
             currCal.time = value
@@ -258,7 +258,7 @@ open class EventDate : Comparable<EventDate> {
          *
          * @return StartDate
          */
-        fun dateToCurrentTimeContext(date: Date): Date {
+        fun dateToCurrentTimeContext(date: Date?): Date {
             //get instance of calender, assign the past startDate to it, and change year to current year
             //this is needed to check if the startDate is this or next year
             val dateInCurrentTimeContext = Calendar.getInstance()
@@ -291,7 +291,7 @@ open class EventDate : Comparable<EventDate> {
          */
         @JvmStatic
         fun parseDateToString(
-                date: Date,
+                date: Date?,
                 format: Int = DateFormat.DEFAULT,
                 locale: Locale = Locale.getDefault()
         ): String {
@@ -373,24 +373,27 @@ open class EventDate : Comparable<EventDate> {
 
         @JvmStatic
         fun getLocalizedDayAndMonthString(
-                date: Date,
+                date: Date?,
                 locale: Locale = Locale.getDefault()
         ): String {
             val skeletonPattern = "ddMM"
             val workingFormat =
                     android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
-            return SimpleDateFormat(workingFormat, locale).format(date)
+            return try {SimpleDateFormat(workingFormat, locale).format(date) }
+            catch (e: Exception) {""}
         }
 
         @JvmStatic
         fun getLocalizedDayMonthYearString(
-                date: Date,
+                date: Date?,
                 locale: Locale = Locale.getDefault()
         ): String {
             val skeletonPattern = "ddMMYY"
             val workingFormat =
                     android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
-            return SimpleDateFormat(workingFormat, locale).format(date)
+            return try {
+                SimpleDateFormat(workingFormat, locale).format(date)
+            } catch (e: Exception) { "" }
         }
 
         @JvmStatic

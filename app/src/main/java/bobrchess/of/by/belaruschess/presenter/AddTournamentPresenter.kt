@@ -1,15 +1,11 @@
 package bobrchess.of.by.belaruschess.presenter
 
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedTournamentDTO
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
-
-/**
- * Created by Igor on 12.04.2018.
- */
 
 interface AddTournamentPresenter : BasePresenter {
     fun removeTournament(id: Long?)
-    fun addTournament(tournamentDTO: TournamentDTO)
+    fun addTournament(tournamentDTO: ExtendedTournamentDTO)
     fun loadPlaces()
     fun loadReferees()
     fun attachView(activity: AddTournamentContractView)

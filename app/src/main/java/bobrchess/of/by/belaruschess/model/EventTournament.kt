@@ -4,21 +4,6 @@ import bobrchess.of.by.belaruschess.handler.IOHandler
 import java.text.DateFormat
 import java.util.*
 
-/**
- * EventTournament is model class to store basic data about a persons birthday
- *
- * It inherits from EventDay, so it uses a StartDate, and Strings for the name of the described person
- * ShortDescription cant be null, if it shouldn't be set, use "0" to mark the shortDescription as unwanted property when f.e. don't show it in UI
- * isYearGiven is flag to indicate whether the birthday-year is known/given
- *
- * TODO:
- *  - add possibility for favorites
- *
- *  @param startDate : StartDate
- *  @param name : String
- *  @param isYearGiven : Boolean
- * @author Procrastimax
- */
 class EventTournament(
         var id: Int,
         var startDate: Date,
@@ -55,8 +40,13 @@ class EventTournament(
         },
         Place {
             override fun Identifier(): Int = 8
+        },
+        ToursCount {
+            override fun Identifier(): Int = 9
         }
     }
+
+    var toursCount: Int? = null
 
     var shortDescription: String? = null
 
@@ -69,23 +59,6 @@ class EventTournament(
     var refereeId: Long? = null
 
     var placeId: Int? = null
-
-    /**
-     * getTurningAgeValue returns a value which represents the value of a person turning a specific age
-     * This respects that on a birthday-day a person is still turning the age beforehand and not the age+1
-     */
-    /* fun getTurningAgeValue(): Int {
-         val currCal = Calendar.getInstance()
-
-         if (currCal.get(Calendar.DAY_OF_MONTH) == this.getDayOfMonth() && currCal.get(Calendar.MONTH) == this.getMonth() && currCal.get(
-                 Calendar.YEAR
-             ) == this.getYear()
-         ) {
-             return 0
-         }
-
-         return getYearsSince() + 1
-     }*/
 
     /**
      * toString returns EventTournament as string representation
@@ -110,8 +83,8 @@ class EventTournament(
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.AvatarUri, this.imageUri) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +
-                getStringFromValue(Identifier.Place, this.placeId)
-
+                getStringFromValue(Identifier.Place, this.placeId) +
+                getStringFromValue(Identifier.ToursCount, this.toursCount)
     }
 
     /**
@@ -136,7 +109,8 @@ class EventTournament(
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +
-                getStringFromValue(Identifier.Place, this.placeId)
+                getStringFromValue(Identifier.Place, this.placeId) +
+                getStringFromValue(Identifier.ToursCount, this.toursCount)
     }
 
     companion object {

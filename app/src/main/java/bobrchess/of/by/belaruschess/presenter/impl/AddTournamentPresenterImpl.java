@@ -11,10 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedTournamentDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException;
 import bobrchess.of.by.belaruschess.network.connection.AddTournamentConnection;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
@@ -32,8 +34,8 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     private AddTournamentContractView view;
     private AddTournamentConnection addTournamentConnection;
     private Boolean viewIsReady = false;
-    private Integer selectedPlaceIndex;
-    private Integer selectedRefereeIndex;
+    private Integer selectedPlaceIndex = 0;
+    private Integer selectedRefereeIndex = 0;
     private Byte countSuccessfulSpinnerResponses = 0;
     private Map<Integer, PlaceDTO> placesIndexes = new HashMap<>();
     private Map<Integer, UserDTO> refereesIndexes = new HashMap<>();
@@ -65,7 +67,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     }
 
     @Override
-    public void onPlaceResponse(@NonNull List<PlaceDTO> places) {
+    public void onPlaceResponse(@NonNull List<? extends PlaceDTO> places) {
         savePlacesIndexes(places);
         view.setPlaceSpinnerAdapter(places);
         checkIsViewReady();
@@ -73,8 +75,9 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
 
     @Override
     public void onResponse(long removedTournamentId) {
-        if(removedTournamentId != 0){
+        if (removedTournamentId != 0) {
             view.removeTournamentFromLocalStorage(removedTournamentId);
+            view.showSnackbar(R.string.tournament_deleted_notification);
         }
     }
 
@@ -84,18 +87,20 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     }
 
     @Override
-    public void addTournament(@NonNull TournamentDTO tournamentDTO) {
+    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO) {
         if (viewIsReady) {
             view.disableButton();
-            tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex - 1));
-            tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex - 1));
             try {
+                tournamentDTO.setSelectedPlaceIndex(selectedPlaceIndex);
+                tournamentDTO.setSelectedRefereeIndex(selectedRefereeIndex);
                 Validator.INSTANCE.validateTournamentData(tournamentDTO);
+                tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex - 1));
+                tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex - 1));
                 view.disableButton();
                 view.showProgress();
-                addTournamentConnection.addTournament(tournamentDTO, packageModel.getValue(TOKEN));
+                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
-                view.showIncorrectTournamentNameText();
+                view.showToast(e.getLocalizedMessage());//todo проверить что норм показывается и остальные так же плэйс и тд
             } finally {
                 view.hideProgress();
                 view.enableButton();
@@ -143,7 +148,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
         this.selectedRefereeIndex = selectedRefereeIndex;
     }
 
-    private void savePlacesIndexes(List<PlaceDTO> places) {
+    private void savePlacesIndexes(List<? extends PlaceDTO> places) {
         for (int i = 0; i < places.size(); i++) {
             placesIndexes.put(i, places.get(i));
         }

@@ -51,8 +51,8 @@ public class TournamentsResultPresenterImpl implements CallBackUserInfo, Tournam
     }
 
     @Override
-    public void loadUserTournamentsResults() {
-        userInfoConnection.getTournamentsResults();
+    public void loadUserTournamentsResults(int id) {
+        userInfoConnection.getTournamentsResults(id);
     }
 
     public void detachView() {

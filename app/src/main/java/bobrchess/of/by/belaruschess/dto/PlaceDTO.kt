@@ -2,11 +2,7 @@ package bobrchess.of.by.belaruschess.dto
 
 import java.io.Serializable
 
-/**
- * Created by Igor on 10.04.2018.
- */
-
-class PlaceDTO : Serializable {
+open class PlaceDTO : Serializable {
 
     var id: Int? = null
     var name: String? = null
@@ -17,6 +13,18 @@ class PlaceDTO : Serializable {
     var country: CountryDTO? = null
     var approved: Boolean = false
     var image: String? = null
+
+    constructor(placeDTO: PlaceDTO) {
+        this.id = placeDTO.id
+        this.name = placeDTO.name
+        this.city = placeDTO.city
+        this.street = placeDTO.street
+        this.building = placeDTO.building
+        this.capacity = placeDTO.capacity
+        this.country = placeDTO.country
+        this.approved = placeDTO.approved
+        this.image = placeDTO.image
+    }
 
     constructor(id: Int?, name: String, city: String, street: String, building: String, capacity: Int?,
                 country: CountryDTO, approved: Boolean, image: String) {

@@ -49,6 +49,12 @@ interface API {
     @POST("/place")
     fun addPlace(@Body placeDTO: PlaceDTO): Call<PlaceDTO>
 
+    @DELETE("/place/{id}")
+    fun removePlace(@Path("id") id: Int) : Call<Int>
+
+    @GET("/searchPlaces")
+    fun searchPlaces(@Query("text") text: String): Call<List<PlaceDTO>>
+
     //Rank
     @GET("/rank/{id}")
     fun getRank(@Path("id") id: Int): Call<RankDTO>

@@ -17,11 +17,17 @@ import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.*
+import bobrchess.of.by.belaruschess.presenter.SearchPlacePresenter
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
 import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.SearchPlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACE
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER
 import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
+import bobrchess.of.by.belaruschess.view.activity.SearchPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
@@ -33,16 +39,19 @@ import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
 import java.util.*
 
-class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserContractView {
+class EventListFragment : AbstractFragment(), SearchTournamentContractView, SearchUserContractView, SearchPlaceContractView {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: EventAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    private var entityType = TOURNAMENT
     private var isFABOpen = false
 
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
     private var searchUserPresenter: SearchUserPresenter? = null
+    private var searchPlacePresenter: SearchPlacePresenter? = null
+    private var places: List<PlaceDTO>? = null
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
@@ -57,10 +66,12 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
     }
 
     var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
+    var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
     var userItemsListType = object : TypeToken<List<UserDTO>>() {}.type
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        places = Gson().fromJson(arguments?.getString("places"), placeItemsListType)
         ranks = Gson().fromJson(arguments?.getString("ranks"), rankItemsListType)
         countries = Gson().fromJson(arguments?.getString("countries"), countryItemsListType)
         users = Gson().fromJson(arguments?.getString("users"), userItemsListType)
@@ -75,6 +86,10 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         searchUserPresenter!!.attachView(this)
         searchUserPresenter!!.viewIsReady()
 
+        searchPlacePresenter = SearchPlacePresenterImpl()
+        searchPlacePresenter!!.attachView(this)
+        searchPlacePresenter!!.viewIsReady()
+
         setHasOptionsMenu(true)
         (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         (context as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
@@ -84,8 +99,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
 
         isFABOpen = false
 
-        fab_layout_add_annual_event.visibility = ConstraintLayout.INVISIBLE
-        fab_layout_add_birthday.visibility = ConstraintLayout.INVISIBLE
+        fab_layout_add_place.visibility = ConstraintLayout.INVISIBLE
+        fab_layout_add_tournament.visibility = ConstraintLayout.INVISIBLE
         fab_layout_add_one_time.visibility = ConstraintLayout.INVISIBLE
 
         init()
@@ -94,7 +109,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, ranks, countries, users, userTournamentsResult)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, users, userTournamentsResult)
 
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).apply {
             setHasFixedSize(true)
@@ -119,7 +134,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
             }
         }
 
-        fab_add_birthday.setOnClickListener {
+        fab_add_tournament.setOnClickListener {
             closeFABMenu(true)
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
@@ -130,12 +145,12 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
             ft.commit()
         }
 
-        fab_add_annual_event.setOnClickListener {
+        fab_layout_add_place.setOnClickListener {
             closeFABMenu(true)
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
                     R.id.fragment_placeholder,
-                    AnnualEventInstanceFragment.newInstance()
+                    PlaceInstanceFragment.newInstance()
             )
             ft.addToBackStack(null)
             ft.commit()
@@ -156,19 +171,20 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
     override fun onResume() {
         super.onResume()
         //when no items except of the 12 month items are in the event list, then display text message
-        if (EventHandler.getList().size - 12 == 0) {
+       /* if (EventHandler.getList().size - 12 == 0) {
             tv_no_events.visibility = TextView.VISIBLE
         } else {
             tv_no_events.visibility = TextView.GONE
-        }
+        }*/
+        registerInternetCheckReceiver()
     }
 
     private fun showFABMenu() {
         isFABOpen = true
         fab_show_fab_menu.isClickable = false
         //show layouts
-        fab_layout_add_annual_event.visibility = ConstraintLayout.VISIBLE
-        fab_layout_add_birthday.visibility = ConstraintLayout.VISIBLE
+        fab_layout_add_place.visibility = ConstraintLayout.VISIBLE
+        fab_layout_add_tournament.visibility = ConstraintLayout.VISIBLE
         fab_layout_add_one_time.visibility = ConstraintLayout.VISIBLE
 
         this.recyclerView.animate().alpha(0.15f).apply {
@@ -177,22 +193,22 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
 
         //move layouts
         //move add birthday layout up
-        fab_layout_add_birthday.animate()
+        fab_layout_add_tournament.animate()
                 .translationYBy(-resources.getDimension(R.dimen.standard_55) - 20).apply {
                     duration = 100
                 }.withEndAction {
-                    fab_layout_add_birthday.animate().translationYBy(20.toFloat()).apply {
+                    fab_layout_add_tournament.animate().translationYBy(20.toFloat()).apply {
                         duration = 75
                     }
                 }
 
         //move add annual event layout up
-        fab_layout_add_annual_event.animate()
+        fab_layout_add_place.animate()
                 .translationYBy(-resources.getDimension(R.dimen.standard_105) - 40)
                 .apply {
                     duration = 100
                 }.withEndAction {
-                    fab_layout_add_annual_event.animate().translationYBy(40.toFloat()).apply {
+                    fab_layout_add_place.animate().translationYBy(40.toFloat()).apply {
                         duration = 75
                     }
                 }
@@ -233,20 +249,20 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         this.recyclerView.animate().alpha(1.0f)
 
         //move add birthday event layout down
-        fab_layout_add_birthday.animate()
+        fab_layout_add_tournament.animate()
                 .translationYBy(resources.getDimension(R.dimen.standard_55))
                 .withEndAction {
                     if (!immediateAction) {
-                        fab_layout_add_birthday.visibility = ConstraintLayout.INVISIBLE
+                        fab_layout_add_tournament.visibility = ConstraintLayout.INVISIBLE
                     }
                 }
 
         //move add annual event layout down
-        fab_layout_add_annual_event.animate()
+        fab_layout_add_place.animate()
                 .translationYBy(resources.getDimension(R.dimen.standard_105))
                 .withEndAction {
                     if (!immediateAction) {
-                        fab_layout_add_annual_event.visibility = ConstraintLayout.INVISIBLE
+                        fab_layout_add_place.visibility = ConstraintLayout.INVISIBLE
                     }
                 }
 
@@ -296,6 +312,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         }
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
 
@@ -305,16 +322,38 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
 
             R.id.item_show_tournaments -> {
                 EventHandler.clearData()
+                entityType = TOURNAMENT
                 searchTournamentPresenter?.loadTournaments()
             }
 
             R.id.item_show_users -> {
                 EventHandler.clearData()
+                entityType = USER
                 searchUserPresenter?.loadUsers()
             }
 
+            R.id.item_show_places -> {
+                EventHandler.clearData()
+                entityType = PLACE
+                searchPlacePresenter?.loadPlaces()
+            }
+
+
             R.id.action_refresh -> {
-                searchTournamentPresenter?.loadTournaments()
+                when (entityType) {
+                    USER -> {
+                        searchUserPresenter?.loadUsers()
+                        EventHandler.clearData()
+                    }
+                    TOURNAMENT -> {
+                        searchTournamentPresenter?.loadTournaments()
+                        EventHandler.clearData()
+                    }
+                    PLACE -> {
+                        searchPlacePresenter?.loadPlaces()
+                        EventHandler.clearData()
+                    }
+                }
             }
             R.id.item_help -> {
                 helpClicked()
@@ -328,6 +367,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         }
         return super.onOptionsItemSelected(item)
     }
+
 
     private fun tournamentsSearchClicked() {
         //open about fragment
@@ -384,24 +424,8 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         }
     }
 
-    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun dismissAlertDialog() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(resId: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showToast(message: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun setConnectionStatus(connectivityStatus: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println()//todo  перенести в абстракт фрагмент?
     }
 
     override fun showTournaments(tournaments: List<TournamentDTO>) {
@@ -410,8 +434,10 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         tournaments.forEach {
             val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.name = it.name!!
+            event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
             event.shortDescription = it.shortDescription!!
+            event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
             event.placeId = it.place?.id
@@ -455,10 +481,16 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
     private fun updateFragments() {
         val bundle = Bundle()
         val gson = GsonBuilder().setPrettyPrinting().create()
+        val placesList = gson.toJson(places)
         val ranksList = gson.toJson(ranks)
         val countriesList = gson.toJson(countries)
         val usersList = gson.toJson(users)
         val userTournamentsList = gson.toJson(userTournamentsResult)
+
+        bundle.putString(
+                "places",
+                placesList
+        )
 
         bundle.putString(
                 "ranks",
@@ -481,7 +513,7 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
         )
 
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
-        var eventFragment = newInstance()
+        var eventFragment = this
         eventFragment.arguments = bundle
         transaction?.replace(
                 R.id.fragment_placeholder,
@@ -535,11 +567,11 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
                     }
                 }
                 is EventUser -> {
-                    if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
-                        ShowUserEvent.newInstance()
-                    } else {
-                        UserInstanceFragment.newInstance()//todo
-                    }
+                    //   if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
+                    ShowUserEvent.newInstance()
+                    //   } else {
+                    //  nu
+                    //  }
                 }
                 is OneTimeEvent -> {
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
@@ -572,5 +604,33 @@ class EventListFragment : Fragment(), SearchTournamentContractView, SearchUserCo
 
     override fun hideProgress() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showPlaces(places: MutableList<out PlaceDTO>?) {
+//todo такой эе метод в мэйн активити, сделать один чтобы был
+        IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
+        places?.forEach {
+            val event = EventPlace(it.id!!.toInt(), it.name!!)
+            event.city = it.city
+            event.street = it.street
+            event.building = it.building
+            event.imageUri = it.image
+            event.capacity = it.capacity
+            event.countryId = it.country?.id
+            event.approved = it.approved
+            EventHandler.addEvent(
+                    event,
+                    context!!,
+                    writeAfterAdd = true,
+                    addNewNotification = false,
+                    updateEventList = true,
+                    addBitmap = false
+            )
+        }
+        updateFragments()
+    }
+
+    override fun dialogConfirmButtonClicked() {
+
     }
 }

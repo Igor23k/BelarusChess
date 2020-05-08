@@ -4,13 +4,16 @@ import android.support.annotation.NonNull
 import android.view.View
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.RegistrationConnection
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Constants.Companion.ABSENCE_INDEX
 import bobrchess.of.by.belaruschess.util.Constants.Companion.INTERNAL_SERVER_ERROR
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_SERVER_UNAVAILABLE
+import bobrchess.of.by.belaruschess.util.Constants.Companion.NOT_SELECTED_INDEX
 import bobrchess.of.by.belaruschess.util.Constants.Companion.SERVER_UNAVAILABLE
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
@@ -41,11 +44,6 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     private var connectivityStatus: Int? = null
     private var firstTimeSpinnerLoad: Boolean = true
     private var packageModel: PackageModel? = null
-
-    companion object {
-        private const val NOT_SELECTED_INDEX = 0
-        private const val ABSENCE_INDEX = 1
-    }
 
     init {
         userConnection.attachPresenter(this)
@@ -103,7 +101,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     override fun onServerUnavailable() {
          when {
              connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-             !viewIsReady!! -> view!!.showAlertDialog(getInternalizedMessage(KEY_SERVER_UNAVAILABLE), R.string.serverIsUnavailableMessage, R.string.retry, false)
+             !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailableMessage, R.string.serverIsUnavailableMessage, R.string.retry, false)
              else -> view!!.showSnackBar(viewComponent!!, getInternalizedMessage(KEY_SERVER_UNAVAILABLE))
          }
     }
@@ -113,7 +111,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         loadCoaches()
     }
 
-    override fun registration(userDTO: RegistrationUserDTO) {
+    override fun registration(userDTO: ExtendedUserDTO) {
         view!!.disableButton()
         try {
             fillUserBySpinnerValues(userDTO)
@@ -128,7 +126,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         }
     }
 
-    private fun fillUserBySpinnerValues(userDTO: RegistrationUserDTO) {
+    private fun fillUserBySpinnerValues(userDTO: ExtendedUserDTO) {
         userDTO.selectedCoachIndex = selectedCoachIndex
         userDTO.selectedCountryIndex = selectedCountryIndex
         userDTO.selectedRankIndex = selectedRankIndex

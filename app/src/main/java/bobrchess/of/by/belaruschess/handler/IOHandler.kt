@@ -311,6 +311,7 @@ object IOHandler {
                         var finishDate = "-"
                         var avatarImageURI: String? = null
                         var shortDescription: String? = null
+                        var toursCount: String? = null
                         var fullDescription: String? = null
                         var refereeId: String? = null
                         var placeId: String? = null
@@ -331,6 +332,9 @@ object IOHandler {
                                 }
                                 EventTournament.Identifier.ShortDescription.toString() -> {
                                     shortDescription = property[1]
+                                }
+                                EventTournament.Identifier.ToursCount.toString() -> {
+                                    toursCount = property[1]
                                 }
                                 EventTournament.Identifier.FullDescription.toString() -> {
                                     fullDescription = property[1]
@@ -357,11 +361,10 @@ object IOHandler {
                                 EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),//todo why?
                                 forename
                             )
-                     //   if (shortDescription != null) birthday.fini = shortDescription
                         if (shortDescription != null) tournament.shortDescription = shortDescription
-                      //  if (note != null) birthday.note = note
                         if (avatarImageURI != null) tournament.imageUri = avatarImageURI
                         if (fullDescription != null) tournament.fullDescription = fullDescription
+                        if (toursCount != null) tournament.toursCount = toursCount.toInt()
                         if (refereeId != null) tournament.refereeId = refereeId.toLong()
                         if (placeId != null) {
                             tournament.placeId = placeId.toInt()

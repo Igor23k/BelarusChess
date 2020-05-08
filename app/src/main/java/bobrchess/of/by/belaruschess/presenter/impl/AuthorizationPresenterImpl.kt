@@ -35,10 +35,11 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
     override fun setConnectivityStatus(status: Int?) {
         this.connectivityStatus = status
         if (!Util.isConnected(status)) {
+            view?.dismissAlertDialog()
             view?.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
         } else {
-            view?.dismissAlertDialog()
-            view?.tokenAuthorization()
+            //view?.dismissAlertDialog()
+            //view?.tokenAuthorization()
         }
     }
 

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout_place_item_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ripple_recycler_view_item"
+    android:clickable="true"
+    android:elevation="0dp"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/iv_place_event_item_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        android:textSize="@dimen/smaller_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_birthday_person"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/place_event_item_country_value"
+        app:layout_constraintStart_toEndOf="@+id/iv_place_event_item_image"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_place_event_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
+            android:gravity="center|start"
+            android:text="@string/place_name"
+            android:textColor="@color/textDark"
+            android:textSize="@dimen/smaller_text_size"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/place_event_item_country"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/place_property_country"
+        android:textColor="@color/brightGrey"
+        app:layout_constraintEnd_toStartOf="@+id/place_event_city"
+        app:layout_constraintTop_toTopOf="@+id/iv_place_event_item_image" />
+
+    <TextView
+        android:id="@+id/place_event_city"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/place_property_city"
+        android:textColor="@color/brightGrey"
+        app:layout_constraintEnd_toStartOf="@+id/place_event_item_capacity_title"
+        app:layout_constraintTop_toTopOf="@+id/iv_place_event_item_image" />
+
+    <TextView
+        android:id="@+id/place_event_item_capacity_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/place_property_capacity"
+        android:textColor="@color/brightGrey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_place_event_item_image" />
+
+    <TextView
+        android:id="@+id/place_event_item_country_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/textDark"
+        android:textSize="@dimen/smaller_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_place_event_item_image"
+        app:layout_constraintEnd_toEndOf="@+id/place_event_item_country"
+        app:layout_constraintStart_toStartOf="@+id/place_event_item_country"
+        app:layout_constraintTop_toBottomOf="@+id/place_event_item_country"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="2"/>
+
+    <TextView
+        android:id="@+id/tournament_event_item_city_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/textDark"
+        android:textSize="@dimen/smaller_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_place_event_item_image"
+        app:layout_constraintEnd_toEndOf="@+id/place_event_city"
+        app:layout_constraintStart_toStartOf="@+id/place_event_city"
+        app:layout_constraintTop_toBottomOf="@+id/place_event_city"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/place_event_item_capacity_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/textDark"
+        android:textSize="@dimen/smaller_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_place_event_item_image"
+        app:layout_constraintEnd_toEndOf="@+id/place_event_item_capacity_title"
+        app:layout_constraintStart_toStartOf="@+id/place_event_item_capacity_title"
+        app:layout_constraintTop_toBottomOf="@+id/place_event_item_capacity_title"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="2" />
+</android.support.constraint.ConstraintLayout>

@@ -58,7 +58,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
         tokenAuthPresenter.setPackageModel(getPackageModel());
         registerInternetCheckReceiver();
 
-        if (tokenAuthPresenter.isAuthenticated()) {
+        if (tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном
             tokenAuthPresenter.tokenAuthorization();
         } else {
             initActivityData();
@@ -247,14 +247,16 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     public void authorization() {
         try {
             presenter.authorization(getUserData());
-        } catch (NumberFormatException e) {
-            showToast(R.string.incorrect_rating);
+        } catch (Exception e) {
+            showToast(R.string.incorrect_data);
+            enableButton();
         }
     }
 
     @Override
     public void setConnectionStatus(Integer connectivityStatus) {
         presenter.setConnectivityStatus(connectivityStatus);
+        tokenAuthPresenter.setConnectivityStatus(connectivityStatus);
     }
 
     @Override

@@ -4,16 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
 import android.support.annotation.StringRes
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.Toolbar
 import android.view.Gravity
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.util.Util
@@ -21,9 +15,7 @@ import bobrchess.of.by.belaruschess.view.activity.BaseContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.ConfirmationDialog
 import bobrchess.of.by.belaruschess.view.activity.impl.ConfirmationListener
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import org.springframework.util.StringUtils
-import java.util.*
 
 
 /**
@@ -85,6 +77,15 @@ abstract class AbstractFragment : Fragment(), BaseContractView, ConfirmationList
             toast.setGravity(Gravity.CENTER, 0, 0)
             toast.show()
         }
+    }
+
+    override fun showSnackbar(resId: Int?) {
+        Snackbar
+                .make(
+                        view!!,
+                        resId!!,
+                        Snackbar.LENGTH_LONG
+                ).show()
     }
 
 }

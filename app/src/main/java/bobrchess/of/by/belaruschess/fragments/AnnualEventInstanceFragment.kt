@@ -21,6 +21,7 @@ import java.util.*
  * This class inherits from android.support.v4.app.Fragment
  */
 class AnnualEventInstanceFragment : EventInstanceFragment() {
+
     override fun showProgress() {
 
     }
@@ -179,7 +180,7 @@ class AnnualEventInstanceFragment : EventInstanceFragment() {
                 //year is given
                 if (isChecked) {
                     val cal = Calendar.getInstance()
-                    if (this.eventStartDate.after(cal.time)) {
+                    if (this.eventStartDate!!.after(cal.time)) {
                         cal.time = this.eventStartDate
                         cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
                         this.eventStartDate = cal.time

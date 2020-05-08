@@ -8,7 +8,8 @@ class Constants {
 
     companion object {
 
-
+        const val NOT_SELECTED_INDEX = 0
+        const val ABSENCE_INDEX = 1
 
         val KEY_INVALID_EMAIL_OR_PASSWORD = "invalid_email_or_password"
         val KEY_UNSUCCESSFUL_REQUEST = "unsuccessful_request"
@@ -16,10 +17,14 @@ class Constants {
         val KEY_SERVER_UNAVAILABLE = "server_is_unavailable"
         val INTERNAL_SERVER_ERROR = "Internal Server Error"
         val KEY_SERVER_UNAVAILABLE_JSON_FORMAT = "server_unavailable_json_format"
-        val KEY_TOKEN_IS_EXPIRED = "token_is_expired"
+        val TOKEN_IS_EXPIRED_MESSAGE = "Token is expired"
         val UNAUTHORIZED = "Unauthorized"
         //public static final String PLEASE_WAIT = "Please, wait ...";
         val EMPTY_STRING = ""
+
+        val USER = "user"
+        val TOURNAMENT = "tournament"
+        val PLACE = "place"
 
         val USER_PARAMETER = "user"//todo не выбрать ничего из дропдаунов и ничего не выводит из ошибок
         val GAME_PARAMETER = "game"
@@ -50,6 +55,8 @@ class Constants {
         val KEY_RANK_IS_NOT_SELECTED = "rank_is_not_selected"
         val KEY_GENDER_IS_NOT_SELECTED = "gender_is_not_selected"
         val KEY_COUNTRY_IS_NOT_SELECTED = "country_is_not_selected"
+        val KEY_REFEREE_IS_NOT_SELECTED = "referee_is_not_selected"
+        val KEY_PLACE_IS_NOT_SELECTED = "place_is_not_selected"
         val KEY_COACH_IS_NOT_SELECTED = "coach_is_not_selected"
 
         val KEY_INCORRECT_COUNTRY_ID = "incorrect_country_id"
@@ -76,6 +83,7 @@ class Constants {
         val KEY_INCORRECT_PLACE_CAPACITY_SMALL = "incorrect_place_capacity_small"
         val KEY_INCORRECT_PLACE_CAPACITY_BIG = "incorrect_place_capacity_big"
         val KEY_INCORRECT_PLACE_COUNTRY = "incorrect_place_country"
+        val KEY_INCORRECT_PLACE_IMAGE = "incorrect_place_image"
 
         val KEY_INCORRECT_RANK_ID = "incorrect_rank_id"
         val KEY_INCORRECT_RANK_NAME = "incorrect_rank_name"
@@ -84,8 +92,10 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_ID = "incorrect_tournament_id"
         val KEY_INCORRECT_TOURNAMENT_NAME = "incorrect_tournament_name"
         val KEY_INCORRECT_TOURNAMENT_PLACE = "incorrect_tournament_place"
+        val KEY_INCORRECT_TOURNAMENT_TOURS_COUNT = "incorrect_tournament_tours_count"
         val KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION = "incorrect_tournament_short_description"
         val KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION = "incorrect_tournament_full_description"
+        val KEY_INCORRECT_TOURNAMENT_IMAGE = "incorrect_tournament_image"
         val KEY_INCORRECT_TOURNAMENT_START_DATE = "incorrect_tournament_start_date"
         val KEY_INCORRECT_TOURNAMENT_FINISH_DATE = "incorrect_tournament_finish_date"
         val KEY_INCORRECT_TOURNAMENT_COUNT_PLAYERS_IN_TEAM = "incorrect_tournament_count_players_in_team"
@@ -102,13 +112,13 @@ class Constants {
         val HOST = "http://192.168.43.96:8080"
 
 
-        @JvmField
+        @JvmField//todo
         val REFRESH_TOKEN_DEFAULT = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWN1cml0eUBnbWFpbC5jb20iLCJzY29wZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfUFJFTUlVTV9NRU1CRVIiLCJST0xFX1JFRlJFU0hfVE9LRU4iXSwiaXNzIjoiaHR0cDovL3N2bGFkYS5jb20iLCJpYXQiOjE0NzIzOTAwNjUsImV4cCI6MTk3MjM5MDk2NX0.q9H20pGFLegFH2LjiYBNTm7u9i3PWGZh8rTx3A3nrXnFVg5_fOiSDxYQuodkt_S9gFNjJCI8ap-dvogTgwCf5Q"
         @JvmField
         val REFRESH_TOKEN = "refreshToken"
         @JvmField
         val TOKEN = "token"
-        @JvmField
+        @JvmField//todo
         val TOKEN_DEFAULT = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWN1cml0eUBnbWFpbC5jb20iLCJzY29wZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfUFJFTUlVTV9NRU1CRVIiLCJST0xFX1JFRlJFU0hfVE9LRU4iXSwiaXNzIjoiaHR0cDovL3N2bGFkYS5jb20iLCJpYXQiOjE0NzIzOTAwNjUsImV4cCI6MTk3MjM5MDk2NX0.q9H20pGFLegFH2LjiYBNTm7u9i3PWGZh8rTx3A3nrXnFVg5_fOiSDxYQuodkt_S9gFNjJCI8ap-dvogTgwCf5Q"
         @JvmField
         val USER_PREFERENCES = "userPreferences"

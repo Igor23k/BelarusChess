@@ -11,10 +11,7 @@ import android.support.v4.app.Fragment
 import android.util.TypedValue
 import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
+import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.fragments.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
@@ -32,13 +29,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPresenterCallBack, CountryPresenterCallBack {
+class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePresenterCallBack, RankPresenterCallBack, CountryPresenterCallBack {
 
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
     private var progressDialog: ProgressDialog? = null
+    private var placePresenter: PlacePresenter? = null
     private var rankPresenter: RankPresenter? = null
     private var countryPresenter: CountryPresenter? = null
     private var ranks: List<RankDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
+    private var places: List<PlaceDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
 
@@ -55,6 +54,11 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         rankPresenter!!.attachView(this)
         rankPresenter!!.viewIsReady()
         rankPresenter!!.getRanks()
+
+        placePresenter = PlacePresenterImpl()
+        placePresenter!!.attachView(this)
+        placePresenter!!.viewIsReady()
+        placePresenter!!.getPlaces()
 
         countryPresenter = CountryPresenterImpl()
         countryPresenter!!.attachView(this)
@@ -228,6 +232,8 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
 
     override fun setConnectionStatus(connectivityStatus: Int?) {
         searchTournamentPresenter?.setConnectivityStatus(connectivityStatus)
+        rankPresenter?.setConnectivityStatus(connectivityStatus)
+        countryPresenter?.setConnectivityStatus(connectivityStatus)
     }
 
     private fun transformDate(dateString: String?): String? {
@@ -245,8 +251,14 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         val bundle = Bundle()
         val gson = GsonBuilder().setPrettyPrinting().create()
         val ranksList = gson.toJson(ranks)
+        val placesList = gson.toJson(places)
         val countriesList = gson.toJson(countries)
         val userTournamentsList = gson.toJson(userTournamentsResult)
+        bundle.putString(
+                "places",
+                placesList
+        )
+
         bundle.putString(
                 "ranks",
                 ranksList
@@ -300,6 +312,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
 
     var tournamentsAreLoaded = false
     var countriesAreLoaded = false
+    var placesAreLoaded = false
     var ranksAreLoaded = false
 
     override fun showTournaments(tournaments: List<TournamentDTO>) {
@@ -308,8 +321,10 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         tournaments.forEach {
             val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.name = it.name!!
+            event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
             event.shortDescription = it.shortDescription!!
+            event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
             event.placeId = it.place?.id
@@ -324,9 +339,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
             )
         }
         tournamentsAreLoaded = true
-        if (ranks != null) {
-            updateTournamentFragments()
-        }
+        updateFragments()
     }
 
     fun writeDataToExternal() {
@@ -367,6 +380,10 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
 
     }
 
+    override fun placeIsLoaded(placeDTO: PlaceDTO?) {
+
+    }
+
     override fun countryIsLoaded(countryDTO: CountryDTO?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -383,8 +400,14 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, RankPrese
         updateFragments()
     }
 
+    override fun placesAreLoaded(places: MutableList<out PlaceDTO>?) {//todo сделать чтобы это выполнилось ТОЧНО раньше чем основной код где это используется
+        this.places = places
+        placesAreLoaded = true
+        updateFragments()
+    }
+
     private fun updateFragments() {
-        if (ranksAreLoaded && tournamentsAreLoaded && countriesAreLoaded) {
+        if (placesAreLoaded && ranksAreLoaded && tournamentsAreLoaded && countriesAreLoaded) {
             updateTournamentFragments()
         }
     }

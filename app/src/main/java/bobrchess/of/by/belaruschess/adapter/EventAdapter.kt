@@ -10,10 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.fragments.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
@@ -24,8 +21,10 @@ import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
 import kotlinx.android.synthetic.main.one_time_event_item_view.view.*
+import kotlinx.android.synthetic.main.place_event_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.constraint_layout_birthday_item_view
+import kotlinx.android.synthetic.main.tournament_event_item_view.view.tournament_event_item_city_value
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.tv_birthday_event_item_forename
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.tv_birthday_event_item_nickname
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.tv_birthday_event_item_surname
@@ -39,17 +38,19 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     private var tournamentsResultPresenterImpl: TournamentsResultPresenterImpl? = null
     private var context: Context? = null
     private var fragmentManager: FragmentManager? = null
+    private var places: List<PlaceDTO>? = null
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
 
-    constructor(context: Context, fragmentManager: FragmentManager, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?, userTournamentsResult: List<TournamentResultDTO>?) : this() {
+    constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?, userTournamentsResult: List<TournamentResultDTO>?) : this() {
         tournamentsResultPresenterImpl = TournamentsResultPresenterImpl()
         tournamentsResultPresenterImpl!!.attachView(this)
 
         this.context = context
         this.fragmentManager = fragmentManager
+        this.places = places
         this.ranks = ranks
         this.countries = countries
         this.users = users
@@ -66,6 +67,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     class TournamentResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     class OneTimeEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    class PlaceEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     /**
      * getItemViewType overrides the standard function
@@ -92,14 +95,17 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
             is EventTournament -> {
                 return 1
             }
-            is EventUser -> {
-                return 4
-            }
             is EventTournamentResult -> {
                 return 2;
             }
             is OneTimeEvent -> {
                 return 3
+            }
+            is EventUser -> {
+                return 4
+            }
+            is EventPlace -> {
+                return 5;
             }
         }
         return -1
@@ -138,6 +144,12 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 .inflate(R.layout.user_event_item_view, parent, false)
                 return UserEventViewHolder(itemView)
             }
+            5 -> {
+                val itemView =
+                        LayoutInflater.from(parent.context)
+                                .inflate(R.layout.place_event_item_view, parent, false)
+                return PlaceEventViewHolder(itemView)
+            }
             else -> {
                 //Default is birthday event
                 val itemView = View(context)
@@ -150,7 +162,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // - get element from dataset at this position
         // - replace the contents of the view with that element
-
         when (holder.itemViewType) {
 
             //EventMonthDividerViewHolder
@@ -163,11 +174,9 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                 }
             }
 
-            //BirthdayEventViewHolder
             1 -> {
-                //check if is birthday event and if the year is given
-                EventHandler.getList()[position].let { birthday ->
-                    if (birthday is EventTournament) {
+                EventHandler.getList()[position].let { event ->
+                    if (event is EventTournament) {
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
@@ -175,7 +184,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 //do this in more adaptable way
                                 bundle.putInt(
                                         MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                                        birthday.eventID
+                                        event.eventID
                                 )
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
@@ -196,7 +205,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 //do this in more adaptable way
                                 bundle.putInt(
                                         MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                                        birthday.eventID
+                                        event.eventID
                                 )
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
@@ -214,41 +223,25 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         val textColor: Int
 
-                        //set days until
-                        val daysUntil = birthday.getDaysUntil()
-                        if (daysUntil == 0) {
-                            textColor = ContextCompat.getColor(context!!, R.color.colorAccent)
-                            holder.itemView.tv_birthday_event_item_days_until_value.text =
-                                    context!!.getText(R.string.today)
-                            holder.itemView.tv_birthday_event_item_days_until_value.setTextColor(
-                                    textColor
-                            )
-                        } else {
-                            textColor = ContextCompat.getColor(context!!, R.color.textDark)
-                            holder.itemView.tv_birthday_event_item_days_until_value.text =
-                                    daysUntil.toString()
-                            holder.itemView.tv_birthday_event_item_days_until_value.setTextColor(
-                                    textColor
-                            )
-                        }
+
+                        //textColor = ContextCompat.getColor(context!!, R.color.colorAccent)
+                        textColor = ContextCompat.getColor(context!!, R.color.textDark)
+                        holder.itemView.tournament_event_item_turns_value.text = event.toursCount.toString()
+                        holder.itemView.tournament_event_item_turns_value.setTextColor(textColor)
 
                         //set startDate
-                        holder.itemView.tv_birthday_event_item_date_value.text =
-                                birthday.getPrettyShortStringWithoutYear()
-                        holder.itemView.tv_birthday_event_item_date_value.setTextColor(textColor)
+                        holder.itemView.tournament_event_item_date_value.text = event.getPrettyShortStringWithoutYear()
+                        holder.itemView.tournament_event_item_date_value.setTextColor(textColor)
 
-                        //set years since, if specified
-                        // if (birthday.isYearGiven) {
-                        holder.itemView.tv_birthday_event_item_years_since_value.text =
-                                (birthday.id).toString()//todo
-                        /*  } else {
-                              holder.itemView.tv_birthday_event_item_years_since_value.text = "-"
-                          }*/
-                        holder.itemView.tv_birthday_event_item_years_since_value.setTextColor(
-                                textColor
-                        )
 
-                        if (birthday.eventAlreadyOccurred()) {
+                        var city = event.placeId?.minus(1)?.let { places?.get(it)?.city}
+                        if (StringUtils.isEmpty(city)) {
+                            city = "-"
+                        }
+                        holder.itemView.tournament_event_item_city_value.text = city
+                        holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
+
+                        if (event.eventAlreadyOccurred()) {
                             holder.itemView.constraint_layout_birthday_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
@@ -274,16 +267,16 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tv_birthday_event_item_nickname.setTextColor(textColor)
 
                         //set fullDescription TextView text
-                        holder.itemView.tv_birthday_event_item_nickname.text = birthday.name
+                        holder.itemView.tv_birthday_event_item_nickname.text = event.name
 
-                        val avatarUri = birthday.imageUri
+                        val avatarUri = event.imageUri
 
                         //when context is MainActivity
                         if (context is MainActivity) {
                             if (avatarUri != null) {
                                 holder.itemView.iv_tournament_event_item_image.setImageBitmap(
                                         BitmapHandler.getBitmapAt(
-                                                birthday.eventID
+                                                event.eventID
                                         )
                                 )
                             } else {
@@ -294,6 +287,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                 }
             }
 
+
             4 -> {
                 EventHandler.getList()[position].let { user ->
                     if (user is EventUser) {
@@ -302,7 +296,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                             if (isClickable) {
                                 eventId = user.eventID
                                 coachId = user.coachId
-                                tournamentsResultPresenterImpl?.loadUserTournamentsResults()
+                                tournamentsResultPresenterImpl?.loadUserTournamentsResults(user.eventID)
                             }
                         }
 
@@ -439,6 +433,91 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 )
                             } else {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)
+                            }
+                        }
+                    }
+                }
+            }
+
+            5 -> {
+                EventHandler.getList()[position].let { eventPlace ->
+                    if (eventPlace is EventPlace) {
+                        //set on click listener for item
+                        holder.itemView.setOnClickListener {
+                            if (isClickable) {
+                                val bundle = Bundle()
+                                //do this in more adaptable way
+                                bundle.putInt(
+                                        MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                                        eventPlace.eventID
+                                )
+                                val gson = GsonBuilder().setPrettyPrinting().create()
+                                val countriesList = gson.toJson(countries)
+
+                                bundle.putString(
+                                        "countries",
+                                        countriesList
+                                )
+                                val ft = fragmentManager!!.beginTransaction()
+                                // add arguments to fragment
+                                val fragment = ShowPlaceEvent.newInstance()
+                                fragment.arguments = bundle
+                                ft.replace(
+                                        R.id.fragment_placeholder,
+                                        fragment
+                                )
+                                ft.addToBackStack(null)
+                                ft.commit()
+                            }
+                        }
+
+                        val textColor: Int
+
+                        textColor = ContextCompat.getColor(context!!, R.color.textDark)
+
+                        holder.itemView.tv_place_event_item_name.visibility = TextView.VISIBLE
+                        holder.itemView.tv_place_event_item_name.text = eventPlace.name
+
+                        var country = eventPlace.countryId?.minus(1)?.let { countries?.get(it)?.name }
+                        if (StringUtils.isEmpty(country)) {
+                            country = "-"
+                        }
+                        holder.itemView.place_event_item_country_value.text = country
+                        holder.itemView.place_event_item_country_value.setTextColor(textColor)
+
+                        holder.itemView.tournament_event_item_city_value.text = eventPlace.city
+                        holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
+
+                        holder.itemView.place_event_item_capacity_value.text = eventPlace.capacity.toString()
+                        holder.itemView.place_event_item_capacity_value.setTextColor(
+                                textColor
+                        )
+
+                        if (eventPlace.eventAlreadyOccurred()) {
+                            holder.itemView.constraint_layout_place_item_view.background =
+                                    ContextCompat.getDrawable(
+                                            context!!,
+                                            R.drawable.ripple_recycler_view_item_dark
+                                    )
+                        } else {
+                            holder.itemView.constraint_layout_place_item_view.background =
+                                    ContextCompat.getDrawable(
+                                            context!!,
+                                            R.drawable.ripple_recycler_view_item
+                                    )
+                        }
+                        val imageUri = eventPlace.imageUri
+
+                        //when context is MainActivity
+                        if (context is MainActivity) {
+                            if (imageUri != null) {
+                                holder.itemView.iv_place_event_item_image.setImageBitmap(
+                                        BitmapHandler.getBitmapAt(
+                                                eventPlace.eventID
+                                        )
+                                )
+                            } else {
+                                holder.itemView.iv_place_event_item_image.setImageResource(R.drawable.ic_birthday_person)
                             }
                         }
                     }

@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/event_property_date"
+        android:text="@string/tournament_property_date"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toStartOf="@+id/tv_days_until_annual_title"
         app:layout_constraintTop_toTopOf="@+id/iv_annual_item" />
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/event_property_days"
+        android:text="@string/tournament_property_place"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toStartOf="@+id/tv_years_since_annual_title"
         app:layout_constraintTop_toTopOf="@+id/iv_annual_item" />

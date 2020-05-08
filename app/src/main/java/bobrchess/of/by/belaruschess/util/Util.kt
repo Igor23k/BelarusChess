@@ -55,6 +55,7 @@ class Util {
                 tournamentDTO.place = testPlace
                 tournamentDTO.referee = testUser
                 tournamentDTO.countPlayersInTeam = 1
+                tournamentDTO.toursCount = 9
                 tournamentDTO.name = "Белая ладья - 2018"
                 tournamentDTO.fullDescription = "Положение о проведении открытого республиканского шахматного турнира памяти Ю. В.  Кулаги\n" +
                         "\n" +
@@ -214,6 +215,15 @@ class Util {
             return false
         }
 
+        fun getCountriesBasicData(list: MutableList<out CountryDTO>?): MutableList<String> {
+            val usersNames = ArrayList<String>()
+            var country: CountryDTO
+            for (i in list!!.indices) {
+                usersNames.add(list[i].name!!)
+            }
+            return usersNames
+        }
+
         fun getUsersBasicData(users: MutableList<out UserDTO>?): MutableList<String> {
             val usersNames = ArrayList<String>()
             var user: UserDTO
@@ -242,7 +252,7 @@ class Util {
             return usersNames
         }
 
-        fun getPlacesNames(places: MutableList<PlaceDTO>): MutableList<String> {
+        fun getPlacesNames(places: MutableList<out PlaceDTO>): MutableList<String> {
             val placeNames = ArrayList<String>()
             for (i in places.indices) {
                 places[i].name?.let { placeNames.add(it) }
@@ -274,8 +284,12 @@ class Util {
         }
 
         fun getInternalizedMessage(key: String): String {
-            val errors = ResourceBundle.getBundle("messages", Locale.getDefault())
-            return errors.getString(key)
+            return try {
+                val errors = ResourceBundle.getBundle("messages", Locale.getDefault())
+                errors.getString(key)
+            } catch (e: Exception) {
+                ""
+            }
         }
 
         fun isConnected(status: Int?): Boolean {

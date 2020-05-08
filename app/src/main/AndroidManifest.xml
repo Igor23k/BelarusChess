@@ -19,7 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"><!--to check if needed-->
-        <activity android:name="bobrchess.of.by.belaruschess.outdated.MainOldActivity" />
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,13 +26,6 @@
             </intent-filter>
         </activity>
         <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.RegistrationActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.SearchTournamentActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.TournamentActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.TournamentInfoActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.GamesListActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.GameActivity" />
-        <activity android:name="bobrchess.of.by.belaruschess.view.activity.impl.AddTournamentActivity" />
 
         <!-- Main activity -->
         <activity

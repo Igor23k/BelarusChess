@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:hint="@string/event_property_date"
+                android:hint="@string/tournament_property_date"
                 android:textColor="@color/dark"
                 android:textSize="@dimen/larger_text_size"
                 app:layout_constraintEnd_toEndOf="@+id/edit_add_fragment_name_one_time_event"

@@ -41,7 +41,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:hint="@string/event_property_date"
+                android:hint="@string/tournament_property_date"
                 android:textColor="@color/dark"
                 android:textSize="@dimen/larger_text_size"
                 app:layout_constraintEnd_toStartOf="@+id/sw_is_year_given_annual_event"

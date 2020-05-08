@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.PlaceInstanceFragment"
+    tools:ignore="Autofill, ContentDescription">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/frame_layout_add_avatar_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_add_avatar_btn"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_birthday_person" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|end"
+                    android:clickable="false"
+                    android:src="@drawable/ic_add_a_photo"
+                    app:elevation="0dp"
+                    app:fabCustomSize="40dp" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/iv_place_name"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:tint="@color/darkGrey"
+                app:layout_constraintBottom_toBottomOf="@+id/e_add_place_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/e_add_place_name"
+                app:srcCompat="@drawable/ic_account_box" />
+
+            <EditText
+                android:id="@+id/e_add_place_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/placeName"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="50"
+                android:textColor="@color/dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_place_name"
+                app:layout_constraintTop_toBottomOf="@+id/frame_layout_add_avatar_image" />
+
+            <EditText
+                android:id="@+id/e_add_place_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/placeCityHint"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="100"
+                android:textColor="@color/dark"
+                app:layout_constraintEnd_toEndOf="@+id/e_add_place_name"
+                app:layout_constraintStart_toStartOf="@+id/e_add_place_name"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_place_name" />
+
+            <EditText
+                android:id="@+id/e_add_place_street"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/placeStreetHint"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="2000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_add_place_city"
+                app:layout_constraintStart_toStartOf="@+id/e_add_place_city"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_place_city" />
+
+            <EditText
+                android:id="@+id/e_add_place_building"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/placeBuildingHint"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="2000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_add_place_street"
+                app:layout_constraintStart_toStartOf="@+id/e_add_place_street"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_place_street" />
+
+            <EditText
+                android:id="@+id/e_add_place_capacity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/placeCapacityHint"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="2000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_add_place_building"
+                app:layout_constraintStart_toStartOf="@+id/e_add_place_building"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_place_building" />
+
+            <ImageView
+                android:id="@+id/iv_birthday_note"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/s_countrySpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/s_countrySpinner"
+                app:srcCompat="@drawable/ic_notes" />
+
+            <Spinner
+                android:id="@+id/s_countrySpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/iv_birthday_note"
+                app:layout_constraintTop_toBottomOf="@+id/e_add_place_capacity" />
+
+            <Button
+                android:id="@+id/btn_place_add_fragment_delete"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/btn_place_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/s_countrySpinner"
+                app:layout_constraintVertical_bias="0.0" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

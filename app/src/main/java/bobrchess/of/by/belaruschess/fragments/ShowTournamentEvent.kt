@@ -21,12 +21,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_tournament_event.*
 import java.text.DateFormat
 
-/**
- * ShowTournamentEvent is a fragment to show all known data from a instance of EventTournament
- *
- * TODO:
- * - add tiny animation for opening this fragment
- */
 class ShowTournamentEvent : ShowEventFragment() {
 
     override fun onCreateView(
@@ -86,51 +80,6 @@ class ShowTournamentEvent : ShowEventFragment() {
                 tv_show_birthday_years_old.text = tournamentEvent.fullDescription
 
                 user_birthday.text = date
-                // context!!.resources.getString(R.string.person_show_date, startDate)
-
-                /*   //show adapted string for 1 day, not 1 days
-                   when (tournamentEvent.getDaysUntil()) {
-                       0 -> {
-                           tv_show_birthday_days.text = resources.getString(
-                               R.string.person_days_until_today,
-                               tournamentEvent.getName()
-                           )
-                       }
-                       1 -> {
-                           tv_show_birthday_days.text =
-                               resources.getQuantityString(
-                                   R.plurals.person_days_until,
-                                   tournamentEvent.getDaysUntil(),
-                                   tournamentEvent.getName(),
-                                   tournamentEvent.getDaysUntil(),
-                                   EventDate.parseDateToString(
-                                       EventDate.dateToCurrentTimeContext(tournamentEvent.eventDate),
-                                       DateFormat.FULL
-                                   ), tournamentEvent.getWeeksUntilAsString()
-                               )
-                       }
-                       else -> {
-                           tv_show_birthday_days.text =
-                               resources.getQuantityString(
-                                   R.plurals.person_days_until,
-                                   tournamentEvent.getDaysUntil(),
-                                   tournamentEvent.getName(),
-                                   tournamentEvent.getDaysUntil(),
-                                   EventDate.parseDateToString(
-                                       EventDate.dateToCurrentTimeContext(tournamentEvent.eventDate),
-                                       DateFormat.FULL
-                                   ), tournamentEvent.getWeeksUntilAsString()
-                               )
-                       }
-                   }*/
-
-                /* if (!tournamentEvent.note.isNullOrBlank()) {
-                     this.tv_show_birthday_note.text =
-                         "${resources.getString(R.string.event_property_note)}: ${tournamentEvent.note}"
-                     this.tv_show_birthday_note.visibility = TextView.VISIBLE
-                 } else {
-                     this.tv_show_birthday_note.visibility = TextView.GONE
-                 }*/
                 updateAvatarImage()
             }
         }
@@ -174,46 +123,46 @@ class ShowTournamentEvent : ShowEventFragment() {
      * It provides a simple intent to share data as plain text in other apps
      */
     override fun shareEvent() {
-        EventHandler.getEventToEventIndex(eventID)?.let { birthday ->
-            if (birthday is EventTournament) {
+        EventHandler.getEventToEventIndex(eventID)?.let { tournament ->
+            if (tournament is EventTournament) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
                 var shareBirthdayMsg =
-                        if (birthday.fullDescription != null) {
+                        if (tournament.fullDescription != null) {
                             context!!.resources.getString(
                                     R.string.share_tournament_name,
-                                    "${birthday.name} \"${birthday.fullDescription}\" ${birthday.shortDescription}"
+                                    "${tournament.name} \"${tournament.fullDescription}\" ${tournament.shortDescription}"
                             )
-                        } else if (birthday.shortDescription != null) {
+                        } else if (tournament.shortDescription != null) {
                             context!!.resources.getString(
                                     R.string.share_tournament_name,
-                                    "${birthday.name} ${birthday.shortDescription}"
+                                    "${tournament.name} ${tournament.shortDescription}"
                             )
                         } else {
                             context!!.resources.getString(
                                     R.string.share_tournament_name,
-                                    birthday.name
+                                    tournament.name
                             )
                         }
 
-                //   if (birthday.isYearGiven) {
+                //   if (tournament.isYearGiven) {
                 //startDate person was born
                 shareBirthdayMsg += "\n" + context!!.resources.getString(
                         R.string.share_tournament_date_start,
-                        EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
+                        EventDate.parseDateToString(tournament.eventDate, DateFormat.FULL)
                 )
                 //      }
 
-                //next birthday
+                //next tournament
                 shareBirthdayMsg += "\n" + context!!.resources.getString(
                         R.string.share_tournament_date_next,
                         EventDate.parseDateToString(
-                                EventDate.dateToCurrentTimeContext(birthday.eventDate),
+                                EventDate.dateToCurrentTimeContext(tournament.eventDate),
                                 DateFormat.FULL
                         )
                 )
 
-                val daysUntil = birthday.getDaysUntil()
+                val daysUntil = tournament.getDaysUntil()
                 shareBirthdayMsg += if (daysUntil == 0) {
                     //today
                     "\n" + context!!.resources.getString(
@@ -228,13 +177,13 @@ class ShowTournamentEvent : ShowEventFragment() {
                     )
                 }
 
-                // if (birthday.isYearGiven) {
+                // if (tournament.isYearGiven) {
                 //person will be years old
                 shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
                         R.plurals.person_years_old,
-                        birthday.getYearsSince() + 1,
-                        birthday.name,
-                        birthday.getYearsSince() + 1
+                        tournament.getYearsSince() + 1,
+                        tournament.name,
+                        tournament.getYearsSince() + 1
                 )
                 //}
 
@@ -264,7 +213,7 @@ class ShowTournamentEvent : ShowEventFragment() {
         ft.replace(
                 R.id.fragment_placeholder,
                 newBirthdayFragment,
-                TournamentInstanceFragment.BIRTHDAY_INSTANCE_FRAGMENT_TAG
+                TournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
         )
         ft.addToBackStack(null)
         ft.commit()

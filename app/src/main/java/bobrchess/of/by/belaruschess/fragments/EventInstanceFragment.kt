@@ -27,8 +27,8 @@ abstract class EventInstanceFragment : AbstractFragment() {
 
     private var toolbarContentInsentLeft = 56
 
-    protected var eventStartDate: Date = Calendar.getInstance().time
-    protected var eventEndDate: Date = Calendar.getInstance().time
+    protected var eventStartDate: Date? = null
+    protected var eventEndDate: Date? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

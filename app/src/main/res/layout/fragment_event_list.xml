@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.EventListFragment">
-
+<!--
     <TextView
         android:id="@+id/tv_no_events"
         android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintVertical_bias="0.39" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -76,7 +76,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/fab_layout_add_annual_event"
+        android:id="@+id/fab_layout_add_place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -91,15 +91,15 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@drawable/fab_menu_text_view_shape"
-            android:text="@string/fab_event_list_annual_event_title"
+            android:text="@string/fab_event_list_place_title"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/fab_add_annual_event"
-            app:layout_constraintEnd_toStartOf="@+id/fab_add_annual_event"
+            app:layout_constraintBottom_toBottomOf="@+id/fab_add_place"
+            app:layout_constraintEnd_toStartOf="@+id/fab_add_place"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/fab_add_annual_event" />
+            app:layout_constraintTop_toTopOf="@+id/fab_add_place" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_annual_event"
+            android:id="@+id/fab_add_place"
             android:layout_width="@dimen/fab_size_smaller"
             android:layout_height="@dimen/fab_size_smaller"
             android:layout_gravity="bottom|end"
@@ -115,7 +115,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/fab_layout_add_birthday"
+        android:id="@+id/fab_layout_add_tournament"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -133,13 +133,13 @@
             android:background="@drawable/fab_menu_text_view_shape"
             android:text="@string/fab_event_list_tournament_title"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/fab_add_birthday"
-            app:layout_constraintEnd_toStartOf="@+id/fab_add_birthday"
+            app:layout_constraintBottom_toBottomOf="@+id/fab_add_tournament"
+            app:layout_constraintEnd_toStartOf="@+id/fab_add_tournament"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/fab_add_birthday" />
+            app:layout_constraintTop_toTopOf="@+id/fab_add_tournament" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_birthday"
+            android:id="@+id/fab_add_tournament"
             android:layout_width="@dimen/fab_size_smaller"
             android:layout_height="@dimen/fab_size_smaller"
             android:layout_gravity="center"

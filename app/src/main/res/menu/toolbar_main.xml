@@ -17,14 +17,20 @@
 
     <item
         android:id="@+id/item_show_tournaments"
-        android:orderInCategory="2"
+        android:orderInCategory="1"
         android:title="@string/action_tournaments"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/item_show_users"
-        android:orderInCategory="3"
+        android:orderInCategory="2"
         android:title="@string/action_users"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_show_places"
+        android:orderInCategory="3"
+        android:title="@string/action_places"
         app:showAsAction="never" />
 
     <item

@@ -21,10 +21,6 @@ import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView;
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity;
 import butterknife.BindView;
 
-/**
- * Created by Igor on 04.05.2018.
- */
-
 @InjectViewState
 public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournamentContractView> implements CallBackSearchTournament, SearchTournamentPresenter {
 
@@ -74,7 +70,7 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     }
 
     @Override
-    public void onResponse(@NotNull List<TournamentDTO> tournamentsDTO) {
+    public void onResponse(@NotNull List<? extends TournamentDTO> tournamentsDTO) {
         view.showTournaments(tournamentsDTO);
     }
 

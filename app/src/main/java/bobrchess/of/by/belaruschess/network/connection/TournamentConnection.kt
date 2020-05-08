@@ -38,6 +38,7 @@ class TournamentConnection {
         })
     }
 
+
     fun getTournaments() {
         App.getAPI().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
             override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {

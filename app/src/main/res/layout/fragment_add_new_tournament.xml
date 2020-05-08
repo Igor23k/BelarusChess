@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.BirthdayInstanceFragment"
+    tools:context=".fragments.TournamentInstanceFragment"
     tools:ignore="Autofill, ContentDescription">
 
     <ScrollView
@@ -247,22 +247,8 @@
                 app:layout_constraintStart_toEndOf="@+id/iv_birthday_note1"
                 app:layout_constraintTop_toBottomOf="@+id/s_refereeSpinner1"/>
 
-           <!--  <EditText
-                 android:id="@+id/edit_add_fragment_note"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:layout_marginStart="8dp"
-                 android:layout_marginTop="8dp"
-                 android:ems="10"
-                 android:hint="@string/event_property_note"
-                 android:inputType="textMultiLine|textCapSentences"
-                 android:textColor="@color/dark"
-                 app:layout_constraintEnd_toEndOf="@+id/sw_is_end_year_given"
-                 app:layout_constraintStart_toEndOf="@+id/iv_birthday_note"
-                 app:layout_constraintTop_toBottomOf="@+id/t_add_tournament_end_date"/>-->
-
              <Button
-                 android:id="@+id/btn_birthday_add_fragment_delete"
+                 android:id="@+id/btn_tournament_add_fragment_delete"
                  style="@style/Widget.AppCompat.Button.Colored"
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"

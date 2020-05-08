@@ -1,6 +1,9 @@
 package bobrchess.of.by.belaruschess.util
 
 import bobrchess.of.by.belaruschess.dto.*
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedPlaceDTO
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedTournamentDTO
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import org.springframework.util.StringUtils
@@ -11,7 +14,7 @@ import org.springframework.util.StringUtils
 
 object Validator {
     @Throws(IncorrectDataException::class)
-    fun validateUserData(userDTO: RegistrationUserDTO?): Boolean {
+    fun validateUserData(userDTO: ExtendedUserDTO?): Boolean {
         val email = userDTO?.email
         val password = userDTO?.password
         val reEnterPassword = userDTO?.reEnterPassword
@@ -20,7 +23,7 @@ object Validator {
         val patronymic = userDTO?.patronymic
         val rating = userDTO?.rating
         val birthdate = userDTO?.birthday
-        val status = userDTO?.status
+        val status = userDTO?.status//todo видимо нужно удалить статус
         val phoneNumber = userDTO?.phoneNumber
         val coach = userDTO?.selectedCoachIndex
         val rank = userDTO?.selectedRankIndex
@@ -99,34 +102,49 @@ object Validator {
         }
     }
 
+
     @Throws(IncorrectDataException::class)
-    fun validateTournamentData(tournamentDTO: TournamentDTO?): Boolean {
+    fun validateTournamentData(tournamentDTO: ExtendedTournamentDTO?): Boolean {
         val name = tournamentDTO?.name
+        val toursCount = tournamentDTO?.toursCount
         val shortDescription = tournamentDTO?.shortDescription
         val fullDescription = tournamentDTO?.fullDescription
         val countPlayersInTeam = tournamentDTO?.countPlayersInTeam
+        val image = tournamentDTO?.image
         val startDate = tournamentDTO?.startDate
         val finishDate = tournamentDTO?.finishDate
-        val referee = tournamentDTO?.referee
-        val place = tournamentDTO?.place
+        val referee = tournamentDTO?.selectedRefereeIndex
+        val place = tournamentDTO?.selectedPlaceIndex
 
         if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_NAME))
         }
-        if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 2 || shortDescription.length > 100) {
+        if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 20 || shortDescription.length > 100) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION))
         }
-        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 2 || fullDescription.length > 20000) {
+        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 2 || fullDescription.length > 20000) {//todo от 100
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION))
         }
         if (countPlayersInTeam == null || countPlayersInTeam > 20) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_COUNT_PLAYERS_IN_TEAM))
+        }
+        if (toursCount == null || toursCount < 1) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_TOURS_COUNT))
+        }
+        if (StringUtils.isEmpty(image)) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_IMAGE))
         }
         if (StringUtils.isEmpty(startDate)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_START_DATE))
         }
         if (StringUtils.isEmpty(finishDate)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FINISH_DATE))
+        }
+        if (referee == 0) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_REFEREE_IS_NOT_SELECTED))
+        }
+        if (place == 0) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_PLACE_IS_NOT_SELECTED))
         }
         return true
     }
@@ -168,16 +186,17 @@ object Validator {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_MATCH_DATE))
         }
         return true
-    }
+    }/*турс каунт перенести везде из места в турнир*/
 
     @Throws(IncorrectDataException::class)
-    fun validatePlaceData(placeDTO: PlaceDTO?): Boolean {
+    fun validatePlaceData(placeDTO: ExtendedPlaceDTO?): Boolean {
         val name = placeDTO?.name
         val capacity = placeDTO?.capacity
         val building = placeDTO?.building
         val city = placeDTO?.city
         val street = placeDTO?.street
-        val country = placeDTO?.country
+        val image = placeDTO?.image
+        val country = placeDTO?.selectedCountryIndex
 
         if (StringUtils.isEmpty(name) || name!!.isEmpty() || name.length > 100) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_NAME))
@@ -196,6 +215,12 @@ object Validator {
         }
         if (capacity > 10000) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_CAPACITY_BIG))
+        }
+        if (country == 0) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
+        }
+        if (StringUtils.isEmpty(image)) {
+            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_IMAGE))
         }
 
         return true

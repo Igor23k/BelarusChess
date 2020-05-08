@@ -14,9 +14,10 @@ import bobrchess.of.by.belaruschess.presenter.callback.CallBackToken
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.REFRESH_TOKEN
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN
-import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_TOKEN_IS_EXPIRED
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN_IS_EXPIRED_MESSAGE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.UNAUTHORIZED
 import bobrchess.of.by.belaruschess.util.Util
+import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import com.arellomobile.mvp.InjectViewState
@@ -31,7 +32,7 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
     private var authorizationConnection: AuthorizationConnection = AuthorizationConnection()
     private var tokenConnection: TokenConnection = TokenConnection()
     private var viewIsReady: Boolean? = false
-    private var connectivityStatus: Int? = null
+    private var connectivityStatus: Int? = 0
     private var packageModel: PackageModel? = null
 
     init {
@@ -75,7 +76,7 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
             }
             UNAUTHORIZED -> {
                 when (errorDTO.message) {
-                    KEY_TOKEN_IS_EXPIRED -> {
+                    TOKEN_IS_EXPIRED_MESSAGE -> {
                         refreshToken()
                     }
                     else -> {
@@ -84,7 +85,7 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
                 }
             }
             else -> {
-                onServerUnavailable()//todo сделать другое дефолтное действие? хз
+                onServerUnavailable()
             }
 
         }

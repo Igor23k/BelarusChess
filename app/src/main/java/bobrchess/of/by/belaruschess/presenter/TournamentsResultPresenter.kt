@@ -9,5 +9,5 @@ import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
 interface TournamentsResultPresenter : BasePresenter {
     fun attachView(contractView: TournamentsResultContractView)
 
-    fun loadUserTournamentsResults()
+    fun loadUserTournamentsResults(id: Int)
 }

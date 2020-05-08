@@ -1,13 +1,12 @@
 package bobrchess.of.by.belaruschess.presenter
 
 import android.view.View
-import bobrchess.of.by.belaruschess.dto.RegistrationUserDTO
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 
-import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 
 interface RegistrationPresenter : BasePresenter {
-    fun registration(userDTO: RegistrationUserDTO)
+    fun registration(userDTO: ExtendedUserDTO)
     fun loadCoaches()
     fun loadRanks()
     fun loadCountries()

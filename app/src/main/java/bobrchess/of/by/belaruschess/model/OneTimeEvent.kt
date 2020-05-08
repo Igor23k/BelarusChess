@@ -6,7 +6,7 @@ import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class OneTimeEvent(_eventdate: Date, var name: String) : EventDate(_eventdate) {
+class OneTimeEvent(_eventdate: Date?, var name: String) : EventDate(_eventdate) {
 
     /**
      * Identifier is an identifier for sorting

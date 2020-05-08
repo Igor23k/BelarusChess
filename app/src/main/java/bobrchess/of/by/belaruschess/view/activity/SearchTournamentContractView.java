@@ -11,5 +11,5 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO;
  */
 
 public interface SearchTournamentContractView extends MvpView, BaseContractView {
-    void showTournaments(List<TournamentDTO> tournaments);
+    void showTournaments(List<? extends TournamentDTO> tournaments);
 }

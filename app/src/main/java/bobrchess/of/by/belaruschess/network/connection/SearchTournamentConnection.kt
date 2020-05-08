@@ -9,10 +9,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Igor on 11.04.2018.
- */
-
 class SearchTournamentConnection {
 
     private var callBack: CallBackSearchTournament? = null

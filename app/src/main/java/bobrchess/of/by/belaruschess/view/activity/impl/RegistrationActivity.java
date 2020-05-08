@@ -24,9 +24,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.R;
-import bobrchess.of.by.belaruschess.dto.RegistrationUserDTO;
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
-import bobrchess.of.by.belaruschess.outdated.MainOldActivity;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl;
 import bobrchess.of.by.belaruschess.util.Constants;
@@ -157,11 +156,11 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
     }
 
     @Override
-    public void startActivity(@NonNull UserDTO userDTO) {
-        Intent intent = new Intent(getApplicationContext(), MainOldActivity.class);
+    public void startActivity(@NonNull UserDTO userDTO) {//todo
+        /*Intent intent = new Intent(getApplicationContext(), MainOldActivity.class);
         putUserData(intent, userDTO);
         startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
-        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);*/
     }
 
     private void putUserData(Intent intent, @NonNull UserDTO userDTO) {
@@ -213,8 +212,8 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
         registrationButton.setEnabled(false);
     }
 
-    public RegistrationUserDTO getUserData() throws NumberFormatException {
-        RegistrationUserDTO userData = new RegistrationUserDTO();
+    public ExtendedUserDTO getUserData() throws NumberFormatException {
+        ExtendedUserDTO userData = new ExtendedUserDTO();
         userData.setName(nameText.getText().toString());
         userData.setSurname(surnameText.getText().toString());
         userData.setPatronymic(patronymicText.getText().toString());

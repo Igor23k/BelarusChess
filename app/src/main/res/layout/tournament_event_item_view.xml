@@ -34,7 +34,7 @@
         android:layout_marginEnd="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_birthday_event_item_date_value"
+        app:layout_constraintEnd_toStartOf="@+id/tournament_event_item_date_value"
         app:layout_constraintStart_toEndOf="@+id/iv_tournament_event_item_image"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -80,35 +80,35 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/event_property_date"
+        android:text="@string/tournament_property_date"
         android:textColor="@color/brightGrey"
-        app:layout_constraintEnd_toStartOf="@+id/tv_birthday_event_item_days_until_title"
+        app:layout_constraintEnd_toStartOf="@+id/tournament_event_place"
         app:layout_constraintTop_toTopOf="@+id/iv_tournament_event_item_image" />
 
     <TextView
-        android:id="@+id/tv_birthday_event_item_days_until_title"
+        android:id="@+id/tournament_event_place"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/event_property_days"
+        android:text="@string/tournament_property_place"
         android:textColor="@color/brightGrey"
-        app:layout_constraintEnd_toStartOf="@+id/tv_birthday_event_item_years_since_title"
+        app:layout_constraintEnd_toStartOf="@+id/tournament_event_item_turns_title"
         app:layout_constraintTop_toTopOf="@+id/iv_tournament_event_item_image" />
 
     <TextView
-        android:id="@+id/tv_birthday_event_item_years_since_title"
+        android:id="@+id/tournament_event_item_turns_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/event_property_turns"
+        android:text="@string/tournament_property_games_count"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_tournament_event_item_image" />
 
     <TextView
-        android:id="@+id/tv_birthday_event_item_date_value"
+        android:id="@+id/tournament_event_item_date_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -118,34 +118,33 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_birthday_event_item_date_title"
         app:layout_constraintStart_toStartOf="@+id/tv_birthday_event_item_date_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_birthday_event_item_date_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="06.02" />
+        app:layout_constraintVertical_bias="1.0"/>
 
     <TextView
-        android:id="@+id/tv_birthday_event_item_days_until_value"
+        android:id="@+id/tournament_event_item_city_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:textColor="@color/textDark"
         android:textSize="@dimen/smaller_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/iv_tournament_event_item_image"
-        app:layout_constraintEnd_toEndOf="@+id/tv_birthday_event_item_days_until_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_birthday_event_item_days_until_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_birthday_event_item_days_until_title"
+        app:layout_constraintEnd_toEndOf="@+id/tournament_event_place"
+        app:layout_constraintStart_toStartOf="@+id/tournament_event_place"
+        app:layout_constraintTop_toBottomOf="@+id/tournament_event_place"
         app:layout_constraintVertical_bias="1.0"
         tools:text="2" />
 
     <TextView
-        android:id="@+id/tv_birthday_event_item_years_since_value"
+        android:id="@+id/tournament_event_item_turns_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:textColor="@color/textDark"
         android:textSize="@dimen/smaller_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/iv_tournament_event_item_image"
-        app:layout_constraintEnd_toEndOf="@+id/tv_birthday_event_item_years_since_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_birthday_event_item_years_since_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_birthday_event_item_years_since_title"
+        app:layout_constraintEnd_toEndOf="@+id/tournament_event_item_turns_title"
+        app:layout_constraintStart_toStartOf="@+id/tournament_event_item_turns_title"
+        app:layout_constraintTop_toBottomOf="@+id/tournament_event_item_turns_title"
         app:layout_constraintVertical_bias="1.0"
         tools:text="2" />
 </android.support.constraint.ConstraintLayout>

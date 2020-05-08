@@ -16,7 +16,6 @@ import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView;
-import bobrchess.of.by.belaruschess.view.activity.impl.SearchUserActivity;
 import butterknife.BindView;
 
 /**
@@ -75,7 +74,6 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     @Override
     public void onResponse(@NotNull List<? extends UserDTO> users) {
         view.showUsers(users);
-
     }
 
     @Override

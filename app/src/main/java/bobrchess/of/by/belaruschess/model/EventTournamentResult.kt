@@ -4,18 +4,6 @@ import bobrchess.of.by.belaruschess.handler.IOHandler
 import java.text.DateFormat
 import java.util.*
 
-/**
- * EventTournament is model class to store basic data about a persons birthday
- *
- * It inherits from EventDay, so it uses a StartDate, and Strings for the name of the described person
- * ShortDescription cant be null, if it shouldn't be set, use "0" to mark the shortDescription as unwanted property when f.e. don't show it in UI
- * isYearGiven is flag to indicate whether the birthday-year is known/given
- *
- *  @param startDate : StartDate
- *  @param name : String
- *  @param isYearGiven : Boolean
- * @author Procrastimax
- */
 class EventTournamentResult(
         var id: Int,
         var startDate: Date,

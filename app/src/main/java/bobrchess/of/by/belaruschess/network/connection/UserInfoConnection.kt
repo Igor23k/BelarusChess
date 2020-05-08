@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.network.connection
 
 import bobrchess.of.by.belaruschess.App
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
 import bobrchess.of.by.belaruschess.dto.TournamentResultDTO
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUserInfo
 import bobrchess.of.by.belaruschess.util.Util
@@ -10,16 +9,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Igor on 11.04.2018.
- */
-
 class UserInfoConnection {
 
     private var callBack: CallBackUserInfo? = null
 
-    fun getTournamentsResults() {
-        App.getAPI().getTournamentsResultByUser(4).enqueue(object : Callback<List<TournamentResultDTO>> {
+    fun getTournamentsResults(id: Int) {
+        App.getAPI().getTournamentsResultByUser(id).enqueue(object : Callback<List<TournamentResultDTO>> {
             override fun onResponse(call: Call<List<TournamentResultDTO>>, response: Response<List<TournamentResultDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
