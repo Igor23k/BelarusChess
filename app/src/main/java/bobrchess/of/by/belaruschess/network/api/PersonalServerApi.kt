@@ -1,14 +1,12 @@
 package bobrchess.of.by.belaruschess.network.api
 
 import bobrchess.of.by.belaruschess.dto.*
+import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerDTO
 import retrofit2.Call
 import retrofit2.http.*
 
-/**
- * Created by Igor on 10.04.2018.
- */
 
-interface API {
+interface PersonalServerApi {
 
     @get:GET("/places")
     val places: Call<List<PlaceDTO>>

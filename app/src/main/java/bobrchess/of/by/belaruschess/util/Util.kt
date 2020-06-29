@@ -294,14 +294,14 @@ class Util {
             return status != TYPE_NOT_CONNECTED
         }
 
-        fun transformDate(dateString: String?): String? {
+        fun transformDate(format: String, dateString: String?): String? {
             return try {
-                val bdFormat = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
+                val bdFormat = SimpleDateFormat(format, Locale.getDefault())
                 val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
                 val date = bdFormat.parse(dateString)
                 newFormat.format(date)
             } catch (e: Exception) {
-                null
+                "01.01.1990"
             }
         }
     }

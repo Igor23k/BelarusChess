@@ -8,14 +8,12 @@ import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentResultDTO;
-import bobrchess.of.by.belaruschess.network.connection.UserInfoConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.UserInfoConnection;
 import bobrchess.of.by.belaruschess.presenter.TournamentsResultPresenter;
-import bobrchess.of.by.belaruschess.presenter.UserInfoPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackUserInfo;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView;
-import bobrchess.of.by.belaruschess.view.activity.UserInfoContractView;
 
 /**
  * Created by Igor on 11.04.2018.

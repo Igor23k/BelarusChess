@@ -1,8 +1,8 @@
-package bobrchess.of.by.belaruschess.network.connection
+package bobrchess.of.by.belaruschess.network.connection.internal
 
 import bobrchess.of.by.belaruschess.App
-import bobrchess.of.by.belaruschess.dto.PlaceDTO
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackPlace
+import bobrchess.of.by.belaruschess.dto.GameDTO
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackGame
 import bobrchess.of.by.belaruschess.util.Util
 import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
@@ -13,13 +13,13 @@ import retrofit2.Response
  * Created by Igor on 11.04.2018.
  */
 
-class PlaceConnection {
+class GameConnection {
 
-    private var callBack: CallBackPlace? = null
+    private var callBack: CallBackGame? = null
 
-    fun getPlace(id: Int?) {
-        App.getAPI().getPlace(id!!).enqueue(object : Callback<PlaceDTO> {
-            override fun onResponse(call: Call<PlaceDTO>, response: Response<PlaceDTO>) {
+    fun getGame(id: Int?) {
+        App.getPersonalServerApi().getGame(id!!).enqueue(object : Callback<GameDTO> {
+            override fun onResponse(call: Call<GameDTO>, response: Response<GameDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -31,15 +31,15 @@ class PlaceConnection {
                 }
             }
 
-            override fun onFailure(call: Call<PlaceDTO>, t: Throwable) {
+            override fun onFailure(call: Call<GameDTO>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-    fun getPlaces() {
-        App.getAPI().places.enqueue(object : Callback<List<PlaceDTO>> {
-            override fun onResponse(call: Call<List<PlaceDTO>>, response: Response<List<PlaceDTO>>) {
+    fun getGames() {
+        App.getPersonalServerApi().games.enqueue(object : Callback<List<GameDTO>> {
+            override fun onResponse(call: Call<List<GameDTO>>, response: Response<List<GameDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -51,14 +51,14 @@ class PlaceConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<PlaceDTO>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GameDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
 
-    fun attachPresenter(callBack: CallBackPlace) {
+    fun attachPresenter(callBack: CallBackGame) {
         this.callBack = callBack
     }
 }

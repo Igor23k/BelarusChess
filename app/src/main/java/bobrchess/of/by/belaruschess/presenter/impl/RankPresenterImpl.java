@@ -7,7 +7,7 @@ import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.RankDTO;
-import bobrchess.of.by.belaruschess.network.connection.RankConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.RankConnection;
 import bobrchess.of.by.belaruschess.presenter.RankPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRank;
 import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack;

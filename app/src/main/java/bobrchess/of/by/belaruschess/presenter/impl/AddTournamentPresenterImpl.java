@@ -18,7 +18,7 @@ import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedTournamentDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException;
-import bobrchess.of.by.belaruschess.network.connection.AddTournamentConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.AddTournamentConnection;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddTournament;
 import bobrchess.of.by.belaruschess.util.Util;

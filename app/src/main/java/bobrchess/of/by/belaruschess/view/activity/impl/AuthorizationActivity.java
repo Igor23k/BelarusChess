@@ -57,6 +57,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
         super.onCreate(savedInstanceState);
         presenter.setPackageModel(getPackageModel());
         tokenAuthPresenter.setPackageModel(getPackageModel());
+
         registerInternetCheckReceiver();
 
         if (!tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном

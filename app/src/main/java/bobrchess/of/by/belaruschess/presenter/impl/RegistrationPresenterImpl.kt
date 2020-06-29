@@ -6,7 +6,7 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
-import bobrchess.of.by.belaruschess.network.connection.RegistrationConnection
+import bobrchess.of.by.belaruschess.network.connection.internal.RegistrationConnection
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration
 import bobrchess.of.by.belaruschess.util.Constants

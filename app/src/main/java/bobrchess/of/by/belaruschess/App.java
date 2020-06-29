@@ -2,25 +2,22 @@ package bobrchess.of.by.belaruschess;
 
 import android.app.Application;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 
-import bobrchess.of.by.belaruschess.network.api.API;
+import bobrchess.of.by.belaruschess.network.api.ExternalFideServerApi;
+import bobrchess.of.by.belaruschess.network.api.PersonalServerApi;
 import bobrchess.of.by.belaruschess.util.Constants;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Igor on 10.04.2018.
- */
-
 public class App extends Application {
 
-    private static API api;
-    private Retrofit retrofit;
+    private static PersonalServerApi personalServerApi;
+    private static ExternalFideServerApi externalFideServerApi;
+    private Retrofit retrofitPersonalServerApi;
+    private Retrofit retrofitExternalFideServerApi;
 
     @Override
     public void onCreate() {
@@ -36,15 +33,26 @@ public class App extends Application {
             return chain.proceed(request);
         });
         OkHttpClient client = httpClient.build();
-        retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.Companion.getHOST())
+        retrofitPersonalServerApi = new Retrofit.Builder()
+                .baseUrl(Constants.Companion.getPERSONAL_SERVER_HOST())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
-        api = retrofit.create(API.class);
+        personalServerApi = retrofitPersonalServerApi.create(PersonalServerApi.class);
+
+        retrofitExternalFideServerApi = new Retrofit.Builder()
+                .baseUrl(Constants.Companion.getEXTERNAL_FIDE_API_SERVER_HOST())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        externalFideServerApi = retrofitExternalFideServerApi.create(ExternalFideServerApi.class);
     }
 
-    public static API getAPI() {
-        return api;
+    public static PersonalServerApi getPersonalServerApi() {
+        return personalServerApi;
+    }
+
+    public static ExternalFideServerApi getExternalFideServerApi() {
+        return externalFideServerApi;
     }
 }

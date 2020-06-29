@@ -1,4 +1,4 @@
-package bobrchess.of.by.belaruschess.network.connection
+package bobrchess.of.by.belaruschess.network.connection.internal
 
 import bobrchess.of.by.belaruschess.App
 import bobrchess.of.by.belaruschess.dto.UserContextDTO
@@ -11,17 +11,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Igor on 11.04.2018.
- */
-
 class AuthorizationConnection {
 
     private var callBack: CallBackAuthorization? = null
 
     fun authorization(userDTO: UserDTO) {
 
-        App.getAPI().authorization(userDTO).enqueue(object : Callback<UserContextDTO> {
+        App.getPersonalServerApi().authorization(userDTO).enqueue(object : Callback<UserContextDTO> {
             override fun onResponse(call: Call<UserContextDTO>, response: Response<UserContextDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
@@ -41,7 +37,7 @@ class AuthorizationConnection {
     }
 
     fun getUser(authorizationHeader: String) {
-        App.getAPI().getUser(authorizationHeader).enqueue(object : Callback<UserDTO> {
+        App.getPersonalServerApi().getUser(authorizationHeader).enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

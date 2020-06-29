@@ -16,7 +16,7 @@ import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedPlaceDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException;
-import bobrchess.of.by.belaruschess.network.connection.AddPlaceConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.AddPlaceConnection;
 import bobrchess.of.by.belaruschess.presenter.AddPlacePresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddPlace;
 import bobrchess.of.by.belaruschess.util.Util;
@@ -24,7 +24,6 @@ import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 
-import static bobrchess.of.by.belaruschess.util.Constants.NOT_SELECTED_INDEX;
 import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
 
 @InjectViewState

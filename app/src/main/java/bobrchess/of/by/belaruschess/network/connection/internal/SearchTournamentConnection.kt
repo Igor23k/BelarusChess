@@ -1,27 +1,22 @@
-package bobrchess.of.by.belaruschess.network.connection
+package bobrchess.of.by.belaruschess.network.connection.internal
 
 import bobrchess.of.by.belaruschess.App
-import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.dto.PlaceDTO
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddPlace
+import bobrchess.of.by.belaruschess.dto.TournamentDTO
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchTournament
 import bobrchess.of.by.belaruschess.util.Util
-import bobrchess.of.by.belaruschess.util.Util.Companion.buildOnFailureResponse
 import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Igor on 11.04.2018.
- */
+class SearchTournamentConnection {
 
-class AddPlaceConnection {
+    private var callBack: CallBackSearchTournament? = null
 
-    private var callBack: CallBackAddPlace? = null
 
-    fun removePlace(id: Int?) {//todo header и для остальных
-        App.getAPI().removePlace(id!!).enqueue(object : Callback<Int> {
-            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+    fun getTournaments() {
+        App.getPersonalServerApi().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
+            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -33,16 +28,15 @@ class AddPlaceConnection {
                 }
             }
 
-            override fun onFailure(call: Call<Int>, t: Throwable) {
-                callBack!!.onFailure(buildOnFailureResponse())
+            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
+                callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-
-    fun addPlace(placeDTO: PlaceDTO, authorizationHeader: String) {//todo header
-        App.getAPI().addPlace(placeDTO).enqueue(object : Callback<PlaceDTO> {
-            override fun onResponse(call: Call<PlaceDTO>, response: Response<PlaceDTO>) {
+    fun getTournaments(count: Int?) {
+        App.getPersonalServerApi().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
+            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -54,18 +48,18 @@ class AddPlaceConnection {
                 }
             }
 
-            override fun onFailure(call: Call<PlaceDTO>, t: Throwable) {
-                callBack!!.onFailure(buildOnFailureResponse())
+            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
+                callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-    fun getCountries() {
-        App.getAPI().countries.enqueue(object : Callback<List<CountryDTO>> {
-            override fun onResponse(call: Call<List<CountryDTO>>, response: Response<List<CountryDTO>>) {
+    fun searchTournaments(text: String) {
+        App.getPersonalServerApi().searchTournaments(text).enqueue(object : Callback<List<TournamentDTO>> {
+            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
-                        callBack!!.onCountryResponse(response.body())
+                        callBack!!.onResponse(response.body())
                     } else {
                         callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
                     }
@@ -74,13 +68,13 @@ class AddPlaceConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<CountryDTO>>, t: Throwable) {
-                callBack!!.onFailure(buildOnFailureResponse())
+            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
+                callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-    fun attachPresenter(callBack: CallBackAddPlace) {
+    fun attachPresenter(callBack: CallBackSearchTournament) {
         this.callBack = callBack
     }
 }

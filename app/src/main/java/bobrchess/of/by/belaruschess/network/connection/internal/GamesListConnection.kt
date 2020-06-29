@@ -1,22 +1,25 @@
-package bobrchess.of.by.belaruschess.network.connection
+package bobrchess.of.by.belaruschess.network.connection.internal
 
 import bobrchess.of.by.belaruschess.App
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchTournament
+import bobrchess.of.by.belaruschess.dto.GameDTO
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackGamesList
 import bobrchess.of.by.belaruschess.util.Util
 import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchTournamentConnection {
+/**
+ * Created by Igor on 11.04.2018.
+ */
 
-    private var callBack: CallBackSearchTournament? = null
+class GamesListConnection {
 
+    private var callBack: CallBackGamesList? = null
 
-    fun getTournaments() {
-        App.getAPI().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
-            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
+    fun getGames() {
+        App.getPersonalServerApi().games.enqueue(object : Callback<List<GameDTO>> {
+            override fun onResponse(call: Call<List<GameDTO>>, response: Response<List<GameDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -28,15 +31,15 @@ class SearchTournamentConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GameDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-    fun getTournaments(count: Int?) {
-        App.getAPI().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
-            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
+    fun getGames(count: Int?) {
+        App.getPersonalServerApi().getGames(count!!).enqueue(object : Callback<List<GameDTO>> {
+            override fun onResponse(call: Call<List<GameDTO>>, response: Response<List<GameDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -48,15 +51,15 @@ class SearchTournamentConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GameDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-    fun searchTournaments(text: String) {
-        App.getAPI().searchTournaments(text).enqueue(object : Callback<List<TournamentDTO>> {
-            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
+    fun searchGames(text: String) {
+        App.getPersonalServerApi().searchGames(text).enqueue(object : Callback<List<GameDTO>> {
+            override fun onResponse(call: Call<List<GameDTO>>, response: Response<List<GameDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -68,13 +71,13 @@ class SearchTournamentConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GameDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-    fun attachPresenter(callBack: CallBackSearchTournament) {
+    fun attachPresenter(callBack: CallBackGamesList) {
         this.callBack = callBack
     }
 }

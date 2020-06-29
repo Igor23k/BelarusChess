@@ -64,7 +64,7 @@ class ShowUserEvent : ShowEventFragment() {
         EventHandler.clearData()
         var id = 0
         userTournamentsResult?.forEach {
-            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.position = it.position
             event.points = it.points
             event.imageUri = it.image
@@ -78,7 +78,6 @@ class ShowUserEvent : ShowEventFragment() {
             )
         }
     }
-
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,

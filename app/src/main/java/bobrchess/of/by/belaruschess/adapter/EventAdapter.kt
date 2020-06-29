@@ -22,14 +22,14 @@ import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
 import kotlinx.android.synthetic.main.one_time_event_item_view.view.*
 import kotlinx.android.synthetic.main.place_event_item_view.view.*
+import kotlinx.android.synthetic.main.top_player_rating_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.*
-import kotlinx.android.synthetic.main.tournament_event_item_view.view.constraint_layout_birthday_item_view
+import kotlinx.android.synthetic.main.tournament_event_item_view.view.constraint_layout_tournament_item_view
+import kotlinx.android.synthetic.main.tournament_event_item_view.view.iv_tournament_event_item_image
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.tournament_event_item_city_value
-import kotlinx.android.synthetic.main.tournament_event_item_view.view.tv_birthday_event_item_forename
-import kotlinx.android.synthetic.main.tournament_event_item_view.view.tv_birthday_event_item_nickname
-import kotlinx.android.synthetic.main.tournament_event_item_view.view.tv_birthday_event_item_surname
 import kotlinx.android.synthetic.main.tournament_result_event_item_view.view.*
 import kotlinx.android.synthetic.main.user_event_item_view.view.*
+import kotlinx.android.synthetic.main.world_tournament_event_item_view.view.*
 import org.springframework.util.StringUtils
 
 
@@ -43,6 +43,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
+    private var sortedListTopPlayers:List<EventTopPlayer>? = null
 
     constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?, userTournamentsResult: List<TournamentResultDTO>?) : this() {
         tournamentsResultPresenterImpl = TournamentsResultPresenterImpl()
@@ -60,6 +61,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
     class UserEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
+    class TopPlayerRatingEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
     class TournamentEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     class EventMonthDividerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -70,13 +73,11 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
     class PlaceEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
+    class WorldTournamentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
     /**
      * getItemViewType overrides the standard function
      * it defines the different viewholder types used for the recycler view
-     * 0 - month description divider
-     * 1 - birthday event viewholder
-     * 2 - annual event viewholder
-     * 3 - one time event viewholder
      *
      * @param position: Int
      * @return Int
@@ -85,12 +86,14 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     override fun getItemViewType(position: Int): Int {
         when (EventHandler.getList()[position]) {
             is MonthDivider -> {
-                if (position < EventHandler.getList().size - 1) {
-                    if (EventHandler.getList()[position + 1] !is MonthDivider) {
-                        return 0
-                    }
-                }
-                return -1
+                /* if (position < EventHandler.getList().size - 1) {
+                     if (EventHandler.getList()[position + 1] !is MonthDivider) {
+                         return 0
+                     }
+                 }
+                 return -1*/
+
+                return 0;
             }
             is EventTournament -> {
                 return 1
@@ -106,6 +109,12 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
             }
             is EventPlace -> {
                 return 5;
+            }
+            is EventTopPlayer -> {
+                return 6;
+            }
+            is EventWorldTournament -> {
+                return 7;
             }
         }
         return -1
@@ -150,8 +159,19 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 .inflate(R.layout.place_event_item_view, parent, false)
                 return PlaceEventViewHolder(itemView)
             }
+            6 -> {
+                val itemView =
+                        LayoutInflater.from(parent.context)
+                                .inflate(R.layout.top_player_rating_item_view, parent, false)
+                return TopPlayerRatingEventViewHolder(itemView)
+            }
+            7 -> {
+                val itemView =
+                        LayoutInflater.from(parent.context)
+                                .inflate(R.layout.world_tournament_event_item_view, parent, false)
+                return WorldTournamentViewHolder(itemView)
+            }
             else -> {
-                //Default is birthday event
                 val itemView = View(context)
                 return EventMonthDividerViewHolder(itemView)
             }
@@ -176,7 +196,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
             1 -> {
                 EventHandler.getList()[position].let { event ->
-                    if (event is EventTournament) {
+                    if (event is EventTournament) {//todo если перейти на турнир, то в шапке и в первой строке пишется одно и то же название турнира
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
@@ -226,15 +246,15 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         //textColor = ContextCompat.getColor(context!!, R.color.colorAccent)
                         textColor = ContextCompat.getColor(context!!, R.color.textDark)
-                        holder.itemView.tournament_event_item_turns_value.text = event.toursCount.toString()
-                        holder.itemView.tournament_event_item_turns_value.setTextColor(textColor)
+                        holder.itemView.tournament_event_item_country_value.text = event.toursCount.toString()
+                        holder.itemView.tournament_event_item_country_value.setTextColor(textColor)
 
                         //set startDate
                         holder.itemView.tournament_event_item_date_value.text = event.getPrettyShortStringWithoutYear()
                         holder.itemView.tournament_event_item_date_value.setTextColor(textColor)
 
 
-                        var city = event.placeId?.minus(1)?.let { places?.get(it)?.city}
+                        var city = event.placeId?.minus(1)?.let { places?.get(it)?.city }
                         if (StringUtils.isEmpty(city)) {
                             city = "-"
                         }
@@ -242,32 +262,26 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
 
                         if (event.eventAlreadyOccurred()) {
-                            holder.itemView.constraint_layout_birthday_item_view.background =
+                            holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item_dark
                                     )
                         } else {
-                            holder.itemView.constraint_layout_birthday_item_view.background =
+                            holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item
                                     )
                         }
 
-                        //set forename and shortDescription invisible
-                        holder.itemView.tv_birthday_event_item_forename.visibility =
-                                TextView.GONE
-                        holder.itemView.tv_birthday_event_item_surname.visibility =
-                                TextView.GONE
-
                         //set fullDescription TextView visible
-                        holder.itemView.tv_birthday_event_item_nickname.visibility =
+                        holder.itemView.tournament_event_item_name.visibility =
                                 TextView.VISIBLE
-                        holder.itemView.tv_birthday_event_item_nickname.setTextColor(textColor)
+                        holder.itemView.tournament_event_item_name.setTextColor(textColor)
 
                         //set fullDescription TextView text
-                        holder.itemView.tv_birthday_event_item_nickname.text = event.name
+                        holder.itemView.tournament_event_item_name.text = event.name
 
                         val avatarUri = event.imageUri
 
@@ -330,13 +344,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         )
 
                         if (user.eventAlreadyOccurred()) {
-                            holder.itemView.constraint_layout_birthday_item_view.background =
+                            holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item_dark
                                     )
                         } else {
-                            holder.itemView.constraint_layout_birthday_item_view.background =
+                            holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item
@@ -349,13 +363,11 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tv_birthday_event_item_surname.visibility =
                                 TextView.GONE
 
-                        //set fullDescription TextView visible
-                        holder.itemView.tv_birthday_event_item_nickname.visibility =
+                        holder.itemView.user_event_item_name.visibility =
                                 TextView.VISIBLE
-                        holder.itemView.tv_birthday_event_item_nickname.setTextColor(textColor)
+                        holder.itemView.user_event_item_name.setTextColor(textColor)//todo тут походу не к тому обращается
 
-                        //set fullDescription TextView text
-                        holder.itemView.tv_birthday_event_item_nickname.text = user.name + " " + user.surname
+                        holder.itemView.user_event_item_name.text = user.name + " " + user.surname
 
                         val avatarUri = user.imageUri
 
@@ -401,13 +413,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         )
 
                         if (eventTournamentResult.eventAlreadyOccurred()) {
-                            holder.itemView.constraint_layout_birthday_item_view.background =
+                            holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item_dark
                                     )
                         } else {
-                            holder.itemView.constraint_layout_birthday_item_view.background =
+                            holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item
@@ -619,8 +631,101 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                     }
                 }
             }
+
+            6 -> {
+                if (sortedListTopPlayers == null) {
+                    sortedListTopPlayers = ArrayList()
+                    val topPlayers = ArrayList<EventTopPlayer>(40)
+                    for (topPlayer in EventHandler.getList()) {
+                        if (topPlayer is EventTopPlayer) {
+                            topPlayers.add(topPlayer)
+                        }
+                    }
+                    sortedListTopPlayers = topPlayers.sortedByDescending { it.rating }
+                }
+                sortedListTopPlayers!![position].let { topPlayer ->
+
+                    //set on click listener for item
+                    holder.itemView.setOnClickListener {
+                        if (isClickable) {
+                            eventId = topPlayer.eventID
+                        }
+                    }
+
+                    val textColor: Int
+
+
+                    textColor = ContextCompat.getColor(context!!, R.color.textDark)
+
+                    //set name
+                    holder.itemView.top_player_event_item_name.text = "${topPlayer.position}. ${topPlayer.name}\n ${topPlayer.surname}"//todo to fix
+                    holder.itemView.top_player_event_item_name.setTextColor(textColor)
+
+
+                    //set birthday
+                    holder.itemView.top_player_birthday.text = topPlayer.getPrettyShortStringWithYear()
+                    holder.itemView.top_player_birthday.setTextColor(textColor)
+
+                    //set country
+                    holder.itemView.top_player_country.text = topPlayer.country
+                    holder.itemView.top_player_country.setTextColor(textColor)
+
+                    //rating
+                    holder.itemView.top_player_rating.text = topPlayer.rating.toString()
+                    holder.itemView.top_player_rating.setTextColor(textColor)
+                }
+            }
+            7 -> {
+                var list = EventHandler.getList() as List<EventWorldTournament>
+                // list = list.sortedByDescending { it.rating }//todo
+                list[position].let { worldTournament ->
+                    //set on click listener for item
+                    holder.itemView.setOnClickListener {
+                        if (isClickable) {
+                            eventId = worldTournament.eventID
+                        }
+                    }
+
+                    val textColor: Int
+
+
+                    textColor = ContextCompat.getColor(context!!, R.color.textDark)
+
+                    //val avatarUri = worldTournament.imageUri
+
+                    //set name
+                    holder.itemView.world_tournament_event_item_name.text = worldTournament.name
+                    holder.itemView.world_tournament_event_item_name.setTextColor(textColor)
+
+                    //set startDate
+                    holder.itemView.world_tournament_event_item_date_value.text = worldTournament.getPrettyShortStringWithYear()
+                    holder.itemView.world_tournament_event_item_date_value.setTextColor(textColor)
+
+                    //set city
+                    var city = worldTournament.city//todo to fix
+                    if (city != null && city!!.length > 12) {
+                        city = city!!.substring(0, 11)
+                    }
+                    holder.itemView.world_tournament_event_item_place_value.text = worldTournament.country + ", " + city
+                    holder.itemView.world_tournament_event_item_place_value.setTextColor(textColor)
+
+                    //when context is MainActivity
+                    /* if (context is MainActivity) {
+                         if (avatarUri != null) {
+                             holder.itemView.iv_user_event_item_image.setImageBitmap(
+                                     BitmapHandler.getBitmapAt(
+                                             worldTournament.eventID
+                                     )
+                             )
+                         } else {
+                             holder.itemView.iv_user_event_item_image.setImageResource(R.drawable.ic_birthday_person)
+                         }
+                     }*/
+                }
+            }
         }
     }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {

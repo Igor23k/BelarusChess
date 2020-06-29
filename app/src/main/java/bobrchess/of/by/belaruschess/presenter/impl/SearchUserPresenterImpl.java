@@ -10,7 +10,7 @@ import java.util.List;
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
-import bobrchess.of.by.belaruschess.network.connection.SearchUserConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.SearchUserConnection;
 import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser;
 import bobrchess.of.by.belaruschess.util.Util;

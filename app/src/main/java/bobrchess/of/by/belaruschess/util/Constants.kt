@@ -23,6 +23,8 @@ class Constants {
         val EMPTY_STRING = ""
 
         val USER = "user"
+        val TOP_PLAYER = "top_player"
+        val WORLD_TOURNAMENT = "world_tournament"
         val TOURNAMENT = "tournament"
         val PLACE = "place"
 
@@ -108,8 +110,10 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS = "incorrect_tournament_team_count_points"
 
 
-        //val HOST = "http://192.168.100.12:8080"
-        val HOST = "http://192.168.43.96:8080"
+        //val PERSONAL_SERVER_HOST = "http://192.168.100.12:8080"
+        val PERSONAL_SERVER_HOST = "http://192.168.43.96:8080"
+        val EXTERNAL_FIDE_API_SERVER_HOST = "https://app.fide.com"
+        val EXTERNAL_FIDE_API_RELATIVE_PATH = ""
 
 
         @JvmField//todo

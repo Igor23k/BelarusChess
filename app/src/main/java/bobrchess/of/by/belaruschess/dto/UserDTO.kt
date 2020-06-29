@@ -2,10 +2,6 @@ package bobrchess.of.by.belaruschess.dto
 
 import java.io.Serializable
 
-/**
- * Created by Igor on 05.04.2018.
- */
-
 open class UserDTO : Serializable {
 
     var id: Long? = null

@@ -7,13 +7,10 @@ import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
-import bobrchess.of.by.belaruschess.dto.RankDTO;
-import bobrchess.of.by.belaruschess.network.connection.PlaceConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.PlaceConnection;
 import bobrchess.of.by.belaruschess.presenter.PlacePresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackPlace;
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackRank;
 import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack;
-import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack;
 
 public class PlacePresenterImpl implements CallBackPlace, PlacePresenter {
 

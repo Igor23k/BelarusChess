@@ -9,18 +9,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
-/**
- * A model class to provide basic event data.
- *
- * This is a base class to be derived from.
- * Main functionality is to check if a startDate is valid.
- * Can be used for other eventType classes f.e. birthdayEvent, anniversaryEvent, ...
- * The used startDate format used in the app is dd.MM.yyyy
- *
- * @param _eventDate the startDate of the event
- * @author Procrastimax
- */
 open class EventDate : Comparable<EventDate> {
 
     var eventID: Int = 0

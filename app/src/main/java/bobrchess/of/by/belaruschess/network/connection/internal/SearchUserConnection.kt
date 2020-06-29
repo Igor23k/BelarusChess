@@ -1,9 +1,8 @@
-package bobrchess.of.by.belaruschess.network.connection
+package bobrchess.of.by.belaruschess.network.connection.internal
 
 import bobrchess.of.by.belaruschess.App
-import bobrchess.of.by.belaruschess.dto.GameDTO
-import bobrchess.of.by.belaruschess.dto.TournamentDTO
-import bobrchess.of.by.belaruschess.presenter.callback.CallBackTournament
+import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser
 import bobrchess.of.by.belaruschess.util.Util
 import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
@@ -14,13 +13,12 @@ import retrofit2.Response
  * Created by Igor on 11.04.2018.
  */
 
-class TournamentConnection {
+class SearchUserConnection {
 
-    private var callBack: CallBackTournament? = null
-
-    fun getTournament(id: Int?) {
-        App.getAPI().getTournament(id!!).enqueue(object : Callback<TournamentDTO> {
-            override fun onResponse(call: Call<TournamentDTO>, response: Response<TournamentDTO>) {
+    private var callBack: CallBackSearchUser? = null
+    fun getCoaches(authorizationHeader: String) {
+        App.getPersonalServerApi().users(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -32,32 +30,15 @@ class TournamentConnection {
                 }
             }
 
-            override fun onFailure(call: Call<TournamentDTO>, t: Throwable) {
+            override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
-
-    fun getTournaments() {
-        App.getAPI().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
-            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
-                if (response.isSuccessful) {
-                    callBack!!.onResponse(response.body())
-                } else {
-                    //todo тут нужно блок экрана снимать и тд
-                }
-            }
-
-            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
-                callBack!!.onFailure(Util.buildOnFailureResponse())
-            }
-        })
-    }
-
-    fun getGames() {
-        App.getAPI().games.enqueue(object : Callback<List<GameDTO>> {
-            override fun onResponse(call: Call<List<GameDTO>>, response: Response<List<GameDTO>>) {
+    fun getUsers(count: Int?) {
+        App.getPersonalServerApi().getUsers(count!!).enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
                         callBack!!.onResponse(response.body())
@@ -69,14 +50,33 @@ class TournamentConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<GameDTO>>, t: Throwable) {
+            override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })
     }
 
+    fun searchUsers(text: String) {
+        App.getPersonalServerApi().searchUsers(text).enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
+                if (response.isSuccessful) {
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack!!.onResponse(response.body())
+                    } else {
+                        callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                    }
+                } else {
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                }
+            }
 
-    fun attachPresenter(callBack: CallBackTournament) {
+            override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
+                callBack!!.onFailure(Util.buildOnFailureResponse())
+            }
+        })
+    }
+
+    fun attachPresenter(callBack: CallBackSearchUser) {
         this.callBack = callBack
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
-import bobrchess.of.by.belaruschess.network.connection.CountryConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.CountryConnection;
 import bobrchess.of.by.belaruschess.presenter.CountryPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackCountry;
 import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack;

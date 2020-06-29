@@ -6,7 +6,7 @@ import bobrchess.of.by.belaruschess.dto.ErrorDTO
 import bobrchess.of.by.belaruschess.dto.UserContextDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
-import bobrchess.of.by.belaruschess.network.connection.AuthorizationConnection
+import bobrchess.of.by.belaruschess.network.connection.internal.AuthorizationConnection
 import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAuthorization
 import bobrchess.of.by.belaruschess.util.Constants

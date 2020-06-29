@@ -1,7 +1,5 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
-import android.widget.TextView;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -10,18 +8,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
-import bobrchess.of.by.belaruschess.dto.TournamentDTO;
-import bobrchess.of.by.belaruschess.network.connection.SearchPlaceConnection;
-import bobrchess.of.by.belaruschess.network.connection.SearchTournamentConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.SearchPlaceConnection;
 import bobrchess.of.by.belaruschess.presenter.SearchPlacePresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchPlace;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.SearchPlaceContractView;
-import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView;
-import butterknife.BindView;
 
 /**
  * Created by Igor on 04.05.2018.

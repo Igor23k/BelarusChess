@@ -359,7 +359,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         updateFragments()
     }
 
-    fun writeDataToExternal() {
+    fun writeDataToExternal() {//todo
         /*if (IOHandler.writeAllEventsToExternalStorage(this)) {
 
             try {
@@ -376,7 +376,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         }*/
     }
 
-    fun importDataFromExternal() {
+    fun importDataFromExternal() {//todo
         /*if (IOHandler.importEventsFromExternalStorage(this)) {
 
             try {

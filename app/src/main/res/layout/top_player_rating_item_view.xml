@@ -10,77 +10,40 @@
     android:elevation="0dp"
     android:focusable="true">
 
-    <ImageView
-        android:id="@+id/iv_user_event_item_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:adjustViewBounds="false"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        android:textSize="@dimen/smaller_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_birthday_person"
-        tools:ignore="ContentDescription" />
-
     <LinearLayout
-        android:id="@+id/layout"
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginStart="5dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/user_birthday"
+        app:layout_constraintEnd_toStartOf="@+id/iv_user_event_item_image"
         app:layout_constraintStart_toEndOf="@+id/iv_user_event_item_image"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_birthday_event_item_forename"
-            android:layout_width="match_parent"
+            android:id="@+id/top_player_event_item_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="14dp"
             android:layout_marginBottom="2dp"
             android:gravity="center|start"
-            android:text="Aleh Zubauuu"
+            android:text="@string/user_name"
             android:textColor="@color/textDark"
-            android:textSize="@dimen/smaller_text_size"
+            android:textSize="@dimen/larger_text_size"
             android:textStyle="bold"
             app:layout_constraintHorizontal_bias="0.0" />
-
-        <TextView
-            android:id="@+id/user_event_item_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|start"
-            android:text="@string/event_property_name"
-            android:textColor="@color/textDark"
-            android:textSize="@dimen/smaller_text_size"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_birthday_event_item_surname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="4dp"
-            android:gravity="center|start"
-            android:text=""
-            android:textColor="@color/textDark"
-            android:textSize="@dimen/smaller_text_size" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tournament_event_item_date_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="54dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="7dp"
         android:text="@string/event_property_birthday"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toStartOf="@+id/tv_birthday_event_item_days_until_title"
@@ -91,9 +54,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="30dp"
-        android:text="@string/rank"
+        android:layout_marginEnd="7dp"
+        android:text="@string/country"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toStartOf="@+id/tv_birthday_event_item_years_since_title"
         app:layout_constraintTop_toTopOf="@+id/iv_user_event_item_image" />
@@ -103,19 +65,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:text="@string/rating"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_user_event_item_image" />
 
     <TextView
-        android:id="@+id/user_birthday"
+        android:id="@+id/top_player_birthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginBottom="4dp"
         android:textColor="@color/textDark"
         android:textSize="@dimen/smaller_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/iv_user_event_item_image"
@@ -125,11 +86,11 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/user_country_and_rank_and_rating"
+        android:id="@+id/top_player_country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginBottom="4dp"
         android:textColor="@color/textDark"
         android:textSize="@dimen/smaller_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/iv_user_event_item_image"
@@ -139,7 +100,7 @@
         app:layout_constraintVertical_bias="1.0"/>
 
     <TextView
-        android:id="@+id/user_rating"
+        android:id="@+id/top_player_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -149,5 +110,5 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_birthday_event_item_years_since_title"
         app:layout_constraintStart_toStartOf="@+id/tv_birthday_event_item_years_since_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_birthday_event_item_years_since_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"/>
 </android.support.constraint.ConstraintLayout>

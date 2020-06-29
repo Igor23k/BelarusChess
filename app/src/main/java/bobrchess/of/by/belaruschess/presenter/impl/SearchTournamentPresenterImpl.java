@@ -1,7 +1,5 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
-import android.widget.TextView;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -10,16 +8,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
-import bobrchess.of.by.belaruschess.network.connection.SearchTournamentConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.SearchTournamentConnection;
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchTournament;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView;
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity;
-import butterknife.BindView;
 
 @InjectViewState
 public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournamentContractView> implements CallBackSearchTournament, SearchTournamentPresenter {
@@ -28,9 +23,6 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     private SearchTournamentConnection tournamentConnection;
     private Boolean viewIsReady = false;
     private Integer connectivityStatus = 0;
-
-    @BindView(R.id.t_link_registration)
-    TextView registrationLink;
 
     public SearchTournamentPresenterImpl() {
         tournamentConnection = new SearchTournamentConnection();

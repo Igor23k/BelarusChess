@@ -10,10 +10,9 @@ import android.view.ViewGroup
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.MonthDivider
-import kotlinx.android.synthetic.main.tournament_event_item_view.view.*
+import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
 import kotlinx.android.synthetic.main.tournament_result_event_item_view.view.*
 
@@ -29,7 +28,6 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
     /**
      * getItemViewType overrides the standard function
      * it defines the different viewholder types used for the recycler view
-     * 1 - birthday event viewholder
      *
      * @param position: Int
      * @return Int
@@ -44,7 +42,7 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
         return -1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {//todo тут поиск/search?
         // create a new view
         when (viewType) {
             0 -> {
@@ -60,7 +58,6 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
                 return TournamentEventViewHolder(itemView)
             }
             else -> {
-                //Default is birthday event
                 val itemView = View(context)
                 return TournamentEventViewHolder(itemView)
             }

@@ -6,8 +6,8 @@ import bobrchess.of.by.belaruschess.dto.ErrorDTO
 import bobrchess.of.by.belaruschess.dto.TokenDTO
 import bobrchess.of.by.belaruschess.dto.UserContextDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
-import bobrchess.of.by.belaruschess.network.connection.AuthorizationConnection
-import bobrchess.of.by.belaruschess.network.connection.TokenConnection
+import bobrchess.of.by.belaruschess.network.connection.internal.AuthorizationConnection
+import bobrchess.of.by.belaruschess.network.connection.internal.TokenConnection
 import bobrchess.of.by.belaruschess.presenter.TokenAuthPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAuthorization
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackToken
@@ -17,7 +17,6 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN_IS_EXPIRED_MESSAGE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.UNAUTHORIZED
 import bobrchess.of.by.belaruschess.util.Util
-import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import com.arellomobile.mvp.InjectViewState
