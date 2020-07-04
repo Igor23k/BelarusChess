@@ -13,9 +13,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
+import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -88,7 +88,7 @@ class ShowPlaceEvent : ShowEventFragment() {
                 }
 
                 place_capacity.text = "" + resources.getString(R.string.capacity) + ":" + place.capacity
-                updateAvatarImage()
+                updateAvatarImage(place.imageUri)
             }
         }
     }
@@ -98,9 +98,9 @@ class ShowPlaceEvent : ShowEventFragment() {
         super.onDetach()
     }
 
-    private fun updateAvatarImage() {
+    private fun updateAvatarImage(image: String?) {
         if (this.iv_avatar != null && this.eventID >= 0 && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = BitmapHandler.getBitmapFromFile(context!!, this.eventID)
+            val bitmap = Util.getBitMapByBase64(image)
             setBitmapToToolbar(bitmap)
         }
     }

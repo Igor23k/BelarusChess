@@ -2,9 +2,14 @@ package bobrchess.of.by.belaruschess.util
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.util.Base64
 import bobrchess.of.by.belaruschess.dto.*
+import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -304,5 +309,31 @@ class Util {
                 "01.01.1990"
             }
         }
+
+        fun getBitMapByBase64(decodedImage: String?): Bitmap? {
+            if (!StringUtils.isEmpty(decodedImage)) {
+                val strings = decodedImage!!.split(",").toTypedArray()
+                if (strings.size > 1) {
+                    val decodedString = Base64.decode(strings[1], Base64.DEFAULT)
+                    val decodedImage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                    return decodedImage
+                }
+            }
+            return null
+        }
+
+        fun getScaledBitMapByBase64(decodedImage: String?, resources: Resources): Bitmap? {
+            var bitmap = getBitMapByBase64(decodedImage)
+            if (bitmap != null) {
+                bitmap = BitmapHandler.getCircularBitmap(
+                        BitmapHandler.getScaledBitmap(
+                                bitmap
+                        ), resources
+                )
+            }
+            return bitmap
+        }
     }
+
+
 }

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetDialog
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,6 @@ import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_place.*
-import org.springframework.util.StringUtils
 
 
 /**
@@ -81,7 +79,8 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
         view!!.findViewById<EditText>(R.id.e_add_place_building)
     }
 
-    private val editCapacity: EditText by lazy {//todo добавить tours count
+    private val editCapacity: EditText by lazy {
+        //todo добавить tours count
         view!!.findViewById<EditText>(R.id.e_add_place_capacity)
     }
 
@@ -198,7 +197,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         avatarImgWasEdited = true
                         placeImageUri = null
-                        BitmapHandler.removeBitmap(eventID, context!!)
+                        //BitmapHandler.removeBitmap(eventID, context!!) убрал удаление пока что
                     } else {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         placeImageUri = null
@@ -237,8 +236,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
             val fullPhotoUri: Uri = data!!.data!!
 
             Thread(Runnable {
-                val bitmap =
-                        MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
+                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
                 (context as MainActivity).runOnUiThread {
                     iv_add_avatar_btn.setImageBitmap(
                             BitmapHandler.getCircularBitmap(
@@ -261,7 +259,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
     override fun acceptBtnPressed() {
         try {
             addPlacePresenter?.addPlace(getPlaceData())
-        }catch (e: NumberFormatException) {
+        } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_capacity)
         }
     }
@@ -284,7 +282,8 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
             //load maybe already existent avatar photo
             EventHandler.getEventToEventIndex(eventID)?.let { event ->
                 if (event is EventPlace && event.imageUri != null) {
-                    this.iv_add_avatar_btn.setImageBitmap(BitmapHandler.getBitmapAt(eventID))
+                    val bitmap = Util.getScaledBitMapByBase64(event.imageUri, resources)
+                    this.iv_add_avatar_btn.setImageBitmap(bitmap)
                     this.iv_add_avatar_btn.isEnabled = true
                 }
             }

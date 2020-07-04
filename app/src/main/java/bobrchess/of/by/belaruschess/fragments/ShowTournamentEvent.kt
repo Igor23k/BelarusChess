@@ -12,13 +12,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_tournament_event.*
+import org.springframework.util.StringUtils
 import java.text.DateFormat
 
 class ShowTournamentEvent : ShowEventFragment() {
@@ -80,7 +81,7 @@ class ShowTournamentEvent : ShowEventFragment() {
                 tv_show_birthday_years_old.text = tournamentEvent.fullDescription
 
                 user_birthday.text = date
-                updateAvatarImage()
+                updateAvatarImage(tournamentEvent.imageUri)
             }
         }
     }
@@ -90,9 +91,9 @@ class ShowTournamentEvent : ShowEventFragment() {
         super.onDetach()
     }
 
-    private fun updateAvatarImage() {
-        if (this.iv_avatar != null && this.eventID >= 0 && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = BitmapHandler.getBitmapFromFile(context!!, this.eventID)
+    private fun updateAvatarImage(image: String?) {
+        if (this.iv_avatar != null && (context as MainActivity).collapsable_toolbar_iv != null) {
+            val bitmap = Util.getBitMapByBase64(image)
             setBitmapToToolbar(bitmap)
         }
     }

@@ -12,10 +12,10 @@ import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.fragments.*
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentsResultPresenterImpl
+import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByBase64
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.GsonBuilder
@@ -43,7 +43,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
-    private var sortedListTopPlayers:List<EventTopPlayer>? = null
+    private var sortedListTopPlayers: List<EventTopPlayer>? = null
 
     constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?, userTournamentsResult: List<TournamentResultDTO>?) : this() {
         tournamentsResultPresenterImpl = TournamentsResultPresenterImpl()
@@ -283,15 +283,14 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         //set fullDescription TextView text
                         holder.itemView.tournament_event_item_name.text = event.name
 
-                        val avatarUri = event.imageUri
+                        val image = event.imageUri
 
                         //when context is MainActivity
                         if (context is MainActivity) {
-                            if (avatarUri != null) {
+                            if (image != null) {
+                                val bitmap = getScaledBitMapByBase64(image, context!!.resources)
                                 holder.itemView.iv_tournament_event_item_image.setImageBitmap(
-                                        BitmapHandler.getBitmapAt(
-                                                event.eventID
-                                        )
+                                        bitmap
                                 )
                             } else {
                                 holder.itemView.iv_tournament_event_item_image.setImageResource(R.drawable.ic_birthday_person)
@@ -369,15 +368,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         holder.itemView.user_event_item_name.text = user.name + " " + user.surname
 
-                        val avatarUri = user.imageUri
+                        val image = user.imageUri
 
                         //when context is MainActivity
                         if (context is MainActivity) {
-                            if (avatarUri != null) {
+                            if (image != null) {
                                 holder.itemView.iv_user_event_item_image.setImageBitmap(
-                                        BitmapHandler.getBitmapAt(
-                                                user.eventID
-                                        )
+                                        getScaledBitMapByBase64(image, context!!.resources)
                                 )
                             } else {
                                 holder.itemView.iv_user_event_item_image.setImageResource(R.drawable.ic_birthday_person)
@@ -433,15 +430,14 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tournament_result_position.visibility = TextView.VISIBLE
                         holder.itemView.tournament_result_position.text = eventTournamentResult.position.toString()
 
-                        val avatarUri = eventTournamentResult.imageUri
+                        val image = eventTournamentResult.imageUri
 
                         //when context is MainActivity
                         if (context is MainActivity) {
-                            if (avatarUri != null) {
+                            if (image != null) {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
-                                        BitmapHandler.getBitmapAt(
-                                                eventTournamentResult.eventID
-                                        )
+                                        getScaledBitMapByBase64(image, context!!.resources)
+
                                 )
                             } else {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)
@@ -518,15 +514,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                             R.drawable.ripple_recycler_view_item
                                     )
                         }
-                        val imageUri = eventPlace.imageUri
+                        val image = eventPlace.imageUri
 
                         //when context is MainActivity
                         if (context is MainActivity) {
-                            if (imageUri != null) {
+                            if (image != null) {
                                 holder.itemView.iv_place_event_item_image.setImageBitmap(
-                                        BitmapHandler.getBitmapAt(
-                                                eventPlace.eventID
-                                        )
+                                        getScaledBitMapByBase64(image, context!!.resources)
                                 )
                             } else {
                                 holder.itemView.iv_place_event_item_image.setImageResource(R.drawable.ic_birthday_person)
@@ -632,16 +626,17 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                 }
             }
 
+
             6 -> {
                 if (sortedListTopPlayers == null) {
                     sortedListTopPlayers = ArrayList()
-                    val topPlayers = ArrayList<EventTopPlayer>(40)
+                    val topPlayers = ArrayList<EventTopPlayer>()
                     for (topPlayer in EventHandler.getList()) {
                         if (topPlayer is EventTopPlayer) {
                             topPlayers.add(topPlayer)
                         }
                     }
-                    sortedListTopPlayers = topPlayers.sortedByDescending { it.rating }
+                    sortedListTopPlayers = topPlayers/*.sortedByDescending { it.rating }*/
                 }
                 sortedListTopPlayers!![position].let { topPlayer ->
 

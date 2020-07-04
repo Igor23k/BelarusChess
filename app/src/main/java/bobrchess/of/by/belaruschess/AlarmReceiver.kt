@@ -11,53 +11,53 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.handler.NotificationHandler
 import bobrchess.of.by.belaruschess.model.EventDate
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
+import bobrchess.of.by.belaruschess.util.Util
+import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-       /* if (context != null) {
-            //register IOHandler, really important, really
-            IOHandler.registerIO(context)
+        /* if (context != null) {
+             //register IOHandler, really important, really
+             IOHandler.registerIO(context)
 
-            val event =
-                IOHandler.convertStringToEventDate(
-                    context,
-                    intent!!.getStringExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTSTRING)
-                )
-            val notificationID =
-                intent.getIntExtra(MainActivity.FRAGMENT_EXTRA_TITLE_NOTIFICATIONID, 0)
-            val eventID = intent.getIntExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID, 0)
-            event?.eventID = eventID
+             val event =
+                 IOHandler.convertStringToEventDate(
+                     context,
+                     intent!!.getStringExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTSTRING)
+                 )
+             val notificationID =
+                 intent.getIntExtra(MainActivity.FRAGMENT_EXTRA_TITLE_NOTIFICATIONID, 0)
+             val eventID = intent.getIntExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID, 0)
+             event?.eventID = eventID
 
-            when (event) {
-                is EventTournament -> {
-                    buildNotification(context, event, notificationID, eventID)
-                }
-                is AnnualEvent -> {
-                    buildNotification(context, event, notificationID, eventID)
-                }
-                is OneTimeEvent -> {
-                    buildNotification(context, event, notificationID, eventID)
-                }
-                else -> {
+             when (event) {
+                 is EventTournament -> {
+                     buildNotification(context, event, notificationID, eventID)
+                 }
+                 is AnnualEvent -> {
+                     buildNotification(context, event, notificationID, eventID)
+                 }
+                 is OneTimeEvent -> {
+                     buildNotification(context, event, notificationID, eventID)
+                 }
+                 else -> {
 
-                }
-            }
+                 }
+             }
 
-            //create new notification events for this event, except when its an onetime-event
-            //currently all notifications for a specific event get cancelled before new notifications are created, this may be ineffective but its simple (sorry)
-            if (event != null && event !is OneTimeEvent) {
-                NotificationHandler.cancelNotification(context, event)
-                NotificationHandler.scheduleNotification(context, event)
-            }
-        }*/
+             //create new notification events for this event, except when its an onetime-event
+             //currently all notifications for a specific event get cancelled before new notifications are created, this may be ineffective but its simple (sorry)
+             if (event != null && event !is OneTimeEvent) {
+                 NotificationHandler.cancelNotification(context, event)
+                 NotificationHandler.scheduleNotification(context, event)
+             }
+         }*/
     }
 
     private fun buildNotification(
@@ -73,15 +73,15 @@ class AlarmReceiver : BroadcastReceiver() {
         intent.action = notificationID.toString()
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(
-                context,
-                notificationID,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
+                PendingIntent.getActivity(
+                        context,
+                        notificationID,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                )
 
         val notificationManager: NotificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         //new channel ID system for android oreo and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -90,9 +90,9 @@ class AlarmReceiver : BroadcastReceiver() {
             val descriptionText = context.getString(R.string.notification_channel_description)
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel =
-                NotificationChannel(NotificationHandler.CHANNEL_ID, channelName, importance).apply {
-                    description = descriptionText
-                }
+                    NotificationChannel(NotificationHandler.CHANNEL_ID, channelName, importance).apply {
+                        description = descriptionText
+                    }
 
             //setting the notification light
             when (event) {
@@ -105,15 +105,15 @@ class AlarmReceiver : BroadcastReceiver() {
                         channel.enableLights(false)
                     }
                 }
-               /* is AnnualEvent -> {
-                    val lightColor = getLightColor(event, context)
-                    if (lightColor != null) {
-                        channel.enableLights(true)
-                        channel.lightColor = lightColor
-                    } else {
-                        channel.enableLights(false)
-                    }
-                }*/
+                /* is AnnualEvent -> {
+                     val lightColor = getLightColor(event, context)
+                     if (lightColor != null) {
+                         channel.enableLights(true)
+                         channel.lightColor = lightColor
+                     } else {
+                         channel.enableLights(false)
+                     }
+                 }*/
                 is OneTimeEvent -> {
                     val lightColor = getLightColor(event, context)
                     if (lightColor != null) {
@@ -135,44 +135,41 @@ class AlarmReceiver : BroadcastReceiver() {
                 var bitmap: Bitmap? = null
 
                 if (event.imageUri != null) {
-                    bitmap = BitmapHandler.getBitmapFromFile(context, eventID)
-                    if (bitmap != null) {
-                        bitmap = BitmapHandler.getCircularBitmap(bitmap, context.resources)
-                    }
+                    bitmap = Util.getScaledBitMapByBase64(event.imageUri, context.resources)
                 }
 
                 var defaults = Notification.DEFAULT_ALL
 
                 val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    // Set the intent that will fire when the user taps the notification
-                    .setContentIntent(pendingIntent)
-                    .setSubText(context.getText(R.string.event_type_birthday))
-                    .setAutoCancel(true)
-                    .setStyle(NotificationCompat.BigTextStyle())
-                    .setContentText(buildEventBirthdayNotificationBodyText(context, event))
+                        .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        // Set the intent that will fire when the user taps the notification
+                        .setContentIntent(pendingIntent)
+                        .setSubText(context.getText(R.string.event_type_birthday))
+                        .setAutoCancel(true)
+                        .setStyle(NotificationCompat.BigTextStyle())
+                        .setContentText(buildEventBirthdayNotificationBodyText(context, event))
                 //settings names according to their existence
                 if (event.fullDescription != null) {
                     builder.setContentTitle(
-                        context.getString(
-                            R.string.notification_title_tournament,
-                            event.fullDescription
-                        )
+                            context.getString(
+                                    R.string.notification_title_tournament,
+                                    event.fullDescription
+                            )
                     )
                 } else if (event.shortDescription != null) {
                     builder.setContentTitle(
-                        context.getString(
-                            R.string.notification_title_tournament,
-                            "${event.name} ${event.shortDescription}"
-                        )
+                            context.getString(
+                                    R.string.notification_title_tournament,
+                                    "${event.name} ${event.shortDescription}"
+                            )
                     )
                 } else {
                     builder.setContentTitle(
-                        context.getString(
-                            R.string.notification_title_tournament,
-                            event.name
-                        )
+                            context.getString(
+                                    R.string.notification_title_tournament,
+                                    event.name
+                            )
                     )
                 }
 
@@ -203,69 +200,69 @@ class AlarmReceiver : BroadcastReceiver() {
                 }
             }
             // ANNUAL EVENT
-           /* is AnnualEvent -> {
+            /* is AnnualEvent -> {
 
-                var defaults = Notification.DEFAULT_ALL
+                 var defaults = Notification.DEFAULT_ALL
 
-                val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
-                    .setContentTitle(
-                        context.getString(
-                            R.string.notification_title_annual_event,
-                            event.name
-                        )
-                    )
-                    .setStyle(NotificationCompat.BigTextStyle())
-                    .setContentText(buildAnnualEventNotificationBodyText(context, event))
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    // Set the intent that will fire when the user taps the notification
-                    .setContentIntent(pendingIntent)
-                    .setSubText(context.getText(R.string.event_type_annual_event))
-                    .setAutoCancel(true)
+                 val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
+                     .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
+                     .setContentTitle(
+                         context.getString(
+                             R.string.notification_title_annual_event,
+                             event.name
+                         )
+                     )
+                     .setStyle(NotificationCompat.BigTextStyle())
+                     .setContentText(buildAnnualEventNotificationBodyText(context, event))
+                     .setPriority(NotificationCompat.PRIORITY_MAX)
+                     // Set the intent that will fire when the user taps the notification
+                     .setContentIntent(pendingIntent)
+                     .setSubText(context.getText(R.string.event_type_annual_event))
+                     .setAutoCancel(true)
 
-                if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationVibrationOnAnnual)!!) {
-                    defaults -= Notification.DEFAULT_VIBRATE
-                }
+                 if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationVibrationOnAnnual)!!) {
+                     defaults -= Notification.DEFAULT_VIBRATE
+                 }
 
-                if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationSoundOnAnnual)!!) {
-                    defaults -= Notification.DEFAULT_SOUND
-                }
+                 if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationSoundOnAnnual)!!) {
+                     defaults -= Notification.DEFAULT_SOUND
+                 }
 
-                val lightColor = getLightColor(event, context)
-                if (lightColor != null) {
-                    defaults -= Notification.DEFAULT_LIGHTS
-                    builder.setLights(lightColor, 500, 500)
-                } else {
-                    defaults -= Notification.DEFAULT_LIGHTS
-                }
+                 val lightColor = getLightColor(event, context)
+                 if (lightColor != null) {
+                     defaults -= Notification.DEFAULT_LIGHTS
+                     builder.setLights(lightColor, 500, 500)
+                 } else {
+                     defaults -= Notification.DEFAULT_LIGHTS
+                 }
 
-                builder.setDefaults(defaults)
+                 builder.setDefaults(defaults)
 
-                with(notificationManager) {
-                    notify(notificationID, builder.build())
-                }
+                 with(notificationManager) {
+                     notify(notificationID, builder.build())
+                 }
 
-                // ONE TIME EVENT
-            }*/
+                 // ONE TIME EVENT
+             }*/
             is OneTimeEvent -> {
 
                 var defaults = Notification.DEFAULT_ALL
 
                 val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
-                    .setContentTitle(
-                        context.getString(
-                            R.string.notification_title_one_time_event,
-                            event.name
+                        .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
+                        .setContentTitle(
+                                context.getString(
+                                        R.string.notification_title_one_time_event,
+                                        event.name
+                                )
                         )
-                    )
-                    .setStyle(NotificationCompat.BigTextStyle())
-                    .setContentText(buildOneTimeEventNotificationBodyText(context, event))
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    // Set the intent that will fire when the user taps the notification
-                    .setContentIntent(pendingIntent)
-                    .setSubText(context.getText(R.string.event_type_one_time_event))
-                    .setAutoCancel(true)
+                        .setStyle(NotificationCompat.BigTextStyle())
+                        .setContentText(buildOneTimeEventNotificationBodyText(context, event))
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        // Set the intent that will fire when the user taps the notification
+                        .setContentIntent(pendingIntent)
+                        .setSubText(context.getText(R.string.event_type_one_time_event))
+                        .setAutoCancel(true)
 
                 if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationVibrationOnOneTime)!!) {
                     defaults -= Notification.DEFAULT_VIBRATE
@@ -297,35 +294,35 @@ class AlarmReceiver : BroadcastReceiver() {
             tournament: EventTournament
     ): String {
         var returnString = ""
-       /* when (tournament.getDaysUntil()) {
-            //today
-            0 -> {
-                returnString = context.resources.getString(
-                    R.string.notification_content_birthday_today,
-                    tournament.getName()
-                )
-            }
-            //tomorrow
-            1 -> {
-                returnString = context.resources.getString(
-                    R.string.notification_content_birthday_tomorrow,
-                    tournament.getName()
-                )
-            }
-            else -> {
-                returnString = context.resources.getString(
-                    R.string.notification_content_birthday_future,
-                    tournament.getName(),
-                    tournament.getDaysUntil()
-                )
-            }
-        }
-        returnString += "\n${context.resources.getString(
-                R.string.notification_content_birthday_years_old,
-                tournament.getName(),
-                tournament.getTurningAgeValue()
-            )}"
-        */
+        /* when (tournament.getDaysUntil()) {
+             //today
+             0 -> {
+                 returnString = context.resources.getString(
+                     R.string.notification_content_birthday_today,
+                     tournament.getName()
+                 )
+             }
+             //tomorrow
+             1 -> {
+                 returnString = context.resources.getString(
+                     R.string.notification_content_birthday_tomorrow,
+                     tournament.getName()
+                 )
+             }
+             else -> {
+                 returnString = context.resources.getString(
+                     R.string.notification_content_birthday_future,
+                     tournament.getName(),
+                     tournament.getDaysUntil()
+                 )
+             }
+         }
+         returnString += "\n${context.resources.getString(
+                 R.string.notification_content_birthday_years_old,
+                 tournament.getName(),
+                 tournament.getTurningAgeValue()
+             )}"
+         */
         return returnString
     }
 
@@ -368,30 +365,30 @@ class AlarmReceiver : BroadcastReceiver() {
     }*/
 
     private fun buildOneTimeEventNotificationBodyText(
-        context: Context,
-        oneTimeEvent: OneTimeEvent
+            context: Context,
+            oneTimeEvent: OneTimeEvent
     ): String {
         var returnString = ""
         when (oneTimeEvent.getDaysUntil()) {
             //today
             0 -> {
                 returnString += context.resources.getString(
-                    R.string.notification_content_one_time_event_today,
-                    oneTimeEvent.name
+                        R.string.notification_content_one_time_event_today,
+                        oneTimeEvent.name
                 )
             }
             //tomorrow
             1 -> {
                 returnString += context.resources.getString(
-                    R.string.notification_content_one_time_event_tomorrow,
-                    oneTimeEvent.name
+                        R.string.notification_content_one_time_event_tomorrow,
+                        oneTimeEvent.name
                 )
             }
             else -> {
                 returnString += context.resources.getString(
-                    R.string.notification_content_one_time_event_future,
-                    oneTimeEvent.name,
-                    oneTimeEvent.getDaysUntil()
+                        R.string.notification_content_one_time_event_future,
+                        oneTimeEvent.name,
+                        oneTimeEvent.getDaysUntil()
                 )
             }
         }
@@ -402,7 +399,7 @@ class AlarmReceiver : BroadcastReceiver() {
         when (event) {
             is EventTournament -> {
                 val lightValue =
-                    IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightBirthday)!!
+                        IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightBirthday)!!
                 return getLightARGBFromColorValue(lightValue, context)
             }
             /*is AnnualEvent -> {
@@ -412,7 +409,7 @@ class AlarmReceiver : BroadcastReceiver() {
             }*/
             is OneTimeEvent -> {
                 val lightValue =
-                    IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightOneTime)!!
+                        IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightOneTime)!!
                 return getLightARGBFromColorValue(lightValue, context)
             }
             else -> {

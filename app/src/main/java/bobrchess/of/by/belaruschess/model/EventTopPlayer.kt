@@ -53,7 +53,7 @@ class EventTopPlayer(
         }
     }
 
-    var imageUri: String? = null
+    var image: String? = null
     var position: Int? = null
     var rating: Int? = null
     var blitzRating: Int? = null
@@ -72,7 +72,7 @@ class EventTopPlayer(
                 )}${IOHandler.tournamentDivider_properties}" +
                 getStringFromValue(Identifier.Surname, this.surname) +
                 getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.ImageUri, this.imageUri) +
+                getStringFromValue(Identifier.ImageUri, this.image) +
                 getStringFromValue(Identifier.Position, this.position) +
                 getStringFromValue(Identifier.Rating, this.rating) +
                 getStringFromValue(Identifier.BlitzRating, this.blitzRating) +

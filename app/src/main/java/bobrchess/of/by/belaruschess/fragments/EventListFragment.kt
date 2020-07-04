@@ -16,7 +16,6 @@ import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerDTO
 import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayersDTO
 import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentsDataDTO
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.*
@@ -564,7 +563,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         //start loading bitmap drawables in other thread to not block ui
         Thread(Runnable
         {
-            BitmapHandler.loadAllBitmaps(this.context!!)
+            //BitmapHandler.loadAllBitmaps(this.context!!) //убрал пока что это
             this.activity?.runOnUiThread {
                 recyclerView.adapter!!.notifyDataSetChanged()
             }
@@ -651,6 +650,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+
     override fun showPlaces(places: MutableList<out PlaceDTO>?) {
 //todo такой эе метод в мэйн активити, сделать один чтобы был
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
@@ -697,29 +697,31 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         updateFragments()
     }
 
+
     override fun showTopPlayersRating(topPlayersDTO: TopPlayersDTO?) {
         IOHandler.clearSharedPrefEventData()
-        addMonthDivider(getMonthDivider(66666666, "Open"))//todo
-       // processTopPlayers(topPlayersDTO?.open)
+        //    addMonthDivider(getMonthDivider(66666666, "Open"))//todo
+        processTopPlayers(topPlayersDTO?.open)
         addMonthDivider(getMonthDivider(77777777, "Women"))
         processTopPlayers(topPlayersDTO?.women)
-        addMonthDivider(getMonthDivider(88888888, "Juniors"))
+        //   addMonthDivider(getMonthDivider(88888888, "Juniors"))
         processTopPlayers(topPlayersDTO?.juniors)
-        addMonthDivider(getMonthDivider(99999999, "Girls"))
+        // addMonthDivider(getMonthDivider(99999999, "Girls"))
         processTopPlayers(topPlayersDTO?.girls)
 
         updateFragments()
     }
 
+
     private fun addMonthDivider(monthDivider: MonthDivider) {
         EventHandler.addEvent(
                 monthDivider,
                 context!!,
-                true, false, false, false
+                true, false, true, false
         )
     }
 
-    private fun getMonthDivider(id: Int, text: String) :MonthDivider {
+    private fun getMonthDivider(id: Int, text: String): MonthDivider {
         val monthDivider = MonthDivider(Calendar.getInstance().time, text)
         monthDivider.eventID = id
         return monthDivider
@@ -741,7 +743,8 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                     writeAfterAdd = true,
                     addNewNotification = false,
                     updateEventList = true,
-                    addBitmap = false
+                    addBitmap = false,
+                    sortList = false
             )
         }
     }

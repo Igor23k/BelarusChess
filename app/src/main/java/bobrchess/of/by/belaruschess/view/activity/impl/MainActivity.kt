@@ -12,7 +12,6 @@ import android.widget.Toast
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.fragments.EventListFragment
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
@@ -303,7 +302,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         //start loading bitmap drawables in other thread to not block ui
         Thread(Runnable
         {
-            BitmapHandler.loadAllBitmaps(this)
+            // BitmapHandler.loadAllBitmaps(this)
             runOnUiThread {
                 if (recyclerView != null) {
                     recyclerView.adapter!!.notifyDataSetChanged()
@@ -331,6 +330,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     var countriesAreLoaded = false
     var placesAreLoaded = false
     var ranksAreLoaded = false
+
 
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         //разделить тут по методам, вынести отдалельно

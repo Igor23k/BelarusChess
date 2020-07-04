@@ -89,6 +89,9 @@ open class EventDate : Comparable<EventDate> {
     enum class Identifier : SortIdentifier {
         Date {
             override fun Identifier(): Int = 0
+        },
+        Approved {
+            override fun Identifier(): Int = 1
         }
     }
 

@@ -53,7 +53,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     /**
      * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventTournament
      */
-    private var isEditedBirthday: Boolean = false
+    private var isEditedTournament: Boolean = false
 
     /**
      * eventID is the index of the clicked item in EventListFragments RecyclerView, this is handy to get the birthday instance from the EventHandler
@@ -224,7 +224,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
         //retrieve fragment parameter when edited instance
         if (arguments != null) {
-            isEditedBirthday = true
+            isEditedTournament = true
 
             setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_tournament))
 
@@ -263,7 +263,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
                     editShortDescription.setText(tournament.shortDescription)
                     editName.setText(tournament.name)
-                    switchIsYearGiven.isChecked = true//birthday.isYearGiven
+                    switchIsYearGiven.isChecked = true
                     tournamentAvatarUri = tournament.imageUri
 
 
@@ -273,7 +273,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                         editFullDescription.visibility = EditText.VISIBLE
                     }
 
-                    //title.text = resources.getText(R.string.toolbar_title_edit_birthday)
                     btn_tournament_add_fragment_delete.visibility = Button.VISIBLE
                     //delete functionality
                     btn_tournament_add_fragment_delete.setOnClickListener {
@@ -352,18 +351,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                                 )
                         )
                     }
-                    /*  } else {
-                          if (!dateEditRegexNoYear.matches(s)) {
-                              editDate.setTextColor(Color.RED)
-                          } else {
-                              editDate.setTextColor(
-                                  ContextCompat.getColor(
-                                      context!!,
-                                      R.color.textVeryDark
-                                  )
-                              )
-                          }
-                      }*/
                 }
             }
         })
@@ -394,14 +381,13 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
                 this?.setOnClickListener {
                     dialog.dismiss()
-                    if (isEditedBirthday && tournamentAvatarUri != null && (EventHandler.getEventToEventIndex(
+                    if (isEditedTournament && tournamentAvatarUri != null && (EventHandler.getEventToEventIndex(
                                     eventID
                             ) as EventTournament).imageUri != null
                     ) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         avatarImgWasEdited = true
                         tournamentAvatarUri = null
-                        BitmapHandler.removeBitmap(eventID, context!!)
                     } else {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         tournamentAvatarUri = null
@@ -411,37 +397,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
             dialog.show()
         }
-
-        /* switchIsYearGiven.setOnCheckedChangeListener { _, isChecked ->
-             val dateText: String
-             val dateHint: String
-             //year is given
-             if (isChecked) {
-                 val cal = Calendar.getInstance()
-                 if (this.eventStartDate.after(cal.time)) {
-                     cal.time = this.eventStartDate
-                     cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
-                     this.eventStartDate = cal.time
-                 }
-
-                 dateText =
-                     EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
-                 dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
-
-                 //year is not given
-             } else {
-                 dateText = EventDate.getLocalizedDayAndMonthString(this.eventStartDate)
-                 dateHint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMM")
-             }
-
-             if (isCalendarViewSelected) {
-                 if (editStartDateCalendarview.text.isNotBlank()) editStartDateCalendarview.text = dateText
-                 editStartDateCalendarview.hint = dateHint
-             } else {
-                 if (editDate.text.isNotBlank()) editDate.setText(dateText)
-                 editDate.hint = dateHint
-             }
-         }*/
     }
 
     /**
@@ -525,7 +480,8 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             //load maybe already existent avatar photo
             EventHandler.getEventToEventIndex(eventID)?.let { event ->
                 if (event is EventTournament && event.imageUri != null) {
-                    this.iv_add_avatar_btn.setImageBitmap(BitmapHandler.getBitmapAt(eventID))
+                    val bitmap = Util.getScaledBitMapByBase64(event.imageUri, resources)
+                    this.iv_add_avatar_btn.setImageBitmap(bitmap)
                     this.iv_add_avatar_btn.isEnabled = true
                 }
             }
@@ -752,7 +708,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         tournamentEvent.toursCount = tournamentDTO.toursCount
 
         //new birthday entry, just add a new entry in map
-        if (!isEditedBirthday) {
+        if (!isEditedTournament) {
             EventHandler.addEvent(tournamentEvent, this.context!!, true)
             Snackbar.make(
                     view!!,

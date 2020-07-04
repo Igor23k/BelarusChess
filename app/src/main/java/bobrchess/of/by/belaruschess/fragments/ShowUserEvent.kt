@@ -17,13 +17,13 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.adapter.EventAdapter
 import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
 import bobrchess.of.by.belaruschess.dto.*
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.EventTournamentResult
 import bobrchess.of.by.belaruschess.model.EventUser
+import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
@@ -148,7 +148,7 @@ class ShowUserEvent : ShowEventFragment() {
 
                 this.user_coach.visibility = TextView.VISIBLE
                 if (coach != null) {
-                    this.user_coach.text = resources.getString(R.string.coach)+ "   ${coach?.name} ${coach?.surname}"
+                    this.user_coach.text = resources.getString(R.string.coach) + "   ${coach?.name} ${coach?.surname}"
                 } else {
                     this.user_coach.text = resources.getString(R.string.coach_absence)
                 }
@@ -187,12 +187,12 @@ class ShowUserEvent : ShowEventFragment() {
                 val date: String
                 date = userEvent.dateToPrettyString(DateFormat.LONG)
 
-                userTournamentsResult?.forEach{
+                userTournamentsResult?.forEach {//todo что тут такое?
                     // user_tournaments_results.text = "Name - " + it.name + " Points - " + it.points +  " Position - " + it.position
                 }
 
                 user_birthday.text = resources.getString(R.string.person_show_date, date)
-                updateAvatarImage()
+                updateAvatarImage(userEvent.imageUri)
             }
         }
     }
@@ -202,9 +202,9 @@ class ShowUserEvent : ShowEventFragment() {
         super.onDetach()
     }
 
-    private fun updateAvatarImage() {
+    private fun updateAvatarImage(image: String?) {
         if (this.iv_avatar != null && this.eventID >= 0 && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = BitmapHandler.getBitmapFromFile(context!!, this.eventID)
+            val bitmap = Util.getBitMapByBase64(image)
             setBitmapToToolbar(bitmap)
         }
     }

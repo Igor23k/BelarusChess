@@ -38,7 +38,8 @@ object EventHandler {
             writeAfterAdd: Boolean = true,
             addNewNotification: Boolean = true,
             updateEventList: Boolean = true,
-            addBitmap: Boolean = true
+            addBitmap: Boolean = true,
+            sortList: Boolean = true
 
     ) {
 
@@ -66,14 +67,14 @@ object EventHandler {
             }
             Thread(Runnable {
                 if (imageUri != null) {
-                    BitmapHandler.addDrawable(
+                    /*BitmapHandler.addDrawable(
                             event.eventID,
                             Uri.parse(imageUri),
                             context,
                             readBitmapFromGallery = false,
                             //150dp because the app_bar height is 300dp
                             scale = MainActivity.convertDpToPx(context, 150f)
-                    )
+                    )*///сохранение карнтинки локально, пока что убрал
                 }
                 if (context is MainActivity) {
                     context.runOnUiThread {
@@ -92,7 +93,11 @@ object EventHandler {
 
 
         if (updateEventList) {
-            this.event_list = getSortedListBy()
+            if (sortList) {
+                this.event_list = getSortedListBy()
+            } else {
+                this.event_list = getPlainList()
+            }
         }
 
         if (writeAfterAdd) {
@@ -133,16 +138,16 @@ object EventHandler {
                     val newEventImageUri = newEvent.imageUri
                     //remove old drawable if one exists
                     if ((oldEvent as EventTournament).imageUri != null) {
-                        BitmapHandler.removeBitmap(oldEvent.eventID, context)
+                        //BitmapHandler.removeBitmap(oldEvent.eventID, context) удаление локально, убрал пока что
                     }
                     //force BitmapHandler to load new avatar image from gallery, in case there is already an existant bitmap
-                    BitmapHandler.addDrawable(
+                  /*  BitmapHandler.addDrawable(
                             ID,
                             Uri.parse(newEventImageUri),
                             context,
                             readBitmapFromGallery = true,
                             scale = MainActivity.convertDpToPx(context, 150f)
-                    )
+                    )*///сохранение локально, убрал пока что
                 }
             }
             this.event_list = getSortedListBy()
@@ -164,7 +169,7 @@ object EventHandler {
         getEventToEventIndex(index)?.let { event ->
 
             if (event is EventTournament) {
-                BitmapHandler.removeBitmap(index, context)
+                //BitmapHandler.removeBitmap(index, context) удаление локально, убрал пока что
             }
 
             NotificationHandler.cancelNotification(context, event)
@@ -181,7 +186,7 @@ object EventHandler {
     fun clearData() {
         if (this.event_list.isNotEmpty()) {
             this.event_map.clear()
-            this.event_list = getSortedListBy()
+            this.event_list = getSortedListBy(EventDate.Identifier.Date)
         }
     }
 
@@ -201,7 +206,7 @@ object EventHandler {
             NotificationHandler.cancelNotification(context, it)
         }
         this.clearData()
-        BitmapHandler.removeAllDrawables(context)
+        //BitmapHandler.removeAllDrawables(context) удаление локально, убрал пока что
         if (writeAfterAdd) {
             IOHandler.clearSharedPrefEventData()
         }
@@ -254,4 +259,9 @@ object EventHandler {
             return emptyList()
         }
     }
+
+    private fun getPlainList(): List<EventDate> {
+        return event_map.values.toList()
+    }
+
 }

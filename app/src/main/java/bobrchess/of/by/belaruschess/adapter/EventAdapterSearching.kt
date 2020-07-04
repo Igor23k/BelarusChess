@@ -8,16 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.MonthDivider
+import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
 import kotlinx.android.synthetic.main.tournament_result_event_item_view.view.*
 
 class EventAdapterSearching(private val context: Context, private val eventIDs: List<Int>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class TournamentEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -47,14 +47,14 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
         when (viewType) {
             0 -> {
                 val itemView =
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.event_month_view_divider, parent, false)
+                        LayoutInflater.from(parent.context)
+                                .inflate(R.layout.event_month_view_divider, parent, false)
                 return EventMonthDividerViewHolder(itemView)
             }
             1 -> {
                 val itemView =
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.tournament_event_item_view, parent, false)
+                        LayoutInflater.from(parent.context)
+                                .inflate(R.layout.tournament_event_item_view, parent, false)
                 return TournamentEventViewHolder(itemView)
             }
             else -> {
@@ -74,27 +74,27 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
             //EventMonthDividerViewHolder
             0 -> {
                 holder.itemView.tv_divider_description_month.text =
-                    (EventHandler.getList()[position] as MonthDivider).month_name
+                        (EventHandler.getList()[position] as MonthDivider).month_name
             }
 
             //BirthdayEventViewHolder
             1 -> {
                 //check if is birthday event and if the year is given
-                EventHandler.getList()[position].let { birthdayEvent ->
-                    if (birthdayEvent is EventTournament) {
+                EventHandler.getList()[position].let { tournamentEvent ->
+                    if (tournamentEvent is EventTournament) {
 
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             //replace this activity with the MainActivity to show searched
                             val intent = Intent(context, MainActivity::class.java)
                             intent.putExtra(
-                                MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                                birthdayEvent.eventID
+                                    MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                                    tournamentEvent.eventID
                             )
                             intent.putExtra(MainActivity.FRAGMENT_EXTRA_TITLE_POSITION, position)
                             intent.putExtra(
-                                MainActivity.FRAGMENT_EXTRA_TITLE_TYPE,
-                                MainActivity.FRAGMENT_TYPE_SHOW
+                                    MainActivity.FRAGMENT_EXTRA_TITLE_TYPE,
+                                    MainActivity.FRAGMENT_TYPE_SHOW
                             )
                             startActivity(context, intent, null)
                         }
@@ -103,27 +103,25 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
                             //replace this activity with the MainActivity to show searched
                             val intent = Intent(context, MainActivity::class.java)
                             intent.putExtra(
-                                MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                                birthdayEvent.eventID
+                                    MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                                    tournamentEvent.eventID
                             )
                             intent.putExtra(MainActivity.FRAGMENT_EXTRA_TITLE_POSITION, position)
                             intent.putExtra(
-                                MainActivity.FRAGMENT_EXTRA_TITLE_TYPE,
-                                MainActivity.FRAGMENT_TYPE_EDIT
+                                    MainActivity.FRAGMENT_EXTRA_TITLE_TYPE,
+                                    MainActivity.FRAGMENT_TYPE_EDIT
                             )
                             startActivity(context, intent, null)
                             true
                         }
 
-                        val avatarUri = birthdayEvent.imageUri
+                        val avatarUri = tournamentEvent.imageUri
 
                         //when called from MainActivity
                         if (context is MainActivity) {
                             if (avatarUri != null) {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
-                                    BitmapHandler.getBitmapAt(
-                                        birthdayEvent.eventID
-                                    )
+                                        Util.getScaledBitMapByBase64(tournamentEvent.imageUri, context.resources)
                                 )
                             } else {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)
@@ -131,10 +129,8 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
                         } else {
                             //called from search activity
                             if (avatarUri != null) {
-                                holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
-                                    BitmapHandler.getBitmapAt(
-                                        birthdayEvent.eventID
-                                    )
+                                 holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
+                                         Util.getScaledBitMapByBase64(tournamentEvent.imageUri, context.resources)
                                 )
                             } else {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)

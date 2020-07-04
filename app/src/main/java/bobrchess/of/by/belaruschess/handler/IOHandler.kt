@@ -22,7 +22,6 @@ import java.util.*
  * All events are saved as an key, value pair. In which the key is an integer value and the value is a EventDate
  */
 
-//todo закомментил все тк. пока что отложил сохранение в локальный сторейдж
 object IOHandler {
 
     object SharedPrefKeys {

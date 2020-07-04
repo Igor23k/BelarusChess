@@ -43,6 +43,7 @@ open class UserDTO : Serializable {
         this.places = userDTO.places
         this.image = userDTO.image
     }
+
     constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?,
                 email: String?, phoneNumber: String?, password: String?,
                 beCoach: Boolean, beOrganizer: Boolean, beAdmin: Boolean, beMale: Boolean?, rank: RankDTO?,
