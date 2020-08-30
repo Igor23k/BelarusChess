@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Base64
+import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
@@ -53,104 +54,13 @@ class Util {
         val REGISTRATION_REQUEST = 6
         val TOURNAMENT_REQUEST = 7
 
-
-        val testTournament: TournamentDTO
-            get() {
-                val tournamentDTO = TournamentDTO()
-                tournamentDTO.place = testPlace
-                tournamentDTO.referee = testUser
-                tournamentDTO.countPlayersInTeam = 1
-                tournamentDTO.toursCount = 9
-                tournamentDTO.name = "Белая ладья - 2018"
-                tournamentDTO.fullDescription = "Положение о проведении открытого республиканского шахматного турнира памяти Ю. В.  Кулаги\n" +
-                        "\n" +
-                        "Цель турнира\n" +
-                        "\n" +
-                        "Ø Установление дружественных связей с шахматистами других регионов\n" +
-                        "Ø Повышение мастерства шахматистов\n"
-                tournamentDTO.shortDescription = "Вам тут понравится!"
-                tournamentDTO.startDate = "456789"
-                tournamentDTO.finishDate = "4567890"
-                return tournamentDTO
-            }
-
-        val testPlace: PlaceDTO
-            get() {
-                val placeDTO = PlaceDTO()
-                placeDTO.name = "Училище 28"
-                placeDTO.street = "Первомайская"
-                placeDTO.country = testCountry
-                placeDTO.building = "43"
-                placeDTO.city = "Минск"
-                placeDTO.capacity = 100
-                return placeDTO
-            }
-
-        val testCountry: CountryDTO
-            get() {
-                val countryDTO = CountryDTO()
-                countryDTO.name = "Франция"
-                countryDTO.abbreviation = "FRA"
-                return countryDTO
-            }
-
-        val testCountry2: CountryDTO
-            get() {
-                val countryDTO = CountryDTO()
-                countryDTO.name = "Франциq"
-                countryDTO.abbreviation = "FRS"
-                return countryDTO
-            }
-
-        val testRank: RankDTO
-            get() {
-                val rankDTO = RankDTO()
-                rankDTO.abbreviation = "GM"
-                rankDTO.name = "Gross"
-                return rankDTO
-            }
-
-        val testUser: UserDTO
-            get() {
-                val userDTO = UserDTO()
-                userDTO.email = "ww@dd.ek"
-                userDTO.country = testCountry2
-                userDTO.rank = testRank
-                userDTO.phoneNumber = "29373692"
-                userDTO.name = "Ihar"
-                userDTO.surname = "Kazlou"
-                userDTO.patronymic = "Sergeevich"
-                userDTO.password = "12345678901234567890123456789012"
-                userDTO.rating = 2000
-                userDTO.birthday = "eeeeeee"
-                userDTO.coach = null
-                return userDTO
-            }
-
-        val testUser2: UserDTO
-            get() {
-                val userDTO = UserDTO()
-                userDTO.email = "ww@dd.ek1"
-                userDTO.country = testCountry
-                userDTO.rank = testRank
-                userDTO.phoneNumber = "293736921"
-                userDTO.name = "Ihar1"
-                userDTO.surname = "Kazlou1"
-                userDTO.patronymic = "Sergeevich1"
-                userDTO.password = "12345678901234567890123456789012"
-                userDTO.rating = 2000
-                userDTO.birthday = "eeeeeee1"
-                return userDTO
-            }
-
         private var mProgressDialog: ProgressDialog? = null
 
-        //bug доставать это из резурсов (с интернационализацией).
         val genders: List<String>
             get() {
                 val genders = ArrayList<String>()
-                genders.add("Male")
-                genders.add("Female")
+                genders.add(getInternalizedMessage(Constants.KEY_GENDER_MALE))
+                genders.add(getInternalizedMessage(Constants.KEY_GENDER_FEMALE))
                 return genders
             }
 

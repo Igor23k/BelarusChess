@@ -10,26 +10,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
+import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_show_tournament_event.*
+import kotlinx.android.synthetic.main.fragment_show_tournament_event.iv_avatar
+import kotlinx.android.synthetic.main.fragment_show_world_tournament_event.*
 import org.springframework.util.StringUtils
 import java.text.DateFormat
 
-class ShowTournamentEvent : ShowEventFragment() {
+class ShowWorldTournamentEvent : ShowEventFragment() {
+
+    private var worldTournament: WorldTournamentDTO? = null
+    private val worldTournamentType = object : TypeToken<WorldTournamentDTO>() {}.type
+    private val dataSeparator = "\n"
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        worldTournament = Gson().fromJson(arguments?.getString("worldTournament"), worldTournamentType)
         (context as MainActivity).unlockAppBar()
-        return inflater.inflate(R.layout.fragment_show_tournament_event, container, false)
+        return inflater.inflate(R.layout.fragment_show_world_tournament_event, container, false)
+    }
+
+    private fun getConcatStringValueWithEnding(hardcodedText: String, valueText: String?, defaultValue: String): String {
+        if (!StringUtils.isEmpty(valueText)) {
+            return hardcodedText + valueText + defaultValue
+        }
+        return defaultValue
     }
 
     /**
@@ -38,52 +55,53 @@ class ShowTournamentEvent : ShowEventFragment() {
 
     override fun updateUI() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
-        EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
-            if (tournamentEvent is EventTournament) {
-                this.user_country_and_rank_and_rating.text = tournamentEvent.name
-                this.user_coach.visibility = TextView.VISIBLE
-                this.user_coach.text = tournamentEvent.shortDescription
 
-                var scrollRange = -1
-                (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
-                    if (scrollRange == -1) {
-                        scrollRange = appbarLayout.totalScrollRange
-                    }
-                    if (context != null) {
-                        if (scrollRange + verticalOffset == 0) {
-                            setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                        } else {
-                            setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                        }
-                    }
-                })
 
-                //only set expanded title color to white, when background is not white, background is white when no avatar image is set
-                if (tournamentEvent.imageUri != null) {
-                    (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
-                            ContextCompat.getColor(
-                                    context!!,
-                                    R.color.white
-                            )
-                    )
-                } else {
-                    (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
-                            ContextCompat.getColor(
-                                    context!!,
-                                    R.color.darkGrey
-                            )
-                    )
-                }
+        this.world_tournament_name.text = worldTournament?.name
+        this.world_tournament_category.text = worldTournament?.category?.name
+        this.world_tournament_date_start.text = worldTournament?.dateStart//todo выводить без времени
+        this.world_tournament_date_end.text = worldTournament?.dateEnd//todo выводить без времени
+        this.world_tournament_place.text = worldTournament?.place
 
-                val date: String
-                date = tournamentEvent.dateToPrettyString(DateFormat.FULL)
+        var descriptionData = getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_NUMBER_OF_PLAYERS), worldTournament?.numberOfPlayers, dataSeparator)
+        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL), worldTournament?.timeControl, dataSeparator)
+        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_DESCRIPTION), worldTournament?.timeControlDescription, dataSeparator)
+        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_DESCRIPTION), getTimeControlByType(worldTournament?.timeControlTyp), dataSeparator)//todo check it works fine
+        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_NUMBER_OF_ROUNDS), worldTournament?.numberOfPlayers, dataSeparator)
+        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_ORGANIZER), worldTournament?.organizer, dataSeparator)
+        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_ARBITER), worldTournament?.chiefArbiter, dataSeparator)
+        this.world_tournament_description_data.text = descriptionData
 
-                tv_show_birthday_years_old.text = tournamentEvent.fullDescription
+        var contactData = getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_EMAIL), worldTournament?.email, dataSeparator)
+        contactData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_WEBSITE), worldTournament?.website, dataSeparator)
+        contactData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_PHONE), worldTournament?.tel, dataSeparator)
+        this.world_tournament_contact_data.text = contactData
 
-                user_birthday.text = date
-                updateAvatarImage(tournamentEvent.imageUri)
+
+        var scrollRange = -1
+        (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
+            if (scrollRange == -1) {
+                scrollRange = appbarLayout.totalScrollRange
             }
-        }
+            if (context != null) {
+                if (scrollRange + verticalOffset == 0) {
+                    setToolbarTitle(context!!.resources.getString(R.string.app_name))
+                } else {
+                    setToolbarTitle(worldTournament?.name!!)
+                }
+            }
+        })
+
+        //only set expanded title color to white, when background is not white, background is white when no avatar image is set
+
+        (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
+                ContextCompat.getColor(
+                        context!!,
+                        R.color.darkGrey
+                )
+        )
+
+        updateAvatarImage(null)
     }
 
     override fun onDetach() {
@@ -117,6 +135,21 @@ class ShowTournamentEvent : ShowEventFragment() {
         setToolbarTitle(context!!.resources.getString(R.string.app_name))
         (context as MainActivity).collapsable_toolbar_iv.visibility = ImageView.GONE
         (context as MainActivity).lockAppbar()
+    }
+
+    private fun getTimeControlByType(type: String?): String {
+        when (type) {
+            "s" -> {
+                return Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_STANDARD_TYPE)
+            }
+            "r" -> {
+                return Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_RAPID_TYPE)
+            }
+            "b" -> {
+                return Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_BLITZ_TYPE)
+            }
+        }
+        return ""
     }
 
     /**
@@ -155,16 +188,16 @@ class ShowTournamentEvent : ShowEventFragment() {
                 //      }
 
                 //next tournament
-               /* shareBirthdayMsg += "\n" + context!!.resources.getString(
+              /*  shareBirthdayMsg += "\n" + context!!.resources.getString(
                         R.string.share_tournament_date_next,
                         EventDate.parseDateToString(
                                 EventDate.dateToCurrentTimeContext(tournament.eventDate),
                                 DateFormat.FULL
                         )
-                )*/
+                )
 
                 val daysUntil = tournament.getDaysUntil()
-             /*   shareBirthdayMsg += if (daysUntil == 0) {
+                shareBirthdayMsg += if (daysUntil == 0) {
                     //today
                     "\n" + context!!.resources.getString(
                             R.string.share_tournament_days_today
@@ -176,8 +209,8 @@ class ShowTournamentEvent : ShowEventFragment() {
                             daysUntil,
                             daysUntil
                     )
-                }*/
-
+                }
+*/
                 // if (tournament.isYearGiven) {
                 //person will be years old
                 shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
@@ -199,26 +232,7 @@ class ShowTournamentEvent : ShowEventFragment() {
         }
     }
 
-    override fun editEvent() {
-
-        val bundle = Bundle()
-        //do this in more adaptable way
-        bundle.putInt(
-                MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                eventID
-        )
-        val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
-        // add arguments to fragment
-        val newBirthdayFragment = TournamentInstanceFragment.newInstance()
-        newBirthdayFragment.arguments = bundle
-        ft.replace(
-                R.id.fragment_placeholder,
-                newBirthdayFragment,
-                TournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
-        )
-        ft.addToBackStack(null)
-        ft.commit()
-        closeExpandableToolbar()
+    override fun editEvent() {//todo удалить кнопку
     }
 
     companion object {
@@ -226,8 +240,8 @@ class ShowTournamentEvent : ShowEventFragment() {
          * newInstance returns a new instance of EventTournament
          */
         @JvmStatic
-        fun newInstance(): ShowTournamentEvent {
-            return ShowTournamentEvent()
+        fun newInstance(): ShowWorldTournamentEvent {
+            return ShowWorldTournamentEvent()
         }
     }
 }

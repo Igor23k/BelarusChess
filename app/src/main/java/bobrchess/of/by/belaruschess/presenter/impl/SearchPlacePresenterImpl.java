@@ -90,5 +90,5 @@ public class SearchPlacePresenterImpl extends MvpPresenter<SearchPlaceContractVi
     @Override
     public boolean isConnected(int status) {
         return Util.Companion.isConnected(status);
-    }//todo remove
+    }
 }

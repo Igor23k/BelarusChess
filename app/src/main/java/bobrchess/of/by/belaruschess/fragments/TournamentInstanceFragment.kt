@@ -280,8 +280,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                         alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_tournament))
                         alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_tournament))
 
-                        val contextTemp = context
-
                         // Set a positive button and its click listener on alert dialog
                         alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             addTournamentPresenter?.removeTournament(eventID.toLong())
@@ -504,7 +502,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         val dpd =
                 DatePickerDialog(
                         context!!,
-                        DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
+                        DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
                             // Display Selected startDate in Toast
                             c.set(Calendar.YEAR, year_)
                             c.set(Calendar.MONTH, monthOfYear)
@@ -546,7 +544,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         val dpd =
                 DatePickerDialog(
                         context!!,
-                        DatePickerDialog.OnDateSetListener { view, year_, monthOfYear, dayOfMonth ->
+                        DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
                             // Display Selected startDate in Toast
                             c.set(Calendar.YEAR, year_)
                             c.set(Calendar.MONTH, monthOfYear)
@@ -566,14 +564,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                         day
                 )
         dpd.show()
-    }
-
-    private fun showFutureDateErrorToast(context: Context) {
-        Toast.makeText(
-                context,
-                context.resources.getText(R.string.future_tournament_error),
-                Toast.LENGTH_LONG
-        ).show()
     }
 
     private fun validateAndSetEditTextDateInput(dateInput: String): Boolean {
@@ -678,10 +668,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     override fun dialogConfirmButtonClicked() {
-
-    }
-
-    fun createTournamentEvent(tournamentDTO: TournamentDTO?) {
 
     }
 

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@color/darkGrey"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_birthday_person"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/world_tournament_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
+            tools:text="3nd FIDE World Cadets Rapid Chess Championship U10" />
+
+        <TextView
+            android:id="@+id/world_tournament_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/world_tournament_name"
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_name"
+            tools:text="European Event" />
+
+        <TextView
+            android:id="@+id/world_tournament_date_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/world_tournament_category"
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_category"
+            tools:text="Date start: 2019-08-15 00:00:00" />
+
+        <TextView
+            android:id="@+id/world_tournament_date_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/world_tournament_date_start"
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_date_start"
+            tools:text="Date end: 2019-08-15 00:00:00" />
+
+        <TextView
+            android:id="@+id/world_tournament_place"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/world_tournament_date_end"
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_date_end"
+            tools:text="Minsk, Belarus" />
+
+
+        <TextView
+            android:id="@+id/world_tournament_description_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/world_tournament_place"
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_place"
+            tools:text="Number of players: 9.\nTime control: something.\nTime control description: 10 minutes for game with 10 seconds increment from move 1.\nNum round: 9.\nOrganizer: Tamkovich, Maria.\nArbiter: Nikolopoulos, Panagiotis." />
+
+        <TextView
+            android:id="@+id/world_tournament_contact_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/world_tournament_description_data"
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_description_data"
+            tools:text="Email: igorkozlov23@bk.ru.\nWebsite: bobrchess.of.by.\nTel: +375 (29) 179-07-46" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</android.widget.ScrollView>

@@ -37,6 +37,8 @@ class WorldTournamentDTO : Serializable {
     var type: String? = null
     @SerializedName("time_control")
     var timeControl: String? = null
+    @SerializedName("timecontrol_description")
+    var timeControlDescription: String? = null
     var zone: String? = null
     var address: String? = null
     @SerializedName("address_coordinates")
@@ -46,18 +48,18 @@ class WorldTournamentDTO : Serializable {
     @SerializedName("event_type")
     var eventType: String? = null
 
-    constructor(id: Int?, name: String?, preview: String?, category: CategoryDTO?, date_start: String?, date_end: String?, time_control_typ: String?, num_round: String?, organizer: String?, chief_arbiter: String?, chief_organizer: String?, crosstable: String?, arbiters: String?, email: String?, fax: String?, tel: String?, pfund: String?, darbiter: String?, place: String?, city: String?, country: String?, number_of_players: String?, type: String?, time_control: String?, zone: String?, address: String?, address_coordinates: String?, remarks: String?, website: String?, event_type: String?) {
+    constructor(id: Int?, name: String?, preview: String?, category: CategoryDTO?, dateStart: String?, dateEnd: String?, timeControlTyp: String?, numRound: String?, organizer: String?, chiefArbiter: String?, chiefOrganizer: String?, crosstable: String?, arbiters: String?, email: String?, fax: String?, tel: String?, pfund: String?, darbiter: String?, place: String?, city: String?, country: String?, numberOfPlayers: String?, type: String?, timeControl: String?, timeControlDescription: String?, zone: String?, address: String?, addressCoordinates: String?, remarks: String?, website: String?, eventType: String?) {
         this.id = id
         this.name = name
         this.preview = preview
         this.category = category
-        this.dateStart = date_start
-        this.dateEnd = date_end
-        this.timeControlTyp = time_control_typ
-        this.numRound = num_round
+        this.dateStart = dateStart
+        this.dateEnd = dateEnd
+        this.timeControlTyp = timeControlTyp
+        this.numRound = numRound
         this.organizer = organizer
-        this.chiefArbiter = chief_arbiter
-        this.chiefOrganizer = chief_organizer
+        this.chiefArbiter = chiefArbiter
+        this.chiefOrganizer = chiefOrganizer
         this.crosstable = crosstable
         this.arbiters = arbiters
         this.email = email
@@ -68,15 +70,16 @@ class WorldTournamentDTO : Serializable {
         this.place = place
         this.city = city
         this.country = country
-        this.numberOfPlayers = number_of_players
+        this.numberOfPlayers = numberOfPlayers
         this.type = type
-        this.timeControl = time_control
+        this.timeControl = timeControl
+        this.timeControlDescription = timeControlDescription
         this.zone = zone
         this.address = address
-        this.addressCoordinates = address_coordinates
+        this.addressCoordinates = addressCoordinates
         this.remarks = remarks
         this.website = website
-        this.eventType = event_type
+        this.eventType = eventType
     }
 
     constructor()

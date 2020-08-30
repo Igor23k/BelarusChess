@@ -19,8 +19,6 @@ class UserInfoConnection {
             override fun onResponse(call: Call<List<TournamentResultDTO>>, response: Response<List<TournamentResultDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
-                        var a = response.body()
-                        var b = null;
                         callBack!!.onResponse(response.body())
                     } else {
                         callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))

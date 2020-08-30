@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.network.connection.external
 
 import bobrchess.of.by.belaruschess.App
-import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerWithImageDTO
 import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayersDTO
 import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentsDataDTO
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackFideApi
@@ -18,7 +17,7 @@ class FideApiConnection {
         App.getExternalFideServerApi().searchTopPlayers(text).enqueue(object : Callback<TopPlayersDTO> {
             override fun onResponse(call: Call<TopPlayersDTO>, response: Response<TopPlayersDTO>) {
                 if (response.isSuccessful) {
-                    // callBack!!.onResponse(response.body())
+                    callBack!!.onResponse(response.body())
                 } else {
                     //todo тут нужно блок экрана снимать и тд
                 }
@@ -30,7 +29,7 @@ class FideApiConnection {
         })
     }
 
-    fun getTopPlayersRating() {
+    fun getTopPlayers() {
         App.getExternalFideServerApi().topPlayersRating.enqueue(object : Callback<TopPlayersDTO> {
             override fun onResponse(call: Call<TopPlayersDTO>, response: Response<TopPlayersDTO>) {
                 if (response.isSuccessful) {
@@ -46,24 +45,8 @@ class FideApiConnection {
         })
     }
 
-    fun getTopPlayerWithImage(id: Int) {
-        App.getExternalFideServerApi().topPlayerWithImage(id).enqueue(object : Callback<TopPlayerWithImageDTO> {
-            override fun onResponse(call: Call<TopPlayerWithImageDTO>, response: Response<TopPlayerWithImageDTO>) {
-                if (response.isSuccessful) {
-                    // callBack!!.onResponse(response.body())
-                } else {
-                    //todo тут нужно блок экрана снимать и тд
-                }
-            }
-
-            override fun onFailure(call: Call<TopPlayerWithImageDTO>, t: Throwable) {
-                callBack!!.onFailure(Util.buildOnFailureResponse())
-            }
-        })
-    }
-
-    fun getTournaments(id: Int, worldChampion: Boolean, closestEvents: Boolean, category: String, dateStartMonth: Int) {
-        App.getExternalFideServerApi().events(id, worldChampion, closestEvents, category, dateStartMonth).enqueue(object : Callback<WorldTournamentsDataDTO> {
+    fun getWorldTournaments(id: Int, worldChampion: Boolean, closestEvents: Boolean, category: String, dateStartMonth: Int) {
+        App.getExternalFideServerApi().worldTournaments(id, worldChampion, closestEvents, category, dateStartMonth).enqueue(object : Callback<WorldTournamentsDataDTO> {
             override fun onResponse(call: Call<WorldTournamentsDataDTO>, response: Response<WorldTournamentsDataDTO>) {
                 if (response.isSuccessful) {
                     callBack!!.onResponse(response.body())

@@ -5,6 +5,8 @@
     <string name="following_hint">Подписан</string>
     <string name="friends_hint">Друзей:</string>
     <string name="coach_hint">Тренер:</string>
+    <string name="gender_male">Мужской:</string>
+    <string name="gender_female">Женский:</string>
 
     <string name="search_user_query_hint">Введите имя пользователя</string>
     <string name="search_query_hint">Введите текст</string>
@@ -20,7 +22,6 @@
     <string name="ion_search"></string>
 
     <string name="default_text">Дефолтный текст</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Настройки</string>
     <string name="action_games">Игры</string>
     <string name="action_table">Таблица</string>
@@ -47,7 +48,7 @@
     <string name="tournamentFullDescription">Полное описание турнира</string>
     <string name="placeCity">Город места проведения</string>
     <string name="placeCityHint">Город</string>
-    <string name="placeStreet">Учица места проведения</string>
+    <string name="placeStreet">Улица места проведения</string>
     <string name="placeStreetHint">Улица</string>
     <string name="placeBuildingHint">Здание</string>
     <string name="placeCapacityHint">Вместимость</string>
@@ -67,7 +68,7 @@
     <string name="incorrect_capacity">Неверная вместимость! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_data">Неверные данные! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_tournament_name">Неверное имя турнира! Пожалуйста, попробуйте еще раз.</string>
-    <string name="incorrect_password">Неверный пароль! Подалуйста, введите более 4 символов.</string>
+    <string name="incorrect_password">Неверный пароль! Пожалуйста, введите более 4 символов.</string>
     <string name="nick">Ник</string>
     <string name="description">Описание</string>
     <string name="location">Местоположение</string>
@@ -87,17 +88,20 @@
     <string name="chooseReferee">Выберите судью</string>
     <string name="chooseCountry">Выберите страну</string>
     <string name="choosePlace">Выберите место</string>
+    <string name="bornOnYear">Год рождения: %1$s</string>
+    <string name="standardRating">Стандартный рейтинг: %1$s</string>
+    <string name="rapidRating">Рапид рейтинг: %1$s</string>
+    <string name="blitzRating">Блиц рейтинг: %1$s</string>
     <string name="retry">Повторить</string>
     <string name="incorrectEmailOrPassword">Неверная почта или пароль!</string>
     <string name="serverIsUnavailable">Сервер недоступен</string>
     <string name="serverIsUnavailableMessage">Извините, мы не готовы прямо сейчас. Пожалуйста, попробуйте позже</string>
     <string name="noInternetConnection">Соединение отсутствует</string>
-    <string name="noInternetConnectionMessage">Пожалуйста, проверьте достук к интернету и попробуйте снова"</string>
-    <string name="incorrectData">Неверные данные! Попробуйсте снова"</string>
+    <string name="noInternetConnectionMessage">Пожалуйста, проверьте доступ к интернету и попробуйте снова</string>
+    <string name="incorrectData">Неверные данные! Попробуйте снова</string>
 
     <string name="tournamentShortDescriptionHint">Краткое описание</string>
 
-    <string name="title_activity_main">Range Pickerчтооооооооо-то</string>
     <string name="time">Время</string>
     <string name="date">Дата</string>
     <string name="tournament">Турнир</string>
@@ -129,7 +133,6 @@
     <string name="share">Поделиться</string>
     <string name="abort">Отменить</string>
     <string name="today">Сегодня</string>
-    <string name="noEntries">Ещё нет ни одной записи :(</string>
     <string name="noEventsFound">Записей не найдено :(</string>
     <string name="necessary">(необходимо)</string>
 
@@ -186,7 +189,6 @@
     <string name="toolbar_title_add_user">Добавить пользователя</string>
     <string name="toolbar_title_add_place">Добавить место проведения</string>
     <string name="toolbar_title_edit_place">Редактировать место проведения</string>
-    <string name="future_tournament_error">Вы не можете добавлять будущие дни рождения!\nПожалуйста, добавляйте только тех, кто уже родился.</string>
     <string name="empty_fields_error_tournament">Вы должны заполнить поля Имя и Дата!</string>
     <string name="tournament_added_notification">Турнир добавлен</string>
     <string name="tournament_changed_notification">Турнир изменён</string>
@@ -210,12 +212,6 @@
     <!-- fragment show tournament -->
     <string name="intent_share_chooser_title">Поделиться записью</string>
     <string name="person_show_date">Дата рождения: %1$s</string>
-    <string name="person_days_until_today">День рождения у %1$s сегодня!</string>
-    <plurals name="person_days_until">
-        <item quantity="one">Следующий день рождения через %2$d день - %3$s.</item>
-        <item quantity="few">Следующий день рождения через %2$d дня - %3$s.</item>
-        <item quantity="many">Следующий день рождения через %2$d дней - %3$s.\nЭто через %4$s недель.</item>
-    </plurals>
 
     <plurals name="person_years_old">
         <item quantity="one">Исполнится %2$d год</item>
@@ -226,132 +222,12 @@
     <!-- sharing strings place -->
     <string name="share_place_name">%1$s</string>
     <string name="share_place_date_start">Born on: %1$s</string>
-    <string name="share_place_date_next">Next place: %1$s</string>
-    <string name="share_place_days_today">That is today!</string>
-    <plurals name="share_place_days">
-        <item quantity="one">Исполнится %2$d год</item>
-        <item quantity="few">Исполнится %2$d года</item>
-        <item quantity="many">Исполнится лет: %2$d</item>
-    </plurals>
 
     <!-- sharing strings tournament -->
     <string name="share_tournament_name">%1$s</string>
     <string name="share_tournament_date_start">Дата рождения: %1$s</string>
-    <string name="share_tournament_date_next">Следующий день рождения: %1$s</string>
-    <string name="share_tournament_days_today">Это сегодня!</string>
-    <plurals name="share_tournament_days">
-        <item quantity="one">В %1$d день</item>
-        <item quantity="few">Через %1$d дня</item>
-        <item quantity="many">Через %1$d дней</item>
-    </plurals>
-
     <!-- tournament event notifications -->
     <string name="notification_title_tournament">%1$s</string>
-    <string name="notification_content_tournament_future">День рождения %1$ s  в %2$d дней.</string>
-    <string name="notification_content_tournament_tomorrow">завтра %1$ s день рождения!</string>
-    <string name="notification_content_tournament_today">СЕГОДНЯ %1$ s День рождения!</string>
-    <string name="notification_content_tournament_years_old">%1$s становится %2$d лет</string>
-
-    <!--- ANNUAL EVENT -->
-    <!-- annual event view -->
-    <!-- fragment add new annual event -->
-    <string name="toolbar_title_add_annual_event">Новое ежегодное событие</string>
-    <string name="toolbar_title_edit_annual_event">Изменить событие</string>
-    <string name="future_annual_event_error">Вы не можете добавлять будущие ежегодные события!</string>
-    <string name="empty_fields_error_annual_event">Пожалуйста, заполните все поля: имя, дата!</string>
-    <string name="annual_event_added_notification">%1$s добавлено</string>
-    <string name="annual_event_changed_notification">%1$s изменено</string>
-    <string name="annual_event_deleted_notification">%1$s удалено</string>
-    <string name="edit_annual_event_name_hint">Название события</string>
-    <string name="btn_annual_event_delete">Удалить ежегодное событие</string>
-
-    <!-- alert dialog delete annual event -->
-    <string name="alert_dialog_body_message_annual_event">Вы уверены, что хотите удалить это ежегодное событие?</string>
-
-    <!-- fragment show annual event -->
-    <string name="annual_event_start_date">Впервые:\n%1$s</string>
-    <string name="annual_event_show_date_today">%1$s СЕГОДНЯ!</string>
-    <string name="annual_event_show_date_tomorrow">В следующий раз завтра!\n(%1$s)</string>
-    <plurals name="annual_event_show_date">
-        <item quantity="one">В следующий раз через %1$d день\n(%2$s)</item>
-        <item quantity="few">В следующий раз:\n%2$s\n\nОсталось дней: %1$d</item>
-        <item quantity="many">В следующий раз:\n%2$s\n\nОсталось дней: %1$d\nЭто через %3$s недель.</item>
-    </plurals>
-    <plurals name="annual_event_years">
-        <item quantity="one">Идёт %1$d-ый год с начала отсчёта</item>
-        <item quantity="few">Идёт %1$d-й год с начала отсчёта</item>
-        <item quantity="many">Идёт %1$d-й год с начала отсчёта</item>
-    </plurals>
-
-    <!-- sharing strings annual event -->
-    <string name="share_annual_event_name">%1$s</string>
-    <string name="share_annual_event_date_next">В следующий раз: %1$s</string>
-    <string name="share_annual_event_date_start">Впервые: %1$s</string>
-    <plurals name="share_annual_event_days">
-        <item quantity="one">Через %1$d день</item>
-        <item quantity="few">Через %1$d дня</item>
-        <item quantity="many">Через %1$d дней</item>
-    </plurals>
-    <plurals name="share_annual_event_year">
-        <item quantity="one">Идёт %1$d-ый год с начала отсчёта</item>
-        <item quantity="few">Идёт %1$d-й год с начала отсчёта</item>
-        <item quantity="many">Идёт %1$d-й год с начала отсчёта</item>
-    </plurals>
-
-    <!-- annual_event notifications -->
-    <string name="notification_title_annual_event">%1$s</string>
-    <string name="notification_content_annual_event_future">До %1$s осталось дней: %2$d</string>
-    <string name="notification_content_annual_event_tomorrow">%1$s завтра!</string>
-    <string name="notification_content_annual_event_today">%1$s СЕГОДНЯ!</string>
-
-    <!-- ONE TIME EVENT -->
-    <!-- fragment add new  one time event -->
-    <string name="toolbar_title_add_one_time_event">Новое разовое событие</string>
-    <string name="toolbar_title_edit_one_time_event">Изменить событие</string>
-    <string name="error_past_one_time_event_error">Вы можете добавить только одноразовые события, которые еще не произошли или находятся в будущем!</string>
-    <string name="one_time_event_added_notification">%1$s добавлено</string>
-    <string name="one_time_event_changed_notification">%1$s изменено</string>
-    <string name="one_time_event_deleted_notification">%1$s удалено</string>
-    <string name="edit_one_time_event_name_hint">Название события</string>
-    <string name="btn_one_time_event_delete">Удалить разовое событие</string>
-
-    <!-- alert dialog delete one_time event -->
-    <string name="alert_dialog_body_message_one_time_event">Вы уверены, что хотите удалить это разовое событие?</string>
-
-    <!-- fragment show one time event -->
-    <string name="one_time_event_today">СЕГОДНЯ!</string>
-    <string name="one_time_event_tomorrow">Завтра!</string>
-    <plurals name="one_time_event_show_date">
-        <item quantity="one">Через %1$d день (%2$s).</item>
-        <item quantity="few">Через %1$d дня (%2$s).</item>
-        <item quantity="many">Когда:\n%2$s\n\nОсталось дней: %1$d.\nЭто через %3$s недель.</item>
-    </plurals>
-    <plurals name="one_time_event_years">
-        <item quantity="one">Через %1$d год</item>
-        <item quantity="few">Через %1$d года</item>
-        <item quantity="many">Осталось лет: %1$d</item>
-    </plurals>
-
-    <!-- sharing strings one_time event -->
-    <string name="share_one_time_event_name">%1$s</string>
-    <string name="share_one_time_event_date_next">в %1$s</string>
-    <string name="share_one_time_event_days_today">Это сегодня!</string>
-    <plurals name="share_one_time_event_days">
-        <item quantity="one">Через %1$d день</item>
-        <item quantity="few">Через %1$d дня</item>
-        <item quantity="many">Осталось дней: %1$d</item>
-    </plurals>
-    <plurals name="share_one_time_event_year">
-        <item quantity="one">Через %1$d год</item>
-        <item quantity="few">Через %1$d года</item>
-        <item quantity="many">Осталось лет: %1$d</item>
-    </plurals>
-
-    <!-- one-time event notifications -->
-    <string name="notification_title_one_time_event">%1$s</string>
-    <string name="notification_content_one_time_event_future">До %1$s осталось дней: %2$d</string>
-    <string name="notification_content_one_time_event_tomorrow">%1$s завтра!</string>
-    <string name="notification_content_one_time_event_today">%1$s СЕГОДНЯ!</string>
 
     <!-- settings fragment -->
     <string name="tv_notification_interval_month">За месяц</string>
@@ -442,4 +318,19 @@
     <string name="setting_use_calendarview">Используйте просмотр календаря для даты</string>
 
 
+    <string name="ok_label">OK</string>
+    <string name="tournament_location_dialog_title">Выберите расположение</string>
+    <string name="dismiss_label">Отменить</string>
+    <string name="clear_all_label">Очистить</string>
+
+    <string-array name="world_tournaments_types_items">
+        <item>Мировые турниры</item>
+        <item>Президентский совет / Конгресс</item>
+        <item>Другие официальные события</item>
+        <item>Европейские турниры</item>
+        <item>Американские турниры</item>
+        <item>Азиатские турниры</item>
+        <item>Африканские турниры</item>
+        <item>Мероприятия Аффилированных Ассоциаций</item>
+    </string-array>
 </resources>

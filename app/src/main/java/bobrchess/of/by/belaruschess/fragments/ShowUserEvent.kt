@@ -23,6 +23,12 @@ import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.EventTournamentResult
 import bobrchess.of.by.belaruschess.model.EventUser
+import bobrchess.of.by.belaruschess.util.Constants.Companion.BELARUS_LOCALE
+import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
+import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
+import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
+import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
@@ -34,18 +40,11 @@ import org.springframework.util.StringUtils
 import java.text.DateFormat
 import java.util.*
 
-/**
- * ShowUserEvent is a fragment to show all known data from a instance of EventUser
- *
- * TODO:
- * - add tiny animation for opening this fragment
- */
 class ShowUserEvent : ShowEventFragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: EventAdapter
-    private var isFABOpen = false
 
     private var ranks: List<RankDTO>? = null
     private var places: List<PlaceDTO>? = null
@@ -64,7 +63,7 @@ class ShowUserEvent : ShowEventFragment() {
         EventHandler.clearData()
         var id = 0
         userTournamentsResult?.forEach {
-            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, BELARUS_LOCALE), it.name!!)
             event.position = it.position
             event.points = it.points
             event.imageUri = it.image
@@ -83,11 +82,11 @@ class ShowUserEvent : ShowEventFragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        places = Gson().fromJson(arguments?.getString("places"), placeItemsListType)
-        ranks = Gson().fromJson(arguments?.getString("ranks"), rankItemsListType)
-        countries = Gson().fromJson(arguments?.getString("countries"), countryItemsListType)
-        userTournamentsResult = Gson().fromJson(arguments?.getString("tournamentsResult"), userTournamentsResultItemsListType)//todo удалить
-        coach = Gson().fromJson(arguments?.getString("coach"), userItemsListType)
+        places = Gson().fromJson(arguments?.getString(PLACES), placeItemsListType)
+        ranks = Gson().fromJson(arguments?.getString(RANKS), rankItemsListType)
+        countries = Gson().fromJson(arguments?.getString(COUNTRIES), countryItemsListType)
+        userTournamentsResult = Gson().fromJson(arguments?.getString(TOURNAMENTS_RESULT), userTournamentsResultItemsListType)//todo удалить
+        coach = Gson().fromJson(arguments?.getString(COACH), userItemsListType)
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_user_event, container, false)
     }
@@ -100,7 +99,7 @@ class ShowUserEvent : ShowEventFragment() {
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null, userTournamentsResult)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null)
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerViewTournamentsResults).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -141,7 +140,10 @@ class ShowUserEvent : ShowEventFragment() {
                 if (StringUtils.isEmpty(rank)) {
                     rank = resources.getString(R.string.rank_absence)
                 }
-                val country = userEvent.countryId?.minus(1)?.let { countries?.get(it)?.name }
+                var country = userEvent.countryId?.minus(1)?.let { countries?.get(it)?.name }
+                if (StringUtils.isEmpty(country)) {
+                    country = resources.getString(R.string.country_absence)
+                }
 
                 this.user_country_and_rank_and_rating.text = "$country, $rank, ${userEvent.rating}"
 
@@ -264,7 +266,7 @@ class ShowUserEvent : ShowEventFragment() {
                         EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
                 )
                 //      }
-
+/*
                 //next birthday
                 shareBirthdayMsg += "\n" + context!!.resources.getString(
                         R.string.share_tournament_date_next,
@@ -287,7 +289,7 @@ class ShowUserEvent : ShowEventFragment() {
                             daysUntil,
                             daysUntil
                     )
-                }
+                }*/
 
                 // if (birthday.isYearGiven) {
                 //person will be years old

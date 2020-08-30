@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.model
 
 import android.util.Log
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -73,7 +74,7 @@ class OneTimeEvent(_eventdate: Date?, var name: String) : EventDate(_eventdate) 
                 "${IOHandler.tournamentDivider_properties}${Identifier.Date}${IOHandler.tournamentDivider_values}${parseDateToString(
                     this.eventDate,
                     DateFormat.DEFAULT,
-                    Locale.GERMAN
+                    Constants.BELARUS_LOCALE
                 )}" +
                 getStringFromValue(
                         Identifier.Note,

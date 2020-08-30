@@ -148,8 +148,6 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
                         alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_place))
                         alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_place))
 
-                        val contextTemp = context
-
                         // Set a positive button and its click listener on alert dialog
                         alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             addPlacePresenter!!.removePlace(eventID)
@@ -353,10 +351,6 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
     }
 
     override fun dialogConfirmButtonClicked() {
-
-    }
-
-    fun createPlaceEvent(placeDTO: PlaceDTO?) {
 
     }
 

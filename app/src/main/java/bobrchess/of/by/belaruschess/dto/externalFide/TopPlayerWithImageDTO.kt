@@ -1,35 +1,40 @@
 package bobrchess.of.by.belaruschess.dto.externalFide
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 class TopPlayerWithImageDTO : Serializable {
 
-    //todo rename fields
-    var id_number: String? = null
+    @SerializedName("id_number")
+    var idNumber: String? = null
     var name: String? = null
     var country: String? = null
     var sex: String? = null
     var birthyear: String? = null
     var title: String? = null
-    var standard_rating: String? = null
-    var blitz_rating: String? = null
-    var rapid_rating: String? = null
+    @SerializedName("standard_rating")
+    var standardRating: String? = null
+    @SerializedName("blitz_rating")
+    var blitzRating: String? = null
+    @SerializedName("rapid_rating")
+    var rapidRating: String? = null
     var score: String? = null
-    //var image_file: String? = null
+    @SerializedName("image_file")
+    var imageFile: TopPlayerImageFile? = null
 
-    constructor(id_number: String?, name: String?, country: String?, sex: String?, birthyear: String?, title: String?, standard_rating: String?, blitz_rating: String?, rapid_rating: String?, score: String?) {
-        this.id_number = id_number
+    constructor(id_number: String?, name: String?, country: String?, sex: String?, birthyear: String?, title: String?, standard_rating: String?, blitz_rating: String?, rapid_rating: String?, score: String?, image_file: TopPlayerImageFile?) {
+        this.idNumber = id_number
         this.name = name
         this.country = country
         this.sex = sex
         this.birthyear = birthyear
         this.title = title
-        this.standard_rating = standard_rating
-        this.blitz_rating = blitz_rating
-        this.rapid_rating = rapid_rating
+        this.standardRating = standard_rating
+        this.blitzRating = blitz_rating
+        this.rapidRating = rapid_rating
         this.score = score
+        this.imageFile = image_file
     }
 
     constructor() {}
-
 }

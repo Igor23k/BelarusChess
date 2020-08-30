@@ -14,6 +14,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
@@ -50,7 +52,6 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     private ScrollView view;
     private ProgressDialog progressDialog;
     private boolean tokenAuthFailed = false;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,15 +96,6 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         });
     }
-
-   /* public void alertDialogOnClick(AlertDialog dialog) {/todo проверить что норм тут все работает
-        if (connectivityStatus != Util.Companion.getTYPE_NOT_CONNECTED()) {
-            dialog.dismiss();
-            if (!tokenAuthFailed) {
-                tokenAuthPresenter.tokenAuthorization();
-            }
-        }
-    }*/
 
     @Override
     public void dialogConfirmButtonClicked() {

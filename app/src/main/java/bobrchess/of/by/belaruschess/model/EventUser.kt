@@ -1,6 +1,7 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 
@@ -87,7 +88,7 @@ class EventUser(
                 "${Identifier.Birthday}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
-                        Locale.GERMAN
+                        Constants.BELARUS_LOCALE
                 )}${IOHandler.tournamentDivider_properties}" +
                 getStringFromValue(Identifier.Surname, this.surname) +
                 getStringFromValue(Identifier.Patronymic, this.patronymic) +

@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollViewRegistration"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/scrollViewRegistration"
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:orientation="vertical"
         android:paddingLeft="24dp"
+        android:paddingTop="56dp"
         android:paddingRight="24dp">
 
-        <ImageView android:src="@drawable/logo5"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/logo" />
+            android:layout_marginBottom="24dp"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/logo5" />
 
         <!-- Name Label -->
         <android.support.design.widget.TextInputLayout
@@ -26,11 +27,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_name_input"
+
+            <EditText
+                android:id="@+id/e_name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/userName"/>
+                android:hint="@string/userName"
+                android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- ShortDescription Label -->
@@ -39,11 +42,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_surname_input"
+
+            <EditText
+                android:id="@+id/e_surname_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/userSurname"/>
+                android:hint="@string/userSurname"
+                android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Patronymic Label -->
@@ -52,11 +57,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_patronymic_input"
+
+            <EditText
+                android:id="@+id/e_patronymic_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/userPatronymic"/>
+                android:hint="@string/userPatronymic"
+                android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Rating Label -->
@@ -65,11 +72,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_rating_input"
+
+            <EditText
+                android:id="@+id/e_rating_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/userRating"/>
+                android:hint="@string/userRating"
+                android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Email Label -->
@@ -78,11 +87,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_email_input"
+
+            <EditText
+                android:id="@+id/e_email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/email"/>
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
         <Spinner
@@ -113,12 +124,12 @@
             android:backgroundTint="#d11f08"
             android:padding="5dp" />
 
-            <ImageView
-                android:id="@+id/i_calendar_birthday"
-                android:src="@drawable/ic_calendar_black_48dp"
-                android:layout_marginTop="@dimen/ten_dp"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+        <ImageView
+            android:id="@+id/i_calendar_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:src="@drawable/ic_calendar_black_48dp" />
 
         <!-- mobile number -->
         <android.support.design.widget.TextInputLayout
@@ -126,11 +137,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_number_input"
+
+            <EditText
+                android:id="@+id/e_number_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/phoneNumber" />
+                android:hint="@string/phoneNumber"
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
@@ -140,12 +153,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+
             <EditText
                 android:id="@+id/e_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/password"/>
+                android:hint="@string/password"
+                android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Re-enter Label -->
@@ -154,11 +168,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/e_reEnterPassword_input"
+
+            <EditText
+                android:id="@+id/e_reEnterPassword_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/renterPassword"/>
+                android:hint="@string/renterPassword"
+                android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
@@ -169,15 +185,16 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="@string/createAccount"/>
+            android:text="@string/createAccount" />
 
-        <TextView android:id="@+id/t_link_authorization"
+        <TextView
+            android:id="@+id/t_link_authorization"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="@string/isMember"
             android:gravity="center"
-            android:textSize="16sp"/>
+            android:text="@string/isMember"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </ScrollView>

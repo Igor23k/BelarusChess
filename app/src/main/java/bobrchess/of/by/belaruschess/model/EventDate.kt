@@ -1,6 +1,7 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.util.Constants
 import org.springframework.util.StringUtils
 import java.math.RoundingMode
 import java.text.DateFormat
@@ -55,12 +56,12 @@ open class EventDate : Comparable<EventDate> {
 
         return if (calL.time == calR.time) {
             // when equal, check if the compared one is a month divider, then rank it lower by returning 1
-            if (other is MonthDivider) {
+            if (other is Divider) {
                 return 1
             }
 
             // when equal, check if this one is a month divider, if that is the case, rank it lower by returning -1
-            if (this is MonthDivider) {
+            if (this is Divider) {
                 return -1
             }
 
@@ -106,7 +107,7 @@ open class EventDate : Comparable<EventDate> {
                 Identifier.Date, parseDateToString(
                 this.eventDate,
                 DateFormat.DEFAULT,
-                Locale.GERMAN
+                Constants.BELARUS_LOCALE
         )
         )}"
     }

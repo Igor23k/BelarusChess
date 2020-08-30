@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.handler
 
 import android.content.Context
-import android.net.Uri
 import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_event_list.*
@@ -43,7 +42,7 @@ object EventHandler {
 
     ) {
 
-        if (event !is MonthDivider) {
+        if (event !is Divider) {
             val cal = Calendar.getInstance()
             cal.time = event.eventDate
             cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -87,7 +86,7 @@ object EventHandler {
         }
 
         //set hour of day from all other events except MonthDivider to 12h (month divider is at 0h), so when sorting month divider is always at first
-        if (event !is MonthDivider && addNewNotification) {
+        if (event !is Divider && addNewNotification) {
             NotificationHandler.scheduleNotification(context, event)
         }
 
@@ -120,7 +119,7 @@ object EventHandler {
         getEventToEventIndex(ID)?.let { oldEvent ->
             newEvent.eventID = ID
             //set hour of day from all other events except monthdivider to 12h (month divider is at 0h), so when sorting month divider is always at first
-            if (newEvent !is MonthDivider) {
+            if (newEvent !is Divider) {
                 val cal = Calendar.getInstance()
                 cal.time = newEvent.eventDate
                 cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -135,19 +134,9 @@ object EventHandler {
 
             if (newEvent is EventTournament) {
                 if (newEvent.imageUri != null) {
-                    val newEventImageUri = newEvent.imageUri
                     //remove old drawable if one exists
                     if ((oldEvent as EventTournament).imageUri != null) {
-                        //BitmapHandler.removeBitmap(oldEvent.eventID, context) удаление локально, убрал пока что
                     }
-                    //force BitmapHandler to load new avatar image from gallery, in case there is already an existant bitmap
-                  /*  BitmapHandler.addDrawable(
-                            ID,
-                            Uri.parse(newEventImageUri),
-                            context,
-                            readBitmapFromGallery = true,
-                            scale = MainActivity.convertDpToPx(context, 150f)
-                    )*///сохранение локально, убрал пока что
                 }
             }
             this.event_list = getSortedListBy()
@@ -231,7 +220,7 @@ object EventHandler {
         val tempList = event_list.toMutableList()
         tempList.forEach {
             //don't save Monthdividers bc they are created with the first start of the app
-            if (it !is MonthDivider) {
+            if (it !is Divider) {
                 //removing avatar image
                 if (it is EventTournament) {
                     eventString += it.toStringWithoutImage() + "\n"

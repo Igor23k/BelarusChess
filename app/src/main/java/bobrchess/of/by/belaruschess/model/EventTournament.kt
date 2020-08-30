@@ -1,6 +1,8 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Constants.Companion.BELARUS_LOCALE
 import java.text.DateFormat
 import java.util.*
 
@@ -71,12 +73,12 @@ class EventTournament(
                 "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
-                        Locale.GERMAN
+                        BELARUS_LOCALE
                 )}${IOHandler.tournamentDivider_properties}" +
                 "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
-                        Locale.GERMAN//todo why??? выше то же
+                        BELARUS_LOCALE
                 )}" +
                 getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
@@ -98,12 +100,12 @@ class EventTournament(
                 "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
-                        Locale.GERMAN
+                        Constants.BELARUS_LOCALE
                 )}${IOHandler.tournamentDivider_properties}" +
                 "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.finishDate!!,
                         DateFormat.DEFAULT,
-                        Locale.GERMAN//todo why??? выше то же
+                        Constants.BELARUS_LOCALE//todo why??? выше то же
                 )}" +
                 getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
                 getStringFromValue(Identifier.Id, this.id) +

@@ -15,6 +15,7 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
+import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
@@ -27,14 +28,13 @@ import org.springframework.util.StringUtils
 class ShowPlaceEvent : ShowEventFragment() {
 
     private var countries: List<CountryDTO>? = null
-
-    var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
+    private var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        countries = Gson().fromJson(arguments?.getString("countries"), countryItemsListType)
+        countries = Gson().fromJson(arguments?.getString(COUNTRIES), countryItemsListType)
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_place_event, container, false)
     }
@@ -48,7 +48,7 @@ class ShowPlaceEvent : ShowEventFragment() {
             if (place is EventPlace) {
                 var country = place.countryId?.minus(1)?.let { countries?.get(it)?.name }
                 if (StringUtils.isEmpty(country)) {
-                    country = resources.getString(R.string.rank_absence)
+                    country = resources.getString(R.string.country_absence)
                 }
                 this.place_country_and_city.text = "${country}, ${place.city}"
 

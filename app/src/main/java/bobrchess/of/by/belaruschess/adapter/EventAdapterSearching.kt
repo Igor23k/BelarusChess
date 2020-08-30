@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventTournament
-import bobrchess.of.by.belaruschess.model.MonthDivider
+import bobrchess.of.by.belaruschess.model.Divider
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
@@ -42,7 +42,7 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
         return -1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {//todo тут поиск/search?
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // create a new view
         when (viewType) {
             0 -> {
@@ -74,7 +74,7 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
             //EventMonthDividerViewHolder
             0 -> {
                 holder.itemView.tv_divider_description_month.text =
-                        (EventHandler.getList()[position] as MonthDivider).month_name
+                        (EventHandler.getList()[position] as Divider).text
             }
 
             //BirthdayEventViewHolder

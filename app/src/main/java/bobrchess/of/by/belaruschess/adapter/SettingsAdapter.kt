@@ -647,8 +647,6 @@ class SettingsAdapter(private val context: Context) :
             )
             return
         }
-
-        (context as MainActivity).writeDataToExternal()
     }
 
     private fun importData() {
@@ -669,7 +667,5 @@ class SettingsAdapter(private val context: Context) :
             )
             return
         }
-
-        (context as MainActivity).importDataFromExternal()
     }
 }

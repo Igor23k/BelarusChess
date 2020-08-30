@@ -28,6 +28,9 @@ interface PersonalServerApi {
     @get:GET("/tournaments")
     val tournaments: Call<List<TournamentDTO>>
 
+    @GET("/tournaments/{count}")
+    fun tournaments(@Path("count") count: Int): Call<List<TournamentDTO>>
+
     @GET("/tournamentsResultByUser/{userId}/{limit}")
     fun getTournamentsResultByUser(@Path("userId") id: Int, @Path("limit") limit: Int): Call<List<TournamentResultDTO>>
 

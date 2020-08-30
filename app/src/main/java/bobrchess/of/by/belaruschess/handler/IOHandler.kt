@@ -9,8 +9,9 @@ import bobrchess.of.by.belaruschess.BuildConfig
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
-import bobrchess.of.by.belaruschess.model.MonthDivider
+import bobrchess.of.by.belaruschess.model.Divider
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
+import bobrchess.of.by.belaruschess.util.Constants
 import java.io.File
 import java.util.*
 
@@ -303,7 +304,6 @@ object IOHandler {
         objectString.split(tournamentDivider_properties).let { stringArray ->
             if (stringArray.isNotEmpty()) {
                 when (stringArray[0]) {
-                    //BIRTHDAY EVENT PARSING-
                     (EventTournament.Name) -> {
                         var forename = "-"
                         var startDate = "-"
@@ -357,7 +357,7 @@ object IOHandler {
                         val tournament =
                             EventTournament(
                                     2222,//todo
-                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),//todo why?
+                                EventDate.parseStringToDate(startDate, locale = Constants.BELARUS_LOCALE),
                                 forename
                             )
                         if (shortDescription != null) tournament.shortDescription = shortDescription
@@ -368,51 +368,9 @@ object IOHandler {
                         if (placeId != null) {
                             tournament.placeId = placeId.toInt()
                         }
-                        tournament.finishDate = EventDate.parseStringToDate(finishDate, locale = Locale.GERMAN)
+                        tournament.finishDate = EventDate.parseStringToDate(finishDate, locale = Constants.BELARUS_LOCALE)
                         return tournament
                     }
-                    //ANNUAL EVENT PARSING
-                   /* (AnnualEvent.Name) -> {
-                        var startDate = "-"
-                        var name = "-"
-                        var note: String? = null
-                        var hasStartYear = false
-
-                        for (i in 1 until stringArray.size) {
-                            val property = stringArray[i].split(tournamentDivider_values)
-
-                            //use identifier
-                            when (property[0]) {
-                                AnnualEvent.Identifier.StartDate.toString() -> {
-                                    startDate = property[1]
-                                }
-                                AnnualEvent.Identifier.Name.toString() -> {
-                                    name = property[1]
-                                }
-                                AnnualEvent.Identifier.HasStartYear.toString() -> {
-                                    hasStartYear = property[1].toBoolean()
-                                }
-                                AnnualEvent.Identifier.Note.toString() -> {
-                                    note = property[1]
-                                }
-                                else ->
-                                    Log.w(
-                                        "IOHandler",
-                                        "Could not find identifier when trying to parse AnnualEvent"
-                                    )
-                            }
-                        }
-                        val anniversary =
-                            AnnualEvent(
-                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),
-                                name,
-                                hasStartYear
-                            )
-                        if (note != null) {
-                            anniversary.note = note
-                        }
-                        return anniversary
-                    }*/
                     //ONETIME EVENT PARSING
                     (OneTimeEvent.Name) -> {
                         var date = "-"
@@ -441,7 +399,7 @@ object IOHandler {
                             }
                         }
                         val oneTimeEvent = OneTimeEvent(
-                            EventDate.parseStringToDate(date, locale = Locale.GERMAN),
+                            EventDate.parseStringToDate(date, locale = Constants.BELARUS_LOCALE),
                             name
                         )
                         if (note != null) {
@@ -450,7 +408,7 @@ object IOHandler {
                         return oneTimeEvent
                     }
                     //MONTHDIVIDER EVENT PARSING
-                    (MonthDivider.Name) -> {
+                    (Divider.Name) -> {
                         var date = "-"
                         var month = "-"
 
@@ -459,13 +417,13 @@ object IOHandler {
 
                             //use identifier
                             when (property[0]) {
-                                MonthDivider.Identifier.Date.toString() -> {
+                                Divider.Identifier.Date.toString() -> {
                                     date = property[1]
                                 }
-                                MonthDivider.Identifier.MonthName.toString() -> {
+                                Divider.Identifier.Text.toString() -> {
                                     val cal = Calendar.getInstance()
                                     cal.time =
-                                        EventDate.parseStringToDate(date, locale = Locale.GERMAN)
+                                        EventDate.parseStringToDate(date, locale = Constants.BELARUS_LOCALE)
                                     month =
                                         context.resources.getStringArray(R.array.month_names)[cal.get(
                                             Calendar.MONTH
@@ -478,10 +436,10 @@ object IOHandler {
                                     )
                             }
                         }
-                        return MonthDivider(
+                        return Divider(
                             EventDate.parseStringToDate(
                                 date,
-                                locale = Locale.GERMAN
+                                locale = Constants.BELARUS_LOCALE
                             ), month
                         )
                     }

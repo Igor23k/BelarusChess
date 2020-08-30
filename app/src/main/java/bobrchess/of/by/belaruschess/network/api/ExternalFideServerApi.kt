@@ -1,8 +1,6 @@
 package bobrchess.of.by.belaruschess.network.api
 
-import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentsDataDTO
-import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerWithImageDTO
-import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayersDTO
+import bobrchess.of.by.belaruschess.dto.externalFide.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,8 +16,11 @@ interface ExternalFideServerApi {
     fun searchTopPlayers(@Path("text") text: String): Call<TopPlayersDTO>
 
     @GET("/api/v1/client/players/{id}")
-    fun topPlayerWithImage(@Path("id") id: Int): Call<TopPlayerWithImageDTO>
+    fun topPlayer(@Path("id") id: Int): Call<List<TopPlayerWithImageDTO>>
+
+    @GET("/api/v1/client/events/{id}")
+    fun worldTournament(@Path("id") id: Int): Call<WorldTournamentDataDTO>
 
     @GET("/api/v1/client/events")
-    fun events(@Query("filter[date_start_years]") id: Int, @Query("filter[world_champion]") worldChampion: Boolean, @Query("filter[closest_events]") closestEvents: Boolean, @Query("filter[category]") category: String, @Query("filter[date_start_month]") dateStartMonth: Int): Call<WorldTournamentsDataDTO>
+    fun worldTournaments(@Query("filter[date_start_years]") id: Int, @Query("filter[world_champion]") worldChampion: Boolean, @Query("filter[closest_events]") closestEvents: Boolean, @Query("filter[category]") category: String, @Query("filter[date_start_month]") dateStartMonth: Int): Call<WorldTournamentsDataDTO>
 }

@@ -14,9 +14,9 @@ import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.fragments.EventListFragment
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.model.Divider
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
-import bobrchess.of.by.belaruschess.model.MonthDivider
 import bobrchess.of.by.belaruschess.presenter.CountryPresenter
 import bobrchess.of.by.belaruschess.presenter.PlacePresenter
 import bobrchess.of.by.belaruschess.presenter.RankPresenter
@@ -26,6 +26,11 @@ import bobrchess.of.by.belaruschess.presenter.impl.PlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
+import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
+import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER
 import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
@@ -50,6 +55,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var userData: UserDTO? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,21 +82,15 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         countryPresenter!!.viewIsReady()
         countryPresenter!!.getCountries()
 
+
         EventHandler.clearData()
         IOHandler.registerIO(this)
         lockAppbar()
 
-        if (!IOHandler.isFirstStart()) {
-            //read all data from shared prefs, when app didnt start for the first time
-            IOHandler.clearSharedPrefEventData()//todo
-            // loadTournamentsFromLocalStorage()
-            loadTournaments()
-        } else {
-            //on first start write standard settings to shared prefs
-            IOHandler.initializeAllSettings()
-            addMonthDivider()
-        }
-        //updateTournamentFragments()
+        IOHandler.clearSharedPrefEventData()//todo
+        // loadTournamentsFromLocalStorage()
+        loadTournaments()
+        updateTournamentFragments()
     }
 
     fun unlockAppBar() {
@@ -149,7 +149,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         for (i in 0 until 12) {
             cal.set(Calendar.MONTH, i)
             EventHandler.addEvent(
-                    MonthDivider(cal.time, resources.getStringArray(R.array.month_names)[i]),
+                    Divider(cal.time, resources.getStringArray(R.array.month_names)[i]),
                     this,
                     true
             )
@@ -168,7 +168,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             //writing to external
             6001 -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    writeDataToExternal()
                 } else {
                     Toast.makeText(
                             this,
@@ -180,7 +179,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             //reading from external
             6002 -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    importDataFromExternal()
                 } else {
                     Toast.makeText(
                             this,
@@ -267,26 +265,26 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         val userTournamentsList = gson.toJson(userTournamentsResult)
         val userData = gson.toJson(userData)
         bundle.putString(
-                "places",
+                PLACES,
                 placesList
         )
 
         bundle.putString(
-                "ranks",
+                RANKS,
                 ranksList
         )
 
         bundle.putString(
-                "countries",
+                COUNTRIES,
                 countriesList
         )
 
         bundle.putString(
-                "tournamentsResult",
+                TOURNAMENTS_RESULT,
                 userTournamentsList
         )
         bundle.putString(
-                "user",
+                USER,
                 userData
         )
 
@@ -333,10 +331,9 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
 
 
     override fun showTournaments(tournaments: List<TournamentDTO>) {
-        //разделить тут по методам, вынести отдалельно
         IOHandler.clearSharedPrefEventData()
         tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Constants.BELARUS_LOCALE), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
@@ -345,7 +342,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
             event.placeId = it.place?.id
-            event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
+            event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Constants.BELARUS_LOCALE)
             EventHandler.addEvent(
                     event,
                     this,
@@ -359,50 +356,13 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         updateFragments()
     }
 
-    fun writeDataToExternal() {//todo
-        /*if (IOHandler.writeAllEventsToExternalStorage(this)) {
-
-            try {
-                this.supportFragmentManager.popBackStack()
-            } catch (e: Exception) {
-                Log.e("MainActivity", e.localizedMessage)
-            }
-
-            Snackbar.make(
-                    main_coordinator_layout,
-                    R.string.permissions_snackbar_granted_write,
-                    Snackbar.LENGTH_LONG
-            ).show()
-        }*/
-    }
-
-    fun importDataFromExternal() {//todo
-        /*if (IOHandler.importEventsFromExternalStorage(this)) {
-
-            try {
-                this.supportFragmentManager.popBackStack()
-            } catch (e: Exception) {
-                Log.e("MainActivity", e.localizedMessage)
-            }
-
-            Snackbar.make(
-                    main_coordinator_layout,
-                    R.string.permissions_snackbar_granted_read,
-                    Snackbar.LENGTH_LONG
-            ).show()
-        }*/
-    }
-
     override fun rankIsLoaded(rankDTO: RankDTO?) {
-
     }
 
     override fun placeIsLoaded(placeDTO: PlaceDTO?) {
-
     }
 
     override fun countryIsLoaded(countryDTO: CountryDTO?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun countriesAreLoaded(list: MutableList<CountryDTO>?) {

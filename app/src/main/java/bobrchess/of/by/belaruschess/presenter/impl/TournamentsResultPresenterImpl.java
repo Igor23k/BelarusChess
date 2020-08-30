@@ -78,7 +78,7 @@ public class TournamentsResultPresenterImpl implements CallBackUserInfo, Tournam
     @Override
     public boolean isConnected(int status) {
         return Util.Companion.isConnected(status);
-    }//todo remove
+    }
 
     public void setPackageModel(PackageModel packageModel) {
         this.packageModel = packageModel;

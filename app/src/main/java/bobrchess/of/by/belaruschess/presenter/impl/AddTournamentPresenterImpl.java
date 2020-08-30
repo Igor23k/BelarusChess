@@ -199,5 +199,5 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     @Override
     public boolean isConnected(int status) {
         return Util.Companion.isConnected(status);
-    }//todo remove
+    }
 }

@@ -284,6 +284,5 @@ object BitmapHandler {
             dialog.dismiss()
         }
         builder.setIcon(R.drawable.ic_error_outline)
-        // builder.show()//todo мб надо удалить это ибо если невалидный урл то падает все
     }
 }

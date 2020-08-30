@@ -11,21 +11,27 @@ import android.view.ViewGroup
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
+import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerWithImageDTO
+import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentDTO
 import bobrchess.of.by.belaruschess.fragments.*
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.*
+import bobrchess.of.by.belaruschess.presenter.FideApiAdapterPresenter
+import bobrchess.of.by.belaruschess.presenter.impl.FideApiAdapterPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentsResultPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
+import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
+import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
+import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByBase64
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
-import kotlinx.android.synthetic.main.one_time_event_item_view.view.*
 import kotlinx.android.synthetic.main.place_event_item_view.view.*
 import kotlinx.android.synthetic.main.top_player_rating_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.*
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.constraint_layout_tournament_item_view
-import kotlinx.android.synthetic.main.tournament_event_item_view.view.iv_tournament_event_item_image
 import kotlinx.android.synthetic.main.tournament_event_item_view.view.tournament_event_item_city_value
 import kotlinx.android.synthetic.main.tournament_result_event_item_view.view.*
 import kotlinx.android.synthetic.main.user_event_item_view.view.*
@@ -33,7 +39,7 @@ import kotlinx.android.synthetic.main.world_tournament_event_item_view.view.*
 import org.springframework.util.StringUtils
 
 
-class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), TournamentsResultContractView {
+class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), TournamentsResultContractView, FideApiAdapterContract {
 
     private var tournamentsResultPresenterImpl: TournamentsResultPresenterImpl? = null
     private var context: Context? = null
@@ -43,11 +49,15 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
-    private var sortedListTopPlayers: List<EventTopPlayer>? = null
+    private var fideApiAdapterPresenter: FideApiAdapterPresenter? = null
 
-    constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?, userTournamentsResult: List<TournamentResultDTO>?) : this() {
+    constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?) : this() {
         tournamentsResultPresenterImpl = TournamentsResultPresenterImpl()
         tournamentsResultPresenterImpl!!.attachView(this)
+
+        fideApiAdapterPresenter = FideApiAdapterPresenterImpl()
+        fideApiAdapterPresenter!!.attachView(this)
+        fideApiAdapterPresenter!!.viewIsReady()
 
         this.context = context
         this.fragmentManager = fragmentManager
@@ -85,7 +95,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
     override fun getItemViewType(position: Int): Int {
         when (EventHandler.getList()[position]) {
-            is MonthDivider -> {
+            is Divider -> {
                 /* if (position < EventHandler.getList().size - 1) {
                      if (EventHandler.getList()[position + 1] !is MonthDivider) {
                          return 0
@@ -187,16 +197,16 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
             //EventMonthDividerViewHolder
             0 -> {
                 EventHandler.getList()[position].let { monthDivider ->
-                    if (monthDivider is MonthDivider) {
+                    if (monthDivider is Divider) {
                         holder.itemView.tv_divider_description_month.text =
-                                monthDivider.month_name
+                                monthDivider.text
                     }
                 }
             }
 
             1 -> {
                 EventHandler.getList()[position].let { event ->
-                    if (event is EventTournament) {//todo если перейти на турнир, то в шапке и в первой строке пишется одно и то же название турнира
+                    if (event is EventTournament) {
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
@@ -208,11 +218,11 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 )
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
-                                val newBirthdayFragment = ShowTournamentEvent.newInstance()
-                                newBirthdayFragment.arguments = bundle
+                                val newFragment = ShowTournamentEvent.newInstance()
+                                newFragment.arguments = bundle
                                 ft.replace(
                                         R.id.fragment_placeholder,
-                                        newBirthdayFragment
+                                        newFragment
                                 )
                                 ft.addToBackStack(null)
                                 ft.commit()
@@ -364,7 +374,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         holder.itemView.user_event_item_name.visibility =
                                 TextView.VISIBLE
-                        holder.itemView.user_event_item_name.setTextColor(textColor)//todo тут походу не к тому обращается
+                        holder.itemView.user_event_item_name.setTextColor(textColor)
 
                         holder.itemView.user_event_item_name.text = user.name + " " + user.surname
 
@@ -390,7 +400,25 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
-                                // todo если нужно, то сделать тут переход на этот турнир
+                                // todo сделать тут переход на этот турнир (проверить мб уже работает)
+                                if (isClickable) {
+                                    val bundle = Bundle()
+                                    //do this in more adaptable way
+                                    bundle.putInt(
+                                            MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                                            eventTournamentResult.eventID
+                                    )
+                                    val ft = fragmentManager!!.beginTransaction()
+                                    // add arguments to fragment
+                                    val newFragment = ShowTournamentEvent.newInstance()
+                                    newFragment.arguments = bundle
+                                    ft.replace(
+                                            R.id.fragment_placeholder,
+                                            newFragment
+                                    )
+                                    ft.addToBackStack(null)
+                                    ft.commit()
+                                }
                             }
                         }
 
@@ -463,7 +491,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 val countriesList = gson.toJson(countries)
 
                                 bundle.putString(
-                                        "countries",
+                                        COUNTRIES,
                                         countriesList
                                 )
                                 val ft = fragmentManager!!.beginTransaction()
@@ -530,195 +558,137 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                 }
             }
 
-            //one time event item view holder
-            3 -> {
-                //check if is birthday event and if the year is given
-                EventHandler.getList()[position].let { oneTimeEvent ->
-                    if (oneTimeEvent is OneTimeEvent) {
-
+            6 -> {
+                EventHandler.getList()[position].let { topPlayer ->
+                    if (topPlayer is EventTopPlayer) {
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
-                                val bundle = Bundle()
-                                bundle.putInt(
-                                        MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                                        oneTimeEvent.eventID
-                                )
-                                val ft = fragmentManager!!.beginTransaction()
-                                // add arguments to fragment
-                                val newOneTimeEvent = ShowOneTimeEvent.newInstance()
-                                newOneTimeEvent.arguments = bundle
-                                ft.replace(
-                                        R.id.fragment_placeholder,
-                                        newOneTimeEvent
-                                )
-                                ft.addToBackStack(null)
-                                ft.commit()
+                                fideApiAdapterPresenter!!.loadTopPlayer(topPlayer.eventID)
                             }
-                        }
-
-                        holder.itemView.setOnLongClickListener {
-                            if (isClickable) {
-                                val bundle = Bundle()
-                                //do this in more adaptable way
-                                bundle.putInt(
-                                        MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
-                                        oneTimeEvent.eventID
-                                )
-                                val ft = fragmentManager!!.beginTransaction()
-                                // add arguments to fragment
-                                val newOneTimeEvent = OneTimeEventInstanceFragment.newInstance()
-                                newOneTimeEvent.arguments = bundle
-                                ft.replace(
-                                        R.id.fragment_placeholder,
-                                        newOneTimeEvent
-                                )
-                                ft.addToBackStack(null)
-                                ft.commit()
-                            }
-                            true
                         }
 
                         val textColor: Int
 
-                        //set days until
-                        val daysUntil = oneTimeEvent.getDaysUntil()
-                        if (daysUntil == 0 && oneTimeEvent.getYearsUntil() == 0) {
-                            textColor = ContextCompat.getColor(context!!, R.color.colorAccent)
-                            holder.itemView.tv_days_until_one_time_value.text =
-                                    context!!.resources.getText(R.string.today)
-                            holder.itemView.tv_days_until_one_time_value.setTextColor(textColor)
-                        } else {
-                            textColor = ContextCompat.getColor(context!!, R.color.textDark)
-                            holder.itemView.tv_days_until_one_time_value.text =
-                                    oneTimeEvent.getDaysUntil().toString()
-                            holder.itemView.tv_days_until_one_time_value.setTextColor(textColor)
-                        }
 
-                        //set startDate
-                        holder.itemView.tv_one_time_item_date_value.text =
-                                oneTimeEvent.getPrettyShortStringWithoutYear()
-                        holder.itemView.tv_one_time_item_date_value.setTextColor(textColor)
-
-                        //set years until
-                        holder.itemView.tv_years_one_time_value.text =
-                                oneTimeEvent.getYearsUntil().toString()
-                        holder.itemView.tv_years_one_time_value.setTextColor(textColor)
-
-                        if (oneTimeEvent.eventAlreadyOccurred()) {
-                            holder.itemView.constraint_layout_onetime_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item_dark
-                                    )
-                        } else {
-                            holder.itemView.constraint_layout_onetime_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item
-                                    )
-                        }
+                        textColor = ContextCompat.getColor(context!!, R.color.textDark)
 
                         //set name
-                        holder.itemView.tv_one_time_item_name.text = oneTimeEvent.name
-                        holder.itemView.tv_one_time_item_name.setTextColor(textColor)
+                        holder.itemView.top_player_event_item_name.text = "${topPlayer.position}. ${topPlayer.name}\n ${topPlayer.surname}"
+                        holder.itemView.top_player_event_item_name.setTextColor(textColor)
+
+
+                        //set birthday
+                        holder.itemView.top_player_birthday.text = topPlayer.getPrettyShortStringWithYear()
+                        holder.itemView.top_player_birthday.setTextColor(textColor)
+
+                        //set country
+                        holder.itemView.top_player_country.text = topPlayer.country
+                        holder.itemView.top_player_country.setTextColor(textColor)
+
+                        //rating
+                        holder.itemView.top_player_rating.text = topPlayer.rating.toString()
+                        holder.itemView.top_player_rating.setTextColor(textColor)
                     }
-                }
-            }
-
-
-            6 -> {
-                if (sortedListTopPlayers == null) {
-                    sortedListTopPlayers = ArrayList()
-                    val topPlayers = ArrayList<EventTopPlayer>()
-                    for (topPlayer in EventHandler.getList()) {
-                        if (topPlayer is EventTopPlayer) {
-                            topPlayers.add(topPlayer)
-                        }
-                    }
-                    sortedListTopPlayers = topPlayers/*.sortedByDescending { it.rating }*/
-                }
-                sortedListTopPlayers!![position].let { topPlayer ->
-
-                    //set on click listener for item
-                    holder.itemView.setOnClickListener {
-                        if (isClickable) {
-                            eventId = topPlayer.eventID
-                        }
-                    }
-
-                    val textColor: Int
-
-
-                    textColor = ContextCompat.getColor(context!!, R.color.textDark)
-
-                    //set name
-                    holder.itemView.top_player_event_item_name.text = "${topPlayer.position}. ${topPlayer.name}\n ${topPlayer.surname}"//todo to fix
-                    holder.itemView.top_player_event_item_name.setTextColor(textColor)
-
-
-                    //set birthday
-                    holder.itemView.top_player_birthday.text = topPlayer.getPrettyShortStringWithYear()
-                    holder.itemView.top_player_birthday.setTextColor(textColor)
-
-                    //set country
-                    holder.itemView.top_player_country.text = topPlayer.country
-                    holder.itemView.top_player_country.setTextColor(textColor)
-
-                    //rating
-                    holder.itemView.top_player_rating.text = topPlayer.rating.toString()
-                    holder.itemView.top_player_rating.setTextColor(textColor)
                 }
             }
             7 -> {
-                var list = EventHandler.getList() as List<EventWorldTournament>
-                // list = list.sortedByDescending { it.rating }//todo
-                list[position].let { worldTournament ->
-                    //set on click listener for item
-                    holder.itemView.setOnClickListener {
-                        if (isClickable) {
-                            eventId = worldTournament.eventID
+                EventHandler.getList()[position].let { worldTournament ->
+                    if (worldTournament is EventWorldTournament) {
+                        //set on click listener for item
+                        holder.itemView.setOnClickListener {
+                            //set on click listener for item
+                            if (isClickable) {
+                                fideApiAdapterPresenter!!.loadWorldTournament(worldTournament.eventID)
+                            }
+
                         }
+
+                        val textColor: Int
+
+                        textColor = ContextCompat.getColor(context!!, R.color.textDark)
+
+                        //val avatarUri = worldTournament.imageUri
+
+                        //set name
+                        holder.itemView.world_tournament_event_item_name.text = worldTournament.name
+                        holder.itemView.world_tournament_event_item_name.setTextColor(textColor)
+
+                        //set startDate
+                        holder.itemView.world_tournament_event_item_date_value.text = worldTournament.getPrettyShortStringWithYear()
+                        holder.itemView.world_tournament_event_item_date_value.setTextColor(textColor)
+
+                        //set city
+                        var city = worldTournament.city//todo to fix
+                        if (city != null && city!!.length > 12) {
+                            city = city!!.substring(0, 11)
+                        }
+                        holder.itemView.world_tournament_event_item_place_value.text = worldTournament.country + ", " + city
+                        holder.itemView.world_tournament_event_item_place_value.setTextColor(textColor)
                     }
-
-                    val textColor: Int
-
-
-                    textColor = ContextCompat.getColor(context!!, R.color.textDark)
-
-                    //val avatarUri = worldTournament.imageUri
-
-                    //set name
-                    holder.itemView.world_tournament_event_item_name.text = worldTournament.name
-                    holder.itemView.world_tournament_event_item_name.setTextColor(textColor)
-
-                    //set startDate
-                    holder.itemView.world_tournament_event_item_date_value.text = worldTournament.getPrettyShortStringWithYear()
-                    holder.itemView.world_tournament_event_item_date_value.setTextColor(textColor)
-
-                    //set city
-                    var city = worldTournament.city//todo to fix
-                    if (city != null && city!!.length > 12) {
-                        city = city!!.substring(0, 11)
-                    }
-                    holder.itemView.world_tournament_event_item_place_value.text = worldTournament.country + ", " + city
-                    holder.itemView.world_tournament_event_item_place_value.setTextColor(textColor)
-
-                    //when context is MainActivity
-                    /* if (context is MainActivity) {
-                         if (avatarUri != null) {
-                             holder.itemView.iv_user_event_item_image.setImageBitmap(
-                                     BitmapHandler.getBitmapAt(
-                                             worldTournament.eventID
-                                     )
-                             )
-                         } else {
-                             holder.itemView.iv_user_event_item_image.setImageResource(R.drawable.ic_birthday_person)
-                         }
-                     }*/
                 }
             }
         }
+    }
+
+    private fun eventAdapterTopPlayerItemOpen(topPlayerDTO: TopPlayerWithImageDTO?) {
+        val bundle = Bundle()
+
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val topPlayer = gson.toJson(topPlayerDTO)
+
+        bundle.putString(
+                "topPlayer",
+                topPlayer
+        )
+
+        //do this in more adaptable way
+        topPlayerDTO?.idNumber?.toInt()?.let {
+            bundle.putInt(
+                    MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                    it
+            )
+        }
+        val ft = fragmentManager!!.beginTransaction()
+        // add arguments to fragment
+        val fragment = ShowTopPlayerEvent.newInstance()
+        fragment.arguments = bundle
+        ft.replace(
+                R.id.fragment_placeholder,
+                fragment
+        )
+        ft.addToBackStack(null)
+        ft.commit()
+    }
+
+    private fun eventAdapterWorldTournamentItemOpen(worldTournamentDTO: WorldTournamentDTO?) {
+        val bundle = Bundle()
+
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val worldTournament = gson.toJson(worldTournamentDTO)
+
+        bundle.putString(
+                "worldTournament",
+                worldTournament
+        )
+
+        //do this in more adaptable way
+        worldTournamentDTO?.id?.let {
+            bundle.putInt(
+                    MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                    it
+            )
+        }
+        val ft = fragmentManager!!.beginTransaction()
+        // add arguments to fragment
+        val fragment = ShowWorldTournamentEvent.newInstance()
+        fragment.arguments = bundle
+        ft.replace(
+                R.id.fragment_placeholder,
+                fragment
+        )
+        ft.addToBackStack(null)
+        ft.commit()
     }
 
 
@@ -754,22 +724,22 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
             if (coach != null) {
                 bundle.putString(
-                        "coach",
+                        COACH,
                         gson.toJson(coach)
                 )
             }
             bundle.putString(
-                    "ranks",
+                    RANKS,
                     ranksList
             )
 
             bundle.putString(
-                    "countries",
+                    COUNTRIES,
                     countriesList
             )
 
             bundle.putString(
-                    "tournamentsResult",
+                    TOURNAMENTS_RESULT,
                     userTournamentsList
             )
 
@@ -786,5 +756,33 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     override fun userTournamentsResultAreLoaded(tournamentsResults: MutableList<TournamentResultDTO>?) {
         this.userTournamentsResult = tournamentsResults
         startUserFragment()
+    }
+
+    override fun showWorldTournament(worldTournamentDTO: WorldTournamentDTO?) {
+        eventAdapterWorldTournamentItemOpen(worldTournamentDTO)
+    }
+
+    override fun showTopPlayer(topPlayerDTO: TopPlayerWithImageDTO?) {
+        eventAdapterTopPlayerItemOpen(topPlayerDTO)
+    }
+
+    override fun detachView() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun viewIsReady() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onServerUnavailable() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onUnsuccessfulRequest(message: String?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setConnectivityStatus(status: Int?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

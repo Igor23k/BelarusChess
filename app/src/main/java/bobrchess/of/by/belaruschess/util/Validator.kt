@@ -22,12 +22,12 @@ object Validator {
         val surname = userDTO?.surname
         val patronymic = userDTO?.patronymic
         val rating = userDTO?.rating
-        val birthdate = userDTO?.birthday
+        val birthday = userDTO?.birthday
         val phoneNumber = userDTO?.phoneNumber
         val coach = userDTO?.selectedCoachIndex
         val rank = userDTO?.selectedRankIndex
         val country = userDTO?.selectedCountryIndex
-        val isMale = userDTO?.selectedGenderIndex//todo добавить валидацию остальных полей если нужно
+        val isMale = userDTO?.selectedGenderIndex
 
         validateRegistrationPassword(password, reEnterPassword)
         validateEmail(email)
@@ -47,7 +47,7 @@ object Validator {
         if (rating > 5000) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_RATING_BIG))
         }
-        if (StringUtils.isEmpty(birthdate)) {
+        if (StringUtils.isEmpty(birthday)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_BIRTHDAY))
         }
         if (StringUtils.isEmpty(phoneNumber)) {
@@ -121,7 +121,7 @@ object Validator {
         if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 20 || shortDescription.length > 100) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION))
         }
-        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 2 || fullDescription.length > 20000) {//todo от 100
+        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 20000) {//todo проверить что на бэке так же
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION))
         }
         if (countPlayersInTeam == null || countPlayersInTeam > 20) {

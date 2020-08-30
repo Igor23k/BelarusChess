@@ -244,48 +244,48 @@ class AlarmReceiver : BroadcastReceiver() {
 
                  // ONE TIME EVENT
              }*/
-            is OneTimeEvent -> {
+            /*  is OneTimeEvent -> {
 
-                var defaults = Notification.DEFAULT_ALL
+                  var defaults = Notification.DEFAULT_ALL
 
-                val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
-                        .setContentTitle(
-                                context.getString(
-                                        R.string.notification_title_one_time_event,
-                                        event.name
-                                )
-                        )
-                        .setStyle(NotificationCompat.BigTextStyle())
-                        .setContentText(buildOneTimeEventNotificationBodyText(context, event))
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        // Set the intent that will fire when the user taps the notification
-                        .setContentIntent(pendingIntent)
-                        .setSubText(context.getText(R.string.event_type_one_time_event))
-                        .setAutoCancel(true)
+                  val builder = NotificationCompat.Builder(context, NotificationHandler.CHANNEL_ID)
+                          .setSmallIcon(R.drawable.ic_belaruschess_icon_status_bar)
+                          .setContentTitle(
+                                  context.getString(
+                                          R.string.notification_title_one_time_event,
+                                          event.name
+                                  )
+                          )
+                          .setStyle(NotificationCompat.BigTextStyle())
+                          .setContentText(buildOneTimeEventNotificationBodyText(context, event))
+                          .setPriority(NotificationCompat.PRIORITY_MAX)
+                          // Set the intent that will fire when the user taps the notification
+                          .setContentIntent(pendingIntent)
+                          .setSubText(context.getText(R.string.event_type_one_time_event))
+                          .setAutoCancel(true)
 
-                if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationVibrationOnOneTime)!!) {
-                    defaults -= Notification.DEFAULT_VIBRATE
-                }
+                  if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationVibrationOnOneTime)!!) {
+                      defaults -= Notification.DEFAULT_VIBRATE
+                  }
 
-                if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationSoundOnOneTime)!!) {
-                    defaults -= Notification.DEFAULT_SOUND
-                }
+                  if (!IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_isNotificationSoundOnOneTime)!!) {
+                      defaults -= Notification.DEFAULT_SOUND
+                  }
 
-                val lightColor = getLightColor(event, context)
-                if (lightColor != null) {
-                    defaults -= Notification.DEFAULT_LIGHTS
-                    builder.setLights(lightColor, 500, 500)
-                } else {
-                    defaults -= Notification.DEFAULT_LIGHTS
-                }
+                  val lightColor = getLightColor(event, context)
+                  if (lightColor != null) {
+                      defaults -= Notification.DEFAULT_LIGHTS
+                      builder.setLights(lightColor, 500, 500)
+                  } else {
+                      defaults -= Notification.DEFAULT_LIGHTS
+                  }
 
-                builder.setDefaults(defaults)
+                  builder.setDefaults(defaults)
 
-                with(notificationManager) {
-                    notify(notificationID, builder.build())
-                }
-            }
+                  with(notificationManager) {
+                      notify(notificationID, builder.build())
+                  }
+              }*/
         }
     }
 
@@ -364,52 +364,11 @@ class AlarmReceiver : BroadcastReceiver() {
         return returnString
     }*/
 
-    private fun buildOneTimeEventNotificationBodyText(
-            context: Context,
-            oneTimeEvent: OneTimeEvent
-    ): String {
-        var returnString = ""
-        when (oneTimeEvent.getDaysUntil()) {
-            //today
-            0 -> {
-                returnString += context.resources.getString(
-                        R.string.notification_content_one_time_event_today,
-                        oneTimeEvent.name
-                )
-            }
-            //tomorrow
-            1 -> {
-                returnString += context.resources.getString(
-                        R.string.notification_content_one_time_event_tomorrow,
-                        oneTimeEvent.name
-                )
-            }
-            else -> {
-                returnString += context.resources.getString(
-                        R.string.notification_content_one_time_event_future,
-                        oneTimeEvent.name,
-                        oneTimeEvent.getDaysUntil()
-                )
-            }
-        }
-        return returnString
-    }
-
     private fun getLightColor(event: EventDate, context: Context): Int? {
         when (event) {
             is EventTournament -> {
                 val lightValue =
                         IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightBirthday)!!
-                return getLightARGBFromColorValue(lightValue, context)
-            }
-            /*is AnnualEvent -> {
-                val lightValue =
-                    IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightAnnual)!!
-                return getLightARGBFromColorValue(lightValue, context)
-            }*/
-            is OneTimeEvent -> {
-                val lightValue =
-                        IOHandler.getIntFromKey(IOHandler.SharedPrefKeys.key_notificationLightOneTime)!!
                 return getLightARGBFromColorValue(lightValue, context)
             }
             else -> {

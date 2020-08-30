@@ -21,7 +21,6 @@
 
     <string name="nick">Nick</string>
     <string name="default_text">Default text</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_games">Games</string>
     <string name="action_table">Table</string>
@@ -83,12 +82,17 @@
     <string name="dash">-</string>
     <string name="absence">Absence</string>
     <string name="rank_absence">Rank is absence</string>
+    <string name="country_absence">Country is absence</string>
     <string name="coach_absence">Coach is absence</string>
     <string name="coach">Coach:</string>
     <string name="notSelected">Not selected</string>
     <string name="chooseReferee">Choose a referee</string>
     <string name="chooseCountry">Choose a country</string>
     <string name="choosePlace">Choose a place</string>
+    <string name="bornOnYear">Born on: %1$s</string>
+    <string name="standardRating">Standard rating: %1$s</string>
+    <string name="rapidRating">Rapid rating: %1$s</string>
+    <string name="blitzRating">Blitz rating: %1$s</string>
     <string name="retry">Retry</string>
     <string name="incorrectEmailOrPassword">Incorrect email or password!</string>
     <string name="serverIsUnavailable">Server is unavailable</string>
@@ -98,7 +102,6 @@
     <string name="incorrectData">Incorrect data! Please, try again"</string>
 
     //date and time
-    <string name="title_activity_main">Range Picker</string>
     <string name="time">Time</string>
     <string name="date">Date</string>
     <string name="tournament">Tournament</string>
@@ -125,7 +128,6 @@
     <string name="share">Share</string>
     <string name="abort">Abort</string>
     <string name="today">today</string>
-    <string name="noEntries">No entries :(</string>
     <string name="noEventsFound">No events found :(</string>
     <string name="necessary">(necessary)</string>
 
@@ -183,7 +185,6 @@
     <string name="toolbar_title_add_user">Add user</string>
     <string name="toolbar_title_add_place">Add place</string>
     <string name="toolbar_title_edit_place">Edit place</string>
-    <string name="future_tournament_error">You can\'t add future tournaments!\nPlease only use tournament dates in the past.</string>
     <string name="empty_fields_error_tournament">Make sure to fill fields forename and date!</string>
     <string name="tournament_added_notification">Tournament added</string>
     <string name="tournament_changed_notification">Tournament changed</string>
@@ -208,12 +209,7 @@
     <!-- fragment show tournament -->
     <string name="intent_share_chooser_title">Choose your app to share</string>
     <string name="person_show_date">Born on %1$s</string>
-    <string name="person_days_until_today">The tournament of %1$s is today!</string>
 
-    <plurals name="person_days_until">
-        <item quantity="one">Next tournament of %1$s is in %2$d day on %3$s</item>
-        <item quantity="other">Next tournament of %1$s is in %2$d days on %3$s.\nThis is in %4$s weeks.</item>
-    </plurals>
     <plurals name="person_years_old">
         <item quantity="one">%1$s turns %2$d</item>
         <item quantity="other">%1$s turns %2$d</item>
@@ -222,124 +218,13 @@
     <!-- sharing strings place -->
     <string name="share_place_name">%1$s</string>
     <string name="share_place_date_start">Born on: %1$s</string>
-    <string name="share_place_date_next">Next place: %1$s</string>
-    <string name="share_place_days_today">That is today!</string>
-    <plurals name="share_place_days">
-        <item quantity="one">In %1$d day</item>
-        <item quantity="other">In %1$d days</item>
-    </plurals>
 
     <!-- sharing strings tournament -->
     <string name="share_tournament_name">%1$s</string>
     <string name="share_tournament_date_start">Born on: %1$s</string>
-    <string name="share_tournament_date_next">Next tournament: %1$s</string>
-    <string name="share_tournament_days_today">That is today!</string>
-    <plurals name="share_tournament_days">
-        <item quantity="one">In %1$d day</item>
-        <item quantity="other">In %1$d days</item>
-    </plurals>
 
     <!-- tournament event notifications -->
     <string name="notification_title_tournament">%1$s</string>
-    <string name="notification_content_tournament_future">The tournament of %1$s is in %2$d days.</string>
-    <string name="notification_content_tournament_tomorrow">The tournament of %1$s is tomorrow!</string>
-    <string name="notification_content_tournament_today">The tournament of %1$s is TODAY!</string>
-    <string name="notification_content_tournament_years_old">%1$s turns %2$d</string>
-
-
-    <!--- ANNUAL EVENT -->
-    <!-- annual event view -->
-    <!-- fragment add new annual event -->
-    <string name="toolbar_title_add_annual_event">Add new annual event</string>
-    <string name="toolbar_title_edit_annual_event">Edit annual event</string>
-    <string name="future_annual_event_error">You can\'t add future annual event!</string>
-    <string name="empty_fields_error_annual_event">Make sure to fill fields name and date!</string>
-    <string name="annual_event_added_notification">%1$s added</string>
-    <string name="annual_event_changed_notification">%1$s changed</string>
-    <string name="annual_event_deleted_notification">%1$s deleted</string>
-    <string name="edit_annual_event_name_hint">Event name</string>
-    <string name="btn_annual_event_delete">Delete annual event</string>
-
-    <!-- alert dialog delete annual event -->
-    <string name="alert_dialog_body_message_annual_event">Are you sure you want to delete this annual event?</string>
-
-    <!-- fragment show annual event -->
-    <string name="annual_event_start_date">Started on %1$s</string>
-    <string name="annual_event_show_date_tomorrow">Next time tomorrow on %1$s!</string>
-    <string name="annual_event_show_date_today">%1$s is TODAY!</string>
-    <plurals name="annual_event_show_date">
-        <item quantity="one">Next time in %1$d day on %2$s</item>
-        <item quantity="other">Next time in %1$d days on %2$s.\nThis is in %3$s weeks.</item>
-    </plurals>
-    <plurals name="annual_event_years">
-        <item quantity="one">For the first time since starting!</item>
-        <item quantity="other">For the %1$d. time since starting!</item>
-    </plurals>
-
-    <!-- sharing strings annual event -->
-    <string name="share_annual_event_name">%1$s</string>
-    <string name="share_annual_event_date_next">Next on: %1$s</string>
-    <string name="share_annual_event_date_start">First on: %1$s</string>
-    <plurals name="share_annual_event_days">
-        <item quantity="one">In %1$d day</item>
-        <item quantity="other">In %1$d days</item>
-    </plurals>
-    <plurals name="share_annual_event_year">
-        <item quantity="one">Since %1$d year</item>
-        <item quantity="other">Since %1$d years</item>
-    </plurals>
-
-    <!-- annual_event notifications -->
-    <string name="notification_title_annual_event">%1$s</string>
-    <string name="notification_content_annual_event_future">%1$s is in %2$d days</string>
-    <string name="notification_content_annual_event_tomorrow">%1$s is tomorrow!</string>
-    <string name="notification_content_annual_event_today">%1$s is TODAY!</string>
-
-    <!-- ONE TIME EVENT -->
-    <!-- fragment add new  one time event -->
-    <string name="toolbar_title_add_one_time_event">Add new one-time event</string>
-    <string name="toolbar_title_edit_one_time_event">Edit one-time event</string>
-    <string name="error_past_one_time_event_error">You can only add one-time events which are in the future!</string>
-    <string name="one_time_event_added_notification">%1$s added</string>
-    <string name="one_time_event_changed_notification">%1$s changed</string>
-    <string name="one_time_event_deleted_notification">%1$s deleted</string>
-    <string name="edit_one_time_event_name_hint">Event name</string>
-    <string name="btn_one_time_event_delete">Delete one-time event</string>
-
-    <!-- alert dialog delete one_time event -->
-    <string name="alert_dialog_body_message_one_time_event">Are you sure you want to delete this one-time event?</string>
-
-    <!-- fragment show one time event -->
-    <string name="one_time_event_today">is TODAY!</string>
-    <string name="one_time_event_tomorrow">is tomorrow!</string>
-    <plurals name="one_time_event_show_date">
-        <item quantity="one">in %1$d day on %2$s</item>
-        <item quantity="other">in %1$d days on %2$s.\nThis is in %3$s weeks.</item>
-    </plurals>
-    <plurals name="one_time_event_years">
-        <item quantity="one">In %1$d year</item>
-        <item quantity="other">In %1$d years</item>
-    </plurals>
-
-    <!-- sharing strings one_time event -->
-    <string name="share_one_time_event_name">%1$s</string>
-    <string name="share_one_time_event_date_next">On %1$s</string>
-    <string name="share_one_time_event_days_today">That is today!</string>
-    <plurals name="share_one_time_event_days">
-        <item quantity="one">That is in %1$d day</item>
-        <item quantity="other">That is in %1$d days</item>
-    </plurals>
-
-    <plurals name="share_one_time_event_year">
-        <item quantity="one">In %1$d year</item>
-        <item quantity="other">In %1$d years</item>
-    </plurals>
-
-    <!-- one-time event notifications -->
-    <string name="notification_title_one_time_event">%1$s</string>
-    <string name="notification_content_one_time_event_future">%1$s is in %2$d days</string>
-    <string name="notification_content_one_time_event_tomorrow">%1$s is tomorrow!</string>
-    <string name="notification_content_one_time_event_today">%1$s is TODAY!</string>
 
     <!-- settings fragment -->
     <string name="tv_notification_interval_month">Month before</string>
@@ -432,5 +317,20 @@
     <string name="help_content_support">For me developing apps and programs for other people is great. It is even more fun when people actually like your stuff or can contribute to your project in a productive way.\nIf you like this app and want to support me, there are lots of different ways of doing so. The simplest way would be to rate this app in the app store ;)\nIf you are a developer you could try to check out my GitHub (see \'About\') and contribute to this project.\nBut if you want, you could also donate to my PayPal (https://www.paypal.me/Procrastimax) page, so I can afford more coffee for my next app :)</string>
     <string name="help_content_notifications">When you encounter the problem, that your event notifications does not \"pop up\" properly. Go to your notification settings on your android device and check the notification settings for this app. In some cases you have to give this app a higher priority or you have to set the \"Banner - Show above status bar\" setting (if existent).</string>
 
+    <string name="ok_label">OK</string>
+    <string name="tournament_location_dialog_title">Choose location</string>
+    <string name="dismiss_label">Dismiss</string>
+    <string name="clear_all_label">Clear all</string>
+
+    <string-array name="world_tournaments_types_items">
+        <item>Мировые события</item>
+        <item>Presidential Board / Congress</item>
+        <item>Other Official Events</item>
+        <item>European Events</item>
+        <item>American Events</item>
+        <item>Asian Events</item>
+        <item>African Events</item>
+        <item>Affiliated Associations Events</item>
+    </string-array>
 
 </resources>

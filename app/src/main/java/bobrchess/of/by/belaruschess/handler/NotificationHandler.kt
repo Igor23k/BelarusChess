@@ -8,7 +8,7 @@ import bobrchess.of.by.belaruschess.AlarmReceiver
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import bobrchess.of.by.belaruschess.model.EventTournament
-import bobrchess.of.by.belaruschess.model.MonthDivider
+import bobrchess.of.by.belaruschess.model.Divider
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
 import java.util.*
 
@@ -27,7 +27,7 @@ object NotificationHandler {
     }
 
     fun scheduleNotification(context: Context, event: EventDate) {
-        if (event !is MonthDivider) {
+        if (event !is Divider) {
             when (event) {
                 is EventTournament -> {
                     //do nothing when notifications for this are disabled
@@ -302,7 +302,7 @@ object NotificationHandler {
 
     fun scheduleListEventNotifications(context: Context, events: List<EventDate>) {
         events.forEach {
-            if (it !is MonthDivider) {
+            if (it !is Divider) {
                 scheduleNotification(context, it)
             }
         }

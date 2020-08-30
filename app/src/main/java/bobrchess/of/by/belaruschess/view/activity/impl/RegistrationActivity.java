@@ -84,8 +84,6 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
 
     private String birthday;
 
-    // TODO https://demonuts.com/upload-image-from-gallery/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,11 +154,11 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
     }
 
     @Override
-    public void startActivity(@NonNull UserDTO userDTO) {//todo
-        /*Intent intent = new Intent(getApplicationContext(), MainOldActivity.class);
+    public void startActivity(@NonNull UserDTO userDTO) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         putUserData(intent, userDTO);
         startActivityForResult(intent, Util.Companion.getREGISTRATION_REQUEST());
-        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);*/
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     private void putUserData(Intent intent, @NonNull UserDTO userDTO) {

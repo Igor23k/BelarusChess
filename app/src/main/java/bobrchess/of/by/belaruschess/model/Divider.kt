@@ -1,10 +1,11 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
+import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 
-class MonthDivider(date: Date, val month_name: String) : EventDate(date) {
+class Divider(date: Date, val text: String) : EventDate(date) {
 
     /**
      * Identifier is an identifier for sorting
@@ -13,7 +14,7 @@ class MonthDivider(date: Date, val month_name: String) : EventDate(date) {
         Date {
             override fun Identifier(): Int = 0
         },
-        MonthName {
+        Text {
             override fun Identifier(): Int = 1
         }
     }
@@ -22,11 +23,11 @@ class MonthDivider(date: Date, val month_name: String) : EventDate(date) {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Date}${IOHandler.tournamentDivider_values}${parseDateToString(
                 this.eventDate,
                 DateFormat.DEFAULT,
-                Locale.GERMAN
-        )}${IOHandler.tournamentDivider_properties}${Identifier.MonthName}${IOHandler.tournamentDivider_values}$month_name"
+                Constants.BELARUS_LOCALE
+        )}${IOHandler.tournamentDivider_properties}${Identifier.Text}${IOHandler.tournamentDivider_values}$text"
     }
 
     companion object {
-        const val Name: String = "MonthDivider"
+        const val Name: String = "Divider"
     }
 }

@@ -152,5 +152,5 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     @Override
     public boolean isConnected(int status) {
         return Util.Companion.isConnected(status);
-    }//todo remove
+    }
 }

@@ -34,8 +34,8 @@ class SearchTournamentConnection {
         })
     }
 
-    fun getTournaments(count: Int?) {
-        App.getPersonalServerApi().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
+    fun getTournaments(count: Int) {
+        App.getPersonalServerApi().tournaments(count).enqueue(object : Callback<List<TournamentDTO>> {
             override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

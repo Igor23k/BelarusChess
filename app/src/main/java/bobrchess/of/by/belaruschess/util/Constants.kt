@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.util
 
+import java.util.*
+
 /**
  * Created by Igor on 04.04.2018.
  */
@@ -8,6 +10,7 @@ class Constants {
 
     companion object {
 
+        val BELARUS_LOCALE = Locale("ru_BY")
         const val NOT_SELECTED_INDEX = 0
         const val ABSENCE_INDEX = 1
 
@@ -17,6 +20,8 @@ class Constants {
         val KEY_SERVER_UNAVAILABLE = "server_is_unavailable"
         val INTERNAL_SERVER_ERROR = "Internal Server Error"
         val KEY_SERVER_UNAVAILABLE_JSON_FORMAT = "server_unavailable_json_format"
+        val KEY_GENDER_MALE = "male"
+        val KEY_GENDER_FEMALE = "female"
         val TOKEN_IS_EXPIRED_MESSAGE = "Token is expired"
         val UNAUTHORIZED = "Unauthorized"
         //public static final String PLEASE_WAIT = "Please, wait ...";
@@ -29,20 +34,21 @@ class Constants {
         val PLACE = "place"
 
         val USER_PARAMETER = "user"//todo не выбрать ничего из дропдаунов и ничего не выводит из ошибок В РЕГИСТРАЦИИ ПРОВЕРИТЬ
-        val GAME_PARAMETER = "game"
-        val TOURNAMENT_PARAMETER = "tournament"
-        val USER_NAME_PARAMETER = "gameRecord"
-        val USER_SURNAME_PARAMETER = "shortDescription"
-        val USER_RATING_PARAMETER = "rating"
-        val USER_EMAIL_PARAMETER = "email"
-        val USER_STATUS_PARAMETER = "status"
-        val USER_PATRONYMIC_PARAMETER = "patronymic"
-        val USER_BIRTHDAY_PARAMETER = "birthday"
+
+        val PLACES = "places"
+        val RANKS = "ranks"
+        val COUNTRIES = "countries"
+        val USERS = "users"
+        val COACH = "coach"
+        val TOURNAMENTS_RESULT = "tournamentsResult"
+
+        val KEY_RATING_OPEN = "key_rating_open"
+        val KEY_WOMEN = "key_rating_women"
+        val KEY_JUNIORS = "key_rating_juniors"
+        val KEY_GIRLS = "key_rating_girls"
 
         val DATE_PICKER_DIALOG = "Datepickerdialog"
-        val TIME_PICKER_DIALOG = "Timepickerdialog"
 
-        val KEY_INCORRECT_USER_ID = "incorrect_user_id"
         val KEY_INCORRECT_USER_NAME = "incorrect_user_name"
         val KEY_INCORRECT_USER_SURNAME = "incorrect_user_surname"
         val KEY_INCORRECT_USER_PATRONYMIC = "incorrect_user_patronymic"
@@ -108,6 +114,23 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_TEAM_ID = "incorrect_tournament_team_id"
         val KEY_INCORRECT_TOURNAMENT_TEAM_POSITION = "incorrect_tournament_team_position"
         val KEY_INCORRECT_TOURNAMENT_TEAM_COUNT_POINTS = "incorrect_tournament_team_count_points"
+
+        val KEY_NUMBER_OF_PLAYERS = "number_of_players_text"
+        val KEY_TIME_CONTROL = "time_control_text"
+        val KEY_TIME_CONTROL_DESCRIPTION = "time_control_description_text"
+        val KEY_TIME_CONTROL_TYPE = "time_control_type_text"
+        val KEY_NUMBER_OF_ROUNDS = "number_of_rounds_text"
+        val KEY_ORGANIZER = "organizer_text"
+        val KEY_ARBITER = "arbiter_text"
+        val KEY_EMAIL = "email_text"
+        val KEY_WEBSITE = "website_text"
+        val KEY_PHONE = "phone_text"
+
+        val KEY_TIME_CONTROL_STANDARD_TYPE = "time_control_standard_type"
+        val KEY_TIME_CONTROL_RAPID_TYPE = "time_control_rapid_type"
+        val KEY_TIME_CONTROL_BLITZ_TYPE = "time_control_blitz_type"
+
+
 
 
         //val PERSONAL_SERVER_HOST = "http://192.168.100.12:8080"

@@ -7,9 +7,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
+import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerDTO;
 import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayersDTO;
+import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentDTO;
 import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentsDataDTO;
 import bobrchess.of.by.belaruschess.network.connection.external.FideApiConnection;
+import bobrchess.of.by.belaruschess.adapter.FideApiAdapterContract;
 import bobrchess.of.by.belaruschess.presenter.FideApiPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackFideApi;
 import bobrchess.of.by.belaruschess.util.Util;
@@ -19,18 +22,18 @@ import bobrchess.of.by.belaruschess.view.activity.FideApiContractView;
 public class FideApiPresenterImpl extends MvpPresenter<FideApiContractView> implements CallBackFideApi, FideApiPresenter {
 
     private FideApiContractView view;
-    private FideApiConnection tournamentConnection;
+    private FideApiConnection fideApiConnection;
     private Boolean viewIsReady = false;
     private Integer connectivityStatus = 0;
 
     public FideApiPresenterImpl() {
-        tournamentConnection = new FideApiConnection();
-        tournamentConnection.attachPresenter(this);
+        fideApiConnection = new FideApiConnection();
+        fideApiConnection.attachPresenter(this);
     }
 
     @Override
     public void onResponse(@NotNull TopPlayersDTO topPlayersDTO) {
-        view.showTopPlayersRating(topPlayersDTO);
+        view.showTopPlayers(topPlayersDTO);
     }
 
     @Override
@@ -39,13 +42,13 @@ public class FideApiPresenterImpl extends MvpPresenter<FideApiContractView> impl
     }
 
     @Override
-    public void loadTopPlayersRating() {
-        tournamentConnection.getTopPlayersRating();
+    public void loadTopPlayers() {
+        fideApiConnection.getTopPlayers();
     }
 
     @Override
-    public void loadTournaments(int id, boolean worldChampion, boolean closestEvents, @NotNull String category, int dateStartMonth) {
-        tournamentConnection.getTournaments(id, worldChampion, closestEvents, category, dateStartMonth);
+    public void loadWorldTournaments(int id, boolean worldChampion, boolean closestEvents, @NotNull String category, int dateStartMonth) {
+        fideApiConnection.getWorldTournaments(id, worldChampion, closestEvents, category, dateStartMonth);
     }
 
     @Override
@@ -88,5 +91,5 @@ public class FideApiPresenterImpl extends MvpPresenter<FideApiContractView> impl
     @Override
     public boolean isConnected(int status) {
         return Util.Companion.isConnected(status);
-    }//todo remove
+    }
 }

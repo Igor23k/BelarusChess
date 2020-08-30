@@ -90,5 +90,5 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     @Override
     public boolean isConnected(int status) {
         return Util.Companion.isConnected(status);
-    }//todo remove
+    }
 }

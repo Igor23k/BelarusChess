@@ -1,11 +1,11 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import java.util.*
+
 class EventPlace(
         var id: Int,
         var name: String) :
-        EventDate(Date("12/12/2014"), id) {//todo
+        EventDate(java.text.DateFormat.getDateInstance().parse("2020/12/12@10:00:00:GMT"), id) {
 
     /**
      * Identifier is an identifier for sorting

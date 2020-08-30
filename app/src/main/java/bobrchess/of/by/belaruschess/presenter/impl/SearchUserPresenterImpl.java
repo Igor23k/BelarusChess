@@ -51,7 +51,7 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
 
     @Override
     public void searchUsers(@NotNull String text) {
-        if(viewIsReady) {
+        if (viewIsReady) {
             userConnection.searchUsers(text);
         }
     }
@@ -108,5 +108,5 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     @Override
     public boolean isConnected(int status) {
         return Util.Companion.isConnected(status);
-    }//todo remove
+    }
 }

@@ -37,6 +37,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
 
+        <!--    <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+
             <!-- enable the search widget to send searches to SearchableActivity -->
             <meta-data
                 android:name="android.app.default_searchable"

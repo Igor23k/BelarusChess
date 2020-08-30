@@ -5,23 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.EventListFragment">
-<!--
-    <TextView
-        android:id="@+id/tv_no_events"
+
+   <!-- <Button
+        android:id="@+id/btnOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/noEntries"
-        android:textColor="@color/darkGrey"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Выберите расположение турнира "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39" />-->
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/btnOrder"
+        app:layout_constraintTop_toBottomOf="@+id/btnOrder"
+        android:layout_marginTop="4dp"
+        android:text="Closest Event"
+        android:textSize="16sp"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/label"
+        app:layout_constraintTop_toBottomOf="@+id/btnOrder" />
+
+    <TextView
+        android:id="@+id/t_chooseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/label"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        android:layout_marginTop="24dp"
+        android:text="Choose a date:"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:id="@+id/i_calendar_birthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        app:layout_constraintStart_toEndOf="@+id/t_chooseDate"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        android:src="@drawable/ic_calendar_black_48dp" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -34,20 +63,23 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/fab_layout_add_one_time"
         android:layout_width="wrap_content"
-        android:layout_height="56dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/fab_show_fab_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/fab_show_fab_menu"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/fab_show_fab_menu"
-        app:layout_constraintTop_toTopOf="@+id/fab_show_fab_menu">
+        app:layout_constraintTop_toBottomOf="@+id/btnOrder">
 
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -87,6 +119,7 @@
         app:layout_constraintTop_toTopOf="@+id/fab_show_fab_menu">
 
         <TextView
+            android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -127,6 +160,7 @@
         app:layout_constraintTop_toTopOf="@+id/fab_show_fab_menu">
 
         <TextView
+            android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
