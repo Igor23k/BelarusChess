@@ -14,8 +14,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
@@ -100,9 +98,10 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     @Override
     public void dialogConfirmButtonClicked() {
         if (presenter.isConnected(getConnectivityStatus())) {
+            dismissAlertDialog();
             if (!tokenAuthFailed) {
                 tokenAuthPresenter.tokenAuthorization();
-            }//todo тут походу элсе нужно еще добавить а то ничего не происходит
+            }
         }
     }
 
@@ -257,6 +256,8 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     public void tokenAuthorization() {
         if (!tokenAuthFailed) {
             tokenAuthPresenter.tokenAuthorization();
+        } else {
+            authorization();
         }
     }
 }

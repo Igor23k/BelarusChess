@@ -59,7 +59,6 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
         addTournamentConnection = new AddTournamentConnection();
         addTournamentConnection.attachPresenter(this);
         attachView(view);
-        view.showProgress();
     }
 
     @Override
@@ -89,11 +88,13 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
             view.removeTournamentFromLocalStorage(removedTournamentId);
             view.showSnackbar(R.string.tournament_deleted_notification);
         }
+        view.hideProgress();
     }
 
     @Override
     public void onFailure(@NonNull ErrorDTO errorDTO) {
         view.showToast(errorDTO.getError());
+        view.hideProgress();
     }
 
     @Override
@@ -111,7 +112,6 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());//todo проверить что норм показывается и остальные так же плэйс и тд
-            } finally {
                 view.hideProgress();
                 view.enableButton();
             }
@@ -158,13 +158,13 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
         this.selectedRefereeIndex = selectedRefereeIndex;
     }
 
-    private void savePlacesIndexes(List<? extends PlaceDTO> places) {
+    public void savePlacesIndexes(List<? extends PlaceDTO> places) {
         for (int i = 0; i < places.size(); i++) {
             placesIndexes.put(i, places.get(i));
         }
     }
 
-    private void saveRefereesIndexes(List<? extends UserDTO> referees) {
+    public void saveRefereesIndexes(List<? extends UserDTO> referees) {
         for (int i = 0; i < referees.size(); i++) {
             refereesIndexes.put(i, referees.get(i));
         }

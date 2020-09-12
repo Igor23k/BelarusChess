@@ -23,7 +23,6 @@ import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.EventTournamentResult
 import bobrchess.of.by.belaruschess.model.EventUser
-import bobrchess.of.by.belaruschess.util.Constants.Companion.BELARUS_LOCALE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
@@ -59,11 +58,11 @@ class ShowUserEvent : ShowEventFragment() {
     var userItemsListType = object : TypeToken<UserDTO>() {}.type
 
     private fun showTournamentsResults() {
-        IOHandler.clearSharedPrefEventData()
-        EventHandler.clearData()
+        IOHandler.clearSharedPrefEventData()//todo
+        EventHandler.clearData()//todo
         var id = 0
         userTournamentsResult?.forEach {
-            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, BELARUS_LOCALE), it.name!!)
+            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.position = it.position
             event.points = it.points
             event.imageUri = it.image
@@ -99,7 +98,7 @@ class ShowUserEvent : ShowEventFragment() {
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null, null)
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerViewTournamentsResults).apply {
             setHasFixedSize(true)
             layoutManager = viewManager

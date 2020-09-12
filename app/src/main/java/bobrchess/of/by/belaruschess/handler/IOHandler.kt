@@ -357,7 +357,7 @@ object IOHandler {
                         val tournament =
                             EventTournament(
                                     2222,//todo
-                                EventDate.parseStringToDate(startDate, locale = Constants.BELARUS_LOCALE),
+                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),
                                 forename
                             )
                         if (shortDescription != null) tournament.shortDescription = shortDescription
@@ -368,7 +368,7 @@ object IOHandler {
                         if (placeId != null) {
                             tournament.placeId = placeId.toInt()
                         }
-                        tournament.finishDate = EventDate.parseStringToDate(finishDate, locale = Constants.BELARUS_LOCALE)
+                        tournament.finishDate = EventDate.parseStringToDate(finishDate, locale = Locale.GERMAN)
                         return tournament
                     }
                     //ONETIME EVENT PARSING
@@ -399,7 +399,7 @@ object IOHandler {
                             }
                         }
                         val oneTimeEvent = OneTimeEvent(
-                            EventDate.parseStringToDate(date, locale = Constants.BELARUS_LOCALE),
+                            EventDate.parseStringToDate(date, locale = Locale.GERMAN),
                             name
                         )
                         if (note != null) {
@@ -423,7 +423,7 @@ object IOHandler {
                                 Divider.Identifier.Text.toString() -> {
                                     val cal = Calendar.getInstance()
                                     cal.time =
-                                        EventDate.parseStringToDate(date, locale = Constants.BELARUS_LOCALE)
+                                        EventDate.parseStringToDate(date, locale = Locale.GERMAN)
                                     month =
                                         context.resources.getStringArray(R.array.month_names)[cal.get(
                                             Calendar.MONTH
@@ -439,7 +439,7 @@ object IOHandler {
                         return Divider(
                             EventDate.parseStringToDate(
                                 date,
-                                locale = Constants.BELARUS_LOCALE
+                                locale = Locale.GERMAN
                             ), month
                         )
                     }

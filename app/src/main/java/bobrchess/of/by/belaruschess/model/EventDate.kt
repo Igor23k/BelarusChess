@@ -107,7 +107,7 @@ open class EventDate : Comparable<EventDate> {
                 Identifier.Date, parseDateToString(
                 this.eventDate,
                 DateFormat.DEFAULT,
-                Constants.BELARUS_LOCALE
+                Locale.GERMAN
         )
         )}"
     }

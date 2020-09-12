@@ -35,6 +35,7 @@ public class SearchPlacePresenterImpl extends MvpPresenter<SearchPlaceContractVi
 
     @Override
     public void loadPlaces() {
+        view.showProgress();
         placeConnection.getPlaces();
     }
 
@@ -63,6 +64,7 @@ public class SearchPlacePresenterImpl extends MvpPresenter<SearchPlaceContractVi
     @Override
     public void onResponse(@NotNull List<? extends PlaceDTO> placesDTO) {
         view.showPlaces(placesDTO);
+        view.hideProgress();
     }
 
     @Override

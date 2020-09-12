@@ -20,7 +20,7 @@ abstract class AbstractActivity : MvpAppCompatActivity(), BaseContractView, Conf
 
     protected var packageModel: PackageModel = PackageModel(this)
     protected var connectivityStatus: Int = 0
-    protected var dialog: ConfirmationDialog? = null
+    public var dialog: ConfirmationDialog? = null
 
     var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {

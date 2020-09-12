@@ -80,7 +80,6 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
     }
 
     private val editCapacity: EditText by lazy {
-        //todo добавить tours count
         view!!.findViewById<EditText>(R.id.e_add_place_capacity)
     }
 

@@ -18,12 +18,16 @@ import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.FideApiAdapterPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.FideApiAdapterPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentsResultPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
+import bobrchess.of.by.belaruschess.util.Constants.Companion.REFEREES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByBase64
+import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.GsonBuilder
@@ -39,11 +43,12 @@ import kotlinx.android.synthetic.main.world_tournament_event_item_view.view.*
 import org.springframework.util.StringUtils
 
 
-class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), TournamentsResultContractView, FideApiAdapterContract {
+class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), TournamentsResultContractView, FideApiAdapterContract, SearchUserContractView {
 
     private var tournamentsResultPresenterImpl: TournamentsResultPresenterImpl? = null
     private var context: Context? = null
     private var fragmentManager: FragmentManager? = null
+    private var referees: List<UserDTO>? = null
     private var places: List<PlaceDTO>? = null
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
@@ -51,7 +56,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     private var users: List<UserDTO>? = null
     private var fideApiAdapterPresenter: FideApiAdapterPresenter? = null
 
-    constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?) : this() {
+
+    constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?, referees: List<UserDTO>?) : this() {
         tournamentsResultPresenterImpl = TournamentsResultPresenterImpl()
         tournamentsResultPresenterImpl!!.attachView(this)
 
@@ -65,6 +71,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
         this.ranks = ranks
         this.countries = countries
         this.users = users
+        this.referees = referees
     }
 
     var isClickable: Boolean = true
@@ -211,11 +218,33 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
                                 val bundle = Bundle()
+                                val gson = GsonBuilder().setPrettyPrinting().create()
                                 //do this in more adaptable way
                                 bundle.putInt(
                                         MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
                                         event.eventID
                                 )
+
+                                val placesList = gson.toJson(places)
+                                val countriesList = gson.toJson(countries)
+                                val refereesList = gson.toJson(referees)
+                                val refereesList1 = gson.toJson(referees)
+
+                                bundle.putString(
+                                        Constants.PLACES,
+                                        placesList
+                                )
+
+                                bundle.putString(
+                                        COUNTRIES,
+                                        countriesList
+                                )
+
+                                bundle.putString(
+                                        REFEREES,
+                                        refereesList
+                                )
+
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
                                 val newFragment = ShowTournamentEvent.newInstance()
@@ -767,22 +796,46 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     }
 
     override fun detachView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun viewIsReady() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onServerUnavailable() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onUnsuccessfulRequest(message: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun setConnectivityStatus(status: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
+    }
+
+    override fun dismissAlertDialog() {
+    }
+
+    override fun showSnackbar(resId: Int?) {
+    }
+
+    override fun showToast(resId: Int?) {
+    }
+
+    override fun showToast(message: String?) {
+    }
+
+    override fun showProgress() {
+    }
+
+    override fun hideProgress() {
+    }
+
+    override fun setConnectionStatus(connectivityStatus: Int?) {
+    }
+
+    override fun showUsers(users: MutableList<out UserDTO>?) {
+        referees = users
+    }
+
 }

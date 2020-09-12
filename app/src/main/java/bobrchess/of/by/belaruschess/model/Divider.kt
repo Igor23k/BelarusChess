@@ -23,7 +23,7 @@ class Divider(date: Date, val text: String) : EventDate(date) {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Date}${IOHandler.tournamentDivider_values}${parseDateToString(
                 this.eventDate,
                 DateFormat.DEFAULT,
-                Constants.BELARUS_LOCALE
+                Locale.GERMAN
         )}${IOHandler.tournamentDivider_properties}${Identifier.Text}${IOHandler.tournamentDivider_values}$text"
     }
 

@@ -12,37 +12,50 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
+import bobrchess.of.by.belaruschess.dto.CountryDTO
+import bobrchess.of.by.belaruschess.dto.PlaceDTO
+import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
-import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
+import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_tournament_event.*
-import org.springframework.util.StringUtils
 import java.text.DateFormat
 
 class ShowTournamentEvent : ShowEventFragment() {
+
+    private var places: List<PlaceDTO>? = null
+    private var countries: List<CountryDTO>? = null
+    private var referees: List<UserDTO>? = null
+
+    var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
+    var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
+    var refereeItemsListType = object : TypeToken<List<UserDTO>>() {}.type
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        places = Gson().fromJson(arguments?.getString(Constants.PLACES), placeItemsListType)
+        countries = Gson().fromJson(arguments?.getString(Constants.COUNTRIES), countryItemsListType)
+        referees = Gson().fromJson(arguments?.getString(Constants.REFEREES), refereeItemsListType)
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_tournament_event, container, false)
     }
-
-    /**
-     * updateUI updates all TextViews and other views to the current instance(Anniversary, Birthday) data
-     */
 
     override fun updateUI() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
         EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
             if (tournamentEvent is EventTournament) {
-                this.user_country_and_rank_and_rating.text = tournamentEvent.name
-                this.user_coach.visibility = TextView.VISIBLE
-                this.user_coach.text = tournamentEvent.shortDescription
+                this.tournament_name.text = tournamentEvent.name
+                this.tournament_short_description.visibility = TextView.VISIBLE
+                this.tournament_short_description.text = tournamentEvent.shortDescription
 
                 var scrollRange = -1
                 (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
@@ -53,7 +66,9 @@ class ShowTournamentEvent : ShowEventFragment() {
                         if (scrollRange + verticalOffset == 0) {
                             setToolbarTitle(context!!.resources.getString(R.string.app_name))
                         } else {
-                            setToolbarTitle(context!!.resources.getString(R.string.app_name))
+                            if (places != null) {
+                                setToolbarTitle(places!![tournamentEvent.placeId!! - 1].name!!)
+                            }
                         }
                     }
                 })
@@ -78,9 +93,15 @@ class ShowTournamentEvent : ShowEventFragment() {
                 val date: String
                 date = tournamentEvent.dateToPrettyString(DateFormat.FULL)
 
-                tv_show_birthday_years_old.text = tournamentEvent.fullDescription
+                tournament_full_description.text = tournamentEvent.fullDescription
 
-                user_birthday.text = date
+                tournament_date.text = date
+
+                if (places != null) {
+                    val place = places!![tournamentEvent.placeId!! - 1]
+                    tournament_location.text = place.city + ", " + place.country?.name
+                }
+
                 updateAvatarImage(tournamentEvent.imageUri)
             }
         }
@@ -155,28 +176,28 @@ class ShowTournamentEvent : ShowEventFragment() {
                 //      }
 
                 //next tournament
-               /* shareBirthdayMsg += "\n" + context!!.resources.getString(
-                        R.string.share_tournament_date_next,
-                        EventDate.parseDateToString(
-                                EventDate.dateToCurrentTimeContext(tournament.eventDate),
-                                DateFormat.FULL
-                        )
-                )*/
+                /* shareBirthdayMsg += "\n" + context!!.resources.getString(
+                         R.string.share_tournament_date_next,
+                         EventDate.parseDateToString(
+                                 EventDate.dateToCurrentTimeContext(tournament.eventDate),
+                                 DateFormat.FULL
+                         )
+                 )*/
 
                 val daysUntil = tournament.getDaysUntil()
-             /*   shareBirthdayMsg += if (daysUntil == 0) {
-                    //today
-                    "\n" + context!!.resources.getString(
-                            R.string.share_tournament_days_today
-                    )
-                } else {
-                    // in X days
-                    "\n" + context!!.resources.getQuantityString(
-                            R.plurals.share_tournament_days,
-                            daysUntil,
-                            daysUntil
-                    )
-                }*/
+                /*   shareBirthdayMsg += if (daysUntil == 0) {
+                       //today
+                       "\n" + context!!.resources.getString(
+                               R.string.share_tournament_days_today
+                       )
+                   } else {
+                       // in X days
+                       "\n" + context!!.resources.getQuantityString(
+                               R.plurals.share_tournament_days,
+                               daysUntil,
+                               daysUntil
+                       )
+                   }*/
 
                 // if (tournament.isYearGiven) {
                 //person will be years old
@@ -201,12 +222,27 @@ class ShowTournamentEvent : ShowEventFragment() {
 
     override fun editEvent() {
 
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val placesList = gson.toJson(places)
+        val refereesList = gson.toJson(referees)
+
         val bundle = Bundle()
         //do this in more adaptable way
         bundle.putInt(
                 MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
                 eventID
         )
+
+        bundle.putString(
+                Constants.PLACES,
+                placesList
+        )
+
+        bundle.putString(
+                Constants.REFEREES,
+                refereesList
+        )
+
         val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
         // add arguments to fragment
         val newBirthdayFragment = TournamentInstanceFragment.newInstance()

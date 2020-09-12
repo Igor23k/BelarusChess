@@ -23,6 +23,7 @@ import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import org.springframework.util.CollectionUtils
 import org.springframework.util.StringUtils
 import java.util.*
 
@@ -99,11 +100,11 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     }
 
     override fun onServerUnavailable() {
-         when {
-             connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-             !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
-             else -> view!!.showSnackBar(viewComponent!!, getInternalizedMessage(KEY_SERVER_UNAVAILABLE))
-         }
+        when {
+            connectivityStatus == TYPE_NOT_CONNECTED -> view!!.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
+            !viewIsReady!! -> view!!.showAlertDialog(R.string.serverIsUnavailable, R.string.serverIsUnavailableMessage, R.string.retry, false)
+            else -> view!!.showSnackBar(viewComponent!!, getInternalizedMessage(KEY_SERVER_UNAVAILABLE))
+        }
     }
 
     override fun loadSpinnersData() {
@@ -173,6 +174,10 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
 
     override fun loadCountries() {
         userConnection.getCountries()
+    }
+
+    override fun spinnersAreLoaded(): Boolean {
+        return !CollectionUtils.isEmpty(countriesIndexes) && !CollectionUtils.isEmpty(coachesIndexes) && !CollectionUtils.isEmpty(ranksIndexes)
     }
 
     override fun attachView(activity: RegistrationContractView) {

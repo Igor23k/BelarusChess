@@ -1,5 +1,6 @@
 package bobrchess.of.by.belaruschess.fragments
 
+import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
@@ -28,7 +29,6 @@ import bobrchess.of.by.belaruschess.presenter.impl.SearchPlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
-import bobrchess.of.by.belaruschess.util.Constants.Companion.BELARUS_LOCALE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_GIRLS
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_JUNIORS
@@ -37,6 +37,7 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_WOMEN
 import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
+import bobrchess.of.by.belaruschess.util.Constants.Companion.REFEREES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOP_PLAYER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
@@ -61,6 +62,7 @@ import kotlin.collections.ArrayList
 
 class EventListFragment : AbstractFragment(), SearchTournamentContractView, FideApiContractView, SearchUserContractView, SearchPlaceContractView {
 
+    private var progressDialog: ProgressDialog? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: EventAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -77,6 +79,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
+    private var referees: List<UserDTO>? = null
     private var userData: UserDTO? = null
 
     override fun onCreateView(
@@ -91,16 +94,19 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
     var userItemsListType = object : TypeToken<List<UserDTO>>() {}.type
+    var refereeItemsListType = object : TypeToken<List<UserDTO>>() {}.type
     var userItemType = object : TypeToken<UserDTO>() {}.type
     var fabIsVisible = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        showProgress()
         places = Gson().fromJson(arguments?.getString(PLACES), placeItemsListType)
         ranks = Gson().fromJson(arguments?.getString(RANKS), rankItemsListType)
         countries = Gson().fromJson(arguments?.getString(COUNTRIES), countryItemsListType)
         users = Gson().fromJson(arguments?.getString(USERS), userItemsListType)
-        userData = Gson().fromJson(arguments?.getString(USER), userItemType)//todo сделатть это все константами и в других классах
+        referees = Gson().fromJson(arguments?.getString(REFEREES), refereeItemsListType)
+        userData = Gson().fromJson(arguments?.getString(USER), userItemType)
 
         super.onViewCreated(view, savedInstanceState)
 
@@ -142,12 +148,13 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
         init()
         initMultifield()
+        hideProgress()
     }
 
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, users)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, users, referees)
 
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).apply {
             setHasFixedSize(true)
@@ -211,7 +218,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         fab_show_fab_menu.isClickable = false
         //show layouts
         if (fabIsVisible) {
-            if (userData!!.beAdmin) {//todo уточнить только ли админу или всем тренерам дать права
+            if (userData!!.beAdmin) {
                 fab_layout_add_place.visibility = ConstraintLayout.VISIBLE
             }
             if (userData!!.beOrganizer) {
@@ -353,7 +360,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             }
 
             R.id.item_show_tournaments -> {
-                EventHandler.clearData()
+                EventHandler.clearData()//TODO
                 entityType = TOURNAMENT
                 searchTournamentPresenter?.loadTournaments()
             }
@@ -467,15 +474,10 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         }
     }
 
-    override fun setConnectionStatus(connectivityStatus: Int?) {
-        println()//todo  перенести в абстракт фрагмент?
-    }
-
     override fun showTournaments(tournaments: List<TournamentDTO>) {
-        //todo такой эе метод в мэйн активити, сделать один чтобы был
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, BELARUS_LOCALE), it.name!!)
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
@@ -484,7 +486,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
             event.placeId = it.place?.id
-            event.finishDate = EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.finishDate!!), DateFormat.DEFAULT, BELARUS_LOCALE)
+            event.finishDate = EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.finishDate!!), DateFormat.DEFAULT, Locale.GERMAN)
             EventHandler.addEvent(
                     event,
                     context!!,
@@ -501,7 +503,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         this.users = users
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         users!!.forEach {
-            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.birthday!!), DateFormat.DEFAULT, BELARUS_LOCALE), it.name!!, it.surname!!)
+            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.birthday!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!, it.surname!!)
             event.rankId = it.rank?.id
             event.countryId = it.country?.id
             event.coachId = it.coach?.id
@@ -526,6 +528,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         val gson = GsonBuilder().setPrettyPrinting().create()
         val placesList = gson.toJson(places)
         val ranksList = gson.toJson(ranks)
+        val refereesList = gson.toJson(referees)
         val countriesList = gson.toJson(countries)
         val usersList = gson.toJson(users)
         val userTournamentsList = gson.toJson(userTournamentsResult)
@@ -553,6 +556,11 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         bundle.putString(
                 TOURNAMENTS_RESULT,
                 userTournamentsList
+        )
+
+        bundle.putString(
+                Constants.REFEREES,
+                refereesList
         )
 
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
@@ -592,8 +600,6 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         )
 
         EventHandler.getEventToEventIndex(eventID)?.let { event ->
-
-
             val eventFragment: Fragment? = when (event) {
                 is EventTournament -> {
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
@@ -637,11 +643,13 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressDialog = ProgressDialog.show(this.context, Constants.EMPTY_STRING, this.getString(R.string.please_wait))
     }
 
     override fun hideProgress() {
-//todo
+        if (progressDialog != null) {
+            progressDialog!!.dismiss()
+        }
     }
 
     override fun showPlaces(places: MutableList<out PlaceDTO>?) {
@@ -672,10 +680,10 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         //btnOrder.visibility = TextView.VISIBLE
         IOHandler.clearSharedPrefEventData()
         worldTournamentsDataDTO.data?.europeanTournaments?.forEach {
-            val event = EventWorldTournament(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("yyyy-mm-dd", it.dateStart!!), DateFormat.DEFAULT, BELARUS_LOCALE), it.name!!)
+            val event = EventWorldTournament(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("yyyy-mm-dd", it.dateStart!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.toursCount = it.numRound?.toInt()
             event.eventType = it.eventType
-            event.finishDate = EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.dateEnd!!), DateFormat.DEFAULT, Constants.BELARUS_LOCALE)
+            event.finishDate = EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.dateEnd!!), DateFormat.DEFAULT, Locale.GERMAN)
             event.country = it.country
             event.city = it.city
             EventHandler.addEvent(
@@ -721,7 +729,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     private fun processTopPlayers(list: List<TopPlayerDTO>?) {
         list?.forEach {
             val fullName = buildFullName(it.name)
-            val event = EventTopPlayer(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("yyyy-mm-dd", it.birthday!!), DateFormat.DEFAULT, Constants.BELARUS_LOCALE), fullName?.get(0)!!, fullName[1])
+            val event = EventTopPlayer(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("yyyy-mm-dd", it.birthday!!), DateFormat.DEFAULT, Locale.GERMAN), fullName?.get(0)!!, fullName[1])
             event.position = it.position?.toInt()
             event.rating = it.rating?.toInt()
             event.blitzRating = it.blitzRating?.toInt()

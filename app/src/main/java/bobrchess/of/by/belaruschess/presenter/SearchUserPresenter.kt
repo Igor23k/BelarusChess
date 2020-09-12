@@ -7,6 +7,8 @@ import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
  */
 
 interface SearchUserPresenter : BasePresenter {
+    fun loadReferees()
+
     fun loadUsers()
 
     fun loadUsers(count: Int?)

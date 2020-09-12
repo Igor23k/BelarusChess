@@ -38,6 +38,8 @@
     <string name="email">Пошта</string>
     <string name="userName">Імя</string>
     <string name="tournamentFullDescriptionHint">Поўнае апісанне</string>
+    <string name="tournamentToursCount">Колькасць тураў турніру</string>
+    <string name="tournamentToursCountHint">>Колькасць тураў</string>
     <string name="userSurname">Прозвішча</string>
     <string name="userPatronymic">Імя па бацьку</string>
     <string name="tournamentName">Назва турніру</string>
@@ -63,6 +65,7 @@
     <string name="connection_error">Памылка злучэння!</string>
     <string name="incorrect_email">Няправільны email! Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_rating">Няправільны рэйтынг! Калі ласка, паспрабуйце яшчэ раз.</string>
+    <string name="incorrect_tours_count">Няправільная колькасць тураў! Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_capacity">Няправільная ўмяшчальнасць! Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_data">Няслушныя дадзеныя! Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_tournament_name">Няправільнае імя турніру! Калі ласка, паспрабуйце яшчэ раз.</string>

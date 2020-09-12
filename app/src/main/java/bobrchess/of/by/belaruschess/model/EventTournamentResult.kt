@@ -50,7 +50,7 @@ class EventTournamentResult(
                 "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
-                        Constants.BELARUS_LOCALE
+                        Locale.GERMAN
                 )}${IOHandler.tournamentDivider_properties}" +
                 getStringFromValue(Identifier.Name, this.name) +
                 getStringFromValue(Identifier.Position, this.position) +

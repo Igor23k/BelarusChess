@@ -74,7 +74,7 @@ class OneTimeEvent(_eventdate: Date?, var name: String) : EventDate(_eventdate) 
                 "${IOHandler.tournamentDivider_properties}${Identifier.Date}${IOHandler.tournamentDivider_values}${parseDateToString(
                     this.eventDate,
                     DateFormat.DEFAULT,
-                    Constants.BELARUS_LOCALE
+                        Locale.GERMAN
                 )}" +
                 getStringFromValue(
                         Identifier.Note,

@@ -88,4 +88,6 @@ abstract class AbstractFragment : Fragment(), BaseContractView, ConfirmationList
                 ).show()
     }
 
+    override fun setConnectionStatus(connectivityStatus: Int?) {}
+
 }

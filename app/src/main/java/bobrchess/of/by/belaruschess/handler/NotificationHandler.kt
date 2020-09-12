@@ -152,7 +152,7 @@ object NotificationHandler {
         event: EventDate,
         reminderStart: ReminderStart
     ) {
-        val intent = Intent(context, AlarmReceiver::class.java)
+        /*val intent = Intent(context, AlarmReceiver::class.java)
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         intent.putExtra(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTSTRING, event.toString())
         intent.putExtra(
@@ -178,7 +178,7 @@ object NotificationHandler {
                             + " name: " + event.name
                 )
             }
-            /*is AnnualEvent -> {
+            *//*is AnnualEvent -> {
                 alarmManager.setWindow(
                     AlarmManager.RTC_WAKEUP,
                     notificationTime.time,
@@ -189,7 +189,7 @@ object NotificationHandler {
                     " ---> AnnualEvent notification added on " + notificationTime + " with ID: " +
                             getRequestCode(event, reminderStart) + " name: " + event.name
                 )
-            }*/
+            }*//*
             is OneTimeEvent -> {
 
                 val dayAfterEvent = Calendar.getInstance().apply {
@@ -210,7 +210,7 @@ object NotificationHandler {
                     )
                 }
             }
-        }
+        }*/
     }
 
     fun getNotificationTime(event: EventDate, reminderStart: ReminderStart): Date {

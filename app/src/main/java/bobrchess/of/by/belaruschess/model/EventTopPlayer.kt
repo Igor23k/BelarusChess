@@ -69,7 +69,7 @@ class EventTopPlayer(
                 "${Identifier.Birthday}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.eventDate,
                         DateFormat.DEFAULT,
-                        Constants.BELARUS_LOCALE
+                        Locale.GERMAN
                 )}${IOHandler.tournamentDivider_properties}" +
                 getStringFromValue(Identifier.Surname, this.surname) +
                 getStringFromValue(Identifier.Id, this.id) +

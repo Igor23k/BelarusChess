@@ -18,6 +18,8 @@ import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView;
 import butterknife.BindView;
 
+import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
+
 /**
  * Created by Igor on 04.05.2018.
  */
@@ -40,18 +42,26 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     }
 
     @Override
+    public void loadReferees() {
+        userConnection.getReferees(packageModel.getValue(TOKEN));
+    }
+
+    @Override
     public void loadUsers() {
+        view.showProgress();
         userConnection.getUsers(10);
     }//todo
 
     @Override
     public void loadUsers(Integer count) {
+        view.showProgress();
         userConnection.getUsers(count);
     }
 
     @Override
     public void searchUsers(@NotNull String text) {
         if (viewIsReady) {
+            view.showProgress();
             userConnection.searchUsers(text);
         }
     }
@@ -74,6 +84,7 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     @Override
     public void onResponse(@NotNull List<? extends UserDTO> users) {
         view.showUsers(users);
+        view.hideProgress();
     }
 
     @Override
@@ -84,12 +95,12 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
 
     @Override
     public void onServerUnavailable() {
-
+        view.hideProgress();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        view.hideProgress();
     }
 
     @Override

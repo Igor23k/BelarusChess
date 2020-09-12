@@ -10,7 +10,6 @@ class Constants {
 
     companion object {
 
-        val BELARUS_LOCALE = Locale("ru_BY")
         const val NOT_SELECTED_INDEX = 0
         const val ABSENCE_INDEX = 1
 
@@ -38,6 +37,7 @@ class Constants {
         val PLACES = "places"
         val RANKS = "ranks"
         val COUNTRIES = "countries"
+        val REFEREES = "referees"
         val USERS = "users"
         val COACH = "coach"
         val TOURNAMENTS_RESULT = "tournamentsResult"
@@ -133,8 +133,9 @@ class Constants {
 
 
 
-        //val PERSONAL_SERVER_HOST = "http://192.168.100.12:8080"
-        val PERSONAL_SERVER_HOST = "http://192.168.43.96:8080"
+        //val PERSONAL_SERVER_HOST = "https://popular-ape-32.loca.lt1"
+        val PERSONAL_SERVER_HOST = "http://192.168.0.103:8080"
+        //val PERSONAL_SERVER_HOST = "http://192.168.43.96:8080"
         val EXTERNAL_FIDE_API_SERVER_HOST = "https://app.fide.com"
         val EXTERNAL_FIDE_API_RELATIVE_PATH = ""
 

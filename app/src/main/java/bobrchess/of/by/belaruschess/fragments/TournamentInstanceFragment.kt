@@ -3,7 +3,7 @@ package bobrchess.of.by.belaruschess.fragments
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -30,10 +30,13 @@ import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,6 +52,8 @@ import java.util.*
  *
  */
 class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContractView {
+
+    private var progressDialog: ProgressDialog? = null
 
     /**
      * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventTournament
@@ -79,7 +84,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
      * editName is the TextEdit used for editing/ showing the forename of the birthday
      * It is lazy initialized
      */
-    private val editName: EditText by lazy {
+    private val editName: EditText by lazy {        //todo добавить tours count
         view!!.findViewById<EditText>(R.id.e_add_tournament_name)
     }
 
@@ -89,6 +94,11 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
      */
     private val editFullDescription: EditText by lazy {
         view!!.findViewById<EditText>(R.id.e_add_tournament_full_description)
+    }
+
+
+    private val editToursCount: EditText by lazy {
+        view!!.findViewById<EditText>(R.id.e_add_tournament_toursCount)
     }
 
     /**
@@ -182,6 +192,9 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         view!!.findViewById<Switch>(R.id.sw_is_start_year_given)
     }
 
+    private var places: List<PlaceDTO>? = null
+    private var referees: List<UserDTO>? = null
+
     private var isCalendarViewSelected: Boolean = true
 
     override fun onCreateView(
@@ -194,6 +207,10 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
     private var refereeId: Int = 0
     private var placeId: Int = 0
+
+    var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
+    var refereeItemsListType = object : TypeToken<List<UserDTO>>() {}.type
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
@@ -215,12 +232,13 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             editDate.visibility = EditText.INVISIBLE
         }
 
+        places = Gson().fromJson(arguments?.getString(Constants.PLACES), placeItemsListType)
+        referees = Gson().fromJson(arguments?.getString(Constants.REFEREES), refereeItemsListType)
+
         addTournamentPresenter = AddTournamentPresenterImpl(this)
         addTournamentPresenter!!.setPackageModel(PackageModel(this.context!!))
         addTournamentPresenter!!.attachView(this)
-        addTournamentPresenter!!.loadReferees()
-        addTournamentPresenter!!.loadPlaces()// todo я хз но походу когда наживаешь редактироватть этот код вызывается и не думаю что это хорошо ....... хотяяяяяяяяяяяяяяяяяя хз
-
+        addTournamentPresenter!!.viewIsReady()
 
         //retrieve fragment parameter when edited instance
         if (arguments != null) {
@@ -242,13 +260,21 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                         this.eventStartDate = cal.time
                     }
 
+                    this.eventEndDate = tournament.finishDate
+                    if (this.eventEndDate!!.after(Calendar.getInstance().time)) {
+                        val cal = Calendar.getInstance()
+                        cal.time = this.eventEndDate
+                        cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
+                        this.eventEndDate = cal.time
+                    }
+
 
                     // the value which should be assigned to the startDate edit box
                     val startDate: String?
                     val endDate: String?
 
                     startDate = EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
-                    endDate = EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
+                    endDate = EventDate.getLocalizedDayMonthYearString(this.eventEndDate)
 
                     if (!isCalendarViewSelected) {
                         editDate.setText(startDate)
@@ -262,6 +288,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
 
                     editShortDescription.setText(tournament.shortDescription)
+                    editToursCount.setText(tournament.toursCount.toString())
                     editName.setText(tournament.name)
                     switchIsYearGiven.isChecked = true
                     tournamentAvatarUri = tournament.imageUri
@@ -295,6 +322,11 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                         // Display the alert dialog on app interface
                         dialog.show()
                     }
+
+                    setPlaceSpinnerAdapter(places as MutableList<out PlaceDTO>?)
+                    setRefereeSpinnerAdapter(referees as MutableList<out UserDTO>?)
+                    addTournamentPresenter!!.savePlacesIndexes(places)
+                    addTournamentPresenter!!.saveRefereesIndexes(referees)
                 }
 
                 this.updateAvatarImage()
@@ -446,17 +478,24 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
      * acceptBtnPressed is a function which is called when the toolbars accept button is pressed
      */
     override fun acceptBtnPressed() {
-        addTournamentPresenter?.addTournament(getTournamentData())
+        try {
+            addTournamentPresenter?.addTournament(getTournamentData())
+        } catch (e: NumberFormatException) {
+            hideProgress()
+            showToast(R.string.incorrect_tours_count);
+            enableButton();
+        }
     }
 
+    @Throws(NumberFormatException::class)
     private fun getTournamentData(): ExtendedTournamentDTO {
         val tournamentData = ExtendedTournamentDTO()
         tournamentData.id = eventID.toLong()
         tournamentData.name = editName.text.toString()
         tournamentData.shortDescription = editShortDescription.text.toString()
         tournamentData.fullDescription = editFullDescription.text.toString()
-        tournamentData.countPlayersInTeam = 1//todo
-        tournamentData.toursCount = 9//todo
+        tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
+        tournamentData.countPlayersInTeam = 1
         tournamentData.image = tournamentAvatarUri
         tournamentData.startDate = convertDateToString(eventStartDate)
         tournamentData.finishDate = convertDateToString(eventEndDate)
@@ -650,9 +689,13 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     override fun showProgress() {
+        progressDialog = ProgressDialog.show(this.context, Constants.EMPTY_STRING, this.getString(R.string.please_wait))
     }
 
     override fun hideProgress() {
+        if (progressDialog != null) {
+            progressDialog!!.dismiss()
+        }
     }
 
     override fun setConnectionStatus(connectivityStatus: Int?) {
@@ -687,7 +730,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
         tournamentEvent.shortDescription = tournamentDTO.shortDescription
         tournamentEvent.fullDescription = tournamentDTO.fullDescription
-        tournamentEvent.finishDate = eventEndDate//todo проверить что так можно брать, не из сущности, у старт то же самое
+        tournamentEvent.finishDate = eventEndDate
         tournamentEvent.imageUri = tournamentDTO.image
         tournamentEvent.refereeId = tournamentDTO.referee?.id
         tournamentEvent.placeId = tournamentDTO.place?.id

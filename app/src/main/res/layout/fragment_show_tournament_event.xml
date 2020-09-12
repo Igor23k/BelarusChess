@@ -26,7 +26,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/user_country_and_rank_and_rating"
+            android:id="@+id/tournament_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -38,23 +38,23 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
-            tools:text="Forename" />
+            tools:text="Tournament Name" />
 
         <TextView
-            android:id="@+id/user_coach"
+            android:id="@+id/tournament_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/user_country_and_rank_and_rating"
-            app:layout_constraintTop_toBottomOf="@+id/user_country_and_rank_and_rating"
-            tools:text="Surname" />
+            app:layout_constraintStart_toStartOf="@+id/tournament_name"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_name"
+            tools:text="Tournament location" />
 
         <TextView
-            android:id="@+id/user_birthday"
+            android:id="@+id/tournament_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -62,27 +62,25 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/user_coach"
-            app:layout_constraintTop_toBottomOf="@+id/user_coach"
+            app:layout_constraintStart_toStartOf="@+id/tournament_location"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_location"
             tools:text="Date" />
 
         <TextView
-            android:id="@+id/user_tournaments_results"
+            android:id="@+id/tournament_short_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_show_birthday_years_old"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_birthday_years_old"
-            tools:text="Note" />
+            app:layout_constraintStart_toStartOf="@+id/tournament_date"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_date"
+            tools:text="Tournament short description" />
 
         <TextView
-            android:id="@+id/something"
+            android:id="@+id/tournament_full_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -90,22 +88,9 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/user_birthday"
-            app:layout_constraintTop_toBottomOf="@+id/user_birthday"
-            tools:text="Days" />
-
-        <TextView
-            android:id="@+id/tv_show_birthday_years_old"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/something"
-            app:layout_constraintTop_toBottomOf="@+id/something"
-            tools:text="Years" />
+            app:layout_constraintStart_toStartOf="@+id/tournament_short_description"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_short_description"
+            tools:text="Full description" />
 
     </android.support.constraint.ConstraintLayout>
 </android.widget.ScrollView>

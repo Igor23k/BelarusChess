@@ -24,8 +24,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.R;
-import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO;
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter;
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl;
 import bobrchess.of.by.belaruschess.util.Constants;
@@ -356,8 +356,10 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
     @Override
     public void dialogConfirmButtonClicked() {
         if (getConnectivityStatus() != Util.Companion.getTYPE_NOT_CONNECTED()) {
-            // dialog.dismiss();todo
-            loadSpinnersData();
+            dismissAlertDialog();
+            if (!presenter.spinnersAreLoaded()) {
+                loadSpinnersData();
+            }
         }
     }
 }

@@ -45,6 +45,8 @@
     <string name="tournamentShortDescriptionHint">Short description</string>
     <string name="tournamentFullDescription">Tournament full description</string>
     <string name="tournamentFullDescriptionHint">Full description</string>
+    <string name="tournamentToursCount">Tournament tours count</string>
+    <string name="tournamentToursCountHint">Tours count</string>
     <string name="placeCity">Place city</string>
     <string name="placeCityHint">City</string>
     <string name="placeStreet">Place street</string>
@@ -66,6 +68,7 @@
     <string name="connection_error">Connection error!</string>
     <string name="incorrect_email">Incorrect email! Please, try again.</string>
     <string name="incorrect_rating">Incorrect rating! Please, try again.</string>
+    <string name="incorrect_tours_count">Incorrect tours count! Please, try again.</string>
     <string name="incorrect_capacity">Incorrect capacity! Please, try again.</string>
     <string name="incorrect_data">Incorrect data! Please, try again.</string>
     <string name="incorrect_tournament_name">Incorrect tournament name! Please, try again.</string>

@@ -10,6 +10,7 @@ interface RegistrationPresenter : BasePresenter {
     fun loadCoaches()
     fun loadRanks()
     fun loadCountries()
+    fun spinnersAreLoaded(): Boolean
     fun attachView(activity: RegistrationContractView)
     fun attachViewComponent(view: View)
     fun setSelectedRankIndex(selectedRankIndex: Int)

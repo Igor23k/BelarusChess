@@ -31,17 +31,20 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
 
     @Override
     public void loadTournaments() {
+        view.showProgress();
         tournamentConnection.getTournaments();
     }
 
     @Override
     public void loadTournaments(Integer count) {
+        view.showProgress();
         tournamentConnection.getTournaments(count);
     }
 
     @Override
     public void searchTournaments(@NotNull String text) {
         if (viewIsReady) {
+            view.showProgress();
             tournamentConnection.searchTournaments(text);
         }
     }
@@ -64,6 +67,7 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     @Override
     public void onResponse(@NotNull List<? extends TournamentDTO> tournamentsDTO) {
         view.showTournaments(tournamentsDTO);
+        view.hideProgress();
     }
 
     @Override
@@ -74,12 +78,12 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
 
     @Override
     public void onServerUnavailable() {
-
+        view.hideProgress();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        view.hideProgress();
     }
 
     @Override
