@@ -21,15 +21,20 @@ import bobrchess.of.by.belaruschess.presenter.CountryPresenter
 import bobrchess.of.by.belaruschess.presenter.PlacePresenter
 import bobrchess.of.by.belaruschess.presenter.RankPresenter
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
-import bobrchess.of.by.belaruschess.presenter.impl.*
+import bobrchess.of.by.belaruschess.presenter.impl.CountryPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.PlacePresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
-import bobrchess.of.by.belaruschess.util.Constants.Companion.REFEREES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER
-import bobrchess.of.by.belaruschess.view.activity.*
+import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
+import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack
+import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
+import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
@@ -38,10 +43,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePresenterCallBack, RankPresenterCallBack, CountryPresenterCallBack, SearchUserContractView {
+class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePresenterCallBack, RankPresenterCallBack, CountryPresenterCallBack {
 
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
-    private var searchUserPresenterImpl: SearchUserPresenterImpl? = null
     private var progressDialog: ProgressDialog? = null
     private var placePresenter: PlacePresenter? = null
     private var rankPresenter: RankPresenter? = null
@@ -49,7 +53,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     private var ranks: List<RankDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
     private var places: List<PlaceDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
     private var countries: List<CountryDTO>? = null
-    private var referees: List<UserDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var userData: UserDTO? = null
     private var refereesAreLoaded = false
@@ -83,12 +86,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         countryPresenter!!.attachView(this)
         countryPresenter!!.viewIsReady()
         countryPresenter!!.getCountries()
-
-        searchUserPresenterImpl = SearchUserPresenterImpl()
-        searchUserPresenterImpl!!.attachView(this)
-        searchUserPresenterImpl!!.packageModel = PackageModel(this)
-        searchUserPresenterImpl!!.viewIsReady()
-        searchUserPresenterImpl!!.loadReferees()
 
         EventHandler.clearData()
         IOHandler.registerIO(this)
@@ -260,7 +257,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         val gson = GsonBuilder().setPrettyPrinting().create()
         val ranksList = gson.toJson(ranks)
         val placesList = gson.toJson(places)
-        val refereesList = gson.toJson(referees)
         val countriesList = gson.toJson(countries)
         val userTournamentsList = gson.toJson(userTournamentsResult)
         val userData = gson.toJson(userData)
@@ -287,11 +283,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         bundle.putString(
                 USER,
                 userData
-        )
-
-        bundle.putString(
-                REFEREES,
-                refereesList
         )
 
         val transaction = supportFragmentManager.beginTransaction()
@@ -384,14 +375,8 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         updateFragments()
     }
 
-    override fun showUsers(referees: MutableList<out UserDTO>?) {
-        this.referees = referees
-        refereesAreLoaded = true
-        updateFragments()
-    }
-
     private fun updateFragments() {
-        if (placesAreLoaded && ranksAreLoaded && tournamentsAreLoaded && countriesAreLoaded && refereesAreLoaded) {
+        if (placesAreLoaded && ranksAreLoaded && tournamentsAreLoaded && countriesAreLoaded) {
             updateTournamentFragments()
             hideProgress()
         }

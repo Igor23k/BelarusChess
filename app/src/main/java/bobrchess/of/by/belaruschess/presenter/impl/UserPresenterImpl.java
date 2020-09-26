@@ -11,22 +11,18 @@ import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.network.connection.internal.SearchUserConnection;
-import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter;
+import bobrchess.of.by.belaruschess.presenter.UserPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
-import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView;
+import bobrchess.of.by.belaruschess.view.activity.UserContractView;
 import butterknife.BindView;
 
 import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
 
-/**
- * Created by Igor on 04.05.2018.
- */
+public class UserPresenterImpl implements CallBackSearchUser, UserPresenter {
 
-public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPresenter {
-
-    private SearchUserContractView view;
+    private UserContractView view;
     private SearchUserConnection userConnection;
     private Boolean viewIsReady = false;
     private PackageModel packageModel;
@@ -36,13 +32,20 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     @BindView(R.id.t_link_registration)
     TextView registrationLink;
 
-    public SearchUserPresenterImpl() {
+    public UserPresenterImpl() {
         userConnection = new SearchUserConnection();
         userConnection.attachPresenter(this);
     }
 
     @Override
+    public void loadUserById(int id) {
+        view.showProgress();
+        userConnection.getUserById(packageModel.getValue(TOKEN), id);
+    }
+
+    @Override
     public void loadReferees() {
+        view.showProgress();
         userConnection.getReferees(packageModel.getValue(TOKEN));
     }
 
@@ -67,8 +70,8 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     }
 
     @Override
-    public void attachView(@NotNull SearchUserContractView searchUserContractView) {
-        view = searchUserContractView;
+    public void attachView(@NotNull UserContractView userContractView) {
+        view = userContractView;
     }
 
     @Override
@@ -84,6 +87,12 @@ public class SearchUserPresenterImpl implements CallBackSearchUser, SearchUserPr
     @Override
     public void onResponse(@NotNull List<? extends UserDTO> users) {
         view.showUsers(users);
+        view.hideProgress();
+    }
+
+    @Override
+    public void onResponse(@NotNull UserDTO user) {
+        view.showUser(user);
         view.hideProgress();
     }
 

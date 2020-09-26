@@ -31,6 +31,9 @@ interface PersonalServerApi {
     @GET("/tournaments/{count}")
     fun tournaments(@Path("count") count: Int): Call<List<TournamentDTO>>
 
+    @GET("/user/{id}")
+    fun userById(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<UserDTO>//todo удалить такой же метод /user/
+
     @GET("/tournamentsResultByUser/{userId}/{limit}")
     fun getTournamentsResultByUser(@Path("userId") id: Int, @Path("limit") limit: Int): Call<List<TournamentResultDTO>>
 

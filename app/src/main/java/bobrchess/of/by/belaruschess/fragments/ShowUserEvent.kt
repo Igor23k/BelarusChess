@@ -98,7 +98,7 @@ class ShowUserEvent : ShowEventFragment() {
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null, null)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null)
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerViewTournamentsResults).apply {
             setHasFixedSize(true)
             layoutManager = viewManager

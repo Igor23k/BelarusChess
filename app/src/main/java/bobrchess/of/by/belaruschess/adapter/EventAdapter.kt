@@ -18,16 +18,13 @@ import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.FideApiAdapterPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.FideApiAdapterPresenterImpl
-import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentsResultPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
-import bobrchess.of.by.belaruschess.util.Constants.Companion.REFEREES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByBase64
-import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.GsonBuilder
@@ -43,12 +40,11 @@ import kotlinx.android.synthetic.main.world_tournament_event_item_view.view.*
 import org.springframework.util.StringUtils
 
 
-class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), TournamentsResultContractView, FideApiAdapterContract, SearchUserContractView {
+class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), TournamentsResultContractView, FideApiAdapterContract {
 
     private var tournamentsResultPresenterImpl: TournamentsResultPresenterImpl? = null
     private var context: Context? = null
     private var fragmentManager: FragmentManager? = null
-    private var referees: List<UserDTO>? = null
     private var places: List<PlaceDTO>? = null
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
@@ -57,7 +53,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     private var fideApiAdapterPresenter: FideApiAdapterPresenter? = null
 
 
-    constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?, referees: List<UserDTO>?) : this() {
+    constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?) : this() {
         tournamentsResultPresenterImpl = TournamentsResultPresenterImpl()
         tournamentsResultPresenterImpl!!.attachView(this)
 
@@ -71,7 +67,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
         this.ranks = ranks
         this.countries = countries
         this.users = users
-        this.referees = referees
     }
 
     var isClickable: Boolean = true
@@ -227,8 +222,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                                 val placesList = gson.toJson(places)
                                 val countriesList = gson.toJson(countries)
-                                val refereesList = gson.toJson(referees)
-                                val refereesList1 = gson.toJson(referees)
 
                                 bundle.putString(
                                         Constants.PLACES,
@@ -238,11 +231,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 bundle.putString(
                                         COUNTRIES,
                                         countriesList
-                                )
-
-                                bundle.putString(
-                                        REFEREES,
-                                        refereesList
                                 )
 
                                 val ft = fragmentManager!!.beginTransaction()
@@ -808,34 +796,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     }
 
     override fun setConnectivityStatus(status: Int?) {
-    }
-
-    override fun showAlertDialog(title: Int, message: Int, buttonText: Int, cancelable: Boolean) {
-    }
-
-    override fun dismissAlertDialog() {
-    }
-
-    override fun showSnackbar(resId: Int?) {
-    }
-
-    override fun showToast(resId: Int?) {
-    }
-
-    override fun showToast(message: String?) {
-    }
-
-    override fun showProgress() {
-    }
-
-    override fun hideProgress() {
-    }
-
-    override fun setConnectionStatus(connectivityStatus: Int?) {
-    }
-
-    override fun showUsers(users: MutableList<out UserDTO>?) {
-        referees = users
     }
 
 }

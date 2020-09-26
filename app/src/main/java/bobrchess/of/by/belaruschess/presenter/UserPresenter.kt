@@ -1,12 +1,14 @@
 package bobrchess.of.by.belaruschess.presenter
 
-import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
+import bobrchess.of.by.belaruschess.view.activity.UserContractView
 
 /**
  * Created by Igor on 12.04.2018.
  */
 
-interface SearchUserPresenter : BasePresenter {
+interface UserPresenter : BasePresenter {
+    fun loadUserById(id: Int)
+
     fun loadReferees()
 
     fun loadUsers()
@@ -15,5 +17,5 @@ interface SearchUserPresenter : BasePresenter {
 
     fun searchUsers(text: String)
 
-    fun attachView(searchUserContractView: SearchUserContractView)
+    fun attachView(userContractView: UserContractView)
 }

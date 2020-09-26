@@ -30,10 +30,12 @@ import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
+import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -51,9 +53,10 @@ import java.util.*
  * This class inherits from android.support.v4.app.Fragment
  *
  */
-class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContractView {
+class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContractView, UserContractView {
 
     private var progressDialog: ProgressDialog? = null
+    private var users: List<UserDTO>? = null
 
     /**
      * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventTournament
@@ -162,6 +165,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     private var addTournamentPresenter: AddTournamentPresenterImpl? = null
+    private var userPresenterImpl: UserPresenterImpl? = null
 
     private fun getDateRegexFromDateFormatSkeletonPattern(skeletonPattern: String): Regex {
         val dateFormatPattern = EventDate.getLocalizedDateFormatPatternFromSkeleton(skeletonPattern)
@@ -209,7 +213,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     private var placeId: Int = 0
 
     var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
-    var refereeItemsListType = object : TypeToken<List<UserDTO>>() {}.type
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -218,13 +221,11 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         refereeSpinner.onItemSelectedListener = RefereeItemSelectedListener()
         placeSpinner.onItemSelectedListener = PlaceItemSelectedListener()
 
-
         if (IOHandler.getBooleanFromKey(IOHandler.SharedPrefKeys.key_date_as_calendar_view) == false) {
             isCalendarViewSelected = false
             editStartDateCalendarview.visibility = EditText.INVISIBLE
             editEndDateCalendarview.visibility = EditText.INVISIBLE
             editDate.visibility = EditText.VISIBLE
-
         } else {
             isCalendarViewSelected = true
             editStartDateCalendarview.visibility = EditText.VISIBLE
@@ -233,104 +234,24 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         }
 
         places = Gson().fromJson(arguments?.getString(Constants.PLACES), placeItemsListType)
-        referees = Gson().fromJson(arguments?.getString(Constants.REFEREES), refereeItemsListType)
 
         addTournamentPresenter = AddTournamentPresenterImpl(this)
         addTournamentPresenter!!.setPackageModel(PackageModel(this.context!!))
         addTournamentPresenter!!.attachView(this)
         addTournamentPresenter!!.viewIsReady()
 
+        userPresenterImpl = UserPresenterImpl()
+        userPresenterImpl!!.attachView(this)
+        userPresenterImpl!!.packageModel = PackageModel(this.context!!)
+        userPresenterImpl!!.viewIsReady()
+        userPresenterImpl!!.loadReferees()
+
         //retrieve fragment parameter when edited instance
         if (arguments != null) {
             isEditedTournament = true
 
             setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_tournament))
-
-
             eventID = (arguments!!.getInt(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID))
-            EventHandler.getEventToEventIndex(eventID)?.let { tournament ->
-                if (tournament is EventTournament) {
-                    refereeId = tournament.refereeId!!.toInt()
-                    placeId = tournament.placeId!!
-                    this.eventStartDate = tournament.eventDate
-                    if (this.eventStartDate!!.after(Calendar.getInstance().time)) {
-                        val cal = Calendar.getInstance()
-                        cal.time = this.eventStartDate
-                        cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
-                        this.eventStartDate = cal.time
-                    }
-
-                    this.eventEndDate = tournament.finishDate
-                    if (this.eventEndDate!!.after(Calendar.getInstance().time)) {
-                        val cal = Calendar.getInstance()
-                        cal.time = this.eventEndDate
-                        cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
-                        this.eventEndDate = cal.time
-                    }
-
-
-                    // the value which should be assigned to the startDate edit box
-                    val startDate: String?
-                    val endDate: String?
-
-                    startDate = EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
-                    endDate = EventDate.getLocalizedDayMonthYearString(this.eventEndDate)
-
-                    if (!isCalendarViewSelected) {
-                        editDate.setText(startDate)
-                        editDate.hint = startDate
-                    } else {
-                        editStartDateCalendarview.text = startDate
-                        editStartDateCalendarview.hint = startDate
-                        editEndDateCalendarview.text = endDate
-                        editEndDateCalendarview.hint = endDate
-                    }
-
-
-                    editShortDescription.setText(tournament.shortDescription)
-                    editToursCount.setText(tournament.toursCount.toString())
-                    editName.setText(tournament.name)
-                    switchIsYearGiven.isChecked = true
-                    tournamentAvatarUri = tournament.imageUri
-
-
-                    if (!tournament.fullDescription.isNullOrBlank()) {
-                        //cb_nickname.isChecked = true
-                        editFullDescription.setText(tournament.fullDescription)
-                        editFullDescription.visibility = EditText.VISIBLE
-                    }
-
-                    btn_tournament_add_fragment_delete.visibility = Button.VISIBLE
-                    //delete functionality
-                    btn_tournament_add_fragment_delete.setOnClickListener {
-                        val alertBuilder = AlertDialog.Builder(context)
-                        alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_tournament))
-                        alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_tournament))
-
-                        // Set a positive button and its click listener on alert dialog
-                        alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                            addTournamentPresenter?.removeTournament(eventID.toLong())
-                        }
-
-                        // don't do anything on negative button
-                        alertBuilder.setNegativeButton(resources.getString(R.string.no)) { _, _ ->
-                        }
-
-                        // Finally, make the alert dialog using builder
-                        val dialog: AlertDialog = alertBuilder.create()
-
-                        // Display the alert dialog on app interface
-                        dialog.show()
-                    }
-
-                    setPlaceSpinnerAdapter(places as MutableList<out PlaceDTO>?)
-                    setRefereeSpinnerAdapter(referees as MutableList<out UserDTO>?)
-                    addTournamentPresenter!!.savePlacesIndexes(places)
-                    addTournamentPresenter!!.saveRefereesIndexes(referees)
-                }
-
-                this.updateAvatarImage()
-            }
             //new birthday is going to be added
         } else {
             setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_add_tournament))
@@ -759,6 +680,100 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                 }
                 closeBtnPressed()
             }
+        }
+    }
+
+    override fun showUsers(users: MutableList<out UserDTO>?) {
+        referees = users
+        updateUI()
+    }
+
+    override fun showUser(user: UserDTO?) {
+    }
+
+    private fun updateUI() {
+        EventHandler.getEventToEventIndex(eventID)?.let { tournament ->
+            if (tournament is EventTournament) {
+                refereeId = tournament.refereeId!!.toInt()
+                placeId = tournament.placeId!!
+                this.eventStartDate = tournament.eventDate
+                if (this.eventStartDate!!.after(Calendar.getInstance().time)) {
+                    val cal = Calendar.getInstance()
+                    cal.time = this.eventStartDate
+                    cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
+                    this.eventStartDate = cal.time
+                }
+
+                this.eventEndDate = tournament.finishDate
+                if (this.eventEndDate!!.after(Calendar.getInstance().time)) {
+                    val cal = Calendar.getInstance()
+                    cal.time = this.eventEndDate
+                    cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
+                    this.eventEndDate = cal.time
+                }
+
+
+                // the value which should be assigned to the startDate edit box
+                val startDate: String?
+                val endDate: String?
+
+                startDate = EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
+                endDate = EventDate.getLocalizedDayMonthYearString(this.eventEndDate)
+
+                if (!isCalendarViewSelected) {
+                    editDate.setText(startDate)
+                    editDate.hint = startDate
+                } else {
+                    editStartDateCalendarview.text = startDate
+                    editStartDateCalendarview.hint = startDate
+                    editEndDateCalendarview.text = endDate
+                    editEndDateCalendarview.hint = endDate
+                }
+
+
+                editShortDescription.setText(tournament.shortDescription)
+                editToursCount.setText(tournament.toursCount.toString())
+                editName.setText(tournament.name)
+                switchIsYearGiven.isChecked = true
+                tournamentAvatarUri = tournament.imageUri
+
+
+                if (!tournament.fullDescription.isNullOrBlank()) {
+                    //cb_nickname.isChecked = true
+                    editFullDescription.setText(tournament.fullDescription)
+                    editFullDescription.visibility = EditText.VISIBLE
+                }
+
+                btn_tournament_add_fragment_delete.visibility = Button.VISIBLE
+                //delete functionality
+                btn_tournament_add_fragment_delete.setOnClickListener {
+                    val alertBuilder = AlertDialog.Builder(context)
+                    alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_tournament))
+                    alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_tournament))
+
+                    // Set a positive button and its click listener on alert dialog
+                    alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+                        addTournamentPresenter?.removeTournament(eventID.toLong())
+                    }
+
+                    // don't do anything on negative button
+                    alertBuilder.setNegativeButton(resources.getString(R.string.no)) { _, _ ->
+                    }
+
+                    // Finally, make the alert dialog using builder
+                    val dialog: AlertDialog = alertBuilder.create()
+
+                    // Display the alert dialog on app interface
+                    dialog.show()
+                }
+
+                setPlaceSpinnerAdapter(places as MutableList<out PlaceDTO>?)
+                setRefereeSpinnerAdapter(referees as MutableList<out UserDTO>?)
+                addTournamentPresenter!!.savePlacesIndexes(places)
+                addTournamentPresenter!!.saveRefereesIndexes(referees)
+            }
+
+            this.updateAvatarImage()
         }
     }
 }

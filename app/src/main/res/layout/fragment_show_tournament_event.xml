@@ -80,6 +80,19 @@
             tools:text="Tournament short description" />
 
         <TextView
+            android:id="@+id/tournament_referee"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tournament_short_description"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_short_description"
+            tools:text="Tournament referee" />
+
+        <TextView
             android:id="@+id/tournament_full_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -88,8 +101,8 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tournament_short_description"
-            app:layout_constraintTop_toBottomOf="@+id/tournament_short_description"
+            app:layout_constraintStart_toStartOf="@+id/tournament_referee"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_referee"
             tools:text="Full description" />
 
     </android.support.constraint.ConstraintLayout>

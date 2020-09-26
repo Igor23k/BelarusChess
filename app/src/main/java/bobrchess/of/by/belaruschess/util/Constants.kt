@@ -38,6 +38,7 @@ class Constants {
         val RANKS = "ranks"
         val COUNTRIES = "countries"
         val REFEREES = "referees"
+        val REFEREES_TOURNAMENT_TEXT = "referees_tournament_text"
         val USERS = "users"
         val COACH = "coach"
         val TOURNAMENTS_RESULT = "tournamentsResult"

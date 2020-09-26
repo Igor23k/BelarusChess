@@ -23,11 +23,11 @@ import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.FideApiPresenter
 import bobrchess.of.by.belaruschess.presenter.SearchPlacePresenter
 import bobrchess.of.by.belaruschess.presenter.SearchTournamentPresenter
-import bobrchess.of.by.belaruschess.presenter.SearchUserPresenter
+import bobrchess.of.by.belaruschess.presenter.UserPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.FideApiPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchPlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
-import bobrchess.of.by.belaruschess.presenter.impl.SearchUserPresenterImpl
+import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_GIRLS
@@ -37,7 +37,6 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_WOMEN
 import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACE
 import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
-import bobrchess.of.by.belaruschess.util.Constants.Companion.REFEREES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOP_PLAYER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
@@ -49,7 +48,7 @@ import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
 import bobrchess.of.by.belaruschess.view.activity.FideApiContractView
 import bobrchess.of.by.belaruschess.view.activity.SearchPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
-import bobrchess.of.by.belaruschess.view.activity.SearchUserContractView
+import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -60,7 +59,7 @@ import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EventListFragment : AbstractFragment(), SearchTournamentContractView, FideApiContractView, SearchUserContractView, SearchPlaceContractView {
+class EventListFragment : AbstractFragment(), SearchTournamentContractView, FideApiContractView, UserContractView, SearchPlaceContractView {
 
     private var progressDialog: ProgressDialog? = null
     private lateinit var recyclerView: RecyclerView
@@ -72,14 +71,13 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
     private var searchTournamentPresenter: SearchTournamentPresenter? = null
     private var fideApiTournamentPresenter: FideApiPresenter? = null
-    private var searchUserPresenter: SearchUserPresenter? = null
+    private var userPresenter: UserPresenter? = null
     private var searchPlacePresenter: SearchPlacePresenter? = null
     private var places: List<PlaceDTO>? = null
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var users: List<UserDTO>? = null
-    private var referees: List<UserDTO>? = null
     private var userData: UserDTO? = null
 
     override fun onCreateView(
@@ -94,18 +92,16 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
     var userItemsListType = object : TypeToken<List<UserDTO>>() {}.type
-    var refereeItemsListType = object : TypeToken<List<UserDTO>>() {}.type
     var userItemType = object : TypeToken<UserDTO>() {}.type
     var fabIsVisible = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         showProgress()
+
         places = Gson().fromJson(arguments?.getString(PLACES), placeItemsListType)
         ranks = Gson().fromJson(arguments?.getString(RANKS), rankItemsListType)
         countries = Gson().fromJson(arguments?.getString(COUNTRIES), countryItemsListType)
         users = Gson().fromJson(arguments?.getString(USERS), userItemsListType)
-        referees = Gson().fromJson(arguments?.getString(REFEREES), refereeItemsListType)
         userData = Gson().fromJson(arguments?.getString(USER), userItemType)
 
         super.onViewCreated(view, savedInstanceState)
@@ -118,9 +114,9 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         searchTournamentPresenter!!.attachView(this)
         searchTournamentPresenter!!.viewIsReady()
 
-        searchUserPresenter = SearchUserPresenterImpl()
-        searchUserPresenter!!.attachView(this)
-        searchUserPresenter!!.viewIsReady()
+        userPresenter = UserPresenterImpl()
+        userPresenter!!.attachView(this)
+        userPresenter!!.viewIsReady()
 
         searchPlacePresenter = SearchPlacePresenterImpl()
         searchPlacePresenter!!.attachView(this)
@@ -154,7 +150,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
     private fun init() {
         viewManager = LinearLayoutManager(view!!.context)
-        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, users, referees)
+        viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, users)
 
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).apply {
             setHasFixedSize(true)
@@ -368,7 +364,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             R.id.item_show_users -> {
                 EventHandler.clearData()
                 entityType = USER
-                searchUserPresenter?.loadUsers()
+                userPresenter?.loadUsers()
             }
 
             R.id.item_show_places -> {
@@ -392,7 +388,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             R.id.action_refresh -> {
                 when (entityType) {
                     USER -> {
-                        searchUserPresenter?.loadUsers()
+                        userPresenter?.loadUsers()
                         EventHandler.clearData()
                     }
                     TOURNAMENT -> {
@@ -528,7 +524,6 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         val gson = GsonBuilder().setPrettyPrinting().create()
         val placesList = gson.toJson(places)
         val ranksList = gson.toJson(ranks)
-        val refereesList = gson.toJson(referees)
         val countriesList = gson.toJson(countries)
         val usersList = gson.toJson(users)
         val userTournamentsList = gson.toJson(userTournamentsResult)
@@ -556,11 +551,6 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         bundle.putString(
                 TOURNAMENTS_RESULT,
                 userTournamentsList
-        )
-
-        bundle.putString(
-                Constants.REFEREES,
-                refereesList
         )
 
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
@@ -825,5 +815,9 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
     private fun getCurrentyear(): Int {
         return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    override fun showUser(user: UserDTO?) {
+
     }
 }

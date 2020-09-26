@@ -76,6 +76,26 @@ class SearchUserConnection {
         })
     }
 
+    fun getUserById(authorizationHeader: String, id: Int) {
+        App.getPersonalServerApi().userById(authorizationHeader, id).enqueue(object : Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                if (response.isSuccessful) {
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack!!.onResponse(response.body())
+                    } else {
+                        callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                    }
+                } else {
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                }
+            }
+
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                callBack!!.onFailure(Util.buildOnFailureResponse())
+            }
+        })
+    }
+
     fun searchUsers(text: String) {
         App.getPersonalServerApi().searchUsers(text).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
