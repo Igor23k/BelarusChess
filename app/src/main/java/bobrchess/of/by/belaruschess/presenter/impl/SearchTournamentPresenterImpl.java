@@ -68,6 +68,7 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     public void onResponse(@NotNull List<? extends TournamentDTO> tournamentsDTO) {
         view.showTournaments(tournamentsDTO);
         view.hideProgress();
+        view.hideProgress();
     }
 
     @Override

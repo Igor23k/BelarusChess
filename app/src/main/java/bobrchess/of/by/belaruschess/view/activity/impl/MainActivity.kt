@@ -65,7 +65,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        showProgress()
         userData = intent.getSerializableExtra("user") as UserDTO
 
         searchTournamentPresenter = SearchTournamentPresenterImpl()
@@ -90,7 +89,9 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         EventHandler.clearData()
         IOHandler.registerIO(this)
         lockAppbar()
-        loadTournamentsFromLocalStorage()
+        IOHandler.clearSharedPrefEventData()//todo убрать, чет локально сохраненные не показывает турниры
+                //  loadTournamentsFromLocalStorage()
+        loadTournaments()
     }
 
     fun unlockAppBar() {
@@ -254,36 +255,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
 
     private fun updateTournamentFragments() {
         val bundle = Bundle()
-        val gson = GsonBuilder().setPrettyPrinting().create()
-        val ranksList = gson.toJson(ranks)
-        val placesList = gson.toJson(places)
-        val countriesList = gson.toJson(countries)
-        val userTournamentsList = gson.toJson(userTournamentsResult)
-        val userData = gson.toJson(userData)
-
-        bundle.putString(
-                PLACES,
-                placesList
-        )
-
-        bundle.putString(
-                RANKS,
-                ranksList
-        )
-
-        bundle.putString(
-                COUNTRIES,
-                countriesList
-        )
-
-        bundle.putString(
-                TOURNAMENTS_RESULT,
-                userTournamentsList
-        )
-        bundle.putString(
-                USER,
-                userData
-        )
 
         val transaction = supportFragmentManager.beginTransaction()
         var eventFragment = EventListFragment.newInstance()
@@ -380,5 +351,21 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             updateTournamentFragments()
             hideProgress()
         }
+    }
+
+    fun getPlaces(): List<PlaceDTO>? {
+        return places
+    }
+
+    fun getRanks(): List<RankDTO>? {
+        return ranks
+    }
+
+    fun getCountries(): List<CountryDTO>? {
+        return countries
+    }
+
+    fun getUserData(): UserDTO? {
+        return userData
     }
 }

@@ -88,23 +88,17 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         return inflater.inflate(R.layout.fragment_event_list, container, false)
     }
 
-    var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
-    var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
-    var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
-    var userItemsListType = object : TypeToken<List<UserDTO>>() {}.type
-    var userItemType = object : TypeToken<UserDTO>() {}.type
     var fabIsVisible = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         showProgress()
 
-        places = Gson().fromJson(arguments?.getString(PLACES), placeItemsListType)
-        ranks = Gson().fromJson(arguments?.getString(RANKS), rankItemsListType)
-        countries = Gson().fromJson(arguments?.getString(COUNTRIES), countryItemsListType)
-        users = Gson().fromJson(arguments?.getString(USERS), userItemsListType)
-        userData = Gson().fromJson(arguments?.getString(USER), userItemType)
-
-        super.onViewCreated(view, savedInstanceState)
+        val activity: MainActivity? = activity as MainActivity?
+        places = activity!!.getPlaces()
+        ranks = activity.getRanks()
+        countries = activity.getCountries()
+        userData = activity.getUserData()
 
         fideApiTournamentPresenter = FideApiPresenterImpl()
         fideApiTournamentPresenter!!.attachView(this)
@@ -510,7 +504,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             EventHandler.addEvent(
                     event,
                     context!!,
-                    writeAfterAdd = true,
+                    writeAfterAdd = false,
                     addNewNotification = false,
                     updateEventList = true,
                     addBitmap = false
@@ -520,42 +514,8 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     private fun updateFragments() {
-        val bundle = Bundle()
-        val gson = GsonBuilder().setPrettyPrinting().create()
-        val placesList = gson.toJson(places)
-        val ranksList = gson.toJson(ranks)
-        val countriesList = gson.toJson(countries)
-        val usersList = gson.toJson(users)
-        val userTournamentsList = gson.toJson(userTournamentsResult)
-
-        bundle.putString(
-                PLACES,
-                placesList
-        )
-
-        bundle.putString(
-                RANKS,
-                ranksList
-        )
-
-        bundle.putString(
-                COUNTRIES,
-                countriesList
-        )
-
-        bundle.putString(
-                USERS,
-                usersList
-        )
-
-        bundle.putString(
-                TOURNAMENTS_RESULT,
-                userTournamentsList
-        )
-
         val transaction = this.activity?.supportFragmentManager?.beginTransaction()
         val eventFragment = this
-        eventFragment.arguments = bundle
         transaction?.replace(
                 R.id.fragment_placeholder,
                 eventFragment
