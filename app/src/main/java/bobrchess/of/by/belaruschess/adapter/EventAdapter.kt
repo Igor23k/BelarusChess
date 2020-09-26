@@ -213,24 +213,10 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
                                 val bundle = Bundle()
-                                val gson = GsonBuilder().setPrettyPrinting().create()
                                 //do this in more adaptable way
                                 bundle.putInt(
                                         MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
                                         event.eventID
-                                )
-
-                                val placesList = gson.toJson(places)
-                                val countriesList = gson.toJson(countries)
-
-                                bundle.putString(
-                                        Constants.PLACES,
-                                        placesList
-                                )
-
-                                bundle.putString(
-                                        COUNTRIES,
-                                        countriesList
                                 )
 
                                 val ft = fragmentManager!!.beginTransaction()
@@ -505,12 +491,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                         eventPlace.eventID
                                 )
                                 val gson = GsonBuilder().setPrettyPrinting().create()
-                                val countriesList = gson.toJson(countries)
 
-                                bundle.putString(
-                                        COUNTRIES,
-                                        countriesList
-                                )
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
                                 val fragment = ShowPlaceEvent.newInstance()
@@ -678,6 +659,10 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
         ft.commit()
     }
 
+    public fun getWorldTournament(): String{
+        return "a"
+    }
+
     private fun eventAdapterWorldTournamentItemOpen(worldTournamentDTO: WorldTournamentDTO?) {
         val bundle = Bundle()
 
@@ -709,6 +694,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     }
 
 
+
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
         return if (EventHandler.getList().isEmpty()) {
@@ -734,8 +720,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
             val newFragment = ShowUserEvent.newInstance()
 
             val gson = GsonBuilder().setPrettyPrinting().create()
-            val ranksList = gson.toJson(ranks)
-            val countriesList = gson.toJson(countries)
             val coach = coachId?.toInt()?.let { it1 -> users?.get(it1) }
             val userTournamentsList = gson.toJson(userTournamentsResult)
 
@@ -745,15 +729,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         gson.toJson(coach)
                 )
             }
-            bundle.putString(
-                    RANKS,
-                    ranksList
-            )
-
-            bundle.putString(
-                    COUNTRIES,
-                    countriesList
-            )
 
             bundle.putString(
                     TOURNAMENTS_RESULT,

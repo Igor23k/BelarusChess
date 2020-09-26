@@ -212,8 +212,6 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     private var refereeId: Int = 0
     private var placeId: Int = 0
 
-    var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
@@ -233,7 +231,8 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             editDate.visibility = EditText.INVISIBLE
         }
 
-        places = Gson().fromJson(arguments?.getString(Constants.PLACES), placeItemsListType)
+        val activity: MainActivity? = activity as MainActivity?
+        places = activity!!.getPlaces()
 
         addTournamentPresenter = AddTournamentPresenterImpl(this)
         addTournamentPresenter!!.setPackageModel(PackageModel(this.context!!))

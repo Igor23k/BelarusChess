@@ -24,9 +24,6 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.EventTournamentResult
 import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
-import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
-import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
-import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
@@ -81,9 +78,11 @@ class ShowUserEvent : ShowEventFragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        places = Gson().fromJson(arguments?.getString(PLACES), placeItemsListType)
-        ranks = Gson().fromJson(arguments?.getString(RANKS), rankItemsListType)
-        countries = Gson().fromJson(arguments?.getString(COUNTRIES), countryItemsListType)
+        val activity: MainActivity? = activity as MainActivity?
+        places = activity!!.getPlaces()
+        ranks = activity.getRanks()
+        countries = activity.getCountries()
+
         userTournamentsResult = Gson().fromJson(arguments?.getString(TOURNAMENTS_RESULT), userTournamentsResultItemsListType)//todo удалить
         coach = Gson().fromJson(arguments?.getString(COACH), userItemsListType)
         (context as MainActivity).unlockAppBar()

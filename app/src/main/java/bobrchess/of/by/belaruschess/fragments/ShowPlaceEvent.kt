@@ -28,13 +28,13 @@ import org.springframework.util.StringUtils
 class ShowPlaceEvent : ShowEventFragment() {
 
     private var countries: List<CountryDTO>? = null
-    private var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        countries = Gson().fromJson(arguments?.getString(COUNTRIES), countryItemsListType)
+        val activity: MainActivity? = activity as MainActivity?
+        countries = activity?.getCountries()
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_place_event, container, false)
     }

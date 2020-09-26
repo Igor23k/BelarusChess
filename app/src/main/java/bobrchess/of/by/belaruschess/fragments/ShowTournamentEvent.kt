@@ -38,8 +38,6 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
     private var places: List<PlaceDTO>? = null
     private var countries: List<CountryDTO>? = null
     private var tournament: EventTournament? = null
-    private var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
-    private var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
     private var progressDialog: ProgressDialog? = null
     private var referee: UserDTO? = null
 
@@ -54,8 +52,9 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
         userPresenterImpl?.viewIsReady()
         tournament?.refereeId?.toInt()?.let { userPresenterImpl?.loadUserById(it) }
 
-        places = Gson().fromJson(arguments?.getString(Constants.PLACES), placeItemsListType)
-        countries = Gson().fromJson(arguments?.getString(Constants.COUNTRIES), countryItemsListType)
+        val activity: MainActivity? = activity as MainActivity?
+        places = activity!!.getPlaces()
+        countries = activity.getCountries()
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_tournament_event, container, false)
     }
@@ -243,20 +242,11 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
     }
 
     override fun editEvent() {
-
-        val gson = GsonBuilder().setPrettyPrinting().create()
-        val placesList = gson.toJson(places)
-
         val bundle = Bundle()
         //do this in more adaptable way
         bundle.putInt(
                 MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
                 eventID
-        )
-
-        bundle.putString(
-                Constants.PLACES,
-                placesList
         )
 
         val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
