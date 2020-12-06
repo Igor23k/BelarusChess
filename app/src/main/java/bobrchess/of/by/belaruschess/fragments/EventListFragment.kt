@@ -3,6 +3,7 @@ package bobrchess.of.by.belaruschess.fragments
 import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.FloatingActionButton
@@ -29,19 +30,14 @@ import bobrchess.of.by.belaruschess.presenter.impl.SearchPlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
-import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_GIRLS
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_JUNIORS
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_RATING_OPEN
 import bobrchess.of.by.belaruschess.util.Constants.Companion.KEY_WOMEN
 import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACE
-import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
-import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOP_PLAYER
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENT
-import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER
-import bobrchess.of.by.belaruschess.util.Constants.Companion.USERS
 import bobrchess.of.by.belaruschess.util.Constants.Companion.WORLD_TOURNAMENT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
@@ -49,10 +45,8 @@ import bobrchess.of.by.belaruschess.view.activity.FideApiContractView
 import bobrchess.of.by.belaruschess.view.activity.SearchPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
+import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -377,6 +371,12 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                 EventHandler.clearData()
                 entityType = TOP_PLAYER
                 fideApiTournamentPresenter?.loadTopPlayers()
+            }
+
+            R.id.item_logout -> {
+                EventHandler.clearData()
+                val intent = Intent(this.context, AuthorizationActivity::class.java)
+                startActivity(intent)
             }
 
             R.id.action_refresh -> {

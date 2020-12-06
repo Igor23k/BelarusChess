@@ -29,6 +29,8 @@
     <string name="action_users">Пользователи</string>
     <string name="action_tournaments">Турниры</string>
     <string name="action_world_tournaments">Мировые турниры</string>
+    <string name="action_world_rating">Мировой рейтинг</string>
+    <string name="action_logout">Выход</string>
     <string name="action_places">Места проведения</string>
     <string name="action_info">Информация</string>
     <string name="draw">Провести жеребьевку</string>

@@ -27,6 +27,8 @@
     <string name="action_users">Карыстальнікі</string>
     <string name="action_tournaments">Турніры</string>
     <string name="action_world_tournaments">Сусветныя турніры</string>
+    <string name="action_world_rating">Cусветны рэйтынг</string>
+    <string name="action_logout">Выхад</string>
     <string name="action_places">Месцы правядзення</string>
     <string name="action_info">Інфармацыя</string>
     <string name="draw">Правесці жараб\'ёўку</string>

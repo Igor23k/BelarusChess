@@ -29,6 +29,7 @@
     <string name="action_tournaments">Tournaments</string>
     <string name="action_world_tournaments">World tournaments</string>
     <string name="action_world_rating">Мировой рейтинг</string>
+    <string name="action_logout">Выход</string>
     <string name="action_places">Places</string>
     <string name="action_info">Info</string>
     <string name="draw">Draw</string>

@@ -26,16 +26,10 @@ import bobrchess.of.by.belaruschess.presenter.impl.PlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
-import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
-import bobrchess.of.by.belaruschess.util.Constants.Companion.PLACES
-import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
-import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
-import bobrchess.of.by.belaruschess.util.Constants.Companion.USER
 import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
-import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.DateFormat
@@ -53,9 +47,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     private var ranks: List<RankDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
     private var places: List<PlaceDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
     private var countries: List<CountryDTO>? = null
-    private var userTournamentsResult: List<TournamentResultDTO>? = null
     private var userData: UserDTO? = null
-    private var refereesAreLoaded = false
     private var tournamentsAreLoaded = false
     private var countriesAreLoaded = false
     private var placesAreLoaded = false
