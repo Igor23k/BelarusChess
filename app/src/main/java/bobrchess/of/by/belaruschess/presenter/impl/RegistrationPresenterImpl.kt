@@ -88,7 +88,10 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
                 onServerUnavailable()
             }
             Constants.KEY_UNSUCCESSFUL_REQUEST, INTERNAL_SERVER_ERROR -> {
-                onUnsuccessfulRequest(errorDTO.message)
+                onUnsuccessfulRequest(getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+            }
+            else -> {
+                onUnsuccessfulRequest(getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
             }
         }
     }

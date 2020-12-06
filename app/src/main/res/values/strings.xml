@@ -5,6 +5,8 @@
     <string name="following_hint">Following</string>
     <string name="friends_hint">Friends:</string>
     <string name="coach_hint">Coach:</string>
+    <string name="gender_male">Male:</string>
+    <string name="gender_female">Female:</string>
 
     <string name="search_user_query_hint">Enter user name</string>
     <string name="search_query_hint">Enter text</string>

@@ -63,13 +63,13 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
     override fun onFailure(errorDTO: ErrorDTO) {
         view!!.hideProgress()
         view!!.enableButton()
-
+        //todo залогать errordto.message и остальные ошибки
         when (errorDTO.error) {
             Constants.SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
             }
             Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
-                onUnsuccessfulRequest(errorDTO.message)
+                onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
             }
             else -> {
                 when (errorDTO.message) {
@@ -77,7 +77,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
                         onInvalidEmailOrPassword()
                     }
                     else -> {
-                        onUnsuccessfulRequest(errorDTO.message)
+                        onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
                     }
                 }
             }

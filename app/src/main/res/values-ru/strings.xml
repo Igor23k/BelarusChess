@@ -87,6 +87,7 @@
     <string name="dash">-</string>
     <string name="absence">Отсутствует</string>
     <string name="rank_absence">Звание отсутствует</string>
+    <string name="country_absence">Страна отсутствует</string>
     <string name="coach_absence">Тренер отсутствует</string>
     <string name="coach">Тренер:</string>
     <string name="notSelected">Не выбрано</string>

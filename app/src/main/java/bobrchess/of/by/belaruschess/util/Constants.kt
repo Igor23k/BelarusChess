@@ -18,6 +18,7 @@ class Constants {
         val SERVER_UNAVAILABLE = "Server is unavailable"
         val KEY_SERVER_UNAVAILABLE = "server_is_unavailable"
         val INTERNAL_SERVER_ERROR = "Internal Server Error"
+        val KEY_INTERNAL_SERVER_ERROR = "internal_server_error"
         val KEY_SERVER_UNAVAILABLE_JSON_FORMAT = "server_unavailable_json_format"
         val KEY_GENDER_MALE = "male"
         val KEY_GENDER_FEMALE = "female"

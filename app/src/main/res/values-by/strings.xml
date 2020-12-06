@@ -5,6 +5,8 @@
     <string name="following_hint">Падпісаны</string>
     <string name="friends_hint">Сяброў:</string>
     <string name="coach_hint">Трэнер:</string>
+    <string name="gender_male">Мужчынскі:</string>
+    <string name="gender_female">Жаночы:</string>
 
     <string name="search_user_query_hint">Калі ласка, увядзіце імя карыстальніка</string>
     <string name="search_query_hint">Калі ласка, увядзіце тэкст</string>
@@ -76,6 +78,7 @@
     <string name="description">Апісанне</string>
     <string name="location">Месцазнаходжанне</string>
     <string name="userRating_number">1900</string>
+    <string name="user_name">Імя</string>
     <string name="user_full_name_placeholder">%1$s %2$s</string>
     <string name="count_points">Ачкоў:</string>
     <string name="judge">Суддзя:</string>
@@ -84,6 +87,7 @@
     <string name="dash">-</string>
     <string name="absence">Адсутнічае</string>
     <string name="rank_absence">Званне адсутнічае</string>
+    <string name="country_absence">Краіна адсутнічае</string>
     <string name="coach_absence">Трэнер адсутнічае</string>
     <string name="coach">Трэнер:</string>
     <string name="notSelected">Не выбрана</string>
