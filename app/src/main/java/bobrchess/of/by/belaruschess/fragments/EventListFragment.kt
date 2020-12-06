@@ -1,5 +1,6 @@
 package bobrchess.of.by.belaruschess.fragments
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.Context
@@ -374,9 +375,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             }
 
             R.id.item_logout -> {
-                EventHandler.clearData()
-                val intent = Intent(this.context, AuthorizationActivity::class.java)
-                startActivity(intent)
+               showLogoutConfirmation()
             }
 
             R.id.action_refresh -> {
@@ -406,6 +405,29 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showLogoutConfirmation() {
+        val alertBuilder = AlertDialog.Builder(context)
+        alertBuilder.setTitle(resources.getString(R.string.confirmation))
+        alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_logout))
+
+        // Set a positive button and its click listener on alert dialog
+        alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
+            EventHandler.clearData()
+            val intent = Intent(this.context, AuthorizationActivity::class.java)
+            startActivity(intent)
+        }
+
+        // don't do anything on negative button
+        alertBuilder.setNegativeButton(resources.getString(R.string.no)) { _, _ ->
+        }
+
+        // Finally, make the alert dialog using builder
+        val dialog: AlertDialog = alertBuilder.create()
+
+        // Display the alert dialog on app interface
+        dialog.show()
     }
 
 

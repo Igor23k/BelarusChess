@@ -144,7 +144,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
                     //delete functionality
                     btn_place_add_fragment_delete.setOnClickListener {
                         val alertBuilder = AlertDialog.Builder(context)
-                        alertBuilder.setTitle(resources.getString(R.string.alert_dialog_title_delete_place))
+                        alertBuilder.setTitle(resources.getString(R.string.confirmation))
                         alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_place))
 
                         // Set a positive button and its click listener on alert dialog

@@ -208,6 +208,9 @@
     <string name="avatar_btn_clicked_menu_item_delete_photo">Удалить фото</string>
     <string name="verification_edit_date_input">Введенная дата не соответствует требуемому формату даты!\nПожалуйста, используйте формат как: %1$s</string>
 
+    <string name="confirmation">Подтверждение</string>
+    <string name="alert_dialog_body_message_logout">Вы уверены, что хотите выйти из аккаунта?</string>
+
     <!-- alert dialog delete -->
     <string name="alert_dialog_title_delete_tournament">Удалить турнир</string>
     <string name="alert_dialog_title_delete_place">Удалить место проведения</string>
