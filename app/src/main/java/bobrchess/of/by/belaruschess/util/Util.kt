@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Base64
-import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
@@ -198,8 +197,8 @@ class Util {
 
         fun getInternalizedMessage(key: String): String {
             return try {
-                val errors = ResourceBundle.getBundle("messages", Locale.getDefault())
-                errors.getString(key)
+                val messages = ResourceBundle.getBundle("messages", Locale.getDefault())
+                messages.getString(key)
             } catch (e: Exception) {
                 ""
             }

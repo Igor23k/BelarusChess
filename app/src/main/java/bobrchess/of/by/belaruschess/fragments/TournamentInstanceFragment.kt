@@ -37,8 +37,6 @@ import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -71,12 +69,12 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     /**
      * tournamentAvatarUri is a string to store the user picked image for the avatar
      */
-    private var tournamentAvatarUri: String? = null
+    private var tournamentImage: String? = null
 
     /**
      * avatarImgWasEdited is a boolean flag to store the information whether the avatar img has been changed
      */
-    private var avatarImgWasEdited = false
+    private var imageWasEdited = false
 
     /**
      * REQUEST_IMAGE_GET is an intent code used for open the photo gallery
@@ -331,16 +329,16 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
             dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
                 this?.setOnClickListener {
                     dialog.dismiss()
-                    if (isEditedTournament && tournamentAvatarUri != null && (EventHandler.getEventToEventIndex(
+                    if (isEditedTournament && tournamentImage != null && (EventHandler.getEventToEventIndex(
                                     eventID
                             ) as EventTournament).imageUri != null
                     ) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        avatarImgWasEdited = true
-                        tournamentAvatarUri = null
+                        imageWasEdited = true
+                        tournamentImage = null
                     } else {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        tournamentAvatarUri = null
+                        tournamentImage = null
                     }
                 }
             }
@@ -375,6 +373,9 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
 
+            val imageInputStream = context!!.contentResolver.openInputStream(data.data!!)
+            val encodedImage = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageInputStream?.readBytes())
+
             Thread(Runnable {
                 val bitmap =
                         MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
@@ -389,8 +390,8 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                 }
             }).start()
 
-            tournamentAvatarUri = fullPhotoUri.toString()
-            avatarImgWasEdited = true
+            tournamentImage = encodedImage
+            imageWasEdited = true
         }
     }
 
@@ -416,7 +417,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
         tournamentData.fullDescription = editFullDescription.text.toString()
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
         tournamentData.countPlayersInTeam = 1
-        tournamentData.image = tournamentAvatarUri
+        tournamentData.image = tournamentImage
         tournamentData.startDate = convertDateToString(eventStartDate)
         tournamentData.finishDate = convertDateToString(eventEndDate)
         return tournamentData
@@ -573,6 +574,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                 android.R.layout.simple_spinner_dropdown_item, refereeNames)
         refereeSpinner.adapter = adapter
         refereeSpinner.setSelection(getUserIndexById(referees, refereeId) + 1)
+        addTournamentPresenter?.saveRefereesIndexes(referees)
     }
 
     override fun setPlaceSpinnerAdapter(places: MutableList<out PlaceDTO>?) {
@@ -582,6 +584,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                 android.R.layout.simple_spinner_dropdown_item, placeNames)
         placeSpinner.adapter = adapter
         placeSpinner.setSelection(getPlaceIndexById(places, placeId) + 1)
+        addTournamentPresenter?.savePlacesIndexes(places)
     }
 
     private fun getUserIndexById(list: MutableList<out UserDTO>?, id: Int): Int {
@@ -734,7 +737,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                 editToursCount.setText(tournament.toursCount.toString())
                 editName.setText(tournament.name)
                 switchIsYearGiven.isChecked = true
-                tournamentAvatarUri = tournament.imageUri
+                tournamentImage = tournament.imageUri
 
 
                 if (!tournament.fullDescription.isNullOrBlank()) {
@@ -766,13 +769,14 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
                     dialog.show()
                 }
 
-                setPlaceSpinnerAdapter(places as MutableList<out PlaceDTO>?)
-                setRefereeSpinnerAdapter(referees as MutableList<out UserDTO>?)
                 addTournamentPresenter!!.savePlacesIndexes(places)
                 addTournamentPresenter!!.saveRefereesIndexes(referees)
             }
 
             this.updateAvatarImage()
         }
+
+        setPlaceSpinnerAdapter(places as MutableList<out PlaceDTO>?)
+        setRefereeSpinnerAdapter(referees as MutableList<out UserDTO>?)
     }
 }

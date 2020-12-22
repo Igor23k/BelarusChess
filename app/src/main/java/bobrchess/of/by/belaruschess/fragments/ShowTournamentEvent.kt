@@ -61,60 +61,62 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
 
     override fun updateUI() {
         if (referee != null) {
-            (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
-            EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
-                if (tournamentEvent is EventTournament) {
-                    this.tournament_name.text = tournamentEvent.name
-                    this.tournament_short_description.visibility = TextView.VISIBLE
-                    this.tournament_short_description.text = tournamentEvent.shortDescription
-                    this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + referee?.name + " " + referee?.surname
+            if (context != null) {
+                (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
+                EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
+                    if (tournamentEvent is EventTournament) {
+                        this.tournament_name.text = tournamentEvent.name
+                        this.tournament_short_description.visibility = TextView.VISIBLE
+                        this.tournament_short_description.text = tournamentEvent.shortDescription
+                        this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + referee?.name + " " + referee?.surname
 
-                    var scrollRange = -1
-                    (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
-                        if (scrollRange == -1) {
-                            scrollRange = appbarLayout.totalScrollRange
-                        }
-                        if (context != null) {
-                            if (scrollRange + verticalOffset == 0) {
-                                setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                            } else {
-                                if (places != null) {
-                                    setToolbarTitle(places!![tournamentEvent.placeId!! - 1].name!!)
+                        var scrollRange = -1
+                        (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
+                            if (scrollRange == -1) {
+                                scrollRange = appbarLayout.totalScrollRange
+                            }
+                            if (context != null) {
+                                if (scrollRange + verticalOffset == 0) {
+                                    setToolbarTitle(context!!.resources.getString(R.string.app_name))
+                                } else {
+                                    if (places != null) {
+                                        setToolbarTitle(places!![tournamentEvent.placeId!! - 1].name!!)
+                                    }
                                 }
                             }
+                        })
+
+                        //only set expanded title color to white, when background is not white, background is white when no avatar image is set
+                        if (tournamentEvent.imageUri != null) {
+                            (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
+                                    ContextCompat.getColor(
+                                            context!!,
+                                            R.color.white
+                                    )
+                            )
+                        } else {
+                            (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
+                                    ContextCompat.getColor(
+                                            context!!,
+                                            R.color.darkGrey
+                                    )
+                            )
                         }
-                    })
 
-                    //only set expanded title color to white, when background is not white, background is white when no avatar image is set
-                    if (tournamentEvent.imageUri != null) {
-                        (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
-                                ContextCompat.getColor(
-                                        context!!,
-                                        R.color.white
-                                )
-                        )
-                    } else {
-                        (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
-                                ContextCompat.getColor(
-                                        context!!,
-                                        R.color.darkGrey
-                                )
-                        )
+                        val date: String
+                        date = tournamentEvent.dateToPrettyString(DateFormat.FULL)
+
+                        tournament_full_description.text = tournamentEvent.fullDescription
+
+                        tournament_date.text = date
+
+                        if (places != null) {
+                            val place = places!![tournamentEvent.placeId!! - 1]
+                            tournament_location.text = place.city + ", " + place.country?.name
+                        }
+
+                        updateAvatarImage(tournamentEvent.imageUri)
                     }
-
-                    val date: String
-                    date = tournamentEvent.dateToPrettyString(DateFormat.FULL)
-
-                    tournament_full_description.text = tournamentEvent.fullDescription
-
-                    tournament_date.text = date
-
-                    if (places != null) {
-                        val place = places!![tournamentEvent.placeId!! - 1]
-                        tournament_location.text = place.city + ", " + place.country?.name
-                    }
-
-                    updateAvatarImage(tournamentEvent.imageUri)
                 }
             }
         }
