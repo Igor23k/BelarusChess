@@ -227,7 +227,7 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
 
     @Override
     public void setGenderSpinnerAdapter(@NonNull List<String> genders) {
-        genders.add(0, getString(R.string.notSelected));
+        genders.add(0, getString(R.string.chooseGender));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, genders);
         genderSpinner.setAdapter(adapter);
@@ -235,7 +235,7 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
 
     @Override
     public void setCoachSpinnerAdapter(@NonNull List<String> coachesNames) {
-        coachesNames.add(0, getString(R.string.notSelected));
+        coachesNames.add(0, getString(R.string.chooseCoach));
         coachesNames.add(1, getString(R.string.absence));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, coachesNames);
@@ -244,7 +244,7 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
 
     @Override
     public void setRankSpinnerAdapter(@NonNull List<String> ranksNames) {
-        ranksNames.add(0, getString(R.string.notSelected));
+        ranksNames.add(0, getString(R.string.chooseRank));
         ranksNames.add(1, getString(R.string.absence));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, ranksNames);
@@ -253,7 +253,7 @@ public class RegistrationActivity extends AbstractActivity implements Registrati
 
     @Override
     public void setCountrySpinnerAdapter(@NonNull List<String> countriesNames) {
-        countriesNames.add(0, getString(R.string.notSelected));
+        countriesNames.add(0, getString(R.string.chooseCountry));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, countriesNames);
         countrySpinner.setAdapter(adapter);

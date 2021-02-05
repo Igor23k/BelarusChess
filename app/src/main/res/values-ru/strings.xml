@@ -92,7 +92,10 @@
     <string name="coach">Тренер:</string>
     <string name="notSelected">Не выбрано</string>
     <string name="chooseReferee">Выберите судью</string>
+    <string name="chooseCoach">Выберите тренера</string>
+    <string name="chooseRank">Выберите звание</string>
     <string name="chooseCountry">Выберите страну</string>
+    <string name="chooseGender">Выберите пол</string>
     <string name="choosePlace">Выберите место</string>
     <string name="bornOnYear">Год рождения: %1$s</string>
     <string name="standardRating">Стандартный рейтинг: %1$s</string>
