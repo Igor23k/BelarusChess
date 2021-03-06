@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollViewRegistration"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -12,6 +13,36 @@
         android:paddingLeft="24dp"
         android:paddingTop="56dp"
         android:paddingRight="24dp">
+
+        <FrameLayout
+            android:id="@+id/frame_layout_add_avatar_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_add_avatar_btn"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_birthday_person" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|end"
+                android:clickable="false"
+                android:src="@drawable/ic_add_a_photo"
+                app:elevation="0dp"
+                app:fabCustomSize="40dp" />
+        </FrameLayout>
 
         <ImageView
             android:layout_width="wrap_content"

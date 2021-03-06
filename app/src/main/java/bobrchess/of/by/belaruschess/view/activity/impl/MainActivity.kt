@@ -82,7 +82,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         IOHandler.registerIO(this)
         lockAppbar()
         IOHandler.clearSharedPrefEventData()//todo убрать, чет локально сохраненные не показывает турниры
-                //  loadTournamentsFromLocalStorage()
+        //  loadTournamentsFromLocalStorage()
         loadTournaments()
     }
 
@@ -283,6 +283,13 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     fun loadTournamentsFromLocalStorage() {
         IOHandler.readAll(this)
         tournamentsAreLoaded = true
+    }
+
+    override fun onBackPressed() {//https://stackoverflow.com/questions/54481633/how-to-disable-back-press-action-for-an-intent
+
+        //remove call to the super class
+        //super.onBackPressed();
+        //    кнопку для всех пофиксить
     }
 
     override fun showTournaments(tournaments: List<TournamentDTO>) {
