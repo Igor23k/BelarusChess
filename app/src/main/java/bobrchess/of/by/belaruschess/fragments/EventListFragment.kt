@@ -400,9 +400,9 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             R.id.item_about -> {
                 aboutClicked()
             }
-            R.id.item_settings -> {
+            /*R.id.item_settings -> {
                 settingsClicked()
-            }
+            }*/
         }
         return super.onOptionsItemSelected(item)
     }

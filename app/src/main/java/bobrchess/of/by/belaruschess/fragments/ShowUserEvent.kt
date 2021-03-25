@@ -18,15 +18,11 @@ import bobrchess.of.by.belaruschess.adapter.EventAdapter
 import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.EventHandler
-import bobrchess.of.by.belaruschess.handler.IOHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
-import bobrchess.of.by.belaruschess.model.EventTournamentResult
 import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
-import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Util
-import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -38,14 +34,15 @@ import java.util.*
 
 class ShowUserEvent : ShowEventFragment() {
 
-    private lateinit var recyclerView: RecyclerView
+    /*private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var viewAdapter: EventAdapter
+    private lateinit var viewAdapter: EventAdapter*/
 
     private var ranks: List<RankDTO>? = null
     private var places: List<PlaceDTO>? = null
     private var countries: List<CountryDTO>? = null
-    private var userTournamentsResult: ArrayList<TournamentResultDTO>? = null
+
+    //private var userTournamentsResult: ArrayList<TournamentResultDTO>? = null
     private var coach: UserDTO? = null
 
     var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
@@ -53,26 +50,6 @@ class ShowUserEvent : ShowEventFragment() {
     var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
     var userTournamentsResultItemsListType = object : TypeToken<List<TournamentResultDTO>>() {}.type
     var userItemsListType = object : TypeToken<UserDTO>() {}.type
-
-    private fun showTournamentsResults() {
-        IOHandler.clearSharedPrefEventData()//todo
-        EventHandler.clearData()//todo
-        var id = 0
-        userTournamentsResult?.forEach {
-            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
-            event.position = it.position
-            event.points = it.points
-            event.imageUri = it.image
-            EventHandler.addEvent(
-                    event,
-                    context!!,
-                    writeAfterAdd = true,
-                    addNewNotification = false,
-                    updateEventList = true,
-                    addBitmap = false
-            )
-        }
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -83,7 +60,7 @@ class ShowUserEvent : ShowEventFragment() {
         ranks = activity.getRanks()
         countries = activity.getCountries()
 
-        userTournamentsResult = Gson().fromJson(arguments?.getString(TOURNAMENTS_RESULT), userTournamentsResultItemsListType)//todo удалить
+        //userTournamentsResult = Gson().fromJson(arguments?.getString(TOURNAMENTS_RESULT), userTournamentsResultItemsListType
         coach = Gson().fromJson(arguments?.getString(COACH), userItemsListType)
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_user_event, container, false)
@@ -92,11 +69,11 @@ class ShowUserEvent : ShowEventFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        showTournamentsResults()
+        //showTournamentsResults()
     }
 
     private fun init() {
-        viewManager = LinearLayoutManager(view!!.context)
+        /*viewManager = LinearLayoutManager(view!!.context)
         viewAdapter = EventAdapter(view!!.context, this.fragmentManager!!, places, ranks, countries, null)
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerViewTournamentsResults).apply {
             setHasFixedSize(true)
@@ -111,7 +88,7 @@ class ShowUserEvent : ShowEventFragment() {
                 recyclerView.paddingTop,
                 recyclerView.paddingRight,
                 (resources.getDimension(R.dimen.fab_margin) + resources.getDimension(R.dimen.fab_size_bigger)).toInt()
-        )
+        )*/
     }
 
     /**
@@ -187,9 +164,9 @@ class ShowUserEvent : ShowEventFragment() {
                 val date: String
                 date = userEvent.dateToPrettyString(DateFormat.LONG)
 
-                userTournamentsResult?.forEach {//todo что тут такое?
+                /*userTournamentsResult?.forEach {
                     // user_tournaments_results.text = "Name - " + it.name + " Points - " + it.points +  " Position - " + it.position
-                }
+                }*/
 
                 user_birthday.text = resources.getString(R.string.person_show_date, date)
                 updateAvatarImage(userEvent.imageUri)
@@ -309,6 +286,26 @@ class ShowUserEvent : ShowEventFragment() {
             }
         }
     }
+
+    /*private fun showTournamentsResults() {//todo вернуть, когда будет участие в турнирах реализовано
+        //IOHandler.clearSharedPrefEventData()//todo
+        //EventHandler.clearData()//todo
+        var id = 0
+        userTournamentsResult?.forEach {
+            val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            event.position = it.position
+            event.points = it.points
+            event.imageUri = it.image
+            EventHandler.addEvent(
+                    event,
+                    context!!,
+                    writeAfterAdd = true,
+                    addNewNotification = false,
+                    updateEventList = true,
+                    addBitmap = false
+            )
+        }
+    }*/
 
     override fun editEvent() {//todo удалить кнопку когда показывается пользователь (и плэйс для не админов)
 

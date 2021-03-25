@@ -33,34 +33,35 @@
         android:title="@string/action_places"
         app:showAsAction="never" />
 
-    <item
+   <!-- <item
         android:id="@+id/item_settings"
         android:orderInCategory="4"
         android:title="@string/settings_title"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/item_about"
-        android:orderInCategory="5"
-        android:title="@string/main_menu_item_about"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/item_help"
-        android:orderInCategory="6"
-        android:title="@string/main_menu_item_help"
-        app:showAsAction="never" />
+-->
 
     <item
         android:id="@+id/item_show_world_tournaments"
-        android:orderInCategory="7"
+        android:orderInCategory="4"
         android:title="@string/action_world_tournaments"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/item_show_world_rating"
-        android:orderInCategory="7"
+        android:orderInCategory="5"
         android:title="@string/action_world_rating"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_about"
+        android:orderInCategory="6"
+        android:title="@string/main_menu_item_about"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_help"
+        android:orderInCategory="7"
+        android:title="@string/main_menu_item_help"
         app:showAsAction="never" />
 
     <item

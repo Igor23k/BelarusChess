@@ -19,10 +19,7 @@ import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.FideApiAdapterPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.FideApiAdapterPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentsResultPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
-import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
-import bobrchess.of.by.belaruschess.util.Constants.Companion.RANKS
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOURNAMENTS_RESULT
 import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByBase64
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
@@ -322,7 +319,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                             if (isClickable) {
                                 eventId = user.eventID
                                 coachId = user.coachId
-                                tournamentsResultPresenterImpl?.loadUserTournamentsResults(user.eventID)
+                                startUserFragment()
+                                //tournamentsResultPresenterImpl?.loadUserTournamentsResults(user.eventID)
                             }
                         }
 
@@ -659,10 +657,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
         ft.commit()
     }
 
-    public fun getWorldTournament(): String{
-        return "a"
-    }
-
     private fun eventAdapterWorldTournamentItemOpen(worldTournamentDTO: WorldTournamentDTO?) {
         val bundle = Bundle()
 
@@ -694,7 +688,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     }
 
 
-
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
         return if (EventHandler.getList().isEmpty()) {
@@ -721,7 +714,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
             val gson = GsonBuilder().setPrettyPrinting().create()
             val coach = coachId?.toInt()?.let { it1 -> users?.get(it1) }
-            val userTournamentsList = gson.toJson(userTournamentsResult)
+            //val userTournamentsList = gson.toJson(userTournamentsResult)
 
             if (coach != null) {
                 bundle.putString(
@@ -730,10 +723,10 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                 )
             }
 
-            bundle.putString(
+           /* bundle.putString(
                     TOURNAMENTS_RESULT,
                     userTournamentsList
-            )
+            )*/
 
             newFragment.arguments = bundle
             ft.replace(
@@ -747,7 +740,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
     override fun userTournamentsResultAreLoaded(tournamentsResults: MutableList<TournamentResultDTO>?) {
         this.userTournamentsResult = tournamentsResults
-        startUserFragment()
     }
 
     override fun showWorldTournament(worldTournamentDTO: WorldTournamentDTO?) {

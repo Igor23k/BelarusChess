@@ -305,17 +305,13 @@
 
     <!-- help texts -->
     <string name="help_title_reason">Чаму варта выкарыстоўваць гэты дадатак?</string>
-    <string name="help_title_tournament">Як я магу дадаць турнір?</string>
-    <string name="help_title_Annual">Навошта мне пацвярджаць свае персанальныя дадзеныя?</string>
-    <string name="help_title_OneTime">Якія абнаўлення чакаюцца ў будучыні?</string>
-    <string name="help_title_support">Як я магу падтрымаць распрацоўку?</string>
-    <string name="help_title_notifications">Паведамлення аб маіх падзеях адлюстровываюцца няправільна!</string>
+    <string name="help_title_add_tournament">Як я магу дадаць турнір?</string>
+    <string name="help_title_add_place">todo</string>
+    <string name="help_title_upcoming_updates">Якія абнаўлення чакаюцца ў будучыні?</string>
     <string name="help_content_reason">todo</string>
     <string name="help_content_tournament">todo</string>
-    <string name="help_content_Annual">todo</string>
+    <string name="help_content_place">todo</string>
     <string name="help_content_OneTime">todo</string>
-    <string name="help_content_support">todo</string>
-    <string name="help_content_notifications">todo</string>
     <string name="error_retry_save_file">Спроба перапісаць save-файл з бягучымі падзеямі!</string>
     <string name="setting_use_calendarview">Выкарыстоўвайце прагляд календара для даты</string>
 
