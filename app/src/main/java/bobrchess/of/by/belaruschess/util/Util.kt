@@ -1,19 +1,25 @@
 package bobrchess.of.by.belaruschess.util
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Base64
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
+import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import org.springframework.util.StringUtils
@@ -55,7 +61,7 @@ class Util {
 
         private var mProgressDialog: ProgressDialog? = null
 
-        val genders: List<String>
+        val genders: MutableList<String>
             get() {
                 val genders = ArrayList<String>()
                 genders.add(getInternalizedMessage(Constants.KEY_GENDER_MALE))
@@ -242,6 +248,12 @@ class Util {
             }
             return bitmap
         }
+
+        /**
+         * REQUEST_IMAGE_GET is an intent code used for open the photo gallery
+         */
+        private val REQUEST_IMAGE_GET = 1
+
     }
 
 

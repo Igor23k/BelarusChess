@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollViewRegistration"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -78,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/userRating"
-                android:inputType="textPersonName" />
+                android:inputType="number"/>
         </android.support.design.widget.TextInputLayout>
 
         <!--  Email Label -->
@@ -124,12 +125,62 @@
             android:backgroundTint="#d11f08"
             android:padding="5dp" />
 
+        <TextView
+            android:id="@+id/е_enter_birthday"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="start"
+            android:text="@string/enterBirthday"
+            android:textSize="16sp" />
+
         <ImageView
             android:id="@+id/i_calendar_birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ten_dp"
             android:src="@drawable/ic_calendar_black_48dp" />
+
+        <TextView
+            android:id="@+id/t_link_authorization11"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="left"
+            android:text="@string/chooseAvatar"
+            android:textSize="16sp" />
+
+        <FrameLayout
+            android:id="@+id/frame_layout_add_avatar_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_add_avatar_btn"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_birthday_person" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom|end"
+                android:clickable="false"
+                android:src="@drawable/ic_add_a_photo"
+                app:elevation="0dp"
+                app:fabCustomSize="30dp" />
+        </FrameLayout>
 
         <!-- mobile number -->
         <android.support.design.widget.TextInputLayout

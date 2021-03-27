@@ -5,8 +5,8 @@
     <string name="following_hint">Подписан</string>
     <string name="friends_hint">Друзей:</string>
     <string name="coach_hint">Тренер:</string>
-    <string name="gender_male">Мужской:</string>
-    <string name="gender_female">Женский:</string>
+    <string name="gender_male">Мужской</string>
+    <string name="gender_female">Женский</string>
 
     <string name="search_user_query_hint">Введите имя пользователя</string>
     <string name="search_query_hint">Введите текст</string>
@@ -57,11 +57,13 @@
     <string name="placeBuildingHint">Здание</string>
     <string name="placeCapacityHint">Вместимость</string>
     <string name="userAddress">Адрес</string>
-    <string name="userRating">Рейтинг:</string>
+    <string name="userRating">Рейтинг</string>
     <string name="phoneNumber">Мобильный номер</string>
     <string name="renterPassword">Повторный ввод пароля</string>
     <string name="createAccount">Регистрация</string>
     <string name="addTournament">Добавить турнир</string>
+    <string name="enterBirthday">Введите дату рождения</string>
+    <string name="chooseAvatar">Выберите аватар (необязательно)</string>
     <string name="isMember">Уже зарегистрированы? Войти</string>
     <string name="logo">Логотип</string>
     <string name="please_wait">Пожалуйста, подождите &#8230;</string>

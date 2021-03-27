@@ -5,8 +5,8 @@
     <string name="following_hint">Падпісаны</string>
     <string name="friends_hint">Сяброў:</string>
     <string name="coach_hint">Трэнер:</string>
-    <string name="gender_male">Мужчынскі:</string>
-    <string name="gender_female">Жаночы:</string>
+    <string name="gender_male">Мужчынскі</string>
+    <string name="gender_female">Жаночы</string>
 
     <string name="search_user_query_hint">Калі ласка, увядзіце імя карыстальніка</string>
     <string name="search_query_hint">Калі ласка, увядзіце тэкст</string>
@@ -57,12 +57,14 @@
     <string name="placeBuildingHint">будынак</string>
     <string name="placeCapacityHint">Умяшчальнасць</string>
     <string name="userAddress">Адрас</string>
-    <string name="userRating">Рэйтынг:</string>
+    <string name="userRating">Рэйтынг</string>
     <string name="phoneNumber">Мабільны нумар</string>
     <string name="renterPassword">Паўторны ўвод пароля</string>
     <string name="createAccount">Рэгістрацыя</string>
     <string name="addTournament">Дадаць турнір</string>
     <string name="isMember">Ужо зарэгістраваны? Увайсці</string>
+    <string name="enterBirthday">Увядзіце дату нараджэння (не абавязкова)</string>
+    <string name="chooseAvatar">Выберыце аватар</string>
     <string name="logo">Лагатып</string>
     <string name="please_wait">Калі ласка, пачакайце &#8230;</string>
     <string name="successful_draw">Жараб\'ёўка паспяхова праведзена</string>
