@@ -579,7 +579,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
 
     override fun setPlaceSpinnerAdapter(places: MutableList<out PlaceDTO>?) {
         val placeNames = Util.getPlacesNames(places!!)
-        placeNames.add(0, getString(R.string.choosePlace))
+        placeNames.add(0, getString(R.string.chooseLocation))
         val adapter = ArrayAdapter<String>(this.context!!,
                 android.R.layout.simple_spinner_dropdown_item, placeNames)
         placeSpinner.adapter = adapter

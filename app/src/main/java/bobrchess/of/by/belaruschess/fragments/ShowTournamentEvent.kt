@@ -172,65 +172,15 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
             if (tournament is EventTournament) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
-                var shareBirthdayMsg =
-                        if (tournament.fullDescription != null) {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    "${tournament.name} \"${tournament.fullDescription}\" ${tournament.shortDescription}"
-                            )
-                        } else if (tournament.shortDescription != null) {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    "${tournament.name} ${tournament.shortDescription}"
-                            )
-                        } else {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    tournament.name
-                            )
-                        }
 
-                //   if (tournament.isYearGiven) {
-                //startDate person was born
-                shareBirthdayMsg += "\n" + context!!.resources.getString(
-                        R.string.share_tournament_date_start,
-                        EventDate.parseDateToString(tournament.eventDate, DateFormat.FULL)
-                )
-                //      }
+                var shareBirthdayMsg = tournament.name
+                val place = places?.get(tournament.placeId!! - 1)
 
-                //next tournament
-                /* shareBirthdayMsg += "\n" + context!!.resources.getString(
-                         R.string.share_tournament_date_next,
-                         EventDate.parseDateToString(
-                                 EventDate.dateToCurrentTimeContext(tournament.eventDate),
-                                 DateFormat.FULL
-                         )
-                 )*/
-
-                val daysUntil = tournament.getDaysUntil()
-                /*   shareBirthdayMsg += if (daysUntil == 0) {
-                       //today
-                       "\n" + context!!.resources.getString(
-                               R.string.share_tournament_days_today
-                       )
-                   } else {
-                       // in X days
-                       "\n" + context!!.resources.getQuantityString(
-                               R.plurals.share_tournament_days,
-                               daysUntil,
-                               daysUntil
-                       )
-                   }*/
-
-                // if (tournament.isYearGiven) {
-                //person will be years old
-                shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
-                        R.plurals.person_years_old,
-                        tournament.getYearsSince() + 1,
-                        tournament.name,
-                        tournament.getYearsSince() + 1
-                )
-                //}
+                shareBirthdayMsg += "\n\n" + resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament.startDate, DateFormat.FULL)
+                shareBirthdayMsg += "\n" + resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(tournament.finishDate, DateFormat.FULL)
+                shareBirthdayMsg += "\n" + resources.getString(R.string.tours_count) + ": " + tournament.toursCount
+                shareBirthdayMsg += "\n\n" + resources.getString(R.string.location) + ": " + place?.name + " (" + place?.country!!.name + ", " + place.city + ", " + place.street + ", " + place.building + ")"
+                shareBirthdayMsg += "\n\n" + tournament.fullDescription.toString()
 
                 intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
                 startActivity(

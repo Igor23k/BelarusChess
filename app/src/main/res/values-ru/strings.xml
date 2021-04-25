@@ -31,7 +31,7 @@
     <string name="action_world_tournaments">Мировые турниры</string>
     <string name="action_world_rating">Мировой рейтинг</string>
     <string name="action_logout">Выход</string>
-    <string name="action_places">Места проведения</string>
+    <string name="action_locations">Места проведения</string>
     <string name="action_info">Информация</string>
     <string name="draw">Провести жеребьевку</string>
     <string name="tours">Туры</string>
@@ -47,15 +47,19 @@
     <string name="userSurname">Фамилия</string>
     <string name="userPatronymic">Отчество</string>
     <string name="tournamentName">Название турнира</string>
-    <string name="placeName">Название</string>
+    <string name="locationName">Название</string>
     <string name="tournamentShortDescription">Краткое описание турнира</string>
     <string name="tournamentFullDescription">Полное описание турнира</string>
-    <string name="placeCity">Город места проведения</string>
-    <string name="placeCityHint">Город</string>
-    <string name="placeStreet">Улица места проведения</string>
-    <string name="placeStreetHint">Улица</string>
-    <string name="placeBuildingHint">Здание</string>
-    <string name="placeCapacityHint">Вместимость</string>
+    <string name="locationCity">Город места проведения</string>
+    <string name="locationCityHint">Город</string>
+    <string name="city">Город</string>
+    <string name="address">Адрес</string>
+    <string name="locationStreet">Улица места проведения</string>
+    <string name="locationStreetHint">Улица</string>
+    <string name="locationBuildingHint">Здание</string>
+    <string name="building">Здание</string>
+    <string name="capacity">Вместимость</string>
+    <string name="locationCapacityHint">Вместимость</string>
     <string name="userAddress">Адрес</string>
     <string name="userRating">Рейтинг</string>
     <string name="phoneNumber">Мобильный номер</string>
@@ -98,7 +102,7 @@
     <string name="chooseRank">Выберите звание</string>
     <string name="chooseCountry">Выберите страну</string>
     <string name="chooseGender">Выберите пол</string>
-    <string name="choosePlace">Выберите место</string>
+    <string name="chooseLocation">Выберите расположение</string>
     <string name="bornOnYear">Год рождения: %1$s</string>
     <string name="standardRating">Стандартный рейтинг: %1$s</string>
     <string name="rapidRating">Рапид рейтинг: %1$s</string>
@@ -162,19 +166,20 @@
         <item>Декабрь</item>
     </string-array>
 
-    <string name="tournament_property_place">Город</string>
+    <string name="tournament_property_location">Город</string>
     <string name="event_property_years">Лет</string>
     <string name="event_property_year">Год</string>
     <string name="tournament_property_games_count">Партий</string>
     <string name="tournament_property_country">Страна</string>
-    <string name="place_property_country">Страна</string>
-    <string name="place_property_city">Город</string>
-    <string name="place_property_capacity">Вместимость</string>
+    <string name="location_property_country">Страна</string>
+    <string name="location_property_city">Город</string>
+    <string name="location_property_capacity">Вместимость</string>
     <string name="tournament_property_date">Дата</string>
     <string name="event_property_birthday">Дата рождения</string>
     <string name="tournament_start_date">Дата начала</string>
+    <string name="tours_count">Количество туров</string>
     <string name="tournament_name">Название турнира</string>
-    <string name="place_name">Название</string>
+    <string name="location_name">Название</string>
     <string name="tournament_end_date">Дата окончания</string>
     <string name="event_property_surname">Фамилия</string>
     <string name="event_property_nickname">Псевдоним</string>
@@ -184,11 +189,10 @@
     <string name="event_type_annual_event">Ежегодное событие</string>
     <string name="event_type_one_time_event">Разовое событие</string>
     <string name="rating">Рейтинг</string>
+    <string name="birthday">День рождения</string>
     <string name="rank">Ранг</string>
     <string name="country">Страна</string>
-    <string name="place">Место</string>
     <string name="points">Очки</string>
-    <string name="capacity">Вместимость</string>
 
     <!-- tournament event view -->
     <string name="alert_dialog_missing_avatar_img_title">Ошибка при загрузке изображения!</string>
@@ -198,17 +202,17 @@
     <string name="toolbar_title_add_tournament">Добавить турнир</string>
     <string name="toolbar_title_edit_tournament">Редактировать турнир</string>
     <string name="toolbar_title_add_user">Добавить пользователя</string>
-    <string name="toolbar_title_add_place">Добавить место проведения</string>
-    <string name="toolbar_title_edit_place">Редактировать место проведения</string>
+    <string name="toolbar_title_add_location">Добавить место проведения</string>
+    <string name="toolbar_title_edit_location">Редактировать место проведения</string>
     <string name="empty_fields_error_tournament">Вы должны заполнить поля Имя и Дата!</string>
     <string name="tournament_added_notification">Турнир добавлен</string>
     <string name="tournament_changed_notification">Турнир изменён</string>
     <string name="tournament_deleted_notification">Турнир удален</string>
-    <string name="place_added_notification">Место проведения добавлено</string>
-    <string name="place_changed_notification">Место проведения изменёно</string>
-    <string name="place_deleted_notification">Место проведения удалено</string>
+    <string name="location_added_notification">Место проведения добавлено</string>
+    <string name="location_changed_notification">Место проведения изменёно</string>
+    <string name="location_deleted_notification">Место проведения удалено</string>
     <string name="btn_tournament_delete">Удалить турнир</string>
-    <string name="btn_place_delete">Удалить место проведения</string>
+    <string name="btn_location_delete">Удалить место проведения</string>
     <string name="avatar_btn_clicked_menu_item_select_photo">Галерея</string>
     <!--<string name="avatar_btn_clicked_menu_item_take_new_photo">Take new photo</string>-->
     <string name="avatar_btn_clicked_menu_item_delete_photo">Удалить фото</string>
@@ -219,8 +223,8 @@
 
     <!-- alert dialog delete -->
     <string name="alert_dialog_title_delete_tournament">Удалить турнир</string>
-    <string name="alert_dialog_title_delete_place">Удалить место проведения</string>
-    <string name="alert_dialog_body_message_place">Вы уверены, что хотите удалить это место проведения?</string>
+    <string name="alert_dialog_title_delete_location">Удалить место проведения</string>
+    <string name="alert_dialog_body_message_location">Вы уверены, что хотите удалить это место проведения?</string>
     <string name="alert_dialog_body_message_tournament">Вы уверены, что хотите удалить этот турнир?</string>
 
     <!-- fragment show tournament -->
@@ -233,9 +237,9 @@
         <item quantity="many">Исполнится лет: %2$d</item>
     </plurals>
 
-    <!-- sharing strings place -->
-    <string name="share_place_name">%1$s</string>
-    <string name="share_place_date_start">Born on: %1$s</string>
+    <!-- sharing strings location -->
+    <string name="share_location_name">%1$s</string>
+    <string name="share_location_date_start">Born on: %1$s</string>
 
     <!-- sharing strings tournament -->
     <string name="share_tournament_name">%1$s</string>
@@ -281,7 +285,7 @@
     <string name="main_menu_item_about">О проекте</string>
     <string name="main_menu_item_help">Помощь</string>
     <string name="fab_event_list_tournament_title">Добавить турнир</string>
-    <string name="fab_event_list_place_title">Добавить место проведения</string>
+    <string name="fab_event_list_location_title">Добавить место проведения</string>
     <string name="fab_event_list_annual_event_title">Добавить ежегодное событие</string>
     <string name="fab_event_list_one_time_event_title">Добавить разовое событие</string>
 
@@ -318,14 +322,14 @@
     <!-- help texts -->
     <string name="help_title_reason">Почему стоит использовать это приложение?</string>
     <string name="help_title_add_tournament">Как я могу добавить турнир?</string>
-    <string name="help_title_add_place">Как я могу добавить место проведения?</string>
+    <string name="help_title_add_location">Как я могу добавить место проведения?</string>
     <string name="help_title_upcoming_updates">Какие обновления ожидаются в будущем?</string>
     <string name="error_retry_save_file">Попытка переписать save-файл с текущими событиями!</string>
     <string name="setting_use_calendarview">Используйте просмотр календаря для даты</string>
 
     <string name="help_content_reason">todo</string>
     <string name="help_content_tournament">todo</string>
-    <string name="help_content_place">todo</string>
+    <string name="help_content_location">todo</string>
     <string name="help_content_OneTime">todo</string>
 
     <string name="ok_label">OK</string>

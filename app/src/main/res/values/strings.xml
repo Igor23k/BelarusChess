@@ -32,7 +32,7 @@
     <string name="action_world_tournaments">World tournaments</string>
     <string name="action_world_rating">World rating</string>
     <string name="action_logout">Logout</string>
-    <string name="action_places">Places</string>
+    <string name="action_locations">Locations</string>
     <string name="action_info">Info</string>
     <string name="draw">Draw</string>
     <string name="tours">Tours</string>
@@ -43,19 +43,22 @@
     <string name="email">Email</string>
     <string name="userName">Name</string>
     <string name="tournamentName">Tournament name</string>
-    <string name="placeName">Place name</string>
+    <string name="locationName">Location name</string>
     <string name="tournamentShortDescription">Tournament short description</string>
     <string name="tournamentShortDescriptionHint">Short description</string>
     <string name="tournamentFullDescription">Tournament full description</string>
     <string name="tournamentFullDescriptionHint">Full description</string>
     <string name="tournamentToursCount">Tournament tours count</string>
     <string name="tournamentToursCountHint">Tours count</string>
-    <string name="placeCity">Place city</string>
-    <string name="placeCityHint">City</string>
-    <string name="placeStreet">Place street</string>
-    <string name="placeStreetHint">Street</string>
-    <string name="placeCapacityHint">Capacity</string>
-    <string name="placeBuildingHint">Building</string>
+    <string name="locationCity">Location city</string>
+    <string name="locationCityHint">City</string>
+    <string name="city">City</string>
+    <string name="locationStreet">Location street</string>
+    <string name="locationStreetHint">Street</string>
+    <string name="locationCapacityHint">Capacity</string>
+    <string name="locationBuildingHint">Building</string>
+    <string name="building">Building</string>
+    <string name="capacity">Capacity</string>
     <string name="userSurname">Surname</string>
     <string name="userPatronymic">Patronymic</string>
     <string name="userAddress">Address</string>
@@ -99,7 +102,7 @@
     <string name="chooseRank">Choose a rank</string>
     <string name="chooseCountry">Choose a country</string>
     <string name="chooseGender">Choose gender</string>
-    <string name="choosePlace">Choose a place</string>
+    <string name="chooseLocation">Choose a location</string>
     <string name="bornOnYear">Born on: %1$s</string>
     <string name="standardRating">Standard rating: %1$s</string>
     <string name="rapidRating">Rapid rating: %1$s</string>
@@ -158,19 +161,20 @@
     </string-array>
 
     <!-- TOURNAMENT -->
-    <string name="tournament_property_place">City</string>
+    <string name="tournament_property_location">City</string>
     <string name="event_property_years">Years</string>
     <string name="event_property_year">Year</string>
     <string name="tournament_property_games_count">Games</string>
     <string name="tournament_property_country">Country</string>
-    <string name="place_property_capacity">Capacity</string>
-    <string name="place_property_country">Country</string>
-    <string name="place_property_city">City</string>
+    <string name="location_property_capacity">Capacity</string>
+    <string name="location_property_country">Country</string>
+    <string name="location_property_city">City</string>
     <string name="tournament_property_date">Date</string>
     <string name="event_property_birthday">Birthday</string>
     <string name="tournament_start_date">Start date</string>
+    <string name="tours_count">Колькасць тураў</string>
     <string name="tournament_name">Tournament name</string>
-    <string name="place_name">Name</string>
+    <string name="location_name">Name</string>
     <string name="tournament_end_date">End date</string>
     <string name="event_property_surname">Surname</string>
     <string name="event_property_nickname">Nickname</string>
@@ -180,11 +184,11 @@
     <string name="event_type_annual_event">Annual event</string>
     <string name="event_type_one_time_event">One time event</string>
     <string name="rating">Rating</string>
+    <string name="birthday">Birthday</string>
     <string name="rank">Rank</string>
     <string name="country">Country</string>
-    <string name="place">Place</string>
+    <string name="address">Address</string>
     <string name="points">Points</string>
-    <string name="capacity">Capacity</string>
 
     <!-- tournament event view -->
     <string name="alert_dialog_missing_avatar_img_title">Error when trying to load image!</string>
@@ -194,17 +198,17 @@
     <string name="toolbar_title_add_tournament">Add tournament</string>
     <string name="toolbar_title_edit_tournament">Edit tournament</string>
     <string name="toolbar_title_add_user">Add user</string>
-    <string name="toolbar_title_add_place">Add place</string>
-    <string name="toolbar_title_edit_place">Edit place</string>
+    <string name="toolbar_title_add_location">Add location</string>
+    <string name="toolbar_title_edit_location">Edit location</string>
     <string name="empty_fields_error_tournament">Make sure to fill fields forename and date!</string>
     <string name="tournament_added_notification">Tournament added</string>
     <string name="tournament_changed_notification">Tournament changed</string>
     <string name="tournament_deleted_notification">Tournament deleted</string>
-    <string name="place_added_notification">Place added</string>
-    <string name="place_changed_notification">Place changed</string>
-    <string name="place_deleted_notification">Place deleted</string>
+    <string name="location_added_notification">Location added</string>
+    <string name="location_changed_notification">Location changed</string>
+    <string name="location_deleted_notification">Location deleted</string>
     <string name="btn_tournament_delete">Delete tournament</string>
-    <string name="btn_place_delete">Delete place</string>
+    <string name="btn_location_delete">Delete location</string>
     <string name="verification_edit_date_input">The date input does not match the required date format!\nPlease use a format like: %1$s</string>
 
     <string name="avatar_btn_clicked_menu_item_select_photo">Choose from gallery</string>
@@ -216,8 +220,8 @@
 
     <!-- alert dialog delete -->
     <string name="alert_dialog_title_delete_tournament">Delete tournament</string>
-    <string name="alert_dialog_title_delete_place">Delete place</string>
-    <string name="alert_dialog_body_message_place">Are you sure you want to delete this place?</string>
+    <string name="alert_dialog_title_delete_location">Delete location</string>
+    <string name="alert_dialog_body_message_location">Are you sure you want to delete this location?</string>
     <string name="alert_dialog_body_message_tournament">Are you sure you want to delete this tournament?</string>
 
     <!-- fragment show tournament -->
@@ -229,9 +233,9 @@
         <item quantity="other">%1$s turns %2$d</item>
     </plurals>
 
-    <!-- sharing strings place -->
-    <string name="share_place_name">%1$s</string>
-    <string name="share_place_date_start">Born on: %1$s</string>
+    <!-- sharing strings loaction -->
+    <string name="share_location_name">%1$s</string>
+    <string name="share_location_date_start">Born on: %1$s</string>
 
     <!-- sharing strings tournament -->
     <string name="share_tournament_name">%1$s</string>
@@ -281,7 +285,7 @@
     <string name="main_menu_item_about">About</string>
     <string name="main_menu_item_help">Help</string>
     <string name="fab_event_list_tournament_title">Add new tournament</string>
-    <string name="fab_event_list_place_title">Add new tournament</string>
+    <string name="fab_event_list_location_title">Add new tournament</string>
     <string name="fab_event_list_annual_event_title">Add new annual event</string>
     <string name="fab_event_list_one_time_event_title">Add new one-time event</string>
 
@@ -320,11 +324,11 @@
     <!-- help texts -->
     <string name="help_title_reason">Why use this app?</string>
     <string name="help_title_add_tournament">How can I add a tournament?</string>
-    <string name="help_title_add_place">How can I add a place?</string>
+    <string name="help_title_add_location">How can I add a location?</string>
     <string name="help_title_upcoming_updates">Which app updates are coming?</string>
     <string name="help_content_reason">todo</string>
     <string name="help_content_tournament">todo</string>
-    <string name="help_content_place">todo</string>
+    <string name="help_content_location">todo</string>
     <string name="help_content_OneTime">todo</string>
 
     <string name="ok_label">OK</string>

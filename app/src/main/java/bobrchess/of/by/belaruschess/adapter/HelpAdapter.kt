@@ -70,9 +70,9 @@ class HelpAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerV
             }
             HelpInstance.AddPlace -> {
                 holder.itemView.tv_card_view_help_title.text =
-                        context.resources.getText(R.string.help_title_add_place)
+                        context.resources.getText(R.string.help_title_add_location)
                 holder.itemView.tv_card_view_help_content.text =
-                        context.resources.getText(R.string.help_content_place)
+                        context.resources.getText(R.string.help_content_location)
             }
             HelpInstance.UpcomingUpdates -> {
                 holder.itemView.tv_card_view_help_title.text =

@@ -124,7 +124,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
         if (arguments != null) {
             isEditedPlace = true
 
-            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_place))
+            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_location))
 
             eventID = (arguments!!.getInt(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID))
             EventHandler.getEventToEventIndex(eventID)?.let { place ->
@@ -145,7 +145,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
                     btn_place_add_fragment_delete.setOnClickListener {
                         val alertBuilder = AlertDialog.Builder(context)
                         alertBuilder.setTitle(resources.getString(R.string.confirmation))
-                        alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_place))
+                        alertBuilder.setMessage(resources.getString(R.string.alert_dialog_body_message_location))
 
                         // Set a positive button and its click listener on alert dialog
                         alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
@@ -168,7 +168,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
             }
             //new place is going to be added
         } else {
-            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_add_place))
+            setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_add_location))
             btn_place_add_fragment_delete.visibility = Button.INVISIBLE
         }
 
@@ -359,7 +359,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
     }
 
     override fun placeRemoved(removedPlaceId: Int) {
-        showSnackbar(R.string.place_deleted_notification)
+        showSnackbar(R.string.location_deleted_notification)
         removePlaceFromLocalStorage(removedPlaceId.toLong())
     }
 
@@ -381,13 +381,13 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
         //new place entry, just add a new entry in map
         if (!isEditedPlace) {
             EventHandler.addEvent(placeEvent, this.context!!, true)
-            showSnackbar(R.string.place_added_notification)
+            showSnackbar(R.string.location_added_notification)
             closeBtnPressed()
         } else {
             EventHandler.getEventToEventIndex(eventID)?.let { event ->
                 if (event is EventPlace) {
                     EventHandler.changeEventAt(eventID, placeEvent, context!!, true)
-                    showSnackbar(R.string.place_changed_notification)
+                    showSnackbar(R.string.location_changed_notification)
                 }
             }
             closeBtnPressed()

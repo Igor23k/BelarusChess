@@ -6,20 +6,15 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.adapter.EventAdapter
-import bobrchess.of.by.belaruschess.adapter.RecycleViewItemDivider
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
-import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
 import bobrchess.of.by.belaruschess.util.Util
@@ -212,69 +207,14 @@ class ShowUserEvent : ShowEventFragment() {
      * It provides a simple intent to share data as plain text in other apps
      */
     override fun shareEvent() {
-        EventHandler.getEventToEventIndex(eventID)?.let { birthday ->
-            if (birthday is EventTournament) {
+        EventHandler.getEventToEventIndex(eventID)?.let { user ->
+            if (user is EventUser) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
-                var shareBirthdayMsg =
-                        if (birthday.fullDescription != null) {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    "${birthday.name} \"${birthday.fullDescription}\" ${birthday.shortDescription}"
-                            )
-                        } else if (birthday.shortDescription != null) {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    "${birthday.name} ${birthday.shortDescription}"
-                            )
-                        } else {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    birthday.name
-                            )
-                        }
-
-                //   if (birthday.isYearGiven) {
-                //startDate person was born
-                shareBirthdayMsg += "\n" + context!!.resources.getString(
-                        R.string.share_tournament_date_start,
-                        EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
-                )
-                //      }
-/*
-                //next birthday
-                shareBirthdayMsg += "\n" + context!!.resources.getString(
-                        R.string.share_tournament_date_next,
-                        EventDate.parseDateToString(
-                                EventDate.dateToCurrentTimeContext(birthday.eventDate),
-                                DateFormat.FULL
-                        )
-                )
-
-                val daysUntil = birthday.getDaysUntil()
-                shareBirthdayMsg += if (daysUntil == 0) {
-                    //today
-                    "\n" + context!!.resources.getString(
-                            R.string.share_tournament_days_today
-                    )
-                } else {
-                    // in X days
-                    "\n" + context!!.resources.getQuantityString(
-                            R.plurals.share_tournament_days,
-                            daysUntil,
-                            daysUntil
-                    )
-                }*/
-
-                // if (birthday.isYearGiven) {
-                //person will be years old
-                shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
-                        R.plurals.person_years_old,
-                        birthday.getYearsSince() + 1,
-                        birthday.name,
-                        birthday.getYearsSince() + 1
-                )
-                //}
+                var shareBirthdayMsg = user.name + " " + user.surname + " " + user.patronymic
+                shareBirthdayMsg += "\n" + resources.getString(R.string.birthday) + ": " + EventDate.parseDateToString(user.birthday, DateFormat.FULL)
+                shareBirthdayMsg += "\n" + resources.getString(R.string.rating) + ": " + user.rating
+                shareBirthdayMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.get(user.rankId!!)?.name
 
                 intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
                 startActivity(

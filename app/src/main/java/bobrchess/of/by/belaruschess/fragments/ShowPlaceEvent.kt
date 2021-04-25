@@ -15,11 +15,8 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
-import bobrchess.of.by.belaruschess.util.Constants.Companion.COUNTRIES
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_place_event.*
 import kotlinx.android.synthetic.main.fragment_show_user_event.iv_avatar
@@ -131,75 +128,24 @@ class ShowPlaceEvent : ShowEventFragment() {
      * shareEvent a function which is called after the share button has been pressed
      * It provides a simple intent to share data as plain text in other apps
      */
-    override fun shareEvent() {//todo
-        EventHandler.getEventToEventIndex(eventID)?.let { birthday ->
-            if (birthday is EventPlace) {
+    override fun shareEvent() {
+        EventHandler.getEventToEventIndex(eventID)?.let { place ->
+            if (place is EventPlace) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
-                var sharePlaceMsg =
-                        /*  if (birthday.fullDescription != null) {
-                              context!!.resources.getString(
-                                      R.string.share_place_name,
-                                      "${birthday.name} \"${birthday.fullDescription}\" ${birthday.shortDescription}"
-                              )
-                          } else if (birthday.shortDescription != null) {
-                              context!!.resources.getString(
-                                      R.string.share_place_name,
-                                      "${birthday.name} ${birthday.shortDescription}"
-                              )
-                          } else {
-                              context!!.resources.getString(
-                                      R.string.share_place_name,
-                                      birthday.name
-                              )
-                          }*/
 
-                //   if (birthday.isYearGiven) {
-                //startDate person was born
-                        /*shareBirthdayMsg += "\n" + context!!.resources.getString(
-                                R.string.share_place_date_start,
-                                EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
+                var shareBirthdayMsg = resources.getString(R.string.location) + ": " + place.name
+                shareBirthdayMsg += "\n" + resources.getString(R.string.address) + ": " + countries?.get(place.countryId!!)?.name + ", " + place.city + ", " + place.street + ", " + place.building
+                shareBirthdayMsg += "\n" + resources.getString(R.string.capacity) + ": " + place.capacity
+
+                intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
+                startActivity(
+                        Intent.createChooser(
+                                intent,
+                                resources.getString(R.string.intent_share_chooser_title)
                         )
-                        //      }
+                )
 
-                        //next birthday
-                        shareBirthdayMsg += "\n" + context!!.resources.getString(
-                                R.string.share_place_date_next,
-                                EventDate.parseDateToString(
-                                        EventDate.dateToCurrentTimeContext(birthday.eventDate),
-                                        DateFormat.FULL
-                                )
-                        )
-
-                        val daysUntil = birthday.getDaysUntil()
-                        shareBirthdayMsg += if (daysUntil == 0) {
-                            //today
-                            "\n" + context!!.resources.getString(
-                                    R.string.share_place_days_today
-                            )
-                        } else {
-                            // in X days
-                            "\n" + context!!.resources.getQuantityString(
-                                    R.plurals.share_place_days,
-                                    daysUntil,
-                                    daysUntil
-                            )
-                        }*/
-
-                        /*shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
-                                R.plurals.person_years_old,
-                                birthday.getYearsSince() + 1,
-                                birthday.name,
-                                birthday.getYearsSince() + 1
-                        )*/
-
-                        /*intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)*/
-                        startActivity(
-                                Intent.createChooser(
-                                        intent,
-                                        resources.getString(R.string.intent_share_chooser_title)
-                                )
-                        )
             }
         }
     }

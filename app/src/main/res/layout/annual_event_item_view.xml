@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/tournament_property_place"
+        android:text="@string/tournament_property_location"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toStartOf="@+id/tv_years_since_annual_title"
         app:layout_constraintTop_toTopOf="@+id/iv_annual_item" />

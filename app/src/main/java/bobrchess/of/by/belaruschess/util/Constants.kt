@@ -1,11 +1,5 @@
 package bobrchess.of.by.belaruschess.util
 
-import java.util.*
-
-/**
- * Created by Igor on 04.04.2018.
- */
-
 class Constants {
 
     companion object {

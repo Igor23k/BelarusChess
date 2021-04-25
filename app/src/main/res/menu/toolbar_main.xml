@@ -30,7 +30,7 @@
     <item
         android:id="@+id/item_show_places"
         android:orderInCategory="3"
-        android:title="@string/action_places"
+        android:title="@string/action_locations"
         app:showAsAction="never" />
 
    <!-- <item
