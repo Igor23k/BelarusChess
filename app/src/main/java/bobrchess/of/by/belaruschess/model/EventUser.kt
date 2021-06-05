@@ -75,13 +75,13 @@ class EventUser(
     var rankId: Int? = null
     var countryId: Int? = null
     var coachId: Long? = null
-    var email: Long? = null
-    var phoneNumber: Long? = null
-    var beCoach: Long? = null
-    var beAdmin: Long? = null
-    var beOrganizer: Long? = null
-    var beMale: Long? = null
-    var places: Long? = null
+    var email: String? = null
+    var phoneNumber: String? = null
+    var beCoach: Boolean? = null
+    var beAdmin: Boolean? = null
+    var beOrganizer: Boolean? = null
+    var beMale: Boolean? = null
+    var places: Long? = null//todo
 
     override fun toString(): String {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +

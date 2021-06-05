@@ -53,14 +53,20 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/item_about"
+        android:id="@+id/item_update_user_info"
         android:orderInCategory="6"
+        android:title="@string/main_menu_item_update_user_info"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_about"
+        android:orderInCategory="7"
         android:title="@string/main_menu_item_about"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/item_help"
-        android:orderInCategory="7"
+        android:orderInCategory="8"
         android:title="@string/main_menu_item_help"
         app:showAsAction="never" />
 

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.UpdateTournamentInstanceFragment"
+    tools:ignore="Autofill, ContentDescription">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/frame_layout_add_avatar_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_add_avatar_btn"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_birthday_person" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|end"
+                    android:clickable="false"
+                    android:src="@drawable/ic_add_a_photo"
+                    app:elevation="0dp"
+                    app:fabCustomSize="40dp" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/iv_user_name"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:tint="@color/darkGrey"
+                app:layout_constraintBottom_toBottomOf="@+id/e_edit_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/e_edit_name"
+                app:srcCompat="@drawable/ic_account_box" />
+
+            <EditText
+                android:id="@+id/e_edit_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/userName"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="100"
+                android:textColor="@color/dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_user_name"
+                app:layout_constraintTop_toBottomOf="@+id/frame_layout_add_avatar_image" />
+
+            <EditText
+                android:id="@+id/e_edit_surname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/userSurname"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="2000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_name"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_name"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_name" />
+
+            <EditText
+                android:id="@+id/e_edit_patronymic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/userPatronymic"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="2000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_surname"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_surname"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_surname" />
+
+            <EditText
+                android:id="@+id/e_edit_rating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/userRating"
+                android:inputType="number"
+                android:maxLength="10000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_patronymic"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_patronymic"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_patronymic" />
+
+            <EditText
+                android:id="@+id/e_edit_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/userEmail"
+                android:inputType="textEmailAddress"
+                android:maxLength="10000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_rating"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_rating"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_rating" />
+
+            <EditText
+                android:id="@+id/e_edit_phone_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/phoneNumber"
+                android:inputType="phone"
+                android:maxLength="10000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_email"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_email"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_email" />
+
+            <EditText
+                android:id="@+id/e_edit_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/passwordIfNeeded"
+                android:inputType="textPassword"
+                android:maxLength="10000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_phone_number" />
+
+            <EditText
+                android:id="@+id/e_edit_re_enter_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/renterPassword"
+                android:inputType="textPassword"
+                android:maxLength="10000"
+                android:textColor="@color/dark"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_password"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_password"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_password" />
+
+            <ImageView
+                android:id="@+id/iv_user_birthday"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/e_edit_re_enter_password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/e_edit_re_enter_password"
+                app:srcCompat="@drawable/ic_cake" />
+
+            <TextView
+                android:id="@+id/t_edit_user_birthday"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/dark"
+                android:textSize="@dimen/larger_text_size"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/sw_is_end_year_given"
+                app:layout_constraintStart_toEndOf="@+id/iv_user_birthday"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_re_enter_password" />
+
+            <EditText
+                android:id="@+id/e_user_birthday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="date"
+                android:textColor="@color/dark"
+                android:textSize="@dimen/larger_text_size"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@+id/sw_is_end_year_given"
+                app:layout_constraintStart_toEndOf="@+id/iv_user_birthday"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_re_enter_password" />
+
+            <Switch
+                android:id="@+id/sw_is_end_year_given"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:showText="false"
+                android:splitTrack="false"
+                android:text=""
+                android:textColor="#808080"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/e_user_birthday"
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_re_enter_password"
+                app:layout_constraintTop_toTopOf="@+id/e_user_birthday" />
+
+            <ImageView
+                android:id="@+id/iv_birthday_note"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/s_genderSpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/s_genderSpinner"
+                app:srcCompat="@drawable/ic_notes" />
+
+            <Spinner
+                android:id="@+id/s_genderSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/iv_birthday_note"
+                app:layout_constraintTop_toBottomOf="@+id/t_edit_user_birthday" />
+
+            <Spinner
+                android:id="@+id/s_coachSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/s_genderSpinner"
+                app:layout_constraintTop_toBottomOf="@+id/s_genderSpinner" />
+
+            <Spinner
+                android:id="@+id/s_rankSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/s_coachSpinner"
+                app:layout_constraintTop_toBottomOf="@+id/s_coachSpinner" />
+
+            <Spinner
+                android:id="@+id/s_countrySpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/s_rankSpinner"
+                app:layout_constraintTop_toBottomOf="@+id/s_rankSpinner" />
+
+            <Button
+                android:id="@+id/btn_user_edit_fragment"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/btn_user_data_save"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/s_countrySpinner" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

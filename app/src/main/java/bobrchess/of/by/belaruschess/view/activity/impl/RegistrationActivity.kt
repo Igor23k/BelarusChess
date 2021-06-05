@@ -86,8 +86,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView, DateP
     private var coachSpinner: Spinner? = null
     private var rankSpinner: Spinner? = null
     private var countrySpinner: Spinner? = null
-    var birthday: String? = null
-        private set
+    private var birthday: String? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

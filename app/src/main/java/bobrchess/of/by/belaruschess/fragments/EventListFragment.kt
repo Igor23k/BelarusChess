@@ -169,7 +169,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
                     R.id.fragment_placeholder,
-                    TournamentInstanceFragment.newInstance()
+                    UpdateTournamentInstanceFragment.newInstance()
             )
             ft.addToBackStack(null)
             ft.commit()
@@ -351,25 +351,25 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             }
 
             R.id.item_show_users -> {
-                EventHandler.clearData()
+                EventHandler.clearData()//todo
                 entityType = USER
                 userPresenter?.loadUsers()
             }
 
             R.id.item_show_places -> {
-                EventHandler.clearData()
+                EventHandler.clearData()//todo
                 entityType = PLACE
                 searchPlacePresenter?.loadPlaces()
             }
 
             R.id.item_show_world_tournaments -> {
-                EventHandler.clearData()
+                EventHandler.clearData()//todo
                 entityType = WORLD_TOURNAMENT
                 fideApiTournamentPresenter?.loadWorldTournaments(getCurrentyear(), worldChampion = false, closestEvents = false, category = "1,2,3,4,5,6,7,8", dateStartMonth = getCurrentMonthNumber())
             }
 
             R.id.item_show_world_rating -> {
-                EventHandler.clearData()
+                EventHandler.clearData()//todo
                 entityType = TOP_PLAYER
                 fideApiTournamentPresenter?.loadTopPlayers()
             }
@@ -393,6 +393,9 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                         EventHandler.clearData()
                     }
                 }
+            }
+            R.id.item_update_user_info -> {
+                updateUserInfoClicked()
             }
             R.id.item_help -> {
                 helpClicked()
@@ -438,6 +441,18 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         ft.replace(
                 R.id.fragment_placeholder,
                 HelpFragment.newInstance()
+        )
+        ft.addToBackStack(null)
+        ft.commit()
+    }
+
+    private fun updateUserInfoClicked() {
+        //open help fragment
+        closeFABMenu(true)
+        val ft = fragmentManager!!.beginTransaction()
+        ft.replace(
+                R.id.fragment_placeholder,
+                EditUserInstanceFragment.newInstance()
         )
         ft.addToBackStack(null)
         ft.commit()
@@ -577,7 +592,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
                         ShowTournamentEvent.newInstance()
                     } else {
-                        TournamentInstanceFragment.newInstance()
+                        UpdateTournamentInstanceFragment.newInstance()
                     }
                 }
                 is EventWorldTournament -> {
@@ -587,7 +602,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
                         ShowTournamentEvent.newInstance()
                     } else {
-                        TournamentInstanceFragment.newInstance()
+                        UpdateTournamentInstanceFragment.newInstance()
                     }
                 }
                 is EventUser -> {

@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils
 
 object Validator {
     @Throws(IncorrectDataException::class)
-    fun validateUserData(userDTO: ExtendedUserDTO?): Boolean {
+    fun validateUserData(userDTO: ExtendedUserDTO?, checkIndexes: Boolean): Boolean {
         val email = userDTO?.email
         val password = userDTO?.password
         val reEnterPassword = userDTO?.reEnterPassword
@@ -53,17 +53,20 @@ object Validator {
         if (StringUtils.isEmpty(phoneNumber)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PHONE_NUMBER))
         }
-        if (rank == 0) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_RANK_IS_NOT_SELECTED))
-        }
-        if (isMale == 0) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_GENDER_IS_NOT_SELECTED))
-        }
-        if (country == 0) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
-        }
-        if (coach == 0) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COACH_IS_NOT_SELECTED))
+
+        if (checkIndexes) {
+            if (rank == 0) {
+                throw IncorrectDataException(getInternalizedMessage(Constants.KEY_RANK_IS_NOT_SELECTED))
+            }
+            if (isMale == 0) {
+                throw IncorrectDataException(getInternalizedMessage(Constants.KEY_GENDER_IS_NOT_SELECTED))
+            }
+            if (country == 0) {
+                throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
+            }
+            if (coach == 0) {
+                throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COACH_IS_NOT_SELECTED))
+            }
         }
 
         return true

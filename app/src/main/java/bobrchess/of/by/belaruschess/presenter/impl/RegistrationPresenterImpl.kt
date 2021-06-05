@@ -119,7 +119,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         view!!.disableButton()
         try {
             fillUserBySpinnerValues(userDTO)
-            Validator.validateUserData(userDTO)
+            Validator.validateUserData(userDTO, true)
             setUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
@@ -168,7 +168,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     }
 
     override fun loadCoaches() {
-        userConnection.getCoaches()
+        userConnection.getCoaches(packageModel!!.getValue(Constants.TOKEN))
     }
 
     override fun loadRanks() {

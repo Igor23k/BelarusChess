@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ten_dp"
-            android:src="@drawable/ic_calendar_black_48dp" />
+            android:contentDescription="TODO" android:src="@drawable/ic_calendar_black_48dp" />
 
         <TextView
             android:id="@+id/t_link_authorization11"
@@ -169,7 +169,7 @@
                 android:id="@+id/iv_add_avatar_btn"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:scaleType="fitCenter"
+                android:contentDescription="TODO" android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_birthday_person" />
 
             <android.support.design.widget.FloatingActionButton
@@ -194,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/phoneNumber"
-                android:inputType="number" />
+                android:inputType="phone" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->

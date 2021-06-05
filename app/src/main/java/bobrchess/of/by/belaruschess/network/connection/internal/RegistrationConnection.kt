@@ -40,8 +40,8 @@ class RegistrationConnection {
         })
     }
 
-    fun getCoaches() {
-        App.getPersonalServerApi().coaches.enqueue(object : Callback<List<UserDTO>> {
+    fun getCoaches(authorizationHeader: String) {
+        App.getPersonalServerApi().coaches(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

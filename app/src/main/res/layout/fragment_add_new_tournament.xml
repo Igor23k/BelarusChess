@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.TournamentInstanceFragment"
+    tools:context=".fragments.UpdateTournamentInstanceFragment"
     tools:ignore="Autofill, ContentDescription">
 
     <ScrollView
@@ -151,6 +151,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:inputType="date"
+                android:hint="ddMMYYYY"
                 android:textColor="@color/dark"
                 android:textSize="@dimen/larger_text_size"
                 android:visibility="invisible"
@@ -167,6 +168,7 @@
                 android:splitTrack="false"
                 android:text="@string/tournament_start_date"
                 android:textColor="#808080"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/e_add_tournament_start_date"
                 app:layout_constraintEnd_toEndOf="@+id/e_add_tournament_toursCount"
                 app:layout_constraintTop_toTopOf="@+id/e_add_tournament_start_date" />
@@ -220,6 +222,7 @@
                 android:splitTrack="false"
                 android:text="@string/tournament_end_date"
                 android:textColor="#808080"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/e_add_tournament_end_date"
                 app:layout_constraintEnd_toEndOf="@+id/sw_is_start_year_given"
                 app:layout_constraintTop_toTopOf="@+id/e_add_tournament_end_date" />
@@ -267,14 +270,14 @@
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"
                  android:layout_marginStart="8dp"
-                 android:layout_marginTop="24dp"
+                 android:layout_marginTop="14dp"
                  android:layout_marginEnd="8dp"
                  android:layout_marginBottom="24dp"
                  android:text="@string/btn_tournament_delete"
                  app:layout_constraintBottom_toBottomOf="parent"
                  app:layout_constraintEnd_toEndOf="parent"
                  app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintTop_toBottomOf="@+id/s_refereeSpinner1" />
+                 app:layout_constraintTop_toBottomOf="@+id/s_placeSpinner1" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

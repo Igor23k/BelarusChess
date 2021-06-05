@@ -22,8 +22,11 @@ interface PersonalServerApi {
     @GET("/api/allUsers")
     fun users(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
-    @get:GET("/coaches")
-    val coaches: Call<List<UserDTO>>
+    @GET("/api/allUsers")//todo coaches
+    fun coaches(@Header("Authorization") authorization: String): Call<List<UserDTO>>
+
+    @GET("/api/allUsers")//todo referees
+    fun referees(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
     @get:GET("/tournaments")
     val tournaments: Call<List<TournamentDTO>>
@@ -107,6 +110,9 @@ interface PersonalServerApi {
 
     @POST("/tournament")
     fun addTournament(@Body tournamentDTO: TournamentDTO): Call<TournamentDTO>
+
+    @POST("/updateUser")
+    fun updateUser(@Body userDTO: UserDTO, @Header("Authorization") authorization: String): Call<UserDTO>
 
     //Game
     @GET("/game/{id}")

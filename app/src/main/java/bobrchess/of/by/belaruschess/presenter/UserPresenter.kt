@@ -1,21 +1,25 @@
 package bobrchess.of.by.belaruschess.presenter
 
+import bobrchess.of.by.belaruschess.dto.CountryDTO
+import bobrchess.of.by.belaruschess.dto.RankDTO
+import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 
-/**
- * Created by Igor on 12.04.2018.
- */
-
 interface UserPresenter : BasePresenter {
+    fun updateUser(user: ExtendedUserDTO)
     fun loadUserById(id: Int)
-
     fun loadReferees()
-
+    fun loadCoaches()
     fun loadUsers()
-
     fun loadUsers(count: Int?)
-
     fun searchUsers(text: String)
-
     fun attachView(userContractView: UserContractView)
+    fun setSelectedRankIndex(selectedRankIndex: Int)
+    fun setSelectedCountryIndex(selectedCountryIndex: Int)
+    fun setSelectedCoachIndex(selectedCoachIndex: Int)
+    fun setSelectedGenderIndex(selectedGenderIndex: Int)
+    fun saveRanksIndexes(ranks: List<RankDTO?>?)
+    fun saveCoachesIndexes(coaches: List<UserDTO?>?)
+    fun saveCountriesIndexes(coaches: List<CountryDTO?>?)
 }

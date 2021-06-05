@@ -25,9 +25,6 @@ import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_tournament_event.*
 import java.text.DateFormat
@@ -203,12 +200,12 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
 
         val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
         // add arguments to fragment
-        val newBirthdayFragment = TournamentInstanceFragment.newInstance()
-        newBirthdayFragment.arguments = bundle
+        val fragment = UpdateTournamentInstanceFragment.newInstance()
+        fragment.arguments = bundle
         ft.replace(
                 R.id.fragment_placeholder,
-                newBirthdayFragment,
-                TournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
+                fragment,
+                UpdateTournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
         )
         ft.addToBackStack(null)
         ft.commit()

@@ -51,7 +51,7 @@ import java.util.*
  * This class inherits from android.support.v4.app.Fragment
  *
  */
-class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContractView, UserContractView {
+class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentContractView, UserContractView {
 
     private var progressDialog: ProgressDialog? = null
     private var users: List<UserDTO>? = null
@@ -85,7 +85,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
      * editName is the TextEdit used for editing/ showing the forename of the birthday
      * It is lazy initialized
      */
-    private val editName: EditText by lazy {        //todo добавить tours count
+    private val editName: EditText by lazy {
         view!!.findViewById<EditText>(R.id.e_add_tournament_name)
     }
 
@@ -562,8 +562,8 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
          * newInstance returns a new instance of TournamentInstanceFragment
          */
         @JvmStatic
-        fun newInstance(): TournamentInstanceFragment {
-            return TournamentInstanceFragment()
+        fun newInstance(): UpdateTournamentInstanceFragment {
+            return UpdateTournamentInstanceFragment()
         }
     }
 
@@ -625,9 +625,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     override fun showIncorrectTournamentNameText() {
-    }
-
-    override fun addTournament() {
+        //todo to check работает ли и почему нету проверок на остальные поля
     }
 
     override fun enableButton() {
@@ -691,6 +689,7 @@ class TournamentInstanceFragment : EventInstanceFragment(), AddTournamentContrac
     }
 
     override fun showUser(user: UserDTO?) {
+
     }
 
     private fun updateUI() {

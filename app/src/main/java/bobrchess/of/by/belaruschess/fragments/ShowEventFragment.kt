@@ -28,6 +28,28 @@ abstract class ShowEventFragment : Fragment() {
 
     abstract fun editEvent()
 
+    fun updateUserInfo() {
+        val bundle = Bundle()
+        //do this in more adaptable way
+        bundle.putInt(
+                MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
+                eventID
+        )
+
+        val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
+        // add arguments to fragment
+        val newBirthdayFragment = UpdateTournamentInstanceFragment.newInstance()
+        newBirthdayFragment.arguments = bundle
+        ft.replace(
+                R.id.fragment_placeholder,
+                newBirthdayFragment,
+                UpdateTournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
+        )
+        ft.addToBackStack(null)
+        ft.commit()
+        //closeExpandableToolbar()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
@@ -66,6 +88,10 @@ abstract class ShowEventFragment : Fragment() {
             }
             R.id.toolbar_share -> {
                 shareEvent()
+            }
+
+            R.id.item_update_user_info -> {
+                updateUserInfo()
             }
             R.id.toolbar_edit -> {
                 editEvent()

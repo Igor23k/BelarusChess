@@ -37,6 +37,7 @@
     <string name="tours">Туры</string>
     <string name="action_tournaments_search">Турниры</string>
     <string name="password">Пароль</string>
+    <string name="passwordIfNeeded">Обновите пароль, если необходимо</string>
     <string name="login">Войти</string>
     <string name="noAccount">Еще нет учетной записи? Создать</string>
     <string name="email">Email</string>
@@ -62,10 +63,12 @@
     <string name="locationCapacityHint">Вместимость</string>
     <string name="userAddress">Адрес</string>
     <string name="userRating">Рейтинг</string>
+    <string name="userEmail">Электронная почта</string>
     <string name="phoneNumber">Мобильный номер</string>
     <string name="renterPassword">Повторный ввод пароля</string>
     <string name="createAccount">Регистрация</string>
     <string name="addTournament">Добавить турнир</string>
+    <string name="changeBirthday">Изменить дату рождения</string>
     <string name="enterBirthday">Введите дату рождения</string>
     <string name="chooseAvatar">Выберите аватар (необязательно)</string>
     <string name="isMember">Уже зарегистрированы? Войти</string>
@@ -198,20 +201,23 @@
     <string name="alert_dialog_missing_avatar_img_title">Ошибка при загрузке изображения!</string>
     <string name="alert_dialog_missing_avatar_img_text">Произошла ошибка при попытке загрузить изображение аватара!\nСсылка на изображение будет удалена.</string>
 
-    <!-- fragment add new tournament -->
     <string name="toolbar_title_add_tournament">Добавить турнир</string>
     <string name="toolbar_title_edit_tournament">Редактировать турнир</string>
     <string name="toolbar_title_add_user">Добавить пользователя</string>
+    <string name="toolbar_title_edit_user">Обновить личную информацию</string>
     <string name="toolbar_title_add_location">Добавить место проведения</string>
     <string name="toolbar_title_edit_location">Редактировать место проведения</string>
     <string name="empty_fields_error_tournament">Вы должны заполнить поля Имя и Дата!</string>
+    <string name="user_edited_notification">Личная информация обновлена</string>
     <string name="tournament_added_notification">Турнир добавлен</string>
     <string name="tournament_changed_notification">Турнир изменён</string>
+    <string name="user_data_updated_notification">Персональные данные обновлены</string>
     <string name="tournament_deleted_notification">Турнир удален</string>
     <string name="location_added_notification">Место проведения добавлено</string>
     <string name="location_changed_notification">Место проведения изменёно</string>
     <string name="location_deleted_notification">Место проведения удалено</string>
     <string name="btn_tournament_delete">Удалить турнир</string>
+    <string name="btn_user_data_save">Сохранить данные</string>
     <string name="btn_location_delete">Удалить место проведения</string>
     <string name="avatar_btn_clicked_menu_item_select_photo">Галерея</string>
     <!--<string name="avatar_btn_clicked_menu_item_take_new_photo">Take new photo</string>-->
@@ -226,6 +232,7 @@
     <string name="alert_dialog_title_delete_location">Удалить место проведения</string>
     <string name="alert_dialog_body_message_location">Вы уверены, что хотите удалить это место проведения?</string>
     <string name="alert_dialog_body_message_tournament">Вы уверены, что хотите удалить этот турнир?</string>
+    <string name="alert_dialog_body_message_user">Вы уверены, что хотите обновить персональные данные?</string>
 
     <!-- fragment show tournament -->
     <string name="intent_share_chooser_title">Поделиться записью</string>
@@ -282,6 +289,7 @@
     <string name="searching_toolbar_actionview_hint">Поиск</string>
 
     <!-- main menu -->
+    <string name="main_menu_item_update_user_info">Обновить личную информацию</string>
     <string name="main_menu_item_about">О проекте</string>
     <string name="main_menu_item_help">Помощь</string>
     <string name="fab_event_list_tournament_title">Добавить турнир</string>
@@ -333,7 +341,7 @@
     <string name="help_content_OneTime">todo</string>
 
     <string name="ok_label">OK</string>
-    <string name="tournament_location_dialog_title">Выберите расположение</string>
+    <string name="tournament_location_dialog_title">Выберыце размяшчэнне</string>
     <string name="dismiss_label">Отменить</string>
     <string name="clear_all_label">Очистить</string>
 

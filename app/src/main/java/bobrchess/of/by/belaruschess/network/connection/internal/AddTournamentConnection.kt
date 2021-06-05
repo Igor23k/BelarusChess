@@ -81,7 +81,7 @@ class AddTournamentConnection {
     }
 
     fun getReferees(authorizationHeader: String) {
-        App.getPersonalServerApi().users(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
+        App.getPersonalServerApi().referees(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

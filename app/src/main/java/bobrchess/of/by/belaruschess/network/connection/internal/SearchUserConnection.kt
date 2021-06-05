@@ -9,15 +9,32 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Igor on 11.04.2018.
- */
-
 class SearchUserConnection {
 
     private var callBack: CallBackSearchUser? = null
+
+    fun updateUser(userDTO: UserDTO, authorizationHeader: String) {
+        App.getPersonalServerApi().updateUser(userDTO, authorizationHeader).enqueue(object : Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                if (response.isSuccessful) {
+                    if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
+                        callBack!!.onResponse(response.body())
+                    } else {
+                        callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                    }
+                } else {
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
+                }
+            }
+
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                callBack!!.onFailure(Util.buildOnFailureResponse())
+            }
+        })
+    }
+
     fun getCoaches(authorizationHeader: String) {
-        App.getPersonalServerApi().users(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
+        App.getPersonalServerApi().coaches(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
@@ -57,7 +74,7 @@ class SearchUserConnection {
     }
 
     fun getReferees(authorizationHeader: String) {
-        App.getPersonalServerApi().users(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
+        App.getPersonalServerApi().referees(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

@@ -37,6 +37,7 @@
     <string name="tours">Туры</string>
     <string name="action_tournaments_search">турніры</string>
     <string name="password">Пароль</string>
+    <string name="passwordIfNeeded">Абнавіце пароль, калі неабходна</string>
     <string name="login">Увайсці</string>
     <string name="noAccount">Яшчэ няма ўліковага запісу? стварыць</string>
     <string name="email">Пошта</string>
@@ -62,13 +63,15 @@
     <string name="locationCapacityHint">Умяшчальнасць</string>
     <string name="userAddress">Адрас</string>
     <string name="userRating">Рэйтынг</string>
+    <string name="userEmail">Электронная пошта</string>
     <string name="phoneNumber">Мабільны нумар</string>
     <string name="renterPassword">Паўторны ўвод пароля</string>
     <string name="createAccount">Рэгістрацыя</string>
     <string name="addTournament">Дадаць турнір</string>
     <string name="isMember">Ужо зарэгістраваны? Увайсці</string>
-    <string name="enterBirthday">Увядзіце дату нараджэння (не абавязкова)</string>
-    <string name="chooseAvatar">Выберыце аватар</string>
+    <string name="changeBirthday">Змяніць дату нараджэння</string>
+    <string name="enterBirthday">Увядзіце дату нараджэння</string>
+    <string name="chooseAvatar">Выберыце аватар (не абавязкова)</string>
     <string name="logo">Лагатып</string>
     <string name="please_wait">Калі ласка, пачакайце &#8230;</string>
     <string name="successful_draw">Жараб\'ёўка паспяхова праведзена</string>
@@ -188,20 +191,23 @@
     <string name="alert_dialog_missing_avatar_img_title">Памылка пры загрузцы малюнка!</string>
     <string name="alert_dialog_missing_avatar_img_text">Адбылася памылка пры спробе загрузіць малюнак аватара!\nСпасылка на малюнак будзе выдаленая.</string>
 
-    <!-- fragment add new tournament -->
     <string name="toolbar_title_add_tournament">Дадаць турнір</string>
     <string name="toolbar_title_edit_tournament">Рэдагаваць турнір</string>
     <string name="toolbar_title_add_user">Дадаць карыстальніка</string>
+    <string name="toolbar_title_edit_user">Абнавіць асабістую інфармацыю</string>
     <string name="toolbar_title_add_location">Дадаць месца правядзення </string>
     <string name="toolbar_title_edit_location">Рэдагаваць месца правядзення</string>
     <string name="empty_fields_error_tournament">Вы павінны запоўніць палі Імя і Дата!</string>
+    <string name="user_edited_notification">Асабістая інфармацыя абноўлена</string>
     <string name="tournament_added_notification">Турнір дададзены</string>
     <string name="tournament_changed_notification">Турнір зменены</string>
+    <string name="user_data_updated_notification">Персанальныя дадзеныя абноўленыя</string>
     <string name="tournament_deleted_notification">Турнір выдалены</string>
     <string name="location_added_notification">Месца правядзення дададзена</string>
     <string name="location_changed_notification">Месца правядзення дададзена</string>
     <string name="location_deleted_notification">Месца правядзення удалено</string>
     <string name="btn_tournament_delete">Выдаліць турнір</string>
+    <string name="btn_user_data_save">Захаваць даныя</string>
     <string name="btn_location_delete">Выдаліць месца правядзення</string>
     <string name="avatar_btn_clicked_menu_item_select_photo">Галерэя</string>
     <string name="avatar_btn_clicked_menu_item_delete_photo">Выдаліць фота</string>
@@ -215,6 +221,7 @@
     <string name="alert_dialog_title_delete_location">Выдаліць месца правядзення</string>
     <string name="alert_dialog_body_message_location">Вы ўпэўненыя, што жадаеце выдаліць гэтае месца правядзення?</string>
     <string name="alert_dialog_body_message_tournament">Вы ўпэўненыя, што жадаеце выдаліць гэты турнір?</string>
+    <string name="alert_dialog_body_message_user">Вы ўпэўненыя, што хочаце абнавіць персанальныя дадзеныя?</string>
 
     <!-- fragment show tournament -->
     <string name="intent_share_chooser_title">Падзяліцца запісам</string>
@@ -272,6 +279,7 @@
     <string name="searching_toolbar_actionview_hint">Пошук</string>
 
     <!-- main menu -->
+    <string name="main_menu_item_update_user_info">Абнавіць асабістую інфармацыю</string>
     <string name="main_menu_item_about">Аб праекце</string>
     <string name="main_menu_item_help">Дапамога</string>
     <string name="fab_event_list_tournament_title">Дадаць турнір</string>
@@ -312,7 +320,7 @@
     <!-- help texts -->
     <string name="help_title_reason">Чаму варта выкарыстоўваць гэты дадатак?</string>
     <string name="help_title_add_tournament">Як я магу дадаць турнір?</string>
-    <string name="help_title_add_location">todo</string>
+    <string name="help_title_add_location">Як я магу дадаць месца правядзення?</string>
     <string name="help_title_upcoming_updates">Якія абнаўлення чакаюцца ў будучыні?</string>
     <string name="help_content_reason">todo</string>
     <string name="help_content_tournament">todo</string>

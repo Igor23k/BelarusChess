@@ -367,4 +367,8 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     fun getUserData(): UserDTO? {
         return userData
     }
+
+    fun setUserData(userDTO: UserDTO?) {
+        this.userData = userDTO
+    }
 }
