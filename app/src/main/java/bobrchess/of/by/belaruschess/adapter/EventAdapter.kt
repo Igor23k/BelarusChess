@@ -317,7 +317,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
                                 eventId = user.eventID
-                                coachId = user.coachId
+                                coach = user.coach
                                 startUserFragment()
                                 //tournamentsResultPresenterImpl?.loadUserTournamentsResults(user.eventID)
                             }
@@ -331,12 +331,12 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         textColor = ContextCompat.getColor(context!!, R.color.textDark)
 
-                        var rank = user.rankId?.minus(1)?.let { ranks?.get(it)?.name }
+                        var rank = user.rankId?.minus(1)?.let { ranks?.get(it)?.abbreviation }
                         if (StringUtils.isEmpty(rank)) {
                             rank = "-"
                         }
-                        holder.itemView.user_country_and_rank_and_rating.text = rank
-                        holder.itemView.user_country_and_rank_and_rating.setTextColor(textColor)
+                        holder.itemView.user_rank.text = rank
+                        holder.itemView.user_rank.setTextColor(textColor)
 
                         //set startDate
                         holder.itemView.user_birthday.text = user.getPrettyShortStringWithYear()
@@ -697,7 +697,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     }
 
     private var eventId: Int? = 0
-    private var coachId: Long? = 0
+    private var coach: String? = null
 
     private fun startUserFragment() {
         if (eventId != null) {
@@ -711,16 +711,16 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
             // add arguments to fragment
             val newFragment = ShowUserEvent.newInstance()
 
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            val coach = coachId?.toInt()?.let { it1 -> users?.get(it1) }
+           /* val gson = GsonBuilder().setPrettyPrinting().create()
+            val coach = coach*/
             //val userTournamentsList = gson.toJson(userTournamentsResult)
 
-            if (coach != null) {
+        /*    if (coach != null) {
                 bundle.putString(
                         COACH,
-                        gson.toJson(coach)
+                        coach
                 )
-            }
+            }*/
 
            /* bundle.putString(
                     TOURNAMENTS_RESULT,

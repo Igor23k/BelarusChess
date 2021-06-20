@@ -683,7 +683,7 @@ class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentC
         }
     }
 
-    override fun showUsers(users: MutableList<out UserDTO>?) {
+    override fun showUsers(users: List<UserDTO>?) {
         referees = users
         updateUI()
     }

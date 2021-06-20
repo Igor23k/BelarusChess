@@ -24,7 +24,7 @@ object Validator {
         val rating = userDTO?.rating
         val birthday = userDTO?.birthday
         val phoneNumber = userDTO?.phoneNumber
-        val coach = userDTO?.selectedCoachIndex
+        val coach = userDTO?.coach
         val rank = userDTO?.selectedRankIndex
         val country = userDTO?.selectedCountryIndex
         val isMale = userDTO?.selectedGenderIndex
@@ -63,9 +63,6 @@ object Validator {
             }
             if (country == 0) {
                 throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
-            }
-            if (coach == 0) {
-                throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COACH_IS_NOT_SELECTED))
             }
         }
 

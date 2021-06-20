@@ -102,6 +102,7 @@
     <string name="notSelected">Не выбрано</string>
     <string name="chooseReferee">Выберите судью</string>
     <string name="chooseCoach">Выберите тренера</string>
+    <string name="chooseCoachToUpdate">Выберите тренера, чтобы обновить</string>
     <string name="chooseRank">Выберите звание</string>
     <string name="chooseCountry">Выберите страну</string>
     <string name="chooseGender">Выберите пол</string>

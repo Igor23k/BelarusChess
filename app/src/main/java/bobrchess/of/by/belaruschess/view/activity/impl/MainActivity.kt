@@ -26,6 +26,7 @@ import bobrchess.of.by.belaruschess.presenter.impl.PlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
@@ -52,12 +53,14 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     private var countriesAreLoaded = false
     private var placesAreLoaded = false
     private var ranksAreLoaded = false
+    private var eventFragment: EventListFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         userData = intent.getSerializableExtra("user") as UserDTO
+        userData!!.image = Util.getUserImage()
 
         searchTournamentPresenter = SearchTournamentPresenterImpl()
         searchTournamentPresenter!!.attachView(this)
@@ -249,11 +252,11 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         val bundle = Bundle()
 
         val transaction = supportFragmentManager.beginTransaction()
-        var eventFragment = EventListFragment.newInstance()
-        eventFragment.arguments = bundle
+        eventFragment = EventListFragment.newInstance()
+        eventFragment!!.arguments = bundle
         transaction.replace(
                 R.id.fragment_placeholder,
-                eventFragment
+                eventFragment!!
         ).commit()
 
 
@@ -370,5 +373,6 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
 
     fun setUserData(userDTO: UserDTO?) {
         this.userData = userDTO
+        eventFragment?.updateUserInList(userDTO)
     }
 }

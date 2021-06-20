@@ -232,7 +232,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
     override fun showToast(message: String?) {
     }
 
-    override fun showUsers(users: MutableList<out UserDTO>?) {
+    override fun showUsers(users: List<UserDTO>?) {
     }
 
     override fun showProgress() {

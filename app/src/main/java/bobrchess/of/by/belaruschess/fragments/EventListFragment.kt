@@ -72,7 +72,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     private var ranks: List<RankDTO>? = null
     private var countries: List<CountryDTO>? = null
     private var userTournamentsResult: List<TournamentResultDTO>? = null
-    private var users: List<UserDTO>? = null
+    private var users: MutableList<UserDTO>? = null
     private var userData: UserDTO? = null
 
     override fun onCreateView(
@@ -84,6 +84,35 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     var fabIsVisible = false
+
+    fun updateUserInList(user: UserDTO?) {
+        if (user != null) {
+            users?.forEachIndexed { index, userItem ->
+                if (user.id == userItem.id) {
+                    users?.set(index, user)
+
+                    val event = EventUser(user.id!!.toInt(), EventDate.parseStringToDate(transformDate("dd/mm/yyyy", user.birthday!!), DateFormat.DEFAULT, Locale.GERMAN), user.name!!, user.surname!!)
+                    event.rankId = user.rank?.id
+                    event.countryId = user.country?.id
+                    event.coach = user.coach
+                    event.rating = user.rating
+                    event.imageUri = user.image
+                    event.patronymic = user.patronymic
+
+                    EventHandler.addEvent(
+                            event,
+                            context!!,
+                            writeAfterAdd = false,
+                            addNewNotification = false,
+                            updateEventList = true,
+                            addBitmap = false
+                    )
+
+                    return
+                }
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -375,7 +404,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             }
 
             R.id.item_logout -> {
-               showLogoutConfirmation()
+                showLogoutConfirmation()
             }
 
             R.id.action_refresh -> {
@@ -527,13 +556,13 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     override fun showUsers(users: List<UserDTO>?) {
-        this.users = users
+        this.users = users?.toMutableList()
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         users!!.forEach {
             val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.birthday!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!, it.surname!!)
             event.rankId = it.rank?.id
             event.countryId = it.country?.id
-            event.coachId = it.coach?.id
+            event.coach = it.coach
             event.rating = it.rating
             event.imageUri = it.image
             event.patronymic = it.patronymic

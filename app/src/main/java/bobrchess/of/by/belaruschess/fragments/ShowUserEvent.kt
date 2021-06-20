@@ -38,7 +38,7 @@ class ShowUserEvent : ShowEventFragment() {
     private var countries: List<CountryDTO>? = null
 
     //private var userTournamentsResult: ArrayList<TournamentResultDTO>? = null
-    private var coach: UserDTO? = null
+    //private var coach: UserDTO? = null
 
     var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
     var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
@@ -56,7 +56,7 @@ class ShowUserEvent : ShowEventFragment() {
         countries = activity.getCountries()
 
         //userTournamentsResult = Gson().fromJson(arguments?.getString(TOURNAMENTS_RESULT), userTournamentsResultItemsListType
-        coach = Gson().fromJson(arguments?.getString(COACH), userItemsListType)
+        //coach = Gson().fromJson(arguments?.getString(COACH), userItemsListType)
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_user_event, container, false)
     }
@@ -119,8 +119,8 @@ class ShowUserEvent : ShowEventFragment() {
 
 
                 this.user_coach.visibility = TextView.VISIBLE
-                if (coach != null) {
-                    this.user_coach.text = resources.getString(R.string.coach) + "   ${coach?.name} ${coach?.surname}"
+                if (userEvent.coach != null) {
+                    this.user_coach.text = resources.getString(R.string.coach) + "   ${userEvent.coach}"
                 } else {
                     this.user_coach.text = resources.getString(R.string.coach_absence)
                 }

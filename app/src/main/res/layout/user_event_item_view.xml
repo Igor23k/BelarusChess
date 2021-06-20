@@ -122,10 +122,11 @@
         app:layout_constraintEnd_toEndOf="@+id/tournament_event_item_date_title"
         app:layout_constraintStart_toStartOf="@+id/tournament_event_item_date_title"
         app:layout_constraintTop_toBottomOf="@+id/tournament_event_item_date_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:text="01/05/18"/>
 
     <TextView
-        android:id="@+id/user_country_and_rank_and_rating"
+        android:id="@+id/user_rank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -136,7 +137,8 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_birthday_event_item_days_until_title"
         app:layout_constraintStart_toStartOf="@+id/tv_birthday_event_item_days_until_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_birthday_event_item_days_until_title"
-        app:layout_constraintVertical_bias="1.0"/>
+        app:layout_constraintVertical_bias="1.0"
+        android:text="KMS"/>
 
     <TextView
         android:id="@+id/user_rating"
@@ -149,5 +151,6 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_birthday_event_item_years_since_title"
         app:layout_constraintStart_toStartOf="@+id/tv_birthday_event_item_years_since_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_birthday_event_item_years_since_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:text="2018"/>
 </android.support.constraint.ConstraintLayout>

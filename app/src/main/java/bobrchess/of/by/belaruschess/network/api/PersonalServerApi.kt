@@ -22,10 +22,10 @@ interface PersonalServerApi {
     @GET("/api/allUsers")
     fun users(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
-    @GET("/api/allUsers")//todo coaches
+    @GET("/api/coaches")
     fun coaches(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
-    @GET("/api/allUsers")//todo referees
+    @GET("/api/referees")
     fun referees(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
     @get:GET("/tournaments")

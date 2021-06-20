@@ -80,6 +80,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView, DateP
     @JvmField
     @BindView(R.id.i_calendar_birthday)
     var calendarImage: ImageView? = null
+
     private var progressDialog: ProgressDialog? = null
     private var view: ScrollView? = null
     private var genderSpinner: Spinner? = null
@@ -205,7 +206,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView, DateP
 
     override fun registration() {
         try {
-            presenter!!.registration(userData)
+            presenter.registration(userData)
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_rating)
             enableButton()
@@ -322,7 +323,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView, DateP
     }
 
     override fun setConnectionStatus(connectivityStatus: Int) {
-        presenter!!.setConnectivityStatus(connectivityStatus)
+        presenter.setConnectivityStatus(connectivityStatus)
     }
 
     override fun showSnackBar(componentView: View, @StringRes message: Int) {

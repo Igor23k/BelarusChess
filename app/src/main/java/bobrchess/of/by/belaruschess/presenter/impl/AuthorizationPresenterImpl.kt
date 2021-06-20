@@ -64,24 +64,32 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
         view!!.hideProgress()
         view!!.enableButton()
         //todo залогать errordto.message и остальные ошибки
-        when (errorDTO.error) {
-            Constants.SERVER_UNAVAILABLE -> {
-                onServerUnavailable()
-            }
-            Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
-                onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
-            }
-            else -> {
-                when (errorDTO.message) {
-                    Constants.KEY_INVALID_EMAIL_OR_PASSWORD -> {
-                        onInvalidEmailOrPassword()
-                    }
-                    else -> {
-                        onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+
+        if (errorDTO.status == 401) {
+            onInvalidEmailOrPassword()
+        } else {
+
+            when (errorDTO.error) {
+                Constants.SERVER_UNAVAILABLE -> {
+                    onServerUnavailable()
+                }
+                Constants.SERVER_UNAVAILABLE -> {
+                    onServerUnavailable()
+                }
+                Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
+                    onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+                }
+                else -> {
+                    when (errorDTO.message) {
+                        Constants.KEY_INVALID_EMAIL_OR_PASSWORD -> {
+                            onInvalidEmailOrPassword()
+                        }
+                        else -> {
+                            onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+                        }
                     }
                 }
             }
-
         }
     }
 

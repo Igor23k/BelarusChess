@@ -41,7 +41,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     private var selectedGenderIndex: Int = 0
     private val ranksIndexes = HashMap<Int, RankDTO>()
     private val countriesIndexes = HashMap<Int, CountryDTO>()
-    private val coachesIndexes = HashMap<Int, UserDTO>()
+    private val coachesIndexes = HashMap<Int, String>()
     private var connectivityStatus: Int? = null
     private var firstTimeSpinnerLoad: Boolean = true
     private var packageModel: PackageModel? = null
@@ -62,8 +62,9 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     }
 
     override fun onCoachResponse(coaches: MutableList<UserDTO>) {
-        saveCoachesIndexes(coaches)
-        view!!.setCoachSpinnerAdapter(Util.getUsersBasicData(coaches).toMutableList())
+        val coachesNames = Util.getUsersBasicData(coaches).toMutableList();
+        saveCoachesIndexes(coachesNames)
+        view!!.setCoachSpinnerAdapter(coachesNames)
         loadRanks()
     }
 
@@ -138,7 +139,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     }
 
     private fun setUserData(@NonNull userDTO: UserDTO) {
-        if (selectedRankIndex != NOT_SELECTED_INDEX && selectedGenderIndex != ABSENCE_INDEX) {
+        if (selectedRankIndex != NOT_SELECTED_INDEX && selectedRankIndex != ABSENCE_INDEX) {
             userDTO.rank = ranksIndexes[selectedRankIndex.minus(2)]
         }
         if (selectedCountryIndex != NOT_SELECTED_INDEX) {
@@ -229,7 +230,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         }
     }
 
-    private fun saveCoachesIndexes(coaches: List<UserDTO>) {
+    private fun saveCoachesIndexes(coaches: List<String>) {
         for (i in coaches.indices) {
             coachesIndexes[i] = coaches[i]
         }

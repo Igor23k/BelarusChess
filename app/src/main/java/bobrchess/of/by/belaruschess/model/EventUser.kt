@@ -43,7 +43,7 @@ class EventUser(
         CountryId {
             override fun Identifier(): Int = 8
         },
-        CoachId {
+        Coach {
             override fun Identifier(): Int = 9
         },
         Email {
@@ -74,7 +74,7 @@ class EventUser(
     var rating: Int? = null
     var rankId: Int? = null
     var countryId: Int? = null
-    var coachId: Long? = null
+    var coach: String? = null
     var email: String? = null
     var phoneNumber: String? = null
     var beCoach: Boolean? = null
@@ -97,7 +97,7 @@ class EventUser(
                 getStringFromValue(Identifier.Rating, this.rating) +
                 getStringFromValue(Identifier.RankId, this.rankId) +
                 getStringFromValue(Identifier.CountryId, this.countryId) +
-                getStringFromValue(Identifier.CoachId, this.coachId) +
+                getStringFromValue(Identifier.Coach, this.coach) +
                 getStringFromValue(Identifier.PhoneNumber, this.phoneNumber) +
                 getStringFromValue(Identifier.BeCoach, this.beCoach) +
                 getStringFromValue(Identifier.BeAdmin, this.beAdmin) +

@@ -235,7 +235,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         return inflater.inflate(R.layout.fragment_edit_user, container, false)
     }
 
-    private var coachId: Int? = 0
+    private var coach: String? = null
     private var countryId: Int = 0
     private var genderId: Int = 0
     private var rankId: Int = 0
@@ -259,7 +259,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         userPresenterImpl!!.attachView(this)
         userPresenterImpl!!.packageModel = PackageModel(this.context!!)
         userPresenterImpl!!.viewIsReady()
-        userPresenterImpl!!.loadUsers() //todo coaches
+        userPresenterImpl!!.loadCoaches()
 
         setToolbarTitle(context!!.resources.getString(R.string.toolbar_title_edit_user))
         editBirthday.hint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
@@ -327,17 +327,9 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
             dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
                 this?.setOnClickListener {
                     dialog.dismiss()
-                    if (/*isEditedUser && */userAvatar != null && (EventHandler.getEventToEventIndex(
-                                    eventID
-                            ) as EventUser).imageUri != null
-                    ) {
-                        iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        imageWasEdited = true
-                        userAvatar = null
-                    }/* else {
-                        iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        userAvatar = null
-                    }*/
+                    iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
+                    imageWasEdited = true
+                    userAvatar = null
                 }
             }
 
@@ -551,11 +543,11 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
     override fun setCoachSpinnerAdapter(coaches: MutableList<out UserDTO>?) {
         val coachNames = Util.getUsersBasicData(coaches)
-        coachNames.add(0, getString(R.string.chooseCoach))
+        coachNames.add(0, getString(R.string.chooseCoachToUpdate))
         val adapter = ArrayAdapter<String>(this.context!!,
                 android.R.layout.simple_spinner_dropdown_item, coachNames)
         coachSpinner.adapter = adapter
-        coachSpinner.setSelection(getUserIndexById(coaches, coachId))
+        //coachSpinner.setSelection(getUserIndexById(coaches, coach))
         userPresenterImpl?.saveCoachesIndexes(coaches)
     }
 
@@ -580,10 +572,10 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         return -1
     }
 
-    private fun getUserIndexById(list: MutableList<out UserDTO>?, id: Int?): Int {
+    private fun getUserIndexById(list: MutableList<out UserDTO>?, coachName: String?): Int {
         if (list != null) {
             for ((i, value) in list.withIndex()) {
-                if (value.id?.toInt() == id) {
+                if (value.name + " " + value.surname == coachName) {
                     return i
                 }
             }
@@ -639,7 +631,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         userEvent.patronymic = userDTO.patronymic
         userEvent.phoneNumber = userDTO.phoneNumber
         userEvent.rating = userDTO.rating
-        userEvent.coachId = userDTO.coach?.id
+        userEvent.coach = userDTO.coach
         userEvent.countryId = userDTO.country?.id
         userEvent.rankId = userDTO.rank?.id
         userEvent.beMale = userDTO.beMale //userEvent.genderId = userDTO.get?.id todo
@@ -669,8 +661,8 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         //}
     }
 
-    override fun showUsers(users: MutableList<out UserDTO>?) {
-        coaches = users
+    override fun showUsers(coaches: List<UserDTO>?) {
+        this.coaches = coaches
         updateUI()
     }
 
@@ -687,7 +679,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
     private var isCalendarViewSelected: Boolean = true
 
     private fun updateUI() {
-        coachId = user?.coach?.id?.toInt()
+        coach = user?.coach
         rankId = user?.rank?.id!!
         genderId = getGenderId(user?.beMale)
         countryId = user?.country?.id!!

@@ -102,6 +102,7 @@
     <string name="notSelected">Not selected</string>
     <string name="chooseReferee">Choose a referee</string>
     <string name="chooseCoach">Choose a coach</string>
+    <string name="chooseCoachToUpdate">Choose a coach to update</string>
     <string name="chooseRank">Choose a rank</string>
     <string name="chooseCountry">Choose a country</string>
     <string name="chooseGender">Choose gender</string>

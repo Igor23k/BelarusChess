@@ -20,16 +20,22 @@ import org.springframework.util.StringUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Created by Igor on 03.05.2018.
- */
-
 class Util {
 
     companion object {
         var TYPE_WIFI = 1
         var TYPE_MOBILE = 2
         var TYPE_NOT_CONNECTED = 0
+
+        private var userImage: String? = null
+
+        fun setUserImage(image: String?) {
+            this.userImage = image
+        }
+
+        fun getUserImage(): String? {
+            return userImage
+        }
 
         fun getConnectivityStatus(context: Context): Int {
             val cm = context
@@ -141,11 +147,14 @@ class Util {
         fun getUsersBasicData(users: MutableList<out UserDTO>?): MutableList<String> {
             val usersNames = ArrayList<String>()
             var user: UserDTO
-            for (i in users!!.indices) {
-                user = users[i]
-                var rank = user.rank?.abbreviation
-                rank = if (!StringUtils.isEmpty(rank)) " ($rank)" else ""
-                usersNames.add(user.name + " " + user.surname + " " + user.patronymic + rank)
+
+            if (users != null) {
+                for (i in users.indices) {
+                    user = users[i]
+                    var rank = user.rank?.abbreviation
+                    rank = if (!StringUtils.isEmpty(rank)) " ($rank)" else ""
+                    usersNames.add(user.name + " " + user.surname + " " + user.patronymic + rank)
+                }
             }
             return usersNames
         }
@@ -251,6 +260,5 @@ class Util {
         private val REQUEST_IMAGE_GET = 1
 
     }
-
 
 }
