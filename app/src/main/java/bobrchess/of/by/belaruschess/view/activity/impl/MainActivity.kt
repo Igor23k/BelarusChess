@@ -26,6 +26,7 @@ import bobrchess.of.by.belaruschess.presenter.impl.PlacePresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack
@@ -239,7 +240,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
 
     private fun transformDate(dateString: String?): String? {
         return try {
-            val bdFormat = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
+            val bdFormat = SimpleDateFormat(USER_BIRTHDAY_FORMAT, Locale.getDefault())
             val newFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
             val date = bdFormat.parse(dateString)
             newFormat.format(date)
@@ -371,8 +372,12 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         return userData
     }
 
-    fun setUserData(userDTO: UserDTO?) {
+    fun updateUserData(userDTO: UserDTO?) {
         this.userData = userDTO
         eventFragment?.updateUserInList(userDTO)
+    }
+
+    fun clearUserData(userDTO: UserDTO?) {
+        this.userData = userDTO
     }
 }

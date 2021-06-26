@@ -18,9 +18,10 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
+import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.Companion.DATE_PICKER_DIALOG
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.REGISTRATION_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
@@ -31,9 +32,10 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.borax12.materialdaterangepicker.date.DatePickerDialog
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
+import java.text.SimpleDateFormat
 import java.util.*
 
-class RegistrationActivity : AbstractActivity(), RegistrationContractView, DatePickerDialog.OnDateSetListener {
+class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     @JvmField
     var presenter: RegistrationPresenterImpl = RegistrationPresenterImpl()
 
@@ -140,14 +142,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView, DateP
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
         }
         calendarImage!!.setOnClickListener { v: View? ->
-            val now = Calendar.getInstance()
-            val dpd = DatePickerDialog.newInstance(
-                    this@RegistrationActivity,
-                    now[Calendar.YEAR],
-                    now[Calendar.MONTH],
-                    now[Calendar.DAY_OF_MONTH]
-            )
-            dpd.show(fragmentManager, DATE_PICKER_DIALOG)
+            showStartDatePickerDialog()
         }
         //add image from gallery
         this.frame_layout_add_avatar_image.setOnClickListener {
@@ -174,6 +169,44 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView, DateP
 
             dialog.show()
         }
+    }
+
+    private fun showStartDatePickerDialog() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd =
+                android.app.DatePickerDialog(
+                        this,
+                        android.app.DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+                            // Display Selected startDate in Toast
+                            c.set(Calendar.YEAR, year_)
+                            c.set(Calendar.MONTH, monthOfYear)
+                            c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                            /*  if (c.time.after(Calendar.getInstance().time) && showYear) {
+                                  showFutureDateErrorToast(view.context)
+                              } else {*/
+                            this.birthday = convertDateToString(c.time)
+                            //}
+                        },
+                        year,
+                        month,
+                        day
+                )
+        dpd.show()
+    }
+
+    fun convertDateToString(date: Date?): String? {
+        if (date != null) {
+            var pattern = USER_BIRTHDAY_FORMAT
+            var df = SimpleDateFormat(pattern)
+            var dateString = df.format(date)
+            return dateString
+        }
+        return null
     }
 
     override fun onDestroy() {
@@ -279,11 +312,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView, DateP
         val adapter = ArrayAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item, countriesNames)
         countrySpinner!!.adapter = adapter
-    }
-
-    override fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int,
-                           yearEnd: Int, monthOfYearEnd: Int, dayOfMonthEnd: Int) {
-        birthday = "$year-$monthOfYear-$dayOfMonth"
     }
 
     inner class GenderItemSelectedListener : OnItemSelectedListener {

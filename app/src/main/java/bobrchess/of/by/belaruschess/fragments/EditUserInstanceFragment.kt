@@ -30,6 +30,7 @@ import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.EditUserContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -200,9 +201,6 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         return dateRegex.toRegex()
     }
 
-    private val dateEditRegexNoYear by lazy {
-        getDateRegexFromDateFormatSkeletonPattern("ddMM")
-    }
     private val dateEditRegexWithYear by lazy {
         getDateRegexFromDateFormatSkeletonPattern("ddMMYYYY")
     }
@@ -424,7 +422,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
     fun convertDateToString(date: Date?): String? {
         if (date != null) {
-            var pattern = "dd/MM/yyyy"
+            var pattern = USER_BIRTHDAY_FORMAT
             var df = SimpleDateFormat(pattern)
             var dateString = df.format(date)
             return dateString
@@ -542,13 +540,24 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
     }
 
     override fun setCoachSpinnerAdapter(coaches: MutableList<out UserDTO>?) {
-        val coachNames = Util.getUsersBasicData(coaches)
+        val updatedCoaches = removeCurrentUserFromList(coaches)
+        val coachNames = Util.getUsersBasicData(updatedCoaches)
         coachNames.add(0, getString(R.string.chooseCoachToUpdate))
         val adapter = ArrayAdapter<String>(this.context!!,
                 android.R.layout.simple_spinner_dropdown_item, coachNames)
         coachSpinner.adapter = adapter
         //coachSpinner.setSelection(getUserIndexById(coaches, coach))
-        userPresenterImpl?.saveCoachesIndexes(coaches)
+        userPresenterImpl?.saveCoachesIndexes(updatedCoaches)
+    }
+
+    fun removeCurrentUserFromList(coaches: MutableList<out UserDTO>?):MutableList<out UserDTO>? {
+        if (user != null) {
+            val id = user!!.id
+            coaches?.removeIf { coach ->
+                coach.id == id
+            }
+        }
+        return coaches
     }
 
     override fun setRankSpinnerAdapter(ranks: MutableList<out RankDTO>?) {
@@ -634,7 +643,8 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         userEvent.coach = userDTO.coach
         userEvent.countryId = userDTO.country?.id
         userEvent.rankId = userDTO.rank?.id
-        userEvent.beMale = userDTO.beMale //userEvent.genderId = userDTO.get?.id todo
+        userEvent.beMale = userDTO.beMale //userEvent.genderId = userDTO.get?.id todo coach тоже
+        и остальных проверить
 
         /* if (!isEditedUser) {
             *//* EventHandler.addEvent(userEvent, this.context!!, true)
@@ -757,7 +767,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
     override fun showUser(userDTO: UserDTO?) {
         val activity: MainActivity? = activity as MainActivity?
-        activity?.setUserData(userDTO)
+        activity?.updateUserData(userDTO)
 
         Snackbar.make(
                 view!!,

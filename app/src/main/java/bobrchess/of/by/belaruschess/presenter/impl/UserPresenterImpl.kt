@@ -17,6 +17,7 @@ import bobrchess.of.by.belaruschess.util.Validator.validateUserData
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import butterknife.BindView
+import org.springframework.util.StringUtils
 import java.util.*
 
 class UserPresenterImpl : CallBackSearchUser, UserPresenter {
@@ -163,7 +164,9 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     override fun saveCoachesIndexes(coaches: List<UserDTO?>?) {
         if (coaches != null) {
             for (i in coaches.indices) {
-                coachesIndexes[i] = coaches[i]!!.name + " " + coaches[i]!!.surname
+                var rank = coaches[i]!!.rank?.abbreviation
+                rank = if (!StringUtils.isEmpty(rank)) " ($rank)" else ""
+                coachesIndexes[i] = coaches[i]!!.name + " " + coaches[i]!!.surname + rank
             }
         }
     }

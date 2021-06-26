@@ -32,6 +32,7 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -425,7 +426,7 @@ class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentC
 
     fun convertDateToString(date: Date?): String? {
         if (date != null) {
-            var pattern = "dd/MM/yyyy"
+            var pattern = USER_BIRTHDAY_FORMAT
             var df = SimpleDateFormat(pattern)
             var dateString = df.format(date)
             return dateString

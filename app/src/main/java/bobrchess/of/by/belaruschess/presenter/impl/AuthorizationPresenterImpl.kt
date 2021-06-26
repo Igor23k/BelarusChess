@@ -48,10 +48,16 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
     }
 
     override fun onResponse(userContextDTO: UserContextDTO) {
-        packageModel?.putTokenMap(userContextDTO.tokenMap)
-        view!!.hideProgress()
-        view!!.enableButton()
-        view!!.startActivity(userContextDTO.user)
+        if (userContextDTO.tokenMap != null && userContextDTO.user != null) {
+            packageModel?.putTokenMap(userContextDTO.tokenMap)
+            view!!.hideProgress()
+            view!!.enableButton()
+            view!!.startActivity(userContextDTO.user)
+        } else {
+            view!!.hideProgress()
+            view!!.enableButton()
+            onServerUnavailable()
+        }
     }
 
     override fun onResponse(userDTO: UserDTO) {

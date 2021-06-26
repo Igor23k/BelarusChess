@@ -148,6 +148,7 @@ class Constants {
         val USER_PREFERENCES = "userPreferences"
 
         val REQUEST_CODE = "requestCode"
+        val USER_BIRTHDAY_FORMAT = "dd/MM/yyyy"
     }
 
 }
