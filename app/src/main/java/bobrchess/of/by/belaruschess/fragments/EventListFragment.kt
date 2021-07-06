@@ -43,10 +43,7 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMA
 import bobrchess.of.by.belaruschess.util.Constants.Companion.WORLD_TOURNAMENT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.transformDate
-import bobrchess.of.by.belaruschess.view.activity.FideApiContractView
-import bobrchess.of.by.belaruschess.view.activity.SearchPlaceContractView
-import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
-import bobrchess.of.by.belaruschess.view.activity.UserContractView
+import bobrchess.of.by.belaruschess.view.activity.*
 import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -135,6 +132,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
         userPresenter = UserPresenterImpl()
         userPresenter!!.attachView(this)
+        userPresenter!!.setPackageModel(PackageModel(this.context!!))
         userPresenter!!.viewIsReady()
 
         searchPlacePresenter = SearchPlacePresenterImpl()

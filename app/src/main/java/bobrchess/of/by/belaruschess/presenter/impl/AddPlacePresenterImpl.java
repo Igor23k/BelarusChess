@@ -25,6 +25,7 @@ import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 
 import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
+import static javax.xml.bind.JAXBIntrospector.getValue;
 
 @InjectViewState
 public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> implements CallBackAddPlace, AddPlacePresenter {
@@ -111,7 +112,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     public void removePlace(Integer id) {
         if (viewIsReady) {
             view.showProgress();//todo не работает для всех
-            addPlaceConnection.removePlace(id);
+            addPlaceConnection.removePlace(id, packageModel.getValue(TOKEN));
         }
     }
 

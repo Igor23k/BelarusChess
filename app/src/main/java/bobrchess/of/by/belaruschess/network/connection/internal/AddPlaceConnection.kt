@@ -11,16 +11,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Igor on 11.04.2018.
- */
-
 class AddPlaceConnection {
 
     private var callBack: CallBackAddPlace? = null
 
-    fun removePlace(id: Int?) {//todo header и для остальных
-        App.getPersonalServerApi().removePlace(id!!).enqueue(object : Callback<Int> {
+    fun removePlace(id: Int?, authorizationHeader: String) {
+        App.getPersonalServerApi().removePlace(authorizationHeader, id!!).enqueue(object : Callback<Int> {
             override fun onResponse(call: Call<Int>, response: Response<Int>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
@@ -40,8 +36,8 @@ class AddPlaceConnection {
     }
 
 
-    fun addPlace(placeDTO: PlaceDTO, authorizationHeader: String) {//todo header
-        App.getPersonalServerApi().addPlace(placeDTO).enqueue(object : Callback<PlaceDTO> {
+    fun addPlace(placeDTO: PlaceDTO, authorizationHeader: String) {
+        App.getPersonalServerApi().addPlace(authorizationHeader, placeDTO).enqueue(object : Callback<PlaceDTO> {
             override fun onResponse(call: Call<PlaceDTO>, response: Response<PlaceDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

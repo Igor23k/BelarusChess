@@ -240,7 +240,7 @@ class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentC
 
         userPresenterImpl = UserPresenterImpl()
         userPresenterImpl!!.attachView(this)
-        userPresenterImpl!!.packageModel = PackageModel(this.context!!)
+        userPresenterImpl!!.setPackageModel(PackageModel(this.context!!))
         userPresenterImpl!!.viewIsReady()
         userPresenterImpl!!.loadReferees()
 

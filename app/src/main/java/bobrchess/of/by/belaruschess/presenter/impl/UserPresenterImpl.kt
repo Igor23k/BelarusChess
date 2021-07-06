@@ -24,7 +24,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     private var view: UserContractView? = null
     private val userConnection: SearchUserConnection
     private var viewIsReady = false
-    var packageModel: PackageModel? = null
+    private var packageModel: PackageModel? = null
     private var connectivityStatus: Int? = 0
     private var selectedRankIndex = 0
     private var selectedCountryIndex = 0
@@ -37,6 +37,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     @JvmField
     @BindView(R.id.t_link_registration)
     var registrationLink: TextView? = null
+
     override fun loadUserById(id: Int) {
         view!!.showProgress()
         userConnection.getUserById(packageModel!!.getValue(Constants.TOKEN), id)
@@ -54,18 +55,18 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
 
     override fun loadUsers() {
         view!!.showProgress()
-        userConnection.getUsers(10)
+        userConnection.getUsers(10, packageModel!!.getValue(Constants.TOKEN))
     } //todo
 
     override fun loadUsers(count: Int?) {
         view!!.showProgress()
-        userConnection.getUsers(count)
+        userConnection.getUsers(count, packageModel!!.getValue(Constants.TOKEN))
     }
 
     override fun searchUsers(text: String) {
         if (viewIsReady) {
             view!!.showProgress()
-            userConnection.searchUsers(text)
+            userConnection.searchUsers(text, packageModel!!.getValue(Constants.TOKEN))
         }
     }
 
@@ -92,6 +93,10 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
                 //    view.enableButton();
             }
         }
+    }
+
+    override fun setPackageModel(packageModel: PackageModel?){
+        this.packageModel = packageModel
     }
 
     override fun attachView(userContractView: UserContractView) {

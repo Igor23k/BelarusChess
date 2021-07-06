@@ -16,7 +16,6 @@ class AuthorizationConnection {
     private var callBack: CallBackAuthorization? = null
 
     fun authorization(userDTO: UserDTO) {
-
         App.getPersonalServerApi().authorization(userDTO).enqueue(object : Callback<UserContextDTO> {
             override fun onResponse(call: Call<UserContextDTO>, response: Response<UserContextDTO>) {
                 if (response.isSuccessful) {
@@ -36,8 +35,8 @@ class AuthorizationConnection {
         })
     }
 
-    fun getUser(authorizationHeader: String) {
-        App.getPersonalServerApi().getUser(authorizationHeader).enqueue(object : Callback<UserDTO> {
+    fun authorization(authorizationHeader: String) {
+        App.getPersonalServerApi().authorization(authorizationHeader).enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.network.api
 
 import bobrchess.of.by.belaruschess.dto.*
-import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerDTO
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -35,7 +34,7 @@ interface PersonalServerApi {
     fun tournaments(@Path("count") count: Int): Call<List<TournamentDTO>>
 
     @GET("/user/{id}")
-    fun userById(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<UserDTO>//todo удалить такой же метод /user/
+    fun userById(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<UserDTO>
 
     @GET("/tournamentsResultByUser/{userId}/{limit}")
     fun getTournamentsResultByUser(@Path("userId") id: Int, @Path("limit") limit: Int): Call<List<TournamentResultDTO>>
@@ -54,10 +53,10 @@ interface PersonalServerApi {
     fun getPlace(@Path("id") id: Int): Call<PlaceDTO>
 
     @POST("/place")
-    fun addPlace(@Body placeDTO: PlaceDTO): Call<PlaceDTO>
+    fun addPlace(@Header("Authorization") authorization: String, @Body placeDTO: PlaceDTO): Call<PlaceDTO>
 
     @DELETE("/place/{id}")
-    fun removePlace(@Path("id") id: Int) : Call<Int>
+    fun removePlace(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<Int>
 
     @GET("/searchPlaces")
     fun searchPlaces(@Query("text") text: String): Call<List<PlaceDTO>>
@@ -67,26 +66,23 @@ interface PersonalServerApi {
     fun getRank(@Path("id") id: Int): Call<RankDTO>
 
     @POST("/rank")
-    fun addRank(@Body rankDTO: RankDTO): Call<RankDTO>
+    fun addRank(@Header("Authorization") authorization: String, @Body rankDTO: RankDTO): Call<RankDTO>
 
     //Country
     @GET("/countryDTO/{id}")
     fun getCountry(@Path("id") id: Int): Call<CountryDTO>
 
     @POST("/countryDTO")
-    fun addCountry(@Body countryDTO: CountryDTO): Call<CountryDTO>
+    fun addCountry(@Header("Authorization") authorization: String, @Body countryDTO: CountryDTO): Call<CountryDTO>
 
     @GET("/users")
-    fun getUsers(@Query("count") count: Int): Call<List<UserDTO>>
+    fun getUsers(@Header("Authorization") authorization: String, @Query("count") count: Int): Call<List<UserDTO>>
 
     @GET("/searchUsers")
-    fun searchUsers(@Query("text") text: String): Call<List<UserDTO>>
-
-    @GET("/user/{id}")
-    fun getUser(@Path("id") id: Int): Call<UserDTO>
+    fun searchUsers(@Header("Authorization") authorization: String, @Query("text") text: String): Call<List<UserDTO>>
 
     @GET("/api/me")
-    fun getUser(@Header("Authorization") authorization: String): Call<UserDTO>
+    fun authorization(@Header("Authorization") authorization: String): Call<UserDTO>
 
     @POST("/api/auth/login")
     fun authorization(@Body userDTO: UserDTO): Call<UserContextDTO>
@@ -103,13 +99,13 @@ interface PersonalServerApi {
 
     //Tournament
     @DELETE("/tournament/{id}")
-    fun removeTournament(@Path("id") id: Long) : Call<Long>
+    fun removeTournament(@Path("id") id: Long): Call<Long>
 
     @GET("/searchUsers")
     fun searchTournaments(@Query("text") text: String): Call<List<TournamentDTO>>
 
     @POST("/tournament")
-    fun addTournament(@Body tournamentDTO: TournamentDTO): Call<TournamentDTO>
+    fun addTournament(@Header("Authorization") authorization: String, @Body tournamentDTO: TournamentDTO): Call<TournamentDTO>
 
     @POST("/updateUser")
     fun updateUser(@Body userDTO: UserDTO, @Header("Authorization") authorization: String): Call<UserDTO>

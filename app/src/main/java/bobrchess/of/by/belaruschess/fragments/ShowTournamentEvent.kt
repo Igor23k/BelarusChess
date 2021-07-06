@@ -45,7 +45,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
         initTournament()
         userPresenterImpl = UserPresenterImpl()
         userPresenterImpl?.attachView(this)
-        userPresenterImpl?.packageModel = PackageModel(this.context!!)
+        userPresenterImpl?.setPackageModel(PackageModel(this.context!!))
         userPresenterImpl?.viewIsReady()
         tournament?.refereeId?.toInt()?.let { userPresenterImpl?.loadUserById(it) }
 

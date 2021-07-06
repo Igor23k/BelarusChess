@@ -4,6 +4,7 @@ import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
+import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 
 interface UserPresenter : BasePresenter {
@@ -15,6 +16,7 @@ interface UserPresenter : BasePresenter {
     fun loadUsers(count: Int?)
     fun searchUsers(text: String)
     fun attachView(userContractView: UserContractView)
+    fun setPackageModel(packageModel: PackageModel?)
     fun setSelectedRankIndex(selectedRankIndex: Int)
     fun setSelectedCountryIndex(selectedCountryIndex: Int)
     fun setSelectedCoachIndex(selectedCoachIndex: Int)

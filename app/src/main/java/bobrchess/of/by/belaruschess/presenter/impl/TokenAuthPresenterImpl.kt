@@ -100,7 +100,7 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
 
     override fun tokenAuthorization() {
         val token = packageModel!!.getValue(TOKEN)
-        authorizationConnection.getUser(token)
+        authorizationConnection.authorization(token)
     }
 
     private fun refreshToken() {

@@ -17,8 +17,8 @@ class UserConnection {
 
     private var callBack: CallBackUser? = null
 
-    fun getUser(id: Int?) {
-        App.getPersonalServerApi().getUser(id!!).enqueue(object : Callback<UserDTO> {
+    fun getUser(authorizationHeader: String, id: Int?) {
+        App.getPersonalServerApi().userById(authorizationHeader, id!!).enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

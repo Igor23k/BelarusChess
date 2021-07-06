@@ -41,7 +41,7 @@ class AddTournamentConnection {
     }
 
     fun addTournament(tournamentDTO: TournamentDTO, authorizationHeader: String) {
-        App.getPersonalServerApi().addTournament(tournamentDTO).enqueue(object : Callback<TournamentDTO> {
+        App.getPersonalServerApi().addTournament(authorizationHeader, tournamentDTO).enqueue(object : Callback<TournamentDTO> {
             override fun onResponse(call: Call<TournamentDTO>, response: Response<TournamentDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

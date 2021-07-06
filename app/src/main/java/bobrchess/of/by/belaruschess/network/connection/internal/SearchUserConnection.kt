@@ -53,8 +53,8 @@ class SearchUserConnection {
         })
     }
 
-    fun getUsers(count: Int?) {
-        App.getPersonalServerApi().getUsers(count!!).enqueue(object : Callback<List<UserDTO>> {
+    fun getUsers(count: Int?, authorizationHeader: String) {
+        App.getPersonalServerApi().getUsers(authorizationHeader, count!!).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
@@ -113,8 +113,8 @@ class SearchUserConnection {
         })
     }
 
-    fun searchUsers(text: String) {
-        App.getPersonalServerApi().searchUsers(text).enqueue(object : Callback<List<UserDTO>> {
+    fun searchUsers(text: String, authorizationHeader: String) {
+        App.getPersonalServerApi().searchUsers(authorizationHeader, text).enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
