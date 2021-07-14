@@ -543,6 +543,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
+            event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
             event.finishDate = EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, it.finishDate!!), DateFormat.DEFAULT, Locale.GERMAN)
             EventHandler.addEvent(
@@ -717,7 +718,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     override fun showTopPlayers(topPlayersDTO: TopPlayersDTO?) {
-        IOHandler.clearSharedPrefEventData()
+        IOHandler.clearSharedPrefEventData()//todo
         addMonthDivider(getMonthDivider(66666666, Util.getInternalizedMessage(KEY_RATING_OPEN)))
         processTopPlayers(topPlayersDTO?.open)
         addMonthDivider(getMonthDivider(77777777, Util.getInternalizedMessage(KEY_WOMEN)))

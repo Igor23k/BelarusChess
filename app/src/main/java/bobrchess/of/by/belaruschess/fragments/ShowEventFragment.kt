@@ -78,7 +78,6 @@ abstract class ShowEventFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.toolbar_show_event, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -95,8 +94,6 @@ abstract class ShowEventFragment : Fragment() {
             }
             R.id.toolbar_edit -> {
                 editEvent()
-                //when leave fragment, change status of home button
-                (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
             }
         }
         return super.onOptionsItemSelected(item)

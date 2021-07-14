@@ -6,9 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentDTO
@@ -232,8 +230,7 @@ class ShowWorldTournamentEvent : ShowEventFragment() {
         }
     }
 
-    override fun editEvent() {//todo удалить кнопку
-    }
+    override fun editEvent() {}
 
     companion object {
         /**
@@ -243,5 +240,10 @@ class ShowWorldTournamentEvent : ShowEventFragment() {
         fun newInstance(): ShowWorldTournamentEvent {
             return ShowWorldTournamentEvent()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.toolbar_show_event_lite, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

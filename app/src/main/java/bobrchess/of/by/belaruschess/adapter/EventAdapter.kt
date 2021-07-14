@@ -19,7 +19,6 @@ import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.FideApiAdapterPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.FideApiAdapterPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentsResultPresenterImpl
-import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
 import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByBase64
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
@@ -238,11 +237,11 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 )
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
-                                val newBirthdayFragment = UpdateTournamentInstanceFragment.newInstance()
-                                newBirthdayFragment.arguments = bundle
+                                val newTournamentFragment = UpdateTournamentInstanceFragment.newInstance()
+                                newTournamentFragment.arguments = bundle
                                 ft.replace(
                                         R.id.fragment_placeholder,
-                                        newBirthdayFragment
+                                        newTournamentFragment
                                 )
                                 ft.addToBackStack(null)
                                 ft.commit()

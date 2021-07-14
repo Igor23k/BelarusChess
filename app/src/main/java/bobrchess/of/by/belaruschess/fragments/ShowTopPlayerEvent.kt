@@ -6,9 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
@@ -237,9 +235,7 @@ class ShowTopPlayerEvent : ShowEventFragment() {
         }
     }
 
-    override fun editEvent() {//todo удалить кнопку когда показывается пользователь (и плэйс для не админов)
-
-    }
+    override fun editEvent() {}
 
     companion object {
         /**
@@ -249,5 +245,10 @@ class ShowTopPlayerEvent : ShowEventFragment() {
         fun newInstance(): ShowTopPlayerEvent {
             return ShowTopPlayerEvent()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.toolbar_show_event_lite, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

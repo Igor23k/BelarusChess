@@ -313,6 +313,7 @@ object IOHandler {
                         var toursCount: String? = null
                         var fullDescription: String? = null
                         var refereeId: String? = null
+                        var createdBy: String? = null
                         var placeId: String? = null
 
                         for (i in 1 until stringArray.size) {
@@ -344,6 +345,9 @@ object IOHandler {
                                 EventTournament.Identifier.Referee.toString() -> {
                                     refereeId = property[1]
                                 }
+                                EventTournament.Identifier.CreatedBy.toString() -> {
+                                    createdBy = property[1]
+                                }
                                 EventTournament.Identifier.Place.toString() -> {
                                     placeId = property[1]
                                 }
@@ -365,6 +369,7 @@ object IOHandler {
                         if (fullDescription != null) tournament.fullDescription = fullDescription
                         if (toursCount != null) tournament.toursCount = toursCount.toInt()
                         if (refereeId != null) tournament.refereeId = refereeId.toLong()
+                        if (createdBy != null) tournament.createdBy = createdBy.toLong()
                         if (placeId != null) {
                             tournament.placeId = placeId.toInt()
                         }

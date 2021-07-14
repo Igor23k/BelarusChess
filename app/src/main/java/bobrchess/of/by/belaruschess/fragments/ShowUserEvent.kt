@@ -6,9 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
@@ -16,10 +14,8 @@ import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventUser
-import bobrchess.of.by.belaruschess.util.Constants.Companion.COACH
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_user_event.*
@@ -214,7 +210,12 @@ class ShowUserEvent : ShowEventFragment() {
                 var shareBirthdayMsg = user.name + " " + user.surname + " " + user.patronymic
                 shareBirthdayMsg += "\n" + resources.getString(R.string.birthday) + ": " + EventDate.parseDateToString(user.birthday, DateFormat.FULL)
                 shareBirthdayMsg += "\n" + resources.getString(R.string.rating) + ": " + user.rating
-                shareBirthdayMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.get(user.rankId!!)?.name
+
+                val rankId = user.rankId
+                
+                if (rankId != null) {
+                    shareBirthdayMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.get(rankId)?.name
+                }
 
                 intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
                 startActivity(
@@ -247,9 +248,12 @@ class ShowUserEvent : ShowEventFragment() {
         }
     }*/
 
-    override fun editEvent() {//todo удалить кнопку когда показывается пользователь (и плэйс для не админов)
-
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.toolbar_show_event_lite, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
+
+    override fun editEvent() {}
 
     companion object {
         /**

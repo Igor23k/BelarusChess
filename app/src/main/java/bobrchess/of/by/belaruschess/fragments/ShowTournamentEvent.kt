@@ -7,9 +7,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
@@ -191,6 +189,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
     }
 
     override fun editEvent() {
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         val bundle = Bundle()
         //do this in more adaptable way
         bundle.putInt(
@@ -257,5 +256,17 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
     }
 
     override fun showSnackbar(resId: Int?) {
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        val isAdmin = (context as MainActivity).getUserData()?.beAdmin
+        val isOrganizer = (context as MainActivity).getUserData()?.beOrganizer
+        val id = (context as MainActivity).getUserData()?.id
+        if (isAdmin == true || (isOrganizer == true/* && id == tournament?.createdBy todo раскомментить когда createdBy будет добавлено на беке*/)) {
+            inflater?.inflate(R.menu.toolbar_show_event_full, menu)
+        } else {
+            inflater?.inflate(R.menu.toolbar_show_event_lite, menu)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

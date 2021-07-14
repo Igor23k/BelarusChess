@@ -39,11 +39,14 @@ class EventTournament(
         Referee {
             override fun Identifier(): Int = 7
         },
-        Place {
+        CreatedBy {
             override fun Identifier(): Int = 8
         },
-        ToursCount {
+        Place {
             override fun Identifier(): Int = 9
+        },
+        ToursCount {
+            override fun Identifier(): Int = 10
         }
     }
 
@@ -59,14 +62,10 @@ class EventTournament(
 
     var refereeId: Long? = null
 
+    var createdBy: Long? = null
+
     var placeId: Int? = null
 
-    /**
-     * toString returns EventTournament as string representation
-     * This is "optimized" for Serialization, so THE FIRST WORD HAS TO BE THE TYPIFICATION f.e. "Birthday"
-     * returned string follows the pattern TYPE|FORENAME|SURNAME|EVENTDATE|ISYEARGIVEN|NOTE|AVATARURI|NICKNAME
-     * @return String
-     */
     override fun toString(): String {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
                 "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
@@ -84,6 +83,7 @@ class EventTournament(
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.AvatarUri, this.imageUri) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +
+                getStringFromValue(Identifier.CreatedBy, this.createdBy) +
                 getStringFromValue(Identifier.Place, this.placeId) +
                 getStringFromValue(Identifier.ToursCount, this.toursCount)
     }
@@ -110,6 +110,7 @@ class EventTournament(
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +
+                getStringFromValue(Identifier.CreatedBy, this.createdBy) +
                 getStringFromValue(Identifier.Place, this.placeId) +
                 getStringFromValue(Identifier.ToursCount, this.toursCount)
     }

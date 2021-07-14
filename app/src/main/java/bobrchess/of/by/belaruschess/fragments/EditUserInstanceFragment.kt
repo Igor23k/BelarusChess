@@ -644,7 +644,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         userEvent.countryId = userDTO.country?.id
         userEvent.rankId = userDTO.rank?.id
         userEvent.beMale = userDTO.beMale //userEvent.genderId = userDTO.get?.id todo coach тоже
-        и остальных проверить
+                //и остальных проверить
 
         /* if (!isEditedUser) {
             *//* EventHandler.addEvent(userEvent, this.context!!, true)

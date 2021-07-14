@@ -6,9 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
@@ -151,7 +149,7 @@ class ShowPlaceEvent : ShowEventFragment() {
     }
 
     override fun editEvent() {
-
+        (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         val bundle = Bundle()
         //do this in more adaptable way
         bundle.putInt(
@@ -180,5 +178,10 @@ class ShowPlaceEvent : ShowEventFragment() {
         fun newInstance(): ShowPlaceEvent {
             return ShowPlaceEvent()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.toolbar_show_event_full, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

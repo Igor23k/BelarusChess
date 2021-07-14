@@ -307,6 +307,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
+            event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
             event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
             EventHandler.addEvent(
