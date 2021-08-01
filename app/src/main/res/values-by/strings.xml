@@ -113,6 +113,7 @@
     <string name="blitzRating">Бліц рэйтынг: %1$s</string>
     <string name="retry">Паўтарыць</string>
     <string name="incorrectEmailOrPassword">Няправільная пошта ці пароль!</string>
+    <string name="userAlreadyExists">Карыстальнік з дадзенай поштай ўжо існуе!</string>
     <string name="serverIsUnavailable">Сервер недаступны</string>
     <string name="serverIsUnavailableMessage">Выбачайце, мы не гатовыя прама цяпер. Калі ласка, паспрабуйце пазней</string>
     <string name="noInternetConnection">Злучэнне адсутнічае</string>

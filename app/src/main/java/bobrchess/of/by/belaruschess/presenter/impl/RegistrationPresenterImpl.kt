@@ -89,12 +89,24 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
                 onServerUnavailable()
             }
             Constants.KEY_UNSUCCESSFUL_REQUEST, INTERNAL_SERVER_ERROR -> {
-                onUnsuccessfulRequest(getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+                when (errorDTO.message) {
+                    Constants.KEY_USER_ALREADY_EXISTS -> {
+                        onUserExists()
+                    }
+                    else -> {
+                        onUnsuccessfulRequest(getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+                    }
+                }
+
             }
             else -> {
                 onUnsuccessfulRequest(getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
             }
         }
+    }
+
+    private fun onUserExists() {
+        view!!.showSnackBar(viewComponent!!, R.string.userAlreadyExists)
     }
 
     override fun onUnsuccessfulRequest(message: String?) {

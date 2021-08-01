@@ -7,6 +7,7 @@ class Constants {
         const val NOT_SELECTED_INDEX = 0
         const val ABSENCE_INDEX = 1
 
+        val KEY_USER_ALREADY_EXISTS = "User with this email already exists!"
         val KEY_INVALID_EMAIL_OR_PASSWORD = "invalid_email_or_password"
         val KEY_UNSUCCESSFUL_REQUEST = "unsuccessful_request"
         val SERVER_UNAVAILABLE = "Server is unavailable"

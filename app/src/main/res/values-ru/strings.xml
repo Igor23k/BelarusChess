@@ -113,6 +113,7 @@
     <string name="blitzRating">Блиц рейтинг: %1$s</string>
     <string name="retry">Повторить</string>
     <string name="incorrectEmailOrPassword">Неверная почта или пароль!</string>
+    <string name="userAlreadyExists">Пользователь с данной почтой уже существует!</string>
     <string name="serverIsUnavailable">Сервер недоступен</string>
     <string name="serverIsUnavailableMessage">Извините, мы не готовы прямо сейчас. Пожалуйста, попробуйте позже</string>
     <string name="noInternetConnection">Соединение отсутствует</string>

@@ -18,7 +18,6 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
-import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
@@ -26,11 +25,11 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.REGISTRATION_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Util.Companion.genders
+import bobrchess.of.by.belaruschess.util.Util.Companion.setUserImage
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.borax12.materialdaterangepicker.date.DatePickerDialog
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -226,6 +225,8 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     }
 
     private fun putUserData(intent: Intent, userDTO: UserDTO) {
+        setUserImage(userDTO.image)
+        userDTO.image = null
         intent.putExtra(USER_PARAMETER, userDTO)
     }
 

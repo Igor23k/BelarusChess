@@ -123,7 +123,29 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
 
     override fun onFailure(errorDTO: ErrorDTO) {
         view!!.hideProgress()
-        view!!.showToast(errorDTO.error)
+        when (errorDTO.error) {
+            Constants.SERVER_UNAVAILABLE -> {
+                onServerUnavailable()
+            }
+             Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
+                when (errorDTO.message) {
+                    Constants.KEY_USER_ALREADY_EXISTS -> {
+                        onUserExists()
+                    }
+                    else -> {
+                        onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+                    }
+                }
+
+            }
+            else -> {
+                onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+            }
+        }
+    }
+
+    private fun onUserExists() {
+        view!!.showSnackbar(R.string.userAlreadyExists)
     }
 
     override fun onServerUnavailable() {
