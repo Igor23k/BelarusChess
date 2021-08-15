@@ -75,10 +75,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/fab_show_fab_menu"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/fab_show_fab_menu"
-        app:layout_constraintTop_toBottomOf="@+id/btnOrder">
+        app:layout_constraintStart_toStartOf="@+id/fab_show_fab_menu">
+      <!--  app:layout_constraintTop_toBottomOf="@+id/btnOrder"-->>
 
-        <TextView
+      <!--  <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,22 +89,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/fab_add_one_time"
             app:layout_constraintEnd_toStartOf="@+id/fab_add_one_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/fab_add_one_time" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_one_time"
-            android:layout_width="@dimen/fab_size_smaller"
-            android:layout_height="@dimen/fab_size_smaller"
-            android:layout_gravity="bottom|end"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:tint="@color/white"
-            app:fabCustomSize="@dimen/fab_size_smaller"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_round_timer_add" />
+            app:layout_constraintTop_toTopOf="@+id/fab_add_one_time" />-->
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
