@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.util.Constants
 import org.springframework.util.StringUtils
 import java.math.RoundingMode
 import java.text.DateFormat
@@ -304,7 +303,7 @@ open class EventDate : Comparable<EventDate> {
                 locale: Locale = Locale.getDefault()
         ): Date {
             if (!StringUtils.isEmpty(date_string)) {
-                return DateFormat.getDateInstance(format, locale).parse(date_string)
+                return SimpleDateFormat("dd.MM.yyyy").parse(date_string)
             }
             return Date();
         }

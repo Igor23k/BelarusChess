@@ -39,7 +39,7 @@
     <string name="password">Пароль</string>
     <string name="passwordIfNeeded">Обновите пароль, если необходимо</string>
     <string name="login">Войти</string>
-    <string name="noAccount">Еще нет учетной записи? Создать</string>
+    <string name="noAccount">Еще нет учетной записи? Создать!</string>
     <string name="email">Email</string>
     <string name="userName">Имя</string>
     <string name="tournamentFullDescriptionHint">Полное описание</string>
@@ -71,7 +71,7 @@
     <string name="changeBirthday">Изменить дату рождения</string>
     <string name="enterBirthday">Введите дату рождения</string>
     <string name="chooseAvatar">Выберите аватар (необязательно)</string>
-    <string name="isMember">Уже зарегистрированы? Войти</string>
+    <string name="isMember">Уже зарегистрированы? Войти!</string>
     <string name="logo">Логотип</string>
     <string name="please_wait">Пожалуйста, подождите &#8230;</string>
     <string name="successful_draw">Жеребьевка успешно проведена</string>
@@ -311,7 +311,7 @@
     <string name="about_title_contactInformation">Контакты</string>
     <string name="about_title_thanks">Благодарности</string>
 
-    <string name="about_content_license">Это приложение регулируется положениями и условиями Стандартной общественной лицензии GNU v3.0.\nДля получения более подробной информации читайте здесь: https://www.gnu.org/licenses/gpl-3.0.ru.html.</string>
+    <string name="about_content_license">Это приложение регулируется положениями и условиями Стандартной общественной лицензии GNU v3.0.\nДля получения более подробной информации читайте здесь: https://www.gnu.org/licenses/gpl-3.0.ru.html</string>
     <string name="about_content_openSource">Belarus Chess - некоммерческий частный проект. Если вы хотите принять участие в проекте или привнести креативные идеи, то всегда есть возможность связаться с разработчиком.</string>
     <string name="about_content_contact">E-Mail: bobrchess@gmail.com</string>
 

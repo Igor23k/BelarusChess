@@ -195,6 +195,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
                         month,
                         day
                 )
+        dpd.datePicker.maxDate = System.currentTimeMillis()
         dpd.show()
     }
 

@@ -35,7 +35,7 @@ class PackageModel(private val context: Context) {
     }
 
     fun getValue(propertyName: String): String {
-        if (propertyName == TOKEN) {
+        if (propertyName == TOKEN) {//todo закомментить эти 2 проверки видимо нужно
             return TOKEN_DEFAULT
         } else if (propertyName == REFRESH_TOKEN) {
             return REFRESH_TOKEN_DEFAULT

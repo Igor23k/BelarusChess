@@ -562,7 +562,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         this.users = users?.toMutableList()
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         users!!.forEach {
-            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, it.birthday!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!, it.surname!!)
+            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, it.birthday!!), DateFormat.DEFAULT, Locale.getDefault()), it.name!!, it.surname!!)
             event.rankId = it.rank?.id
             event.countryId = it.country?.id
             event.coach = it.coach

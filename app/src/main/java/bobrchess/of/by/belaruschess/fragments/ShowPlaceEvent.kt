@@ -133,7 +133,7 @@ class ShowPlaceEvent : ShowEventFragment() {
                 intent.type = "text/plain"
 
                 var shareBirthdayMsg = resources.getString(R.string.location) + ": " + place.name
-                shareBirthdayMsg += "\n" + resources.getString(R.string.address) + ": " + countries?.get(place.countryId!!)?.name + ", " + place.city + ", " + place.street + ", " + place.building
+                shareBirthdayMsg += "\n" + resources.getString(R.string.address) + ": " + countries?.first { it.id!! == place.countryId!! }?.name + ", " + place.city + ", " + place.street + ", " + place.building
                 shareBirthdayMsg += "\n" + resources.getString(R.string.capacity) + ": " + place.capacity
 
                 intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)

@@ -169,7 +169,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                 intent.type = "text/plain"
 
                 var shareBirthdayMsg = tournament.name
-                val place = places?.get(tournament.placeId!! - 1)
+                val place = places?.first { it.id!! == tournament.placeId!! }//todo проверить верно ли
 
                 shareBirthdayMsg += "\n\n" + resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament.startDate, DateFormat.FULL)
                 shareBirthdayMsg += "\n" + resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(tournament.finishDate, DateFormat.FULL)

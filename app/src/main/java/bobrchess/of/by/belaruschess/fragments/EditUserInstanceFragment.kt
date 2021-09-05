@@ -480,6 +480,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
                         month,
                         day
                 )
+        dpd.datePicker.maxDate = System.currentTimeMillis()
         dpd.show()
     }
 

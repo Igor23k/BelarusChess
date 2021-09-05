@@ -487,6 +487,7 @@ class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentC
                         month,
                         day
                 )
+        dpd.datePicker.minDate = System.currentTimeMillis()
         dpd.show()
     }
 
@@ -525,6 +526,7 @@ class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentC
                         month,
                         day
                 )
+        dpd.datePicker.minDate = System.currentTimeMillis()
         dpd.show()
     }
 

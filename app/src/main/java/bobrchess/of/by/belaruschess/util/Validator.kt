@@ -32,13 +32,13 @@ object Validator {
         validateRegistrationPassword(password, reEnterPassword)
         validateEmail(email)
 
-        if (StringUtils.isEmpty(name) || name!!.length < 3 || name.length > 30) {
+        if (StringUtils.isEmpty(name) || name!!.length < 2 || name.length > 30) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_NAME))
         }
-        if (StringUtils.isEmpty(surname) || surname!!.length < 3 || surname.length > 30) {
+        if (StringUtils.isEmpty(surname) || surname!!.length < 2 || surname.length > 30) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_SURNAME))
         }
-        if (StringUtils.isEmpty(patronymic) || patronymic!!.length < 3 || patronymic.length > 30) {
+        if (StringUtils.isEmpty(patronymic) || patronymic!!.length < 2 || patronymic.length > 30) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PATRONYMIC))
         }
         if (rating == null || rating < 0) {

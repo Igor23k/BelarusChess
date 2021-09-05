@@ -34,7 +34,7 @@ class EventWorldTournament(
             override fun Identifier(): Int = 5
         },
         ToursCount {
-            override fun Identifier(): Int = 5
+            override fun Identifier(): Int = 6
         }
     }
 

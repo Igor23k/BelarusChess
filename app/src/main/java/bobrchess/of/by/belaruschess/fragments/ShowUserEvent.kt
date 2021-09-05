@@ -10,13 +10,14 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.*
+import bobrchess.of.by.belaruschess.dto.CountryDTO
+import bobrchess.of.by.belaruschess.dto.PlaceDTO
+import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_user_event.*
 import org.springframework.util.StringUtils
@@ -35,12 +36,6 @@ class ShowUserEvent : ShowEventFragment() {
 
     //private var userTournamentsResult: ArrayList<TournamentResultDTO>? = null
     //private var coach: UserDTO? = null
-
-    var placeItemsListType = object : TypeToken<List<PlaceDTO>>() {}.type
-    var rankItemsListType = object : TypeToken<List<RankDTO>>() {}.type
-    var countryItemsListType = object : TypeToken<List<CountryDTO>>() {}.type
-    var userTournamentsResultItemsListType = object : TypeToken<List<TournamentResultDTO>>() {}.type
-    var userItemsListType = object : TypeToken<UserDTO>() {}.type
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -212,9 +207,9 @@ class ShowUserEvent : ShowEventFragment() {
                 shareBirthdayMsg += "\n" + resources.getString(R.string.rating) + ": " + user.rating
 
                 val rankId = user.rankId
-                
-                if (rankId != null) {
-                    shareBirthdayMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.get(rankId)?.name
+
+                if (rankId != null) {//todo вывести страну и еще что-то мб
+                    shareBirthdayMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.first { it.id!! == rankId }?.name
                 }
 
                 intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)

@@ -486,7 +486,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                         MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID,
                                         eventPlace.eventID
                                 )
-                                val gson = GsonBuilder().setPrettyPrinting().create()
 
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment

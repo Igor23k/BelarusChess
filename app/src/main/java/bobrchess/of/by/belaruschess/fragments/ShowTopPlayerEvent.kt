@@ -13,7 +13,7 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.externalFide.TopPlayerWithImageDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
-import bobrchess.of.by.belaruschess.model.EventTournament
+import bobrchess.of.by.belaruschess.model.EventTopPlayer
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.Gson
@@ -52,7 +52,7 @@ class ShowTopPlayerEvent : ShowEventFragment() {
                 return i
         }
         return 0
-     }
+    }
 
     /**
      * updateUI updates all TextViews and other views to the current instance(Anniversary, Birthday) data
@@ -64,9 +64,9 @@ class ShowTopPlayerEvent : ShowEventFragment() {
         val rank = topPlayer!!.title
         val country = topPlayer!!.country
         val birthday = context!!.resources.getString(
-                        R.string.bornOnYear,
-                        "${topPlayer?.birthyear}"
-                )
+                R.string.bornOnYear,
+                "${topPlayer?.birthyear}"
+        )
         this.top_player_country_and_rank_and_birthday.text = "$country, $rank, ${birthday}"
 
         this.top_player_standard_rating.visibility = TextView.VISIBLE
@@ -160,71 +160,22 @@ class ShowTopPlayerEvent : ShowEventFragment() {
      * It provides a simple intent to share data as plain text in other apps
      */
     override fun shareEvent() {
-        EventHandler.getEventToEventIndex(eventID)?.let { birthday ->
-            if (birthday is EventTournament) {
+        EventHandler.getEventToEventIndex(eventID)?.let { topPlayer ->
+            if (topPlayer is EventTopPlayer) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
-                var shareBirthdayMsg =
-                        if (birthday.fullDescription != null) {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    "${birthday.name} \"${birthday.fullDescription}\" ${birthday.shortDescription}"
-                            )
-                        } else if (birthday.shortDescription != null) {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    "${birthday.name} ${birthday.shortDescription}"
-                            )
-                        } else {
-                            context!!.resources.getString(
-                                    R.string.share_tournament_name,
-                                    birthday.name
-                            )
-                        }
 
-                //   if (birthday.isYearGiven) {
-                //startDate person was born
-                shareBirthdayMsg += "\n" + context!!.resources.getString(
-                        R.string.share_tournament_date_start,
-                        EventDate.parseDateToString(birthday.eventDate, DateFormat.FULL)
-                )
-                //      }
+                var shareMsg ="Top Player"
+               /* var shareMsg = tournament.name
+                val place = places?.get(tournament.placeId!! - 1)
 
-                //next birthday
-             /*   shareBirthdayMsg += "\n" + context!!.resources.getString(
-                        R.string.share_tournament_date_next,
-                        EventDate.parseDateToString(
-                                EventDate.dateToCurrentTimeContext(birthday.eventDate),
-                                DateFormat.FULL
-                        )
-                )*/
+                shareMsg += "\n\n" + resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament.startDate, DateFormat.FULL)
+                shareMsg += "\n" + resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(tournament.finishDate, DateFormat.FULL)
+                shareMsg += "\n" + resources.getString(R.string.tours_count) + ": " + tournament.toursCount
+                shareMsg += "\n\n" + resources.getString(R.string.location) + ": " + place?.name + " (" + place?.country!!.name + ", " + place.city + ", " + place.street + ", " + place.building + ")"
+                shareMsg += "\n\n" + tournament.fullDescription.toString()*/
 
-                val daysUntil = birthday.getDaysUntil()
-              /*  shareBirthdayMsg += if (daysUntil == 0) {
-                    //today
-                    "\n" + context!!.resources.getString(
-                            R.string.share_tournament_days_today
-                    )
-                } else {
-                    // in X days
-                    "\n" + context!!.resources.getQuantityString(
-                            R.plurals.share_tournament_days,
-                            daysUntil,
-                            daysUntil
-                    )
-                }*/
-
-                // if (birthday.isYearGiven) {
-                //person will be years old
-                shareBirthdayMsg += "\n" + context!!.resources.getQuantityString(
-                        R.plurals.person_years_old,
-                        birthday.getYearsSince() + 1,
-                        birthday.name,
-                        birthday.getYearsSince() + 1
-                )
-                //}
-
-                intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
+                intent.putExtra(Intent.EXTRA_TEXT, shareMsg)
                 startActivity(
                         Intent.createChooser(
                                 intent,
