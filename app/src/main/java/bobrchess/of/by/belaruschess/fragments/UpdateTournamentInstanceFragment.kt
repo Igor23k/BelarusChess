@@ -419,7 +419,7 @@ class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentC
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
         tournamentData.countPlayersInTeam = 1
         tournamentData.image = tournamentImage
-        tournamentData.createdBy = (context as MainActivity).getUserData()
+       // tournamentData.createdBy = (context as MainActivity).getUserData()
         tournamentData.startDate = convertDateToString(eventStartDate)
         tournamentData.finishDate = convertDateToString(eventEndDate)
         return tournamentData
@@ -658,7 +658,7 @@ class UpdateTournamentInstanceFragment : EventInstanceFragment(), AddTournamentC
         tournamentEvent.finishDate = eventEndDate
         tournamentEvent.imageUri = tournamentDTO.image
         tournamentEvent.refereeId = tournamentDTO.referee?.id
-        tournamentEvent.createdBy = tournamentDTO.createdBy?.id
+        //tournamentEvent.createdBy = tournamentDTO.createdBy?.id
         tournamentEvent.placeId = tournamentDTO.place?.id
         tournamentEvent.toursCount = tournamentDTO.toursCount
 

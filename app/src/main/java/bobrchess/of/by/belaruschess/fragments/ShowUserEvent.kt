@@ -122,11 +122,11 @@ class ShowUserEvent : ShowEventFragment() {
                         scrollRange = appbarLayout.totalScrollRange
                     }
                     if (context != null) {
-                        if (scrollRange + verticalOffset == 0) {
-                            setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                        } else {
+                       // if (scrollRange + verticalOffset == 0) {
+                            //setToolbarTitle(context!!.resources.getString(R.string.app_name))
+                      //  } else {
                             setToolbarTitle(userEvent.name + " " + userEvent.surname)
-                        }
+                     //   }
                     }
                 })
 

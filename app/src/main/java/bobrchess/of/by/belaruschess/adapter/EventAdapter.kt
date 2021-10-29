@@ -351,19 +351,19 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 textColor
                         )
 
-                        if (user.eventAlreadyOccurred()) {
-                            holder.itemView.constraint_layout_tournament_item_view.background =
+                       // if (user.eventAlreadyOccurred()) {
+                          /*  holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item_dark
                                     )
-                        } else {
+                        } else {*/
                             holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item
                                     )
-                        }
+                       // }
 
                         //set forename and shortDescription invisible
                         holder.itemView.tv_birthday_event_item_forename.visibility =
@@ -436,19 +436,19 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 textColor
                         )
 
-                        if (eventTournamentResult.eventAlreadyOccurred()) {
+                       /* if (eventTournamentResult.eventAlreadyOccurred()) {
                             holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item_dark
                                     )
-                        } else {
+                        } else {*/
                             holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item
                                     )
-                        }
+                    //    }
 
                         holder.itemView.tournament_result_name.visibility = TextView.VISIBLE
                         holder.itemView.tournament_result_name.text = eventTournamentResult.name

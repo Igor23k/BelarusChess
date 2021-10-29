@@ -39,7 +39,7 @@
     <string name="password">Пароль</string>
     <string name="passwordIfNeeded">Абнавіце пароль, калі неабходна</string>
     <string name="login">Увайсці</string>
-    <string name="noAccount">Яшчэ няма ўліковага запісу? стварыць</string>
+    <string name="noAccount">Яшчэ няма ўліковага запісу? Стварыць!</string>
     <string name="email">Пошта</string>
     <string name="userName">Імя</string>
     <string name="tournamentFullDescriptionHint">Поўнае апісанне</string>
@@ -68,7 +68,7 @@
     <string name="renterPassword">Паўторны ўвод пароля</string>
     <string name="createAccount">Рэгістрацыя</string>
     <string name="addTournament">Дадаць турнір</string>
-    <string name="isMember">Ужо зарэгістраваны? Увайсці</string>
+    <string name="isMember">Ужо зарэгістраваны? Увайсці!</string>
     <string name="changeBirthday">Змяніць дату нараджэння</string>
     <string name="enterBirthday">Увядзіце дату нараджэння</string>
     <string name="chooseAvatar">Выберыце аватар (не абавязкова)</string>

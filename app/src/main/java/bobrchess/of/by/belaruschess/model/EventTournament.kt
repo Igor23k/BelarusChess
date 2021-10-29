@@ -39,9 +39,9 @@ class EventTournament(
         Referee {
             override fun Identifier(): Int = 7
         },
-        CreatedBy {
+        /*CreatedBy {
             override fun Identifier(): Int = 8
-        },
+        },*/
         Place {
             override fun Identifier(): Int = 9
         },
@@ -62,7 +62,7 @@ class EventTournament(
 
     var refereeId: Long? = null
 
-    var createdBy: Long? = null
+    //var createdBy: Long? = null
 
     var placeId: Int? = null
 
@@ -83,7 +83,7 @@ class EventTournament(
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.AvatarUri, this.imageUri) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +
-                getStringFromValue(Identifier.CreatedBy, this.createdBy) +
+                //getStringFromValue(Identifier.CreatedBy, this.createdBy) +
                 getStringFromValue(Identifier.Place, this.placeId) +
                 getStringFromValue(Identifier.ToursCount, this.toursCount)
     }
@@ -110,7 +110,7 @@ class EventTournament(
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +
-                getStringFromValue(Identifier.CreatedBy, this.createdBy) +
+               // getStringFromValue(Identifier.CreatedBy, this.createdBy) +
                 getStringFromValue(Identifier.Place, this.placeId) +
                 getStringFromValue(Identifier.ToursCount, this.toursCount)
     }

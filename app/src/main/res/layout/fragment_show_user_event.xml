@@ -51,7 +51,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/user_country_and_rank_and_rating"
             app:layout_constraintTop_toBottomOf="@+id/user_country_and_rank_and_rating"
-            tools:text="Coach is absence" />
+            tools:text="Coach is absent" />
 
         <TextView
             android:id="@+id/user_birthday"

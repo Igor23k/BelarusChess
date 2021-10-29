@@ -535,7 +535,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
@@ -543,9 +543,9 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
-            event.createdBy = it.createdBy?.id
+            //event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
-            event.finishDate = EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, it.finishDate!!), DateFormat.DEFAULT, Locale.GERMAN)
+            event.finishDate = EventDate.parseStringToDate(it.finishDate!!, DateFormat.DEFAULT, Locale.GERMAN)
             EventHandler.addEvent(
                     event,
                     context!!,
@@ -562,7 +562,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         this.users = users?.toMutableList()
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         users!!.forEach {
-            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, it.birthday!!), DateFormat.DEFAULT, Locale.getDefault()), it.name!!, it.surname!!)
+            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(it.birthday!!, DateFormat.DEFAULT, Locale.getDefault()), it.name!!, it.surname!!)
             event.rankId = it.rank?.id
             event.countryId = it.country?.id
             event.coach = it.coach

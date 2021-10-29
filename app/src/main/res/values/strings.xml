@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BelarusChess</string>
+    <string name="app_name">Belarus Chess</string>
 
     <string name="followers_hint">Followers</string>
     <string name="following_hint">Following</string>
@@ -40,7 +40,7 @@
     <string name="password">Password</string>
     <string name="passwordIfNeeded">Update your password if necessary</string>
     <string name="login">Login</string>
-    <string name="noAccount">No account yet? Create one</string>
+    <string name="noAccount">No account yet? Create one!</string>
     <string name="email">Email</string>
     <string name="userName">Name</string>
     <string name="tournamentName">Tournament name</string>
@@ -72,7 +72,7 @@
     <string name="changeBirthday">Update your date of birth</string>
     <string name="enterBirthday">Enter your date of birth</string>
     <string name="chooseAvatar">Choose your avatar (optional)</string>
-    <string name="isMember">Already a member? Login</string>
+    <string name="isMember">Already a member? Login!</string>
     <string name="logo">Logo</string>
     <string name="please_wait">Please, wait …</string>
     <string name="successful_draw">The draw is successfully conducted</string>
@@ -95,9 +95,9 @@
     <string name="user_full_name_placeholder">%1$s %2$s</string>
     <string name="dash">-</string>
     <string name="absence">Absence</string>
-    <string name="rank_absence">Rank is absence</string>
-    <string name="country_absence">Country is absence</string>
-    <string name="coach_absence">Coach is absence</string>
+    <string name="rank_absence">Rank is absent</string>
+    <string name="country_absence">Country is absent</string>
+    <string name="coach_absence">Coach is absent</string>
     <string name="coach">Coach:</string>
     <string name="notSelected">Not selected</string>
     <string name="chooseReferee">Choose a referee</string>

@@ -221,7 +221,7 @@ class Util {
 
         fun transformDate(format: String, dateString: String?): String? {
             return try {
-                val bdFormat = SimpleDateFormat(format, Locale.getDefault())
+                    val bdFormat = SimpleDateFormat(format, Locale.getDefault())
                 val newFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
                 val date = bdFormat.parse(dateString)
                 newFormat.format(date)

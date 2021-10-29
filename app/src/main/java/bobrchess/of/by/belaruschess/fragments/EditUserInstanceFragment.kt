@@ -694,7 +694,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         rankId = user?.rank?.id!!
         genderId = getGenderId(user?.beMale)
         countryId = user?.country?.id!!
-        this.eventStartDate = EventDate.parseStringToDateWithPattern("ddMMYYYY", user!!.birthday!!)
+        this.eventStartDate = EventDate.parseStringToDateWithPattern("dd/MM/yyyy", user!!.birthday!!)
 
         if (this.eventStartDate!!.after(Calendar.getInstance().time)) {
             val cal = Calendar.getInstance()

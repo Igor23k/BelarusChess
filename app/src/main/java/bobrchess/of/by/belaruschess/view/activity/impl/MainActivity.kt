@@ -299,7 +299,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         IOHandler.clearSharedPrefEventData()
         tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformDate(it.startDate)!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
@@ -307,9 +307,9 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
-            event.createdBy = it.createdBy?.id
+           // event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
-            event.finishDate = EventDate.parseStringToDate(transformDate(it.finishDate)!!, DateFormat.DEFAULT, Locale.GERMAN)
+            event.finishDate = EventDate.parseStringToDate(it.finishDate!!, DateFormat.DEFAULT, Locale.GERMAN)
             EventHandler.addEvent(
                     event,
                     this,

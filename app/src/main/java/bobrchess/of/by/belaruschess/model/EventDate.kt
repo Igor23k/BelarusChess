@@ -102,13 +102,15 @@ open class EventDate : Comparable<EventDate> {
      * @return String
      */
     override fun toString(): String {
-        return "$Name${getStringFromValue(
-                Identifier.Date, parseDateToString(
-                this.eventDate,
-                DateFormat.DEFAULT,
-                Locale.GERMAN
-        )
-        )}"
+        return "$Name${
+            getStringFromValue(
+                    Identifier.Date, parseDateToString(
+                    this.eventDate,
+                    DateFormat.DEFAULT,
+                    Locale.GERMAN
+            )
+            )
+        }"
     }
 
     /**
@@ -303,7 +305,7 @@ open class EventDate : Comparable<EventDate> {
                 locale: Locale = Locale.getDefault()
         ): Date {
             if (!StringUtils.isEmpty(date_string)) {
-                return SimpleDateFormat("dd.MM.yyyy").parse(date_string)
+                return SimpleDateFormat("dd/MM/yyyy").parse(date_string)
             }
             return Date();
         }
@@ -370,8 +372,11 @@ open class EventDate : Comparable<EventDate> {
             val skeletonPattern = "ddMM"
             val workingFormat =
                     android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
-            return try {SimpleDateFormat(workingFormat, locale).format(date) }
-            catch (e: Exception) {""}
+            return try {
+                SimpleDateFormat(workingFormat, locale).format(date)
+            } catch (e: Exception) {
+                ""
+            }
         }
 
         @JvmStatic
@@ -384,7 +389,9 @@ open class EventDate : Comparable<EventDate> {
                     android.text.format.DateFormat.getBestDateTimePattern(locale, skeletonPattern)
             return try {
                 SimpleDateFormat(workingFormat, locale).format(date)
-            } catch (e: Exception) { "" }
+            } catch (e: Exception) {
+                ""//todo
+            }
         }
 
         @JvmStatic
@@ -401,19 +408,7 @@ open class EventDate : Comparable<EventDate> {
                 dateString: String,
                 locale: Locale = Locale.getDefault()
         ): Date {
-            val workingFormat =
-                    android.text.format.DateFormat.getBestDateTimePattern(locale, pattern)
-            val separatorChar = if (workingFormat.contains("-")) {
-                "-"
-            } else if (workingFormat.contains(".")) {
-                "."
-            } else {
-                "/"
-            }
-
-            //replace all non digits with a unified localized sperator string
-            val modifiedDateString = dateString.replace("""\W""".toRegex(), separatorChar)
-            return parseStringToDate(modifiedDateString, DateFormat.DATE_FIELD)
+            return parseStringToDate(dateString, DateFormat.DATE_FIELD)
         }
 
         const val Name: String = "EventDate"
