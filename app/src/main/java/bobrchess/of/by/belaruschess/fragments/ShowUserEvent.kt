@@ -202,17 +202,17 @@ class ShowUserEvent : ShowEventFragment() {
             if (user is EventUser) {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
-                var shareBirthdayMsg = user.name + " " + user.surname + " " + user.patronymic
-                shareBirthdayMsg += "\n" + resources.getString(R.string.birthday) + ": " + EventDate.parseDateToString(user.birthday, DateFormat.FULL)
-                shareBirthdayMsg += "\n" + resources.getString(R.string.rating) + ": " + user.rating
+                var shareUserMsg = user.name + " " + user.surname + " " + user.patronymic
+                shareUserMsg += "\n" + resources.getString(R.string.birthday) + ": " + EventDate.parseDateToString(user.birthday, DateFormat.FULL)
+                shareUserMsg += "\n" + resources.getString(R.string.rating) + ": " + user.rating
 
                 val rankId = user.rankId
 
                 if (rankId != null) {//todo вывести страну и еще что-то мб
-                    shareBirthdayMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.first { it.id!! == rankId }?.name
+                    shareUserMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.first { it.id!! == rankId }?.name
                 }
 
-                intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
+                intent.putExtra(Intent.EXTRA_TEXT, shareUserMsg)
                 startActivity(
                         Intent.createChooser(
                                 intent,

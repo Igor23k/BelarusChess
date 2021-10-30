@@ -301,13 +301,17 @@ open class EventDate : Comparable<EventDate> {
         @JvmStatic
         fun parseStringToDate(
                 date_string: String?,
-                format: Int = DateFormat.DEFAULT,
+                format: String,
                 locale: Locale = Locale.getDefault()
         ): Date {
-            if (!StringUtils.isEmpty(date_string)) {
-                return SimpleDateFormat("dd/MM/yyyy").parse(date_string)
+            try {
+                if (!StringUtils.isEmpty(date_string)) {
+                    return SimpleDateFormat(format).parse(date_string)
+                }
+            } catch (e: Exception) {
+                //todo log
             }
-            return Date();
+            return Date()
         }
 
         @JvmStatic
@@ -408,7 +412,7 @@ open class EventDate : Comparable<EventDate> {
                 dateString: String,
                 locale: Locale = Locale.getDefault()
         ): Date {
-            return parseStringToDate(dateString, DateFormat.DATE_FIELD)
+            return parseStringToDate(dateString, "dd/MM/yyyy")
         }
 
         const val Name: String = "EventDate"

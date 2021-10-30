@@ -90,6 +90,13 @@
     <string name="judge">Judge:</string>
     <string name="tournament_register">Register</string>
     <string name="position_number">Position:</string>
+    <string name="world_position">Position: %s</string>
+    <string name="top_player_country">Country: %s</string>
+    <string name="world_tournament_tours_count">Tours count: %s</string>
+    <string name="world_tournament_start_date">Start date: %s</string>
+    <string name="world_tournament_end_date">End date: %s</string>
+    <string name="world_tournament_country">Country: %s</string>
+    <string name="world_tournament_city">City: %s</string>
     <string name="userRating_number">1900</string>
     <string name="user_name">Name</string>
     <string name="user_full_name_placeholder">%1$s %2$s</string>

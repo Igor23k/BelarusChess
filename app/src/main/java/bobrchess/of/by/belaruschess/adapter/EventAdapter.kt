@@ -269,19 +269,19 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tournament_event_item_city_value.text = city
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
 
-                        if (event.eventAlreadyOccurred()) {
+                      /*  if (event.eventAlreadyOccurred()) {
                             holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item_dark
                                     )
-                        } else {
+                        } else {*/
                             holder.itemView.constraint_layout_tournament_item_view.background =
                                     ContextCompat.getDrawable(
                                             context!!,
                                             R.drawable.ripple_recycler_view_item
                                     )
-                        }
+                      //  }
 
                         //set fullDescription TextView visible
                         holder.itemView.tournament_event_item_name.visibility =

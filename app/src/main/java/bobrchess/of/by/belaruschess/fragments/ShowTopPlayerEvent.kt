@@ -165,17 +165,15 @@ class ShowTopPlayerEvent : ShowEventFragment() {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
 
-                var shareMsg ="Top Player"
-               /* var shareMsg = tournament.name
-                val place = places?.get(tournament.placeId!! - 1)
+                var shareTopPlayerMsg = topPlayer.name + " " + topPlayer.surname
+                shareTopPlayerMsg += "\n" + resources.getString(R.string.birthday) + ": " + EventDate.parseDateToString(topPlayer.birthday, DateFormat.FULL)
+                shareTopPlayerMsg += "\n" + context!!.resources.getString(R.string.world_position, topPlayer.position.toString())
+                shareTopPlayerMsg += "\n" + context!!.resources.getString(R.string.standardRating, topPlayer.rating.toString())
+                shareTopPlayerMsg += "\n" + context!!.resources.getString(R.string.rapidRating, topPlayer.rapidRating.toString())
+                shareTopPlayerMsg += "\n" + context!!.resources.getString(R.string.blitzRating, topPlayer.blitzRating.toString())
+                shareTopPlayerMsg += "\n" + context!!.resources.getString(R.string.top_player_country, topPlayer.country.toString())
 
-                shareMsg += "\n\n" + resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament.startDate, DateFormat.FULL)
-                shareMsg += "\n" + resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(tournament.finishDate, DateFormat.FULL)
-                shareMsg += "\n" + resources.getString(R.string.tours_count) + ": " + tournament.toursCount
-                shareMsg += "\n\n" + resources.getString(R.string.location) + ": " + place?.name + " (" + place?.country!!.name + ", " + place.city + ", " + place.street + ", " + place.building + ")"
-                shareMsg += "\n\n" + tournament.fullDescription.toString()*/
-
-                intent.putExtra(Intent.EXTRA_TEXT, shareMsg)
+                intent.putExtra(Intent.EXTRA_TEXT, shareTopPlayerMsg)
                 startActivity(
                         Intent.createChooser(
                                 intent,

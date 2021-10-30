@@ -93,6 +93,13 @@
     <string name="judge">Суддзя:</string>
     <string name="tournament_register">Зарэгістравацца</string>
     <string name="position_number">Месца:</string>
+    <string name="world_position">Месца: %s</string>
+    <string name="top_player_country">Краіна: %s</string>
+    <string name="world_tournament_city">Горад: %s</string>
+    <string name="world_tournament_tours_count">Колькасць тураў: %s</string>
+    <string name="world_tournament_start_date">Дата пачатку: %s</string>
+    <string name="world_tournament_end_date">Дата заканчэння: %s</string>
+    <string name="world_tournament_country">Краіна: %s</string>
     <string name="dash">-</string>
     <string name="absence">Адсутнічае</string>
     <string name="rank_absence">Званне адсутнічае</string>
@@ -172,7 +179,7 @@
     <string name="tournament_property_date">Дата</string>
     <string name="event_property_birthday">Дата нараджэння</string>
     <string name="tournament_start_date">Дата пачатку</string>
-    <string name="tours_count">Tours count</string>
+    <string name="tours_count">Колькасць тураў</string>
     <string name="tournament_name">Назва турніру</string>
     <string name="location_name">Назва</string>
     <string name="tournament_end_date">Дата заканчэння</string>

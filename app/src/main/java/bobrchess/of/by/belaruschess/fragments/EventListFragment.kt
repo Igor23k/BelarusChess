@@ -89,7 +89,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                 if (user.id == userItem.id) {
                     users?.set(index, user)
 
-                    val event = EventUser(user.id!!.toInt(), EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, user.birthday!!), DateFormat.DEFAULT, Locale.GERMAN), user.name!!, user.surname!!)
+                    val event = EventUser(user.id!!.toInt(), EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, user.birthday!!), "dd/MM/yyyy", Locale.GERMAN), user.name!!, user.surname!!)
                     event.rankId = user.rank?.id
                     event.countryId = user.country?.id
                     event.coach = user.coach
@@ -535,7 +535,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, "dd/MM/yyyy", Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
@@ -545,7 +545,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.refereeId = it.referee?.id
             //event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
-            event.finishDate = EventDate.parseStringToDate(it.finishDate!!, DateFormat.DEFAULT, Locale.GERMAN)
+            event.finishDate = EventDate.parseStringToDate(it.finishDate!!, "dd/MM/yyyy", Locale.GERMAN)
             EventHandler.addEvent(
                     event,
                     context!!,
@@ -562,7 +562,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         this.users = users?.toMutableList()
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         users!!.forEach {
-            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(it.birthday!!, DateFormat.DEFAULT, Locale.getDefault()), it.name!!, it.surname!!)
+            val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(it.birthday!!, "dd/MM/yyyy", Locale.getDefault()), it.name!!, it.surname!!)
             event.rankId = it.rank?.id
             event.countryId = it.country?.id
             event.coach = it.coach
@@ -699,10 +699,10 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         //btnOrder.visibility = TextView.VISIBLE
         IOHandler.clearSharedPrefEventData()
         worldTournamentsDataDTO.data?.europeanTournaments?.forEach {
-            val event = EventWorldTournament(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("yyyy-mm-dd", it.dateStart!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)
+            val event = EventWorldTournament(it.id!!.toInt(), EventDate.parseStringToDate(it.dateStart!!, "yyyy-MM-dd", Locale.GERMAN), it.name!!)
             event.toursCount = it.numRound?.toInt()
             event.eventType = it.eventType
-            event.finishDate = EventDate.parseStringToDate(transformDate(USER_BIRTHDAY_FORMAT, it.dateEnd!!), DateFormat.DEFAULT, Locale.GERMAN)
+            event.finishDate = EventDate.parseStringToDate(it.dateEnd!!, "yyy-MM-dd", Locale.GERMAN)
             event.country = it.country
             event.city = it.city
             EventHandler.addEvent(
@@ -748,7 +748,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     private fun processTopPlayers(list: List<TopPlayerDTO>?) {
         list?.forEach {
             val fullName = buildFullName(it.name)
-            val event = EventTopPlayer(it.id!!.toInt(), EventDate.parseStringToDate(transformDate("yyyy-mm-dd", it.birthday!!), DateFormat.DEFAULT, Locale.GERMAN), fullName?.get(0)!!, fullName[1])
+            val event = EventTopPlayer(it.id!!.toInt(), EventDate.parseStringToDate(it.birthday!!, "yyy-MM-dd", Locale.GERMAN), fullName?.get(0)!!, fullName[1])
             event.position = it.position?.toInt()
             event.rating = it.rating?.toInt()
             event.blitzRating = it.blitzRating?.toInt()

@@ -39,7 +39,7 @@
     <string name="password">Пароль</string>
     <string name="passwordIfNeeded">Обновите пароль, если необходимо</string>
     <string name="login">Войти</string>
-    <string name="noAccount">Еще нет учетной записи? Создать!</string>
+    <string name="noAccount">Ещё нет учётной записи? Создать!</string>
     <string name="email">Email</string>
     <string name="userName">Имя</string>
     <string name="tournamentFullDescriptionHint">Полное описание</string>
@@ -93,6 +93,13 @@
     <string name="judge">Судья:</string>
     <string name="tournament_register">Зарегистрироваться</string>
     <string name="position_number">Место:</string>
+    <string name="world_position">Место: %s</string>
+    <string name="top_player_country">Страна: %s</string>
+    <string name="world_tournament_tours_count">Количество туров: %s</string>
+    <string name="world_tournament_start_date">Дата начала: %s</string>
+    <string name="world_tournament_end_date">Дата окончания: %s</string>
+    <string name="world_tournament_country">Страна: %s</string>
+    <string name="world_tournament_city">Город: %s</string>
     <string name="dash">-</string>
     <string name="absence">Отсутствует</string>
     <string name="rank_absence">Звание отсутствует</string>

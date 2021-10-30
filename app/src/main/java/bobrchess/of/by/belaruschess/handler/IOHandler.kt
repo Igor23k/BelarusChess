@@ -361,7 +361,7 @@ object IOHandler {
                         val tournament =
                             EventTournament(
                                     2222,//todo
-                                EventDate.parseStringToDate(startDate, locale = Locale.GERMAN),
+                                EventDate.parseStringToDate(startDate, "dd/MM/yyyy"),
                                 forename
                             )
                         if (shortDescription != null) tournament.shortDescription = shortDescription
@@ -373,7 +373,7 @@ object IOHandler {
                         if (placeId != null) {
                             tournament.placeId = placeId.toInt()
                         }
-                        tournament.finishDate = EventDate.parseStringToDate(finishDate, locale = Locale.GERMAN)
+                        tournament.finishDate = EventDate.parseStringToDate(finishDate, "dd/MM/yyyy")
                         return tournament
                     }
                     //ONETIME EVENT PARSING
@@ -404,7 +404,7 @@ object IOHandler {
                             }
                         }
                         val oneTimeEvent = OneTimeEvent(
-                            EventDate.parseStringToDate(date, locale = Locale.GERMAN),
+                            EventDate.parseStringToDate(date, "dd/MM/yyyy"),
                             name
                         )
                         if (note != null) {
@@ -428,7 +428,7 @@ object IOHandler {
                                 Divider.Identifier.Text.toString() -> {
                                     val cal = Calendar.getInstance()
                                     cal.time =
-                                        EventDate.parseStringToDate(date, locale = Locale.GERMAN)
+                                        EventDate.parseStringToDate(date, "dd/MM/yyyy")
                                     month =
                                         context.resources.getStringArray(R.array.month_names)[cal.get(
                                             Calendar.MONTH
@@ -443,8 +443,7 @@ object IOHandler {
                         }
                         return Divider(
                             EventDate.parseStringToDate(
-                                date,
-                                locale = Locale.GERMAN
+                                date,"dd/MM/yyyy"
                             ), month
                         )
                     }

@@ -11,7 +11,6 @@ import android.widget.ImageView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.externalFide.WorldTournamentDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
-import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventWorldTournament
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
@@ -22,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_tournament_event.iv_avatar
 import kotlinx.android.synthetic.main.fragment_show_world_tournament_event.*
 import org.springframework.util.StringUtils
-import java.text.DateFormat
 
 class ShowWorldTournamentEvent : ShowEventFragment() {
 
@@ -160,17 +158,17 @@ class ShowWorldTournamentEvent : ShowEventFragment() {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
 
-                var shareMsg ="World Tournament"
-                /*var shareMsg = worldTournament.name
-                val place = places?.get(worldTournament.placeId!! - 1)
+                var shareWorldTournamentMsg = worldTournament.name
 
-                shareMsg += "\n\n" + resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(worldTournament.startDate, DateFormat.FULL)
-                shareMsg += "\n" + resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(worldTournament.finishDate, DateFormat.FULL)
-                shareMsg += "\n" + resources.getString(R.string.tours_count) + ": " + worldTournament.toursCount
-                shareMsg += "\n\n" + resources.getString(R.string.location) + ": " + place?.name + " (" + place?.country!!.name + ", " + place.city + ", " + place.street + ", " + place.building + ")"
-                shareMsg += "\n\n" + worldTournament.fullDescription.toString()*/
+                if (worldTournament.toursCount != null) {
+                    shareWorldTournamentMsg += "\n" + context!!.resources.getString(R.string.world_tournament_tours_count, worldTournament.toursCount.toString())
+                }
+                shareWorldTournamentMsg += "\n" + context!!.resources.getString(R.string.world_tournament_start_date, worldTournament.startDate.toString())
+                shareWorldTournamentMsg += "\n" + context!!.resources.getString(R.string.world_tournament_end_date, worldTournament.finishDate.toString())
+                shareWorldTournamentMsg += "\n" + context!!.resources.getString(R.string.world_tournament_country, worldTournament.country.toString())
+                shareWorldTournamentMsg += "\n" + context!!.resources.getString(R.string.world_tournament_city, worldTournament.city.toString())
 
-                intent.putExtra(Intent.EXTRA_TEXT, shareMsg)
+                intent.putExtra(Intent.EXTRA_TEXT, shareWorldTournamentMsg)
                 startActivity(
                         Intent.createChooser(
                                 intent,
