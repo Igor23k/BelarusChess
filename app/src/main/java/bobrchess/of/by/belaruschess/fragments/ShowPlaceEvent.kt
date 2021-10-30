@@ -181,7 +181,14 @@ class ShowPlaceEvent : ShowEventFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.toolbar_show_event_full, menu)
+        val isAdmin = (context as MainActivity).getUserData()?.beAdmin
+        val isOrganizer = (context as MainActivity).getUserData()?.beOrganizer
+        val id = (context as MainActivity).getUserData()?.id
+        if (isAdmin == true || (isOrganizer == true/* && id == place?.createdBy todo раскомментить когда createdBy будет добавлено на беке*/)) {
+            inflater?.inflate(R.menu.toolbar_show_event_full, menu)
+        } else {
+            inflater?.inflate(R.menu.toolbar_show_event_lite, menu)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 }
