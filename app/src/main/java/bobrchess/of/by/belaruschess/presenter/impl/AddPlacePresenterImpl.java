@@ -7,6 +7,7 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     private AddPlaceContractView view;
     private AddPlaceConnection addPlaceConnection;
     private Boolean viewIsReady = false;
+    List<String> a = new ArrayList<>();
     private Integer selectedCountryIndex = 0;
     private Map<Integer, CountryDTO> countriesIndexes = new HashMap<>();
     private PackageModel packageModel;

@@ -6,6 +6,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
@@ -68,13 +69,13 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     public void onResponse(@NotNull List<? extends TournamentDTO> tournamentsDTO) {
         view.showTournaments(tournamentsDTO);
         view.hideProgress();
-        view.hideProgress();
     }
 
     @Override
     public void onFailure(@NotNull ErrorDTO errorDTO) {
         view.hideProgress();
         view.showToast(errorDTO.getError());
+        view.showTournaments(new ArrayList<>());
     }
 
     @Override

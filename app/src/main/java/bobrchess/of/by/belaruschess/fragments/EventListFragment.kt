@@ -2,8 +2,6 @@ package bobrchess.of.by.belaruschess.fragments
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -48,7 +46,6 @@ import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
-import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -197,7 +194,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
                     R.id.fragment_placeholder,
-                    UpdateTournamentInstanceFragment.newInstance()
+                    EditTournamentInstanceFragment.newInstance()
             )
             ft.addToBackStack(null)
             ft.commit()
@@ -208,7 +205,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             val ft = fragmentManager!!.beginTransaction()
             ft.replace(
                     R.id.fragment_placeholder,
-                    PlaceInstanceFragment.newInstance()
+                    EditPlaceInstanceFragment.newInstance()
             )
             ft.addToBackStack(null)
             ft.commit()
@@ -352,25 +349,30 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         inflater?.inflate(R.menu.toolbar_main, menu)
 
         // Get the SearchView and set the searchable configuration
-        val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu?.findItem(R.id.toolbar_search)?.actionView as android.support.v7.widget.SearchView).apply {
-            //Assume current activity is the searchable activity
-            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+        /*  val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+          (menu?.findItem(R.id.toolbar_search)?.actionView as android.support.v7.widget.SearchView).apply {
+              //Assume current activity is the searchable activity
+              setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
 
-            setIconifiedByDefault(true)
+              setIconifiedByDefault(true)
 
-            //submit button in action bar disabled
-            isSubmitButtonEnabled = false
-        }
+              //submit button in action bar disabled
+              isSubmitButtonEnabled = false
+          }*/
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
 
-            R.id.toolbar_search -> {
-                //todo
-            }
+           /* R.id.toolbar_search -> {
+                when (entityType) {
+                    TOURNAMENT -> searchTournamentPresenter?.searchTournaments("Мемориал")
+                    else -> {
+                        + раскомментить 355 и 119 строку
+                    }
+                }
+            }*/
 
             R.id.item_show_tournaments -> {
                 EventHandler.clearData()//TODO
@@ -393,7 +395,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             R.id.item_show_world_tournaments -> {
                 EventHandler.clearData()//todo
                 entityType = WORLD_TOURNAMENT
-                fideApiTournamentPresenter?.loadWorldTournaments(getCurrentyear(), worldChampion = false, closestEvents = false, category = "1,2,3,4,5,6,7,8", dateStartMonth = getCurrentMonthNumber())
+                fideApiTournamentPresenter?.loadWorldTournaments(getCurrentyear(), worldChampion = false, closestEvents = false, category = "1,2,3,4,5,6,7,8", dateStartMonth = getCurrentMonthNumber())//todo
             }
 
             R.id.item_show_world_rating -> {
@@ -543,7 +545,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
-            //event.createdBy = it.createdBy?.id
+            event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
             event.finishDate = EventDate.parseStringToDate(it.finishDate!!, "dd/MM/yyyy", Locale.GERMAN)
             EventHandler.addEvent(
@@ -624,7 +626,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
                         ShowTournamentEvent.newInstance()
                     } else {
-                        UpdateTournamentInstanceFragment.newInstance()
+                        EditTournamentInstanceFragment.newInstance()
                     }
                 }
                 is EventWorldTournament -> {
@@ -634,7 +636,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                     if (type == MainActivity.FRAGMENT_TYPE_SHOW) {
                         ShowTournamentEvent.newInstance()
                     } else {
-                        UpdateTournamentInstanceFragment.newInstance()
+                        EditTournamentInstanceFragment.newInstance()
                     }
                 }
                 is EventUser -> {
@@ -680,6 +682,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.building = it.building
             event.imageUri = it.image
             event.capacity = it.capacity
+            event.createdBy = it.createdBy?.id
             event.countryId = it.country?.id
             event.approved = it.approved
             EventHandler.addEvent(

@@ -302,7 +302,7 @@
     <string name="main_menu_item_about">About</string>
     <string name="main_menu_item_help">Help</string>
     <string name="fab_event_list_tournament_title">Add new tournament</string>
-    <string name="fab_event_list_location_title">Add new tournament</string>
+    <string name="fab_event_list_location_title">Add new location</string>
     <string name="fab_event_list_annual_event_title">Add new annual event</string>
     <string name="fab_event_list_one_time_event_title">Add new one-time event</string>
 

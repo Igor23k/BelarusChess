@@ -75,7 +75,11 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                                     setToolbarTitle(context!!.resources.getString(R.string.app_name))
                                 } else {
                                     if (places != null) {
-                                        setToolbarTitle(places!![tournamentEvent.placeId!! - 1].name!!)
+                                        val place = places?.find { it.id == tournamentEvent.placeId }
+
+                                        if (place != null) {
+                                            setToolbarTitle(place.name!!)
+                                        }
                                     }
                                 }
                             }
@@ -106,8 +110,8 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                         tournament_date.text = date
 
                         if (places != null) {
-                            val place = places!![tournamentEvent.placeId!! - 1]
-                            tournament_location.text = place.city + ", " + place.country?.name
+                            val place = places?.find { it.id == tournamentEvent.placeId }
+                            tournament_location.text = place?.city + ", " + place?.country?.name
                         }
 
                         updateAvatarImage(tournamentEvent.imageUri)
@@ -199,12 +203,12 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
 
         val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
         // add arguments to fragment
-        val fragment = UpdateTournamentInstanceFragment.newInstance()
+        val fragment = EditTournamentInstanceFragment.newInstance()
         fragment.arguments = bundle
         ft.replace(
                 R.id.fragment_placeholder,
                 fragment,
-                UpdateTournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
+                EditTournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
         )
         ft.addToBackStack(null)
         ft.commit()
@@ -262,7 +266,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
         val isAdmin = (context as MainActivity).getUserData()?.beAdmin
         val isOrganizer = (context as MainActivity).getUserData()?.beOrganizer
         val id = (context as MainActivity).getUserData()?.id
-        if (isAdmin == true || (isOrganizer == true/* && id == tournament?.createdBy todo раскомментить когда createdBy будет добавлено на беке*/)) {
+        if (isAdmin == true || (isOrganizer == true && id == tournament?.createdBy)) {
             inflater?.inflate(R.menu.toolbar_show_event_full, menu)
         } else {
             inflater?.inflate(R.menu.toolbar_show_event_lite, menu)

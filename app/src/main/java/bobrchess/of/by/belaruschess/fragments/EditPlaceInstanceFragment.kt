@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.fragment_add_new_place.*
  * This class inherits from android.support.v4.app.Fragment
  *
  */
-class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
+class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
 
     /**
      * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventPlace
@@ -269,6 +269,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
         placeData.city = editCity.text.toString()
         placeData.street = editStreet.text.toString()
         placeData.building = editBuilding.text.toString()
+        placeData.createdBy = (context as MainActivity).getUserData()
         placeData.capacity = editCapacity.text.toString().toInt()
         placeData.image = placeImageUri
         return placeData
@@ -302,8 +303,8 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
          * newInstance returns a new instance of PlaceInstanceFragment
          */
         @JvmStatic
-        fun newInstance(): PlaceInstanceFragment {
-            return PlaceInstanceFragment()
+        fun newInstance(): EditPlaceInstanceFragment {
+            return EditPlaceInstanceFragment()
         }
     }
 
@@ -374,6 +375,7 @@ class PlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
         placeEvent.street = placeDTO.street
         placeEvent.imageUri = placeDTO.image
         placeEvent.countryId = placeDTO.country?.id
+        placeEvent.createdBy = placeDTO.createdBy?.id
         placeEvent.building = placeDTO.building
         placeEvent.capacity = placeDTO.capacity
         placeEvent.approved = placeDTO.approved

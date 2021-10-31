@@ -237,7 +237,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 )
                                 val ft = fragmentManager!!.beginTransaction()
                                 // add arguments to fragment
-                                val newTournamentFragment = UpdateTournamentInstanceFragment.newInstance()
+                                val newTournamentFragment = EditTournamentInstanceFragment.newInstance()
                                 newTournamentFragment.arguments = bundle
                                 ft.replace(
                                         R.id.fragment_placeholder,
@@ -262,7 +262,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tournament_event_item_date_value.setTextColor(textColor)
 
 
-                        var city = event.placeId?.minus(1)?.let { places?.get(it)?.city }
+                        val place = places?.find { it.id == event.placeId}
+                        var city =  place?.city
                         if (StringUtils.isEmpty(city)) {
                             city = "-"
                         }

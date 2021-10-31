@@ -13,6 +13,7 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
+import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,15 +24,25 @@ import org.springframework.util.StringUtils
 class ShowPlaceEvent : ShowEventFragment() {
 
     private var countries: List<CountryDTO>? = null
+    private var place: EventPlace? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        initPlace()
         val activity: MainActivity? = activity as MainActivity?
         countries = activity?.getCountries()
         (context as MainActivity).unlockAppBar()
         return inflater.inflate(R.layout.fragment_show_place_event, container, false)
+    }
+
+    private fun initPlace() {
+        eventID = arguments!!.getInt(MainActivity.FRAGMENT_EXTRA_TITLE_EVENTID)
+        val event = EventHandler.getEventToEventIndex(eventID)
+        if (event is EventPlace) {
+            place = event
+        }
     }
 
     /**
@@ -158,12 +169,12 @@ class ShowPlaceEvent : ShowEventFragment() {
         )
         val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
         // add arguments to fragment
-        val newBirthdayFragment = PlaceInstanceFragment.newInstance()
+        val newBirthdayFragment = EditPlaceInstanceFragment.newInstance()
         newBirthdayFragment.arguments = bundle
         ft.replace(
                 R.id.fragment_placeholder,
                 newBirthdayFragment,
-                PlaceInstanceFragment.PLACE_INSTANCE_FRAGMENT_TAG
+                EditPlaceInstanceFragment.PLACE_INSTANCE_FRAGMENT_TAG
         )
         ft.addToBackStack(null)
         ft.commit()
@@ -184,7 +195,7 @@ class ShowPlaceEvent : ShowEventFragment() {
         val isAdmin = (context as MainActivity).getUserData()?.beAdmin
         val isOrganizer = (context as MainActivity).getUserData()?.beOrganizer
         val id = (context as MainActivity).getUserData()?.id
-        if (isAdmin == true || (isOrganizer == true/* && id == place?.createdBy todo раскомментить когда createdBy будет добавлено на беке*/)) {
+        if (isAdmin == true || (isOrganizer == true && id == place?.createdBy)) {
             inflater?.inflate(R.menu.toolbar_show_event_full, menu)
         } else {
             inflater?.inflate(R.menu.toolbar_show_event_lite, menu)

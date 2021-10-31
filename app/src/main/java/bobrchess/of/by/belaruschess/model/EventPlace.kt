@@ -38,6 +38,9 @@ class EventPlace(
         },
         Approved {
             override fun Identifier(): Int = 10
+        },
+        CreatedBy {
+            override fun Identifier(): Int = 11
         }
     }
 
@@ -55,6 +58,8 @@ class EventPlace(
 
     var imageUri: String? = null
 
+    var createdBy: Long? = null
+
     override fun toString(): String {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
                 getStringFromValue(Identifier.Name, this.name) +
@@ -64,11 +69,12 @@ class EventPlace(
                 getStringFromValue(Identifier.Country, this.countryId) +
                 getStringFromValue(Identifier.Building, this.building) +
                 getStringFromValue(Identifier.Capacity, this.capacity) +
+                getStringFromValue(Identifier.CreatedBy, this.createdBy) +
                 getStringFromValue(Identifier.Approved, this.approved) +
                 getStringFromValue(Identifier.ImageUri, this.imageUri)
     }
 
     companion object {
-        const val Name: String = "EventTournament"
+        const val Name: String = "EventPlace"
     }
 }

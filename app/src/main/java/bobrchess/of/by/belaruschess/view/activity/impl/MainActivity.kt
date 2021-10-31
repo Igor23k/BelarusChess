@@ -116,7 +116,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         super.onNewIntent(intent)
         val eventID = intent?.getIntExtra(FRAGMENT_EXTRA_TITLE_EVENTID, -1)
         val type = intent?.getStringExtra(FRAGMENT_EXTRA_TITLE_TYPE)
-        if (toolbar.menu.findItem(R.id.toolbar_search)?.actionView != null) {
+        /*if (toolbar.menu.findItem(R.id.toolbar_search)?.actionView != null) {
 
             (toolbar.menu.findItem(R.id.toolbar_search)?.actionView as android.support.v7.widget.SearchView).apply {
                 //close search view
@@ -126,7 +126,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             if (eventID != null && eventID > -1 && type != null) {
                 startFragments(eventID, type)
             }
-        }
+        }*/
     }
 
     private fun startFragments(eventID: Int, type: String) {
@@ -307,7 +307,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             event.toursCount = it.toursCount
             event.imageUri = it.image!!
             event.refereeId = it.referee?.id
-           // event.createdBy = it.createdBy?.id
+            event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
             event.finishDate = EventDate.parseStringToDate(it.finishDate!!, "dd/MM/yyyy", Locale.GERMAN)
             EventHandler.addEvent(

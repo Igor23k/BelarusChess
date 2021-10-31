@@ -8,10 +8,6 @@ import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import org.springframework.util.StringUtils
 
-/**
- * Created by Igor on 03.09.2018.
- */
-
 object Validator {
     @Throws(IncorrectDataException::class)
     fun validateUserData(userDTO: ExtendedUserDTO?, checkIndexes: Boolean): Boolean {
@@ -50,7 +46,7 @@ object Validator {
         if (StringUtils.isEmpty(birthday)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_BIRTHDAY))
         }
-        if (StringUtils.isEmpty(phoneNumber)) {
+        if (StringUtils.isEmpty(phoneNumber) || phoneNumber!!.length < 5 || phoneNumber.length > 20) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PHONE_NUMBER))
         }
 

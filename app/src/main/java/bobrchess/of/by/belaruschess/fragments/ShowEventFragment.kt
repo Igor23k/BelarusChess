@@ -38,12 +38,12 @@ abstract class ShowEventFragment : Fragment() {
 
         val ft = (context as MainActivity).supportFragmentManager.beginTransaction()
         // add arguments to fragment
-        val newBirthdayFragment = UpdateTournamentInstanceFragment.newInstance()
+        val newBirthdayFragment = EditTournamentInstanceFragment.newInstance()
         newBirthdayFragment.arguments = bundle
         ft.replace(
                 R.id.fragment_placeholder,
                 newBirthdayFragment,
-                UpdateTournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
+                EditTournamentInstanceFragment.TOURNAMENT_INSTANCE_FRAGMENT_TAG
         )
         ft.addToBackStack(null)
         ft.commit()
