@@ -14,26 +14,20 @@ class AboutAdapter(private val context: Context) : RecyclerView.Adapter<Recycler
     enum class AboutInstance {
         App,
         Version,
-        BuildNumber,
-        License,
-        OpenSource,
         Contact
     }
 
     class AboutCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val itemList = listOf(
-            AboutInstance.OpenSource,
-            AboutInstance.License,
-            AboutInstance.Contact,
             AboutInstance.App,
             AboutInstance.Version,
-            AboutInstance.BuildNumber
+            AboutInstance.Contact
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewtype: Int): RecyclerView.ViewHolder {
         val cardView =
-            LayoutInflater.from(parent.context).inflate(R.layout.card_view_about, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.card_view_about, parent, false)
         return AboutCardViewHolder(cardView)
     }
 
@@ -57,30 +51,30 @@ class AboutAdapter(private val context: Context) : RecyclerView.Adapter<Recycler
                 holder.itemView.tv_about_content.text = BuildConfig.VERSION_NAME
                 holder.itemView.tv_about_content.linksClickable = false
             }
-            AboutInstance.BuildNumber -> {
+            /*AboutInstance.BuildNumber -> {
                 holder.itemView.tv_about_title.text =
                     context.getText(R.string.about_title_buildNumber)
                 holder.itemView.tv_about_content.text = BuildConfig.VERSION_CODE.toString()
                 holder.itemView.tv_about_content.linksClickable = false
-            }
-            AboutInstance.License -> {
+            }*/
+            /*AboutInstance.License -> {
                 holder.itemView.tv_about_title.text = context.getText(R.string.about_title_license)
                 holder.itemView.tv_about_content.text =
-                    context.getText(R.string.about_content_license)
+                        context.getText(R.string.about_content_license)
                 holder.itemView.tv_about_content.linksClickable = true
             }
             AboutInstance.OpenSource -> {
                 holder.itemView.tv_about_title.text =
-                    context.getText(R.string.about_title_openSource)
+                        context.getText(R.string.about_title_openSource)
                 holder.itemView.tv_about_content.text =
-                    context.getText(R.string.about_content_openSource)
+                        context.getText(R.string.about_content_openSource)
                 holder.itemView.tv_about_content.linksClickable = true
-            }
+            }*/
             AboutInstance.Contact -> {
                 holder.itemView.tv_about_title.text =
-                    context.getText(R.string.about_title_contactInformation)
+                        context.getText(R.string.about_title_contactInformation)
                 holder.itemView.tv_about_content.text =
-                    context.getText(R.string.about_content_contact)
+                        context.getText(R.string.about_content_contact)
                 holder.itemView.tv_about_content.linksClickable = true
             }
         }

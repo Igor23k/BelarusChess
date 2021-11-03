@@ -427,9 +427,9 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             R.id.item_update_user_info -> {
                 updateUserInfoClicked()
             }
-            R.id.item_help -> {
+            /*R.id.item_help -> {
                 helpClicked()
-            }
+            }*/
             R.id.item_about -> {
                 aboutClicked()
             }
