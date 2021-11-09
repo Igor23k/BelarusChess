@@ -400,7 +400,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
-                                // todo сделать тут переход на этот турнир (проверить мб уже работает)
                                 if (isClickable) {
                                     val bundle = Bundle()
                                     //do this in more adaptable way
@@ -518,10 +517,10 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tournament_event_item_city_value.text = eventPlace.city
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
 
-                        holder.itemView.place_event_item_capacity_value.text = eventPlace.capacity.toString()
+                   /*     holder.itemView.place_event_item_capacity_value.text = eventPlace.capacity.toString()
                         holder.itemView.place_event_item_capacity_value.setTextColor(
                                 textColor
-                        )
+                        )*/
 
                         if (eventPlace.eventAlreadyOccurred()) {
                             holder.itemView.constraint_layout_place_item_view.background =

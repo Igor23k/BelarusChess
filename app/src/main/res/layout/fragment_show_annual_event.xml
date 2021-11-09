@@ -23,8 +23,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Event name" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tv_show_annual_event_first_date"
@@ -37,8 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_name"
-            tools:text="First date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_name"/>
 
         <TextView
             android:id="@+id/tv_show_annual_event_date"
@@ -51,8 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_first_date"
-            tools:text="Next date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_first_date" />
 
         <TextView
             android:id="@+id/tv_show_annual_event_years"
@@ -65,8 +62,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_date"
-            tools:text="Years" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_date"/>
 
         <TextView
             android:id="@+id/tv_show_annual_event_note"
@@ -81,8 +77,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_years"
-            tools:text="Note" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_show_annual_event_years"/>
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

@@ -37,8 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
-            tools:text="Belarus, Minsk" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"/>
 
         <TextView
             android:id="@+id/place_street_and_building"
@@ -50,8 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/place_country_and_city"
-            app:layout_constraintTop_toBottomOf="@+id/place_country_and_city"
-            tools:text="Dzerzhinskogo, 95" />
+            app:layout_constraintTop_toBottomOf="@+id/place_country_and_city" />
 
         <TextView
             android:id="@+id/place_capacity"
@@ -63,8 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/place_street_and_building"
-            app:layout_constraintTop_toBottomOf="@+id/place_street_and_building"
-            tools:text="Capacity: 450" />
+            app:layout_constraintTop_toBottomOf="@+id/place_street_and_building"/>
 
     </android.support.constraint.ConstraintLayout>
 </android.widget.ScrollView>

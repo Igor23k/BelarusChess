@@ -141,7 +141,8 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         (context as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
 
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = false
-        (context as MainActivity).toolbar.title = getString(R.string.app_name)
+        // (context as MainActivity).toolbar.title = getString(R.string.tournaments_tab_name)
+        updateToolbarTitle()
 
         isFABOpen = false
 
@@ -365,14 +366,14 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
 
-           /* R.id.toolbar_search -> {
-                when (entityType) {
-                    TOURNAMENT -> searchTournamentPresenter?.searchTournaments("Мемориал")
-                    else -> {
-                        + раскомментить 355 и 119 строку
-                    }
-                }
-            }*/
+            /* R.id.toolbar_search -> {
+                 when (entityType) {
+                     TOURNAMENT -> searchTournamentPresenter?.searchTournaments("Мемориал")
+                     else -> {
+                         + раскомментить 355 и 119 строку
+                     }
+                 }
+             }*/
 
             R.id.item_show_tournaments -> {
                 EventHandler.clearData()//TODO
@@ -380,11 +381,11 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                 searchTournamentPresenter?.loadTournaments()
             }
 
-            R.id.item_show_users -> {
+         /*   R.id.item_show_users -> {
                 EventHandler.clearData()//todo
                 entityType = USER
-                userPresenter?.loadUsers()
-            }
+                userPresenter?.loadUsers(10)
+            }*/
 
             R.id.item_show_places -> {
                 EventHandler.clearData()//todo
@@ -411,7 +412,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             R.id.action_refresh -> {
                 when (entityType) {
                     USER -> {
-                        userPresenter?.loadUsers()
+                        userPresenter?.loadUsers(10)
                         EventHandler.clearData()
                     }
                     TOURNAMENT -> {
@@ -534,7 +535,22 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         }
     }
 
+    private fun updateToolbarTitle() {
+        val resId = when (entityType) {
+            TOURNAMENT -> R.string.tournaments_tab_name
+            USER -> R.string.users_tab_name
+            WORLD_TOURNAMENT -> R.string.world_tournaments_tab_name
+            PLACE -> R.string.places_tab_name
+            TOP_PLAYER -> R.string.top_players_tab_name
+            else -> {
+                R.string.app_name
+            }
+        }
+        (context as MainActivity).toolbar.title = getString(resId)
+    }
+
     override fun showTournaments(tournaments: List<TournamentDTO>) {
+        updateToolbarTitle()
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         tournaments.forEach {
             val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, "dd/MM/yyyy", Locale.GERMAN), it.name!!)
@@ -561,6 +577,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     override fun showUsers(users: List<UserDTO>?) {
+        updateToolbarTitle()
         this.users = users?.toMutableList()
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         users!!.forEach {
@@ -674,6 +691,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     override fun showPlaces(places: MutableList<out PlaceDTO>?) {
+        updateToolbarTitle()
         IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         places?.forEach {
             val event = EventPlace(it.id!!.toInt(), it.name!!)
@@ -697,9 +715,8 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         updateFragments()
     }
 
-
     override fun showWorldTournaments(worldTournamentsDataDTO: WorldTournamentsDataDTO) {
-        //btnOrder.visibility = TextView.VISIBLE
+        updateToolbarTitle()
         IOHandler.clearSharedPrefEventData()
         worldTournamentsDataDTO.data?.europeanTournaments?.forEach {
             val event = EventWorldTournament(it.id!!.toInt(), EventDate.parseStringToDate(it.dateStart!!, "yyyy-MM-dd", Locale.GERMAN), it.name!!)
@@ -721,6 +738,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     }
 
     override fun showTopPlayers(topPlayersDTO: TopPlayersDTO?) {
+        updateToolbarTitle()
         IOHandler.clearSharedPrefEventData()//todo
         addMonthDivider(getMonthDivider(66666666, Util.getInternalizedMessage(KEY_RATING_OPEN)))
         processTopPlayers(topPlayersDTO?.open)
@@ -771,7 +789,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         }
     }
 
-    private fun buildFullName(name: String?): List<String>? {
+    private fun buildFullName(name: String?): List<String> {
         var fullName: List<String>? = name?.split(",")?.map { it.trim() }
         if (fullName!!.size < 2) {
             fullName = name?.split(" ")?.map { it.trim() }

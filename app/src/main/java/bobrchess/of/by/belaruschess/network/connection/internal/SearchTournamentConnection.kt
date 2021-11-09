@@ -13,9 +13,8 @@ class SearchTournamentConnection {
 
     private var callBack: CallBackSearchTournament? = null
 
-
-    fun getTournaments() {
-        App.getPersonalServerApi().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
+    fun getTournaments(upcomingOnly: Boolean) {
+        App.getPersonalServerApi().tournaments(upcomingOnly).enqueue(object : Callback<List<TournamentDTO>> {
             override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
@@ -34,8 +33,8 @@ class SearchTournamentConnection {
         })
     }
 
-    fun getTournaments(count: Int) {
-        App.getPersonalServerApi().tournaments(count).enqueue(object : Callback<List<TournamentDTO>> {
+    fun getTournaments(count: Int, upcomingOnly: Boolean) {
+        App.getPersonalServerApi().tournaments(count, upcomingOnly).enqueue(object : Callback<List<TournamentDTO>> {
             override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

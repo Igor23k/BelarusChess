@@ -46,8 +46,8 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
     private var placePresenter: PlacePresenter? = null
     private var rankPresenter: RankPresenter? = null
     private var countryPresenter: CountryPresenter? = null
-    private var ranks: List<RankDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
-    private var places: List<PlaceDTO>? = null//todo подума ь и мб передать чтобы все было одним запросом. И вообще это нужно ЛОКАЛЬНО хранить
+    private var ranks: List<RankDTO>? = null
+    private var places: List<PlaceDTO>? = null
     private var countries: List<CountryDTO>? = null
     private var userData: UserDTO? = null
     private var tournamentsAreLoaded = false
@@ -85,8 +85,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         EventHandler.clearData()
         IOHandler.registerIO(this)
         lockAppbar()
-        IOHandler.clearSharedPrefEventData()//todo убрать, чет локально сохраненные не показывает турниры
-        //  loadTournamentsFromLocalStorage()
+        IOHandler.clearSharedPrefEventData()
         loadTournaments()
     }
 

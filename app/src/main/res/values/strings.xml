@@ -140,6 +140,13 @@
     <string name="judge_placeholder" formatted="true"> %s1 %s2</string>
     <string name="location_placeholder" formatted="true"> %s1, %s2, %s3, %s4</string>
 
+    //toolbar
+    <string name="tournaments_tab_name">Tournaments</string>
+    <string name="world_tournaments_tab_name">World tournaments</string>
+    <string name="top_players_tab_name">World rating</string>
+    <string name="users_tab_name">Users</string>
+    <string name="places_tab_name">Locations</string>
+
 
 
 
@@ -343,10 +350,6 @@
     <string name="help_title_add_tournament">How can I add a tournament?</string>
     <string name="help_title_add_location">How can I add a location?</string>
     <string name="help_title_upcoming_updates">Which app updates are coming?</string>
-    <string name="help_content_reason">todo</string>
-    <string name="help_content_tournament">todo</string>
-    <string name="help_content_location">todo</string>
-    <string name="help_content_OneTime">todo</string>
 
     <string name="ok_label">OK</string>
     <string name="tournament_location_dialog_title">Choose location</string>

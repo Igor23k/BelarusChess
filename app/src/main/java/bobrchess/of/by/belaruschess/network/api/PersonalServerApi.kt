@@ -27,11 +27,11 @@ interface PersonalServerApi {
     @GET("/api/referees")
     fun referees(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
-    @get:GET("/tournaments")
-    val tournaments: Call<List<TournamentDTO>>
+    @GET("/tournaments")
+    fun tournaments(@Query("upcomingOnly") upcomingOnly: Boolean): Call<List<TournamentDTO>>
 
     @GET("/tournaments/{count}")
-    fun tournaments(@Path("count") count: Int): Call<List<TournamentDTO>>
+    fun tournaments(@Path("count") count: Int, @Query("upcomingOnly") upcomingOnly: Boolean): Call<List<TournamentDTO>>
 
     @GET("/user/{id}")
     fun userById(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<UserDTO>

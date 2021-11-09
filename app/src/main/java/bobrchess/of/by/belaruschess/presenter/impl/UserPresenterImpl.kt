@@ -53,11 +53,6 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
         userConnection.getCoaches(packageModel!!.getValue(Constants.TOKEN))
     }
 
-    override fun loadUsers() {
-        view!!.showProgress()
-        userConnection.getUsers(10, packageModel!!.getValue(Constants.TOKEN))
-    } //todo
-
     override fun loadUsers(count: Int?) {
         view!!.showProgress()
         userConnection.getUsers(count, packageModel!!.getValue(Constants.TOKEN))

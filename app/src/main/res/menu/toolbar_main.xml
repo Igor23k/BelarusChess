@@ -21,11 +21,11 @@
         android:title="@string/action_tournaments"
         app:showAsAction="never" />
 
-    <item
+  <!--  <item
         android:id="@+id/item_show_users"
         android:orderInCategory="2"
         android:title="@string/action_users"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/item_show_places"
@@ -64,11 +64,11 @@
         android:title="@string/main_menu_item_about"
         app:showAsAction="never" />
 
-    <item
+   <!-- <item
         android:id="@+id/item_help"
         android:orderInCategory="8"
         android:title="@string/main_menu_item_help"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/item_logout"

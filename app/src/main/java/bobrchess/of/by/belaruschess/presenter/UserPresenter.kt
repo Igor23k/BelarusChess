@@ -12,7 +12,6 @@ interface UserPresenter : BasePresenter {
     fun loadUserById(id: Int)
     fun loadReferees()
     fun loadCoaches()
-    fun loadUsers()
     fun loadUsers(count: Int?)
     fun searchUsers(text: String)
     fun attachView(userContractView: UserContractView)

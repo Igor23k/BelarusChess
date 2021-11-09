@@ -141,6 +141,12 @@
     <string name="judge_placeholder" formatted="true"> %s1 %s2</string>
     <string name="location_placeholder" formatted="true"> %s1, %s2, %s3, %s4</string>
 
+    //toolbar
+    <string name="tournaments_tab_name">Турниры</string>
+    <string name="world_tournaments_tab_name">Мировые турниры</string>
+    <string name="top_players_tab_name">Мировой рейтинг</string>
+    <string name="users_tab_name">Пользователи</string>
+    <string name="places_tab_name">Места проведения</string>
 
 
 
@@ -344,13 +350,8 @@
     <string name="error_retry_save_file">Попытка переписать save-файл с текущими событиями!</string>
     <string name="setting_use_calendarview">Используйте просмотр календаря для даты</string>
 
-    <string name="help_content_reason">todo</string>
-    <string name="help_content_tournament">todo</string>
-    <string name="help_content_location">todo</string>
-    <string name="help_content_OneTime">todo</string>
-
     <string name="ok_label">OK</string>
-    <string name="tournament_location_dialog_title">Выберыце размяшчэнне</string>
+    <string name="tournament_location_dialog_title">Выберите локацию</string>
     <string name="dismiss_label">Отменить</string>
     <string name="clear_all_label">Очистить</string>
 

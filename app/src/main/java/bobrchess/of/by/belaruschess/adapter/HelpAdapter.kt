@@ -56,7 +56,7 @@ class HelpAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerV
             }
         }
         when (itemList[position]) {
-            HelpInstance.Reason -> {
+            /*HelpInstance.Reason -> {
                 holder.itemView.tv_card_view_help_title.text =
                         context.resources.getText(R.string.help_title_reason)
                 holder.itemView.tv_card_view_help_content.text =
@@ -79,7 +79,7 @@ class HelpAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerV
                         context.resources.getText(R.string.help_title_upcoming_updates)
                 holder.itemView.tv_card_view_help_content.text =
                         context.resources.getText(R.string.help_content_OneTime)
-            }
+            }*/
         }
     }
 }

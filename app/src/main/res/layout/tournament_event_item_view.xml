@@ -96,8 +96,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tournament_event_item_date_title"
         app:layout_constraintStart_toStartOf="@+id/tournament_event_item_date_title"
         app:layout_constraintTop_toBottomOf="@+id/tournament_event_item_date_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="12/11"/>
+        app:layout_constraintVertical_bias="1.0"/>
 
     <TextView
         android:id="@+id/tournament_event_item_city_value"
@@ -110,8 +109,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tournament_event_place"
         app:layout_constraintStart_toStartOf="@+id/tournament_event_place"
         app:layout_constraintTop_toBottomOf="@+id/tournament_event_place"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="Minsk" />
+        app:layout_constraintVertical_bias="1.0"/>
 
     <TextView
         android:id="@+id/tournament_event_item_country_value"
@@ -124,6 +122,5 @@
         app:layout_constraintEnd_toEndOf="@+id/tournament_event_item_turns_title"
         app:layout_constraintStart_toStartOf="@+id/tournament_event_item_turns_title"
         app:layout_constraintTop_toBottomOf="@+id/tournament_event_item_turns_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="2" />
+        app:layout_constraintVertical_bias="1.0"/>
 </android.support.constraint.ConstraintLayout>

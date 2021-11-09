@@ -14,7 +14,7 @@
         android:id="@+id/iv_place_event_item_image"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:adjustViewBounds="false"
@@ -30,8 +30,8 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/place_event_item_country_value"
@@ -40,12 +40,11 @@
 
         <TextView
             android:id="@+id/tv_place_event_item_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="2dp"
             android:gravity="center|start"
-            android:text="@string/location_name"
             android:textColor="@color/textDark"
             android:textSize="@dimen/smaller_text_size"
             android:textStyle="bold"
@@ -57,7 +56,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="1dp"
         android:text="@string/location_property_country"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toStartOf="@+id/place_event_city"
@@ -68,19 +68,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="1dp"
         android:text="@string/location_property_city"
-        android:textColor="@color/brightGrey"
-        app:layout_constraintEnd_toStartOf="@+id/place_event_item_capacity_title"
-        app:layout_constraintTop_toTopOf="@+id/iv_place_event_item_image" />
-
-    <TextView
-        android:id="@+id/place_event_item_capacity_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/location_property_capacity"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_place_event_item_image" />
@@ -90,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
+        android:layout_marginStart="1dp"
         android:textColor="@color/textDark"
         android:textSize="@dimen/smaller_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/iv_place_event_item_image"
@@ -97,7 +87,7 @@
         app:layout_constraintStart_toStartOf="@+id/place_event_item_country"
         app:layout_constraintTop_toBottomOf="@+id/place_event_item_country"
         app:layout_constraintVertical_bias="1.0"
-        tools:text="2"/>
+        tools:text="Unites States of America"/>
 
     <TextView
         android:id="@+id/tournament_event_item_city_value"
@@ -111,19 +101,5 @@
         app:layout_constraintStart_toStartOf="@+id/place_event_city"
         app:layout_constraintTop_toBottomOf="@+id/place_event_city"
         app:layout_constraintVertical_bias="1.0"
-        tools:text="2" />
-
-    <TextView
-        android:id="@+id/place_event_item_capacity_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:textColor="@color/textDark"
-        android:textSize="@dimen/smaller_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_place_event_item_image"
-        app:layout_constraintEnd_toEndOf="@+id/place_event_item_capacity_title"
-        app:layout_constraintStart_toStartOf="@+id/place_event_item_capacity_title"
-        app:layout_constraintTop_toBottomOf="@+id/place_event_item_capacity_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="2" />
+        tools:text="Bobruisk"/>
 </android.support.constraint.ConstraintLayout>

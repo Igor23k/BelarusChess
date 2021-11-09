@@ -79,9 +79,6 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
                 Constants.SERVER_UNAVAILABLE -> {
                     onServerUnavailable()
                 }
-                Constants.SERVER_UNAVAILABLE -> {
-                    onServerUnavailable()
-                }
                 Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
                     onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
                 }

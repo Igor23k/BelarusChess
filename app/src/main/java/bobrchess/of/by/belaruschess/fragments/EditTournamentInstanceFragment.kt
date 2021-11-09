@@ -354,7 +354,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
      */
     private fun getImageFromFiles(): String {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "image/*"
+            type = "document/*"
         }
         intent.addFlags(
                 Intent.FLAG_GRANT_READ_URI_PERMISSION

@@ -82,8 +82,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_annual_item_date_title"
         app:layout_constraintStart_toStartOf="@+id/tv_annual_item_date_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_annual_item_date_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="06.02" />
+        app:layout_constraintVertical_bias="1.0"/>
 
     <TextView
         android:id="@+id/tv_years_since_annual_value"
@@ -95,8 +94,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_years_since_annual_title"
         app:layout_constraintStart_toStartOf="@+id/tv_years_since_annual_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_years_since_annual_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="2" />
+        app:layout_constraintVertical_bias="1.0"/>
 
 
     <TextView
@@ -109,6 +107,5 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_days_until_annual_title"
         app:layout_constraintStart_toStartOf="@+id/tv_days_until_annual_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_days_until_annual_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="2" />
+        app:layout_constraintVertical_bias="1.0"/>
 </android.support.constraint.ConstraintLayout>

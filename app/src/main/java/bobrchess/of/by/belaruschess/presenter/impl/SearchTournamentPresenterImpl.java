@@ -33,13 +33,13 @@ public class SearchTournamentPresenterImpl extends MvpPresenter<SearchTournament
     @Override
     public void loadTournaments() {
         view.showProgress();
-        tournamentConnection.getTournaments();
+        tournamentConnection.getTournaments(true);
     }
 
     @Override
     public void loadTournaments(Integer count) {
         view.showProgress();
-        tournamentConnection.getTournaments(count);
+        tournamentConnection.getTournaments(count, true);
     }
 
     @Override

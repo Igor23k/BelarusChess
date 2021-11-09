@@ -26,7 +26,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/tournament_name"
+            android:id="@+id/place_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -37,8 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
-            tools:text="Tournament Name" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
 
         <TextView
             android:id="@+id/tournament_location"
@@ -49,9 +48,8 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tournament_name"
-            app:layout_constraintTop_toBottomOf="@+id/tournament_name"
-            tools:text="Tournament location" />
+            app:layout_constraintStart_toStartOf="@+id/place_name"
+            app:layout_constraintTop_toBottomOf="@+id/place_name"/>
 
         <TextView
             android:id="@+id/tournament_date"
@@ -63,8 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tournament_location"
-            app:layout_constraintTop_toBottomOf="@+id/tournament_location"
-            tools:text="Date" />
+            app:layout_constraintTop_toBottomOf="@+id/tournament_location"/>
 
         <TextView
             android:id="@+id/tournament_short_description"
@@ -76,8 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tournament_date"
-            app:layout_constraintTop_toBottomOf="@+id/tournament_date"
-            tools:text="Tournament short description" />
+            app:layout_constraintTop_toBottomOf="@+id/tournament_date"/>
 
         <TextView
             android:id="@+id/tournament_referee"
@@ -89,8 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tournament_short_description"
-            app:layout_constraintTop_toBottomOf="@+id/tournament_short_description"
-            tools:text="Tournament referee" />
+            app:layout_constraintTop_toBottomOf="@+id/tournament_short_description"/>
 
         <TextView
             android:id="@+id/tournament_full_description"
@@ -102,8 +97,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tournament_referee"
-            app:layout_constraintTop_toBottomOf="@+id/tournament_referee"
-            tools:text="Full description" />
+            app:layout_constraintTop_toBottomOf="@+id/tournament_referee"/>
 
     </android.support.constraint.ConstraintLayout>
 </android.widget.ScrollView>

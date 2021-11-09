@@ -93,11 +93,11 @@ class ShowTopPlayerEvent : ShowEventFragment() {
                 scrollRange = appbarLayout.totalScrollRange
             }
             if (context != null) {
-                if (scrollRange + verticalOffset == 0) {
+              /*  if (scrollRange + verticalOffset == 0) {
                     setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                } else {
+                } else {*/
                     setToolbarTitle(topPlayer?.name!!)
-                }
+             //   }
             }
         })
 

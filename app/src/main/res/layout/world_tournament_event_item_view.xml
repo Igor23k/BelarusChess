@@ -67,8 +67,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tournament_event_item_date_title"
         app:layout_constraintStart_toStartOf="@+id/tournament_event_item_date_title"
         app:layout_constraintTop_toBottomOf="@+id/tournament_event_item_date_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="01.08.20" />
+        app:layout_constraintVertical_bias="1.0"/>
 
     <TextView
         android:id="@+id/world_tournament_event_item_place_value"
@@ -81,10 +80,7 @@
         android:minLines="1"
         android:maxLines="100"
         android:singleLine="false"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_tournament_event_item_image"
         app:layout_constraintStart_toEndOf="@+id/world_tournament_event_item_date_value"
         app:layout_constraintTop_toBottomOf="@+id/tournament_event_item_country_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="Austria,Latshchach/Faaker Seahahaha" />
-        <!--//tools:text="Belarus,Minsk" />-->
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

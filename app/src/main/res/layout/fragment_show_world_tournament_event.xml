@@ -37,8 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
-            tools:text="3nd FIDE World Cadets Rapid Chess Championship U10" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"/>
 
         <TextView
             android:id="@+id/world_tournament_category"
@@ -50,8 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/world_tournament_name"
-            app:layout_constraintTop_toBottomOf="@+id/world_tournament_name"
-            tools:text="European Event" />
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_name"/>
 
         <TextView
             android:id="@+id/world_tournament_date_start"
@@ -63,8 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/world_tournament_category"
-            app:layout_constraintTop_toBottomOf="@+id/world_tournament_category"
-            tools:text="Date start: 2019-08-15 00:00:00" />
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_category"/>
 
         <TextView
             android:id="@+id/world_tournament_date_end"
@@ -76,8 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/world_tournament_date_start"
-            app:layout_constraintTop_toBottomOf="@+id/world_tournament_date_start"
-            tools:text="Date end: 2019-08-15 00:00:00" />
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_date_start"/>
 
         <TextView
             android:id="@+id/world_tournament_place"
@@ -89,8 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/world_tournament_date_end"
-            app:layout_constraintTop_toBottomOf="@+id/world_tournament_date_end"
-            tools:text="Minsk, Belarus" />
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_date_end"/>
 
 
         <TextView
@@ -103,8 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/world_tournament_place"
-            app:layout_constraintTop_toBottomOf="@+id/world_tournament_place"
-            tools:text="Number of players: 9.\nTime control: something.\nTime control description: 10 minutes for game with 10 seconds increment from move 1.\nNum round: 9.\nOrganizer: Tamkovich, Maria.\nArbiter: Nikolopoulos, Panagiotis." />
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_place"/>
 
         <TextView
             android:id="@+id/world_tournament_contact_data"
@@ -116,8 +110,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/world_tournament_description_data"
-            app:layout_constraintTop_toBottomOf="@+id/world_tournament_description_data"
-            tools:text="Email: igorkozlov23@bk.ru.\nWebsite: bobrchess.of.by.\nTel: +375 (29) 179-07-46" />
+            app:layout_constraintTop_toBottomOf="@+id/world_tournament_description_data"/>
 
 
     </android.support.constraint.ConstraintLayout>

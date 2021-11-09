@@ -38,23 +38,6 @@ class TournamentConnection {
         })
     }
 
-
-    fun getTournaments() {
-        App.getPersonalServerApi().tournaments.enqueue(object : Callback<List<TournamentDTO>> {
-            override fun onResponse(call: Call<List<TournamentDTO>>, response: Response<List<TournamentDTO>>) {
-                if (response.isSuccessful) {
-                    callBack!!.onResponse(response.body())
-                } else {
-                    //todo тут нужно блок экрана снимать и тд
-                }
-            }
-
-            override fun onFailure(call: Call<List<TournamentDTO>>, t: Throwable) {
-                callBack!!.onFailure(Util.buildOnFailureResponse())
-            }
-        })
-    }
-
     fun getGames() {
         App.getPersonalServerApi().games.enqueue(object : Callback<List<GameDTO>> {
             override fun onResponse(call: Call<List<GameDTO>>, response: Response<List<GameDTO>>) {

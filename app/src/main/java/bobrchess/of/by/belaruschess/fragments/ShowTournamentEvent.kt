@@ -60,7 +60,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                 (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
                 EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
                     if (tournamentEvent is EventTournament) {
-                        this.tournament_name.text = tournamentEvent.name
+                        setToolbarTitle(tournamentEvent.name)
                         this.tournament_short_description.visibility = TextView.VISIBLE
                         this.tournament_short_description.text = tournamentEvent.shortDescription
                         this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + referee?.name + " " + referee?.surname
@@ -71,17 +71,17 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                                 scrollRange = appbarLayout.totalScrollRange
                             }
                             if (context != null) {
-                                if (scrollRange + verticalOffset == 0) {
+                                /*if (scrollRange + verticalOffset == 0) {
                                     setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                                } else {
+                                } else {*/
                                     if (places != null) {
                                         val place = places?.find { it.id == tournamentEvent.placeId }
 
                                         if (place != null) {
-                                            setToolbarTitle(place.name!!)
+                                            this.place_name.text = place.name
                                         }
                                     }
-                                }
+                               // }
                             }
                         })
 

@@ -37,8 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
-            tools:text="Belarus, Kandidate, 2000" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"/>
 
         <TextView
             android:id="@+id/user_coach"
@@ -50,8 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/user_country_and_rank_and_rating"
-            app:layout_constraintTop_toBottomOf="@+id/user_country_and_rank_and_rating"
-            tools:text="Coach is absent" />
+            app:layout_constraintTop_toBottomOf="@+id/user_country_and_rank_and_rating"/>
 
         <TextView
             android:id="@+id/user_birthday"
@@ -63,8 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/user_coach"
-            app:layout_constraintTop_toBottomOf="@+id/user_coach"
-            tools:text="Born on 11 снежня 2014 г." />
+            app:layout_constraintTop_toBottomOf="@+id/user_coach"/>
 
         <TextView
             android:id="@+id/user_tournaments_results"
@@ -78,8 +75,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/something"
-            app:layout_constraintTop_toBottomOf="@+id/something"
-            tools:text="User tournaments results" />
+            app:layout_constraintTop_toBottomOf="@+id/something"/>
 
         <TextView
             android:id="@+id/something"
@@ -91,8 +87,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/user_birthday"
-            app:layout_constraintTop_toBottomOf="@+id/user_birthday"
-            tools:text="SOMETHING HERE" />
+            app:layout_constraintTop_toBottomOf="@+id/user_birthday"/>
 
        <!-- <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewTournamentsResults"
