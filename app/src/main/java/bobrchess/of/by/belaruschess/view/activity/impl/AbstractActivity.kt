@@ -5,11 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
 import android.view.Gravity
-import android.view.View
 import android.widget.Toast
-import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.BaseContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -74,7 +71,5 @@ abstract class AbstractActivity : MvpAppCompatActivity(), BaseContractView, Conf
         }
     }
 
-    override fun showSnackbar(resId: Int?) {
-       //todo
-    }
+    override fun showSnackbar(resId: Int?) {}
 }

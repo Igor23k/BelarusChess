@@ -104,7 +104,7 @@ class EventTournament(
                 "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
                         this.finishDate!!,
                         DateFormat.DEFAULT,
-                        Locale.GERMAN//todo why??? выше то же
+                        Locale.GERMAN
                 )}" +
                 getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
                 getStringFromValue(Identifier.Id, this.id) +

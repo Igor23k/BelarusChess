@@ -1,6 +1,5 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -8,18 +7,9 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.bind.DatatypeConverter;
 
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
@@ -111,7 +101,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 view.showProgress();
                 addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
-                view.showToast(e.getLocalizedMessage());//todo проверить что норм показывается и остальные так же плэйс и тд
+                view.showToast(e.getLocalizedMessage());
                 view.hideProgress();
                 view.enableButton();
             }
@@ -179,12 +169,12 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
 
     @Override
     public void onServerUnavailable() {
-
+        view.hideProgress();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        view.hideProgress();
     }
 
     @Override

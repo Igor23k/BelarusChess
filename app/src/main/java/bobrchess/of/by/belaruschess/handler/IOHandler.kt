@@ -305,6 +305,7 @@ object IOHandler {
             if (stringArray.isNotEmpty()) {
                 when (stringArray[0]) {
                     (EventTournament.Name) -> {
+                        var id = 0
                         var forename = "-"
                         var startDate = "-"
                         var finishDate = "-"
@@ -321,6 +322,9 @@ object IOHandler {
 
                             //use identifier
                             when (property[0]) {
+                                EventTournament.Identifier.Id.toString() -> {
+                                    id = property[1].toInt()
+                                }
                                 EventTournament.Identifier.StartDate.toString() -> {
                                     startDate = property[1]
                                 }
@@ -360,7 +364,7 @@ object IOHandler {
                         }
                         val tournament =
                             EventTournament(
-                                    2222,//todo
+                                    id,
                                 EventDate.parseStringToDate(startDate, "dd/MM/yyyy"),
                                 forename
                             )

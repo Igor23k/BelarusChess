@@ -63,10 +63,10 @@ class EventUser(
         },
         BeMale {
             override fun Identifier(): Int = 15
-        },
+        }/*,
         Places {
             override fun Identifier(): Int = 16
-        }
+        }*/
     }
 
     var patronymic: String? = null
@@ -81,7 +81,7 @@ class EventUser(
     var beAdmin: Boolean? = null
     var beOrganizer: Boolean? = null
     var beMale: Boolean? = null
-    var places: Long? = null//todo
+    //var places: Long? = null
 
     override fun toString(): String {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +

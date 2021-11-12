@@ -18,7 +18,7 @@ class FideApiAdapterConnection {
                 if (response.isSuccessful) {
                     callBack!!.onResponse(response.body())
                 } else {
-                    //todo тут нужно блок экрана снимать и тд
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
                 }
             }
 
@@ -34,7 +34,7 @@ class FideApiAdapterConnection {
                 if (response.isSuccessful) {
                      callBack!!.onResponse(response.body())
                 } else {
-                    //todo тут нужно блок экрана снимать и тд
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
                 }
             }
 

@@ -309,7 +309,7 @@ open class EventDate : Comparable<EventDate> {
                     return SimpleDateFormat(format).parse(date_string)
                 }
             } catch (e: Exception) {
-                //todo log
+                //log
             }
             return Date()
         }
@@ -394,7 +394,7 @@ open class EventDate : Comparable<EventDate> {
             return try {
                 SimpleDateFormat(workingFormat, locale).format(date)
             } catch (e: Exception) {
-                ""//todo
+                ""
             }
         }
 

@@ -20,6 +20,7 @@ import bobrchess.of.by.belaruschess.exception.IncorrectDataException;
 import bobrchess.of.by.belaruschess.network.connection.internal.AddPlaceConnection;
 import bobrchess.of.by.belaruschess.presenter.AddPlacePresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddPlace;
+import bobrchess.of.by.belaruschess.util.Constants;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView;
@@ -69,13 +70,13 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
         if (removedPlaceId != 0) {
             view.placeRemoved(removedPlaceId);
         } else {
-            //todo show error
+            view.showToast(Constants.Companion.getINTERNAL_SERVER_ERROR());
         }
     }
 
     @Override
     public void onFailure(@NonNull ErrorDTO errorDTO) {
-        view.showToast(errorDTO.getError());//todo не работает для всех
+        view.showToast(errorDTO.getError());
     }
 
     @Override
@@ -90,7 +91,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
                 view.showProgress();
                 addPlaceConnection.addPlace(new PlaceDTO(placeDTO), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
-                view.showToast(e.getLocalizedMessage());//todo
+                view.showToast(e.getLocalizedMessage());
             } finally {
                 view.hideProgress();
                 view.enableButton();
@@ -113,7 +114,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     @Override
     public void removePlace(Integer id) {
         if (viewIsReady) {
-            view.showProgress();//todo не работает для всех
+            view.showProgress();
             addPlaceConnection.removePlace(id, packageModel.getValue(TOKEN));
         }
     }
@@ -135,12 +136,12 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
 
     @Override
     public void onServerUnavailable() {
-
+        view.hideProgress();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        view.hideProgress();
     }
 
     @Override

@@ -15,10 +15,6 @@ import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView;
 
-/**
- * Created by Igor on 11.04.2018.
- */
-
 public class TournamentsResultPresenterImpl implements CallBackUserInfo, TournamentsResultPresenter {
 
     private TournamentsResultContractView contractView;
@@ -67,12 +63,12 @@ public class TournamentsResultPresenterImpl implements CallBackUserInfo, Tournam
 
     @Override
     public void onServerUnavailable() {
-
+        contractView.onServerUnavailable();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        contractView.onServerUnavailable();
     }
 
     @Override

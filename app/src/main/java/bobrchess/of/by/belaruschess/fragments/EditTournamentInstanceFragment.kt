@@ -354,7 +354,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
      */
     private fun getImageFromFiles(): String {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "document/*"
+            type = "image/*"
         }
         intent.addFlags(
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -609,7 +609,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         return -1
     }
 
-    override fun startActivity(tournamentDTO: TournamentDTO?) {//todo тут надо ззаполниь ну и остальные методы. Прогресс показывать и снимать и тд + дата в неверном формате сохраняется
+    override fun startActivity(tournamentDTO: TournamentDTO?) {
     }
 
     override fun disableButton() {
@@ -626,10 +626,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
     }
 
     override fun setConnectionStatus(connectivityStatus: Int?) {
-    }
-
-    override fun showIncorrectTournamentNameText() {
-        //todo to check работает ли и почему нету проверок на остальные поля
     }
 
     override fun enableButton() {

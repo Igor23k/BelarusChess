@@ -28,7 +28,7 @@ class Constants {
         val TOURNAMENT = "tournament"
         val PLACE = "place"
 
-        val USER_PARAMETER = "user"//todo не выбрать ничего из дропдаунов и ничего не выводит из ошибок В РЕГИСТРАЦИИ ПРОВЕРИТЬ
+        val USER_PARAMETER = "user"
 
         val PLACES = "places"
         val RANKS = "ranks"

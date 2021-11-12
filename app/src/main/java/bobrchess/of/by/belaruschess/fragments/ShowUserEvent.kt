@@ -97,16 +97,21 @@ class ShowUserEvent : ShowEventFragment() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
         EventHandler.getEventToEventIndex(eventID)?.let { userEvent ->
             if (userEvent is EventUser) {
-                var rank = userEvent.rankId?.minus(1)?.let { ranks?.get(it)?.name }
-                if (StringUtils.isEmpty(rank)) {
-                    rank = resources.getString(R.string.rank_absence)
-                }
-                var country = userEvent.countryId?.minus(1)?.let { countries?.get(it)?.name }
-                if (StringUtils.isEmpty(country)) {
-                    country = resources.getString(R.string.country_absence)
+                val rank = ranks?.find { it.id == userEvent.rankId}
+                var rankName = rank?.name
+
+                if (StringUtils.isEmpty(rankName)) {
+                    rankName = resources.getString(R.string.rank_absence)
                 }
 
-                this.user_country_and_rank_and_rating.text = "$country, $rank, ${userEvent.rating}"
+                val country = countries?.find { it.id == userEvent.countryId}
+                var countryName = country?.name
+
+                if (StringUtils.isEmpty(countryName)) {
+                    countryName = resources.getString(R.string.country_absence)
+                }
+
+                this.user_country_and_rank_and_rating.text = "$countryName, $rankName, ${userEvent.rating}"
 
 
                 this.user_coach.visibility = TextView.VISIBLE
@@ -207,10 +212,14 @@ class ShowUserEvent : ShowEventFragment() {
                 shareUserMsg += "\n" + resources.getString(R.string.rating) + ": " + user.rating
 
                 val rankId = user.rankId
-
-                if (rankId != null) {//todo вывести страну и еще что-то мб
-                    shareUserMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.first { it.id!! == rankId }?.name
+                if (rankId != null) {
+                    shareUserMsg += "\n" + resources.getString(R.string.rank) + ": " + ranks?.find { it.id!! == rankId }?.name
                 }
+
+                val countryId = user.countryId
+                if (countryId != null) {
+                    shareUserMsg += "\n" + resources.getString(R.string.country) + ": " + countries?.find { it.id!! == countryId }?.name
+                }//проверить что все ок выводится. например, coach нету тут и тд.
 
                 intent.putExtra(Intent.EXTRA_TEXT, shareUserMsg)
                 startActivity(
@@ -223,9 +232,9 @@ class ShowUserEvent : ShowEventFragment() {
         }
     }
 
-    /*private fun showTournamentsResults() {//todo вернуть, когда будет участие в турнирах реализовано
-        //IOHandler.clearSharedPrefEventData()//todo
-        //EventHandler.clearData()//todo
+    /*private fun showTournamentsResults() {//вернуть, когда будет участие в турнирах реализовано
+        //IOHandler.clearSharedPrefEventData()
+        //EventHandler.clearData()
         var id = 0
         userTournamentsResult?.forEach {
             val event = EventTournamentResult(id++, EventDate.parseStringToDate(transformDate("dd/mm/yyyy", it.startDate!!), DateFormat.DEFAULT, Locale.GERMAN), it.name!!)

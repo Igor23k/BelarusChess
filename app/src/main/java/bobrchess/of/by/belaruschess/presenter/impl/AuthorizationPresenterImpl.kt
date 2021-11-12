@@ -69,7 +69,6 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
     override fun onFailure(errorDTO: ErrorDTO) {
         view!!.hideProgress()
         view!!.enableButton()
-        //todo залогать errordto.message и остальные ошибки
 
         if (errorDTO.status == 401) {
             onInvalidEmailOrPassword()
@@ -102,7 +101,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
 
     override fun onUnsuccessfulRequest(message: String?) {
         if (!StringUtils.isEmpty(message)) {
-            view!!.showSnackBar(viewComponent!!, message.toString())//todo переделать чтобы тут была своя строка ибо когда переключим на русский то тут все равно будет англ. ПОпропробовать заюзать интернационализацию
+            view!!.showSnackBar(viewComponent!!, Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
         }
     }
 
@@ -126,7 +125,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
             authorizationConnection.authorization(userDTO)
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
-            view!!.showSnackBar(viewComponent!!, e.localizedMessage, R.string.retry)// todo bug нужна видимо интернационализация, в регистрации то же самое
+            view!!.showSnackBar(viewComponent!!, e.localizedMessage)
         }
     }
 

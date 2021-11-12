@@ -59,7 +59,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
 
         registerInternetCheckReceiver();
 
-        if (!tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном todo
+        if (!tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном
             tokenAuthPresenter.tokenAuthorization();
         } else {
             initActivityData();

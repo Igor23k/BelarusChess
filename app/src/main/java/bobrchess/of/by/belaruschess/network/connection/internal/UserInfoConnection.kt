@@ -28,7 +28,7 @@ class UserInfoConnection {
                 }
             }
 
-            override fun onFailure(call: Call<List<TournamentResultDTO>>, t: Throwable) {//todo тут если ошибка то ничего не происходит + нужно сделать что даже если турнирыне прилетели то страницу пользователя все равно показать
+            override fun onFailure(call: Call<List<TournamentResultDTO>>, t: Throwable) {
                 callBack!!.onFailure(Util.buildOnFailureResponse())
             }
         })

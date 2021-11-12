@@ -337,13 +337,13 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         updateFragments()
     }
 
-    override fun ranksAreLoaded(ranks: MutableList<RankDTO>?) {//todo сделать чтобы это выполнилось ТОЧНО раньше чем основной код где это используется
+    override fun ranksAreLoaded(ranks: MutableList<RankDTO>?) {
         this.ranks = ranks
         ranksAreLoaded = true
         updateFragments()
     }
 
-    override fun placesAreLoaded(places: MutableList<out PlaceDTO>?) {//todo сделать чтобы это выполнилось ТОЧНО раньше чем основной код где это используется
+    override fun placesAreLoaded(places: MutableList<out PlaceDTO>?) {
         this.places = places
         placesAreLoaded = true
         updateFragments()

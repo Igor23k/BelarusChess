@@ -602,7 +602,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         return -1
     }
 
-    override fun startActivity(userDTO: UserDTO?) {//todo тут надо ззаполниь ну и остальные методы. Прогресс показывать и снимать и тд + дата в неверном формате сохраняется
+    override fun startActivity(userDTO: UserDTO?) {
     }
 
     override fun disableButton() {
@@ -628,7 +628,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
     }
 
-    override fun userUpdated(userDTO: UserDTO?) {
+    /*override fun userUpdated(userDTO: UserDTO?) {
         //create new instance from edit fields
         val userEvent = EventUser(
                 userDTO!!.id!!.toInt(),
@@ -644,20 +644,8 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         userEvent.coach = userDTO.coach
         userEvent.countryId = userDTO.country?.id
         userEvent.rankId = userDTO.rank?.id
-        userEvent.beMale = userDTO.beMale //userEvent.genderId = userDTO.get?.id todo coach тоже
+        userEvent.beMale = userDTO.beMale //userEvent.genderId = userDTO.get?.id // coach тоже
                 //и остальных проверить
-
-        /* if (!isEditedUser) {
-            *//* EventHandler.addEvent(userEvent, this.context!!, true)
-            Snackbar.make(
-                    view!!,
-                    context!!.resources.getString(R.string.user_edited_notification),
-                    Snackbar.LENGTH_LONG
-            ).show()
-            closeBtnPressed()*//*
-
-            //already existent birthday entry, overwrite old entry in map
-        } else {*/
         EventHandler.getEventToEventIndex(eventID)?.let { event ->
             if (event is EventUser) {
                 EventHandler.changeEventAt(eventID, userEvent, context!!, true)
@@ -670,7 +658,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
             closeBtnPressed()
         }
         //}
-    }
+    }*/
 
     override fun showUsers(coaches: List<UserDTO>?) {
         this.coaches = coaches
@@ -758,17 +746,9 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         setGenderSpinnerAdapter(genders)
     }
 
-    override fun showIncorrectUserNameText() {
-        TODO("Not yet implemented")
-    }
-
-    override fun updateUser() {
-        TODO("Not yet implemented")
-    }
-
-    override fun showUser(userDTO: UserDTO?) {
+    override fun showUser(user: UserDTO?) {
         val activity: MainActivity? = activity as MainActivity?
-        activity?.updateUserData(userDTO)
+        activity?.updateUserData(user)
 
         Snackbar.make(
                 view!!,

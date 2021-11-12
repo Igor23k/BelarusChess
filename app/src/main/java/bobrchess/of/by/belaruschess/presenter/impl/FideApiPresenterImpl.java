@@ -75,12 +75,12 @@ public class FideApiPresenterImpl extends MvpPresenter<FideApiContractView> impl
 
     @Override
     public void onServerUnavailable() {
-
+        view.hideProgress();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        view.hideProgress();
     }
 
     @Override

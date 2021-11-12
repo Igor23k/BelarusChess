@@ -3,6 +3,7 @@ package bobrchess.of.by.belaruschess.presenter.impl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.CountryDTO;
@@ -37,7 +38,8 @@ public class CountryPresenterImpl implements CallBackCountry, CountryPresenter {
     }
 
     @Override
-    public void onFailure(@NotNull ErrorDTO errorDTO) {//todo
+    public void onFailure(@NotNull ErrorDTO errorDTO) {
+        countryPresenterCallBack.countriesAreLoaded(new ArrayList<>());
     }
 
     @Override
@@ -52,12 +54,12 @@ public class CountryPresenterImpl implements CallBackCountry, CountryPresenter {
 
     @Override
     public void onServerUnavailable() {
-
+        countryPresenterCallBack.countriesAreLoaded(new ArrayList<>());
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        countryPresenterCallBack.countriesAreLoaded(new ArrayList<>());
     }
 
     @Override

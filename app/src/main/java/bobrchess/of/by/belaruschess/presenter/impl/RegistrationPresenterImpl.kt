@@ -111,7 +111,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
 
     override fun onUnsuccessfulRequest(message: String?) {
         if (!StringUtils.isEmpty(message)) {
-            view!!.showSnackBar(viewComponent!!, message.toString())//todo переделать чтобы тут была своя строка ибо когда переключим на русский то тут все равно будет англ. ПОпропробовать заюзать интернационализацию
+            view!!.showSnackBar(viewComponent!!,  getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
         }
     }
 

@@ -64,20 +64,19 @@ public class FideApiAdapterPresenterImpl implements CallBackAdapterFideApi, Fide
         viewIsReady = true;
     }
 
-
     @Override
     public void onFailure(@NotNull ErrorDTO errorDTO) {
-        //todo
+        adapterContractPresenter.onServerUnavailable();
     }
 
     @Override
     public void onServerUnavailable() {
-//todo
+        adapterContractPresenter.onServerUnavailable();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-//todo
+        adapterContractPresenter.onServerUnavailable();
     }
 
     @Override

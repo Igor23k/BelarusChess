@@ -3,6 +3,7 @@ package bobrchess.of.by.belaruschess.presenter.impl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
@@ -16,6 +17,7 @@ public class PlacePresenterImpl implements CallBackPlace, PlacePresenter {
 
     private PlaceConnection placeConnection;
     private PlacePresenterCallBack placePresenterCallBack;
+    private Boolean viewIsReady = false;
 
     public PlacePresenterImpl() {
         placeConnection = new PlaceConnection();
@@ -33,7 +35,8 @@ public class PlacePresenterImpl implements CallBackPlace, PlacePresenter {
     }
 
     @Override
-    public void onFailure(@NotNull ErrorDTO errorDTO) {//todo
+    public void onFailure(@NotNull ErrorDTO errorDTO) {
+        placePresenterCallBack.placesAreLoaded(new ArrayList<>());
     }
 
     @Override
@@ -48,12 +51,12 @@ public class PlacePresenterImpl implements CallBackPlace, PlacePresenter {
 
     @Override
     public void onServerUnavailable() {
-
+        placePresenterCallBack.placesAreLoaded(new ArrayList<>());
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        placePresenterCallBack.placesAreLoaded(new ArrayList<>());
     }
 
     @Override
@@ -63,7 +66,7 @@ public class PlacePresenterImpl implements CallBackPlace, PlacePresenter {
 
     @Override
     public void viewIsReady() {
-
+        viewIsReady = true;
     }
 
     @Override

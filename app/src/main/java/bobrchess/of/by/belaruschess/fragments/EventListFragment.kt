@@ -376,31 +376,31 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
              }*/
 
             R.id.item_show_tournaments -> {
-                EventHandler.clearData()//TODO
+                EventHandler.clearData()
                 entityType = TOURNAMENT
                 searchTournamentPresenter?.loadTournaments()
             }
 
          /*   R.id.item_show_users -> {
-                EventHandler.clearData()//todo
+                EventHandler.clearData()
                 entityType = USER
                 userPresenter?.loadUsers(10)
             }*/
 
             R.id.item_show_places -> {
-                EventHandler.clearData()//todo
+                EventHandler.clearData()
                 entityType = PLACE
                 searchPlacePresenter?.loadPlaces()
             }
 
             R.id.item_show_world_tournaments -> {
-                EventHandler.clearData()//todo
+                EventHandler.clearData()
                 entityType = WORLD_TOURNAMENT
-                fideApiTournamentPresenter?.loadWorldTournaments(getCurrentyear(), worldChampion = false, closestEvents = false, category = "1,2,3,4,5,6,7,8", dateStartMonth = getCurrentMonthNumber())//todo
+                fideApiTournamentPresenter?.loadWorldTournaments(getCurrentyear(), worldChampion = false, closestEvents = false, category = "1,2,3,4,5,6,7,8", dateStartMonth = getCurrentMonthNumber())
             }
 
             R.id.item_show_world_rating -> {
-                EventHandler.clearData()//todo
+                EventHandler.clearData()
                 entityType = TOP_PLAYER
                 fideApiTournamentPresenter?.loadTopPlayers()
             }
@@ -551,7 +551,6 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         updateToolbarTitle()
-        IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
         tournaments.forEach {
             val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, "dd/MM/yyyy", Locale.GERMAN), it.name!!)
             event.name = it.name!!
@@ -579,7 +578,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     override fun showUsers(users: List<UserDTO>?) {
         updateToolbarTitle()
         this.users = users?.toMutableList()
-        IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
+        IOHandler.clearSharedPrefEventData()
         users!!.forEach {
             val event = EventUser(it.id!!.toInt(), EventDate.parseStringToDate(it.birthday!!, "dd/MM/yyyy", Locale.getDefault()), it.name!!, it.surname!!)
             event.rankId = it.rank?.id
@@ -692,7 +691,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
     override fun showPlaces(places: MutableList<out PlaceDTO>?) {
         updateToolbarTitle()
-        IOHandler.clearSharedPrefEventData()//todo тут если допусти 1 турнир есть, а в ьд поменять у него айди то станет 2 турнира, не удаляются тут они
+        IOHandler.clearSharedPrefEventData()
         places?.forEach {
             val event = EventPlace(it.id!!.toInt(), it.name!!)
             event.city = it.city
@@ -739,7 +738,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
 
     override fun showTopPlayers(topPlayersDTO: TopPlayersDTO?) {
         updateToolbarTitle()
-        IOHandler.clearSharedPrefEventData()//todo
+        IOHandler.clearSharedPrefEventData()
         addMonthDivider(getMonthDivider(66666666, Util.getInternalizedMessage(KEY_RATING_OPEN)))
         processTopPlayers(topPlayersDTO?.open)
         addMonthDivider(getMonthDivider(77777777, Util.getInternalizedMessage(KEY_WOMEN)))
@@ -845,7 +844,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                  }
                  fideApiTournamentPresenter?.loadWorldTournaments(2020, worldChampion = false, closestEvents = true, category = item, dateStartMonth = 8)
              }
-             mBuilder.setNegativeButton(R.string.dismiss_label) { dialogInterface, i -> dialogInterface.dismiss() }// todo интернационализация
+             mBuilder.setNegativeButton(R.string.dismiss_label) { dialogInterface, i -> dialogInterface.dismiss() }// интернационализацию добавить
              mBuilder.setNeutralButton(R.string.clear_all_label) { dialogInterface, which ->
                  for (i in checkedItems.indices) {
                      checkedItems[i] = false

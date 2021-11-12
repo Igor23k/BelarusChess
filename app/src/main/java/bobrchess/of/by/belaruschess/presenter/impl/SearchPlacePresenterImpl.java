@@ -75,12 +75,12 @@ public class SearchPlacePresenterImpl extends MvpPresenter<SearchPlaceContractVi
 
     @Override
     public void onServerUnavailable() {
-
+        view.hideProgress();
     }
 
     @Override
     public void onUnsuccessfulRequest(@Nullable String message) {
-
+        view.hideProgress();
     }
 
     @Override

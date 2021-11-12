@@ -196,7 +196,6 @@ class Util {
                 try {
                     return Gson().fromJson(errorMessage, ErrorDTO::class.java)
                 } catch (e: Exception) {
-                    //todo log
                 }
             }
             return ErrorDTO()
@@ -221,7 +220,7 @@ class Util {
 
         fun transformDate(format: String, dateString: String?): String? {
             return try {
-                    val bdFormat = SimpleDateFormat(format, Locale.getDefault())
+                val bdFormat = SimpleDateFormat(format, Locale.getDefault())
                 val newFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
                 val date = bdFormat.parse(dateString)
                 newFormat.format(date)

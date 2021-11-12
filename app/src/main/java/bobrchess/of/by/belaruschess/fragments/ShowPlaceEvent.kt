@@ -52,11 +52,12 @@ class ShowPlaceEvent : ShowEventFragment() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
         EventHandler.getEventToEventIndex(eventID)?.let { place ->
             if (place is EventPlace) {
-                var country = place.countryId?.minus(1)?.let { countries?.get(it)?.name }
-                if (StringUtils.isEmpty(country)) {
-                    country = resources.getString(R.string.country_absence)
+                val country = countries?.find { it.id == place.countryId}
+                var countryName = country?.name
+                if (StringUtils.isEmpty(countryName)) {
+                    countryName =  resources.getString(R.string.country_absence)
                 }
-                this.place_country_and_city.text = "${country}, ${place.city}"
+                this.place_country_and_city.text = "${countryName}, ${place.city}"
 
 
                 this.place_street_and_building.visibility = TextView.VISIBLE

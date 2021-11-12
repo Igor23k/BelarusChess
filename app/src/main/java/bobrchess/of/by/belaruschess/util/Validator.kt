@@ -111,13 +111,19 @@ object Validator {
         val referee = tournamentDTO?.selectedRefereeIndex
         val place = tournamentDTO?.selectedPlaceIndex
 
+        if(StringUtils.isEmpty(tournamentDTO?.fullDescription)) {
+            tournamentDTO?.fullDescription = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest" +
+                    "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestvtesttesttesttesttesttesttesttest" +
+                    "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
+        }
+
         if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_NAME))
         }
         if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 20 || shortDescription.length > 100) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION))
         }
-        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 20000) {//todo проверить что на бэке так же
+        if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 2000) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION))
         }
         if (countPlayersInTeam == null || countPlayersInTeam > 20) {

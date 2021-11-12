@@ -67,7 +67,6 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
 
     override fun updateUser(user: ExtendedUserDTO) {
         if (viewIsReady) {
-            //view.disableButton();
             try {
                 user.selectedCoachIndex = selectedCoachIndex - 1
                 user.selectedCountryIndex = selectedCountryIndex
@@ -78,14 +77,11 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
                 user.country = countriesIndexes[selectedCountryIndex]
                 user.rank = ranksIndexes[selectedRankIndex]
                 user.beMale = selectedGenderIndex == 0
-                //user.setCoach(null);
-                //   view.disableButton();
                 view!!.showProgress()
                 userConnection.updateUser(UserDTO(user), packageModel!!.getValue(Constants.TOKEN))
             } catch (e: IncorrectDataException) {
-                view!!.showToast(e.localizedMessage) //todo проверить что норм показывается и остальные так же плэйс и тд
+                view!!.showToast(e.localizedMessage)
                 view!!.hideProgress()
-                //    view.enableButton();
             }
         }
     }

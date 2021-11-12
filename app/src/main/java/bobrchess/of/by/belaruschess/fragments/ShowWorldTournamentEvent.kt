@@ -55,14 +55,14 @@ class ShowWorldTournamentEvent : ShowEventFragment() {
 
         this.world_tournament_name.text = worldTournament?.name
         this.world_tournament_category.text = worldTournament?.category?.name
-        this.world_tournament_date_start.text = worldTournament?.dateStart//todo выводить без времени
-        this.world_tournament_date_end.text = worldTournament?.dateEnd//todo выводить без времени
+        this.world_tournament_date_start.text = worldTournament?.dateStart?.substringBefore(" ")
+        this.world_tournament_date_end.text = worldTournament?.dateEnd?.substringBefore(" ")
         this.world_tournament_place.text = worldTournament?.place
 
         var descriptionData = getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_NUMBER_OF_PLAYERS), worldTournament?.numberOfPlayers, dataSeparator)
         descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL), worldTournament?.timeControl, dataSeparator)
         descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_DESCRIPTION), worldTournament?.timeControlDescription, dataSeparator)
-        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_DESCRIPTION), getTimeControlByType(worldTournament?.timeControlTyp), dataSeparator)//todo check it works fine
+        descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_TIME_CONTROL_DESCRIPTION), getTimeControlByType(worldTournament?.timeControlTyp), dataSeparator)
         descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_NUMBER_OF_ROUNDS), worldTournament?.numberOfPlayers, dataSeparator)
         descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_ORGANIZER), worldTournament?.organizer, dataSeparator)
         descriptionData += getConcatStringValueWithEnding(Util.getInternalizedMessage(Constants.KEY_ARBITER), worldTournament?.chiefArbiter, dataSeparator)

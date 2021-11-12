@@ -55,7 +55,8 @@ public class App extends Application {
         externalFideServerApi = retrofitExternalFideServerApi.create(ExternalFideServerApi.class);
     }
 
-    public static OkHttpClient.Builder getUnsafeOkHttpClient() {//todo should be fixed https://stackoverflow.com/questions/2642777/trusting-all-certificates-using-httpclient-over-https https://futurestud.io/tutorials/retrofit-2-how-to-trust-unsafe-ssl-certificates-self-signed-expired
+    public static OkHttpClient.Builder getUnsafeOkHttpClient() {
+        //should be fixed https://stackoverflow.com/questions/2642777/trusting-all-certificates-using-httpclient-over-https https://futurestud.io/tutorials/retrofit-2-how-to-trust-unsafe-ssl-certificates-self-signed-expired
         try {
             // Create a trust manager that does not validate certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[]{

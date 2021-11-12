@@ -19,7 +19,7 @@ class FideApiConnection {
                 if (response.isSuccessful) {
                     callBack!!.onResponse(response.body())
                 } else {
-                    //todo тут нужно блок экрана снимать и тд
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
                 }
             }
 
@@ -35,7 +35,7 @@ class FideApiConnection {
                 if (response.isSuccessful) {
                     callBack!!.onResponse(response.body())
                 } else {
-                    //todo тут нужно блок экрана снимать и тд
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
                 }
             }
 
@@ -51,7 +51,7 @@ class FideApiConnection {
                 if (response.isSuccessful) {
                     callBack!!.onResponse(response.body())
                 } else {
-                    //todo тут нужно блок экрана снимать и тд
+                    callBack!!.onFailure(Util.buildErrorDto(response.errorBody().string()))
                 }
             }
 

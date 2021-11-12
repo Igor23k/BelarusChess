@@ -331,11 +331,12 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         textColor = ContextCompat.getColor(context!!, R.color.textDark)
 
-                        var rank = user.rankId?.minus(1)?.let { ranks?.get(it)?.abbreviation }
-                        if (StringUtils.isEmpty(rank)) {
-                            rank = "-"
+                        val rank = ranks?.find { it.id == user.rankId}
+                        var rankName = rank?.name
+                        if (StringUtils.isEmpty(rankName)) {
+                            rankName = "-"
                         }
-                        holder.itemView.user_rank.text = rank
+                        holder.itemView.user_rank.text = rankName
                         holder.itemView.user_rank.setTextColor(textColor)
 
                         //set startDate
@@ -507,11 +508,12 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tv_place_event_item_name.visibility = TextView.VISIBLE
                         holder.itemView.tv_place_event_item_name.text = eventPlace.name
 
-                        var country = eventPlace.countryId?.minus(1)?.let { countries?.get(it)?.name }
-                        if (StringUtils.isEmpty(country)) {
-                            country = "-"
+                        val country = countries?.find { it.id == eventPlace.countryId}
+                        var countryName = country?.name
+                        if (StringUtils.isEmpty(countryName)) {
+                            countryName = "-"
                         }
-                        holder.itemView.place_event_item_country_value.text = country
+                        holder.itemView.place_event_item_country_value.text = countryName
                         holder.itemView.place_event_item_country_value.setTextColor(textColor)
 
                         holder.itemView.tournament_event_item_city_value.text = eventPlace.city
