@@ -77,7 +77,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                                     if (places != null) {
                                         val place = places?.find { it.id == tournamentEvent.placeId }
 
-                                        if (place != null) {
+                                        if (place != null && this.place_name!= null) {
                                             this.place_name.text = place.name
                                         }
                                     }

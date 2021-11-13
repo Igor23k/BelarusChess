@@ -37,7 +37,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
         if (!Util.isConnected(status)) {
             view?.dismissAlertDialog()
             view?.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-        } else {
+        } else {//todo
             //view?.dismissAlertDialog()
             //view?.tokenAuthorization()
         }

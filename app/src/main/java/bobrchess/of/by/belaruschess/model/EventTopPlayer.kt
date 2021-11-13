@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 
@@ -26,6 +25,9 @@ class EventTopPlayer(
             override fun Identifier(): Int = 2
         },
         Id {
+            override fun Identifier(): Int = 3
+        },
+        ExternalId {
             override fun Identifier(): Int = 4
         },
         ImageUri {
@@ -55,6 +57,7 @@ class EventTopPlayer(
     }
 
     var image: String? = null
+    var externalId: Int? = null
     var position: Int? = null
     var rating: Int? = null
     var blitzRating: Int? = null
@@ -73,6 +76,7 @@ class EventTopPlayer(
                 )}${IOHandler.tournamentDivider_properties}" +
                 getStringFromValue(Identifier.Surname, this.surname) +
                 getStringFromValue(Identifier.Id, this.id) +
+                getStringFromValue(Identifier.ExternalId, this.externalId) +
                 getStringFromValue(Identifier.ImageUri, this.image) +
                 getStringFromValue(Identifier.Position, this.position) +
                 getStringFromValue(Identifier.Rating, this.rating) +

@@ -132,13 +132,13 @@ class Constants {
 
         //val PERSONAL_SERVER_HOST = "https://popular-ape-32.loca.lt1"
         val PERSONAL_SERVER_HOST = "http://212.115.110.17:80"
-       // val PERSONAL_SERVER_HOST = "http://192.168.0.103:8080"
+        //val PERSONAL_SERVER_HOST = "http://192.168.0.103:80"
         //val PERSONAL_SERVER_HOST = "http://192.168.43.118:8080"
         val EXTERNAL_FIDE_API_SERVER_HOST = "https://app.fide.com"
         val EXTERNAL_FIDE_API_RELATIVE_PATH = ""
 
 
-        @JvmField//todo
+        @JvmField
         val REFRESH_TOKEN_DEFAULT = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZWN1cml0eUBnbWFpbC5jb20iLCJzY29wZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfUFJFTUlVTV9NRU1CRVIiLCJST0xFX1JFRlJFU0hfVE9LRU4iXSwiaXNzIjoiaHR0cDovL3N2bGFkYS5jb20iLCJpYXQiOjE0NzIzOTAwNjUsImV4cCI6MTk3MjM5MDk2NX0.q9H20pGFLegFH2LjiYBNTm7u9i3PWGZh8rTx3A3nrXnFVg5_fOiSDxYQuodkt_S9gFNjJCI8ap-dvogTgwCf5Q"
         @JvmField
         val REFRESH_TOKEN = "refreshToken"

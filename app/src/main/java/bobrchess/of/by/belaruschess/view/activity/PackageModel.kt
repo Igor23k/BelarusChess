@@ -3,11 +3,6 @@ package bobrchess.of.by.belaruschess.view.activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.SharedPreferences
-import android.support.annotation.StringRes
-
-import bobrchess.of.by.belaruschess.R
-
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -18,7 +13,6 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.REFRESH_TOKEN_DEFAU
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN
 import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN_DEFAULT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PREFERENCES
-import bobrchess.of.by.belaruschess.util.Util
 
 class PackageModel(private val context: Context) {
 
@@ -35,13 +29,13 @@ class PackageModel(private val context: Context) {
     }
 
     fun getValue(propertyName: String): String {
-        if (propertyName == TOKEN) {//todo закомментить эти 2 проверки видимо нужно
-            return TOKEN_DEFAULT
-        } else if (propertyName == REFRESH_TOKEN) {
-            return REFRESH_TOKEN_DEFAULT
-        }
+          if (propertyName == TOKEN) {//todo закомментить эти 2 проверки видимо нужно
+              return TOKEN_DEFAULT
+          } else if (propertyName == REFRESH_TOKEN) {
+              return REFRESH_TOKEN_DEFAULT
+          }
         val prefs = context.getSharedPreferences(USER_PREFERENCES, MODE_PRIVATE)
-        return prefs.getString(propertyName, null)
+        return prefs.getString(propertyName, "")
     }
 
     fun showToast(resId: Int?) {
@@ -55,11 +49,6 @@ class PackageModel(private val context: Context) {
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
     }
-
-
-
-
-
 
 
     class ConfirmationDialogFragment : DialogFragment() {

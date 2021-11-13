@@ -71,6 +71,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
         initActivityData();
     }
 
+    @Override
     public void initActivityData() {
         setContentView(R.layout.activity_authorization);
         ButterKnife.bind(this);

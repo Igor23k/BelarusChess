@@ -108,7 +108,8 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
         if (!StringUtils.isEmpty(refreshToken)) {
             tokenConnection.refreshToken(refreshToken)
         } else {
-            //enter login and pass todo
+            view?.initActivityData()
+            //enter login and pass todo upd. to check
         }
     }
 

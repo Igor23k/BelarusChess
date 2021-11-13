@@ -47,7 +47,6 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
     private var users: List<UserDTO>? = null
     private var fideApiAdapterPresenter: FideApiAdapterPresenter? = null
 
-
     constructor(context: Context, fragmentManager: FragmentManager, places: List<PlaceDTO>?, ranks: List<RankDTO>?, countries: List<CountryDTO>?, users: List<UserDTO>?) : this() {
         tournamentsResultPresenterImpl = TournamentsResultPresenterImpl()
         tournamentsResultPresenterImpl!!.attachView(this)
@@ -513,16 +512,16 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         if (StringUtils.isEmpty(countryName)) {
                             countryName = "-"
                         }
-                        holder.itemView.place_event_item_country_value.text = countryName
-                        holder.itemView.place_event_item_country_value.setTextColor(textColor)
+                      /*  holder.itemView.place_event_item_country_value.text = countryName
+                        holder.itemView.place_event_item_country_value.setTextColor(textColor)*/
 
                         holder.itemView.tournament_event_item_city_value.text = eventPlace.city
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
 
-                   /*     holder.itemView.place_event_item_capacity_value.text = eventPlace.capacity.toString()
+                        holder.itemView.place_event_item_capacity_value.text = eventPlace.capacity.toString()
                         holder.itemView.place_event_item_capacity_value.setTextColor(
                                 textColor
-                        )*/
+                        )
 
                         if (eventPlace.eventAlreadyOccurred()) {
                             holder.itemView.constraint_layout_place_item_view.background =
@@ -559,7 +558,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         //set on click listener for item
                         holder.itemView.setOnClickListener {
                             if (isClickable) {
-                                fideApiAdapterPresenter!!.loadTopPlayer(topPlayer.eventID)
+                                fideApiAdapterPresenter!!.loadTopPlayer(topPlayer.externalId!!)
                             }
                         }
 
@@ -614,11 +613,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.world_tournament_event_item_date_value.setTextColor(textColor)
 
                         //set city
-                        var city = worldTournament.city//todo to fix
-                        if (city != null && city!!.length > 12) {
-                            city = city!!.substring(0, 11)
-                        }
-                        holder.itemView.world_tournament_event_item_place_value.text = worldTournament.country + ", " + city
+                        holder.itemView.world_tournament_event_item_place_value.text = worldTournament.country + ", " + worldTournament.city
                         holder.itemView.world_tournament_event_item_place_value.setTextColor(textColor)
                     }
                 }

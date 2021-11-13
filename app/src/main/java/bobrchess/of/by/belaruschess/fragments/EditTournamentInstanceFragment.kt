@@ -1,5 +1,6 @@
 package bobrchess.of.by.belaruschess.fragments
 
+import android.R.attr.data
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -39,6 +40,8 @@ import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
+import java.io.File
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -365,6 +368,11 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         return "0"
     }
 
+    fun getPath(uri: Uri?): String {
+        val file = File(uri?.path) //create path from uri
+        val split: List<String> = file.path.split(":") //split the path.
+        return split[1] //assign it to a string(your choice).
+    }
     /**
      * onActivityResult is the result of the gallery intent, here the uri of the photo is processed
      */
@@ -376,7 +384,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
 
             val imageInputStream = context!!.contentResolver.openInputStream(data.data!!)
             val encodedImage = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageInputStream?.readBytes())
-
+            //val file = File(fullPhotoUri.path) //create path from uri
             Thread(Runnable {
                 val bitmap =
                         MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
@@ -391,7 +399,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                 }
             }).start()
 
-            tournamentImage = encodedImage
+            tournamentImage = fullPhotoUri.path
             imageWasEdited = true
         }
     }
@@ -418,7 +426,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentData.fullDescription = editFullDescription.text.toString()
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
         tournamentData.countPlayersInTeam = 1
-        tournamentData.image = tournamentImage
+        tournamentData.image = File(tournamentImage)
         tournamentData.createdBy = (context as MainActivity).getUserData()
         tournamentData.startDate = convertDateToString(eventStartDate)
         tournamentData.finishDate = convertDateToString(eventEndDate)
@@ -652,7 +660,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentEvent.shortDescription = tournamentDTO.shortDescription
         tournamentEvent.fullDescription = tournamentDTO.fullDescription
         tournamentEvent.finishDate = eventEndDate
-        tournamentEvent.imageUri = tournamentDTO.image
+        tournamentEvent.imageUri = tournamentDTO.image?.path
         tournamentEvent.refereeId = tournamentDTO.referee?.id
         tournamentEvent.createdBy = tournamentDTO.createdBy?.id
         tournamentEvent.placeId = tournamentDTO.place?.id

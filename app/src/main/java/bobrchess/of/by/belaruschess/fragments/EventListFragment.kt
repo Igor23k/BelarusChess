@@ -558,7 +558,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.fullDescription = it.fullDescription!!
             event.shortDescription = it.shortDescription!!
             event.toursCount = it.toursCount
-            event.imageUri = it.image!!
+            event.imageUri = it.image!!.path
             event.refereeId = it.referee?.id
             event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
@@ -768,7 +768,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
     private fun processTopPlayers(list: List<TopPlayerDTO>?) {
         list?.forEach {
             val fullName = buildFullName(it.name)
-            val event = EventTopPlayer(it.id!!.toInt(), EventDate.parseStringToDate(it.birthday!!, "yyy-MM-dd", Locale.GERMAN), fullName?.get(0)!!, fullName[1])
+            val event = EventTopPlayer(it.id!!.toInt() + System.currentTimeMillis().toInt(), EventDate.parseStringToDate(it.birthday!!, "yyy-MM-dd", Locale.GERMAN), fullName[0], fullName[1])
             event.position = it.position?.toInt()
             event.rating = it.rating?.toInt()
             event.blitzRating = it.blitzRating?.toInt()
@@ -776,6 +776,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.topType = it.topType
             event.country = it.country
             event.image = it.image
+            event.externalId = it.id!!.toInt()
             EventHandler.addEvent(
                     event,
                     context!!,
