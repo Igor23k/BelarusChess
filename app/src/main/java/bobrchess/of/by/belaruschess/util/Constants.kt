@@ -69,7 +69,7 @@ class Constants {
         val KEY_INCORRECT_COUNTRY_ABBREVIATION = "Eincorrect_country_abbreviation"
 
         val KEY_INCORRECT_GAME_ID = "incorrect_game_id"
-        val KEY_INCORRECT_GAME_RECORD = "incorrect_game_record"//bug на сервере тоже 20000 сделать
+        val KEY_INCORRECT_GAME_RECORD = "incorrect_game_record"
         val KEY_INCORRECT_GAME_CHESS_PLAYER = "incorrect_game_chess_player"
         val KEY_INCORRECT_COUNT_POINTS_OF_PLAYER_SMALL = "incorrect_game_points_of_player_small"
         val KEY_INCORRECT_COUNT_POINTS_OF_PLAYER_BIG = "incorrect_game_points_of_player_big"

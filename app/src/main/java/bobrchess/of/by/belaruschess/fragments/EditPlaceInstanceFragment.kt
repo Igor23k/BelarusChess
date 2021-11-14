@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.fragments
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -25,6 +26,10 @@ import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_place.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.util.*
 
 
 /**
@@ -231,8 +236,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
         //handle image/photo file choosing
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
-
-            Thread(Runnable {
+            Thread {
                 val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
                 (context as MainActivity).runOnUiThread {
                     iv_add_avatar_btn.setImageBitmap(
@@ -243,7 +247,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
                             )
                     )
                 }
-            }).start()
+            }.start()
 
             placeImageUri = fullPhotoUri.toString()
             avatarImgWasEdited = true

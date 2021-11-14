@@ -253,8 +253,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         //textColor = ContextCompat.getColor(context!!, R.color.colorAccent)
                         textColor = ContextCompat.getColor(context!!, R.color.textDark)
-                        holder.itemView.tournament_event_item_country_value.text = event.toursCount.toString()
-                        holder.itemView.tournament_event_item_country_value.setTextColor(textColor)
+                        //holder.itemView.tournament_event_item_country_value.text = event.toursCount.toString()
+                        //holder.itemView.tournament_event_item_country_value.setTextColor(textColor)
 
                         //set startDate
                         holder.itemView.tournament_event_item_date_value.text = event.getPrettyShortStringWithoutYear()

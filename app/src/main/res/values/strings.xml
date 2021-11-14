@@ -51,6 +51,7 @@
     <string name="tournamentFullDescriptionHint">Full description</string>
     <string name="tournamentToursCount">Tournament tours count</string>
     <string name="tournamentToursCountHint">Tours count</string>
+    <string name="tournamentLoadFullDescription">Click here to load full description from txt file.</string>
     <string name="locationCity">Location city</string>
     <string name="locationCityHint">City</string>
     <string name="city">City</string>
@@ -234,6 +235,7 @@
     <string name="verification_edit_date_input">The date input does not match the required date format!\nPlease use a format like: %1$s</string>
 
     <string name="avatar_btn_clicked_menu_item_select_photo">Choose from gallery</string>
+    <string name="avatar_btn_clicked_menu_item_select_txt">Select text file</string>
     <!--<string name="avatar_btn_clicked_menu_item_take_new_photo">Take new photo</string>-->
     <string name="avatar_btn_clicked_menu_item_delete_photo">Remove photo</string>
 

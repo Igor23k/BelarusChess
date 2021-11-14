@@ -11,6 +11,7 @@ import android.support.annotation.StringRes
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.Snackbar
+import android.text.InputFilter
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
@@ -33,6 +34,7 @@ import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     @JvmField
@@ -82,6 +84,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     @BindView(R.id.i_calendar_birthday)
     var calendarImage: ImageView? = null
 
+    private val blockCharacterSet = "~#^|$%&*!?@_-+()/\\\"';:,.1234567890[]{}^<>"
     private var progressDialog: ProgressDialog? = null
     private var view: ScrollView? = null
     private var genderSpinner: Spinner? = null
@@ -94,6 +97,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
         initComponents()
+        blockCharacters()
         ButterKnife.bind(this)
         view = findViewById(R.id.scrollViewRegistration)
         presenter.attachViewComponent(findViewById(R.id.scrollViewRegistration))
@@ -111,6 +115,12 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         countrySpinner = findViewById(R.id.s_countrySpinner)
         countrySpinner!!.setOnItemSelectedListener(CountryItemSelectedListener())
         presenter.setPackageModel(PackageModel(this))
+    }
+
+    private fun blockCharacters() {
+        nameText?.filters = arrayOf(filter)
+        surnameText?.filters = arrayOf(filter)
+        patronymicText?.filters = arrayOf(filter)
     }
 
     private fun initComponents() {
@@ -168,6 +178,12 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
 
             dialog.show()
         }
+    }
+
+    private val filter = InputFilter { source, start, end, dest, dstart, dend ->
+        if (source != null && blockCharacterSet.contains("" + source)) {
+            ""
+        } else null
     }
 
     private fun showStartDatePickerDialog() {

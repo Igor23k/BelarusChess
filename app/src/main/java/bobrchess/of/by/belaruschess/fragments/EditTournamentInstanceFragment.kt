@@ -1,10 +1,10 @@
 package bobrchess.of.by.belaruschess.fragments
 
-import android.R.attr.data
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -40,8 +40,10 @@ import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
+import java.io.BufferedReader
 import java.io.File
-import java.net.URI
+import java.io.IOException
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -84,6 +86,11 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
      * REQUEST_IMAGE_GET is an intent code used for open the photo gallery
      */
     private val REQUEST_IMAGE_GET = 1
+
+    /**
+     * REQUEST_TXT_GET is an intent code used for open the photo gallery
+     */
+    private val REQUEST_TXT_GET = 2
 
     /**
      * editName is the TextEdit used for editing/ showing the forename of the birthday
@@ -349,8 +356,40 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
 
             dialog.show()
         }
+
+        //load txt from gallery
+        this.tournament_load_full_description_text.setOnClickListener {
+            val bottomSheetDialog =
+                    layoutInflater.inflate(R.layout.fragment_bottom_sheet_txt_dialog, null)
+
+            val dialog = BottomSheetDialog(context!!)
+            dialog.setContentView(bottomSheetDialog)
+
+            dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_choose).apply {
+                this?.setOnClickListener {
+                    dialog.dismiss()
+                    getTxtFromFiles()
+                }
+            }
+
+            dialog.show()
+        }
     }
 
+    @Throws(IOException::class)
+    fun readTextFromUri(context: Context, uri: Uri): String {
+        val stringBuilder = StringBuilder()
+        context.contentResolver.openInputStream(uri).use { inputStream ->
+            BufferedReader(
+                    InputStreamReader(Objects.requireNonNull(inputStream))).use { reader ->
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    stringBuilder.append(line)
+                }
+            }
+        }
+        return stringBuilder.toString()
+    }
     /**
      * getImageFromFiles opens an intent to request a photo from the gallery
      * This function is called after the user clicks on the iv_add_avatar_btn
@@ -368,11 +407,23 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         return "0"
     }
 
-    fun getPath(uri: Uri?): String {
-        val file = File(uri?.path) //create path from uri
-        val split: List<String> = file.path.split(":") //split the path.
-        return split[1] //assign it to a string(your choice).
+    /**
+     * getImageFromFiles opens an intent to request a photo from the gallery
+     * This function is called after the user clicks on the iv_add_avatar_btn
+     */
+    private fun getTxtFromFiles(): String {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            type = "*/*"
+        }
+        intent.addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+        )
+        if (intent.resolveActivity(context!!.packageManager) != null) {
+            startActivityForResult(intent, REQUEST_TXT_GET)
+        }
+        return "0"
     }
+
     /**
      * onActivityResult is the result of the gallery intent, here the uri of the photo is processed
      */
@@ -381,7 +432,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         //handle image/photo file choosing
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
-
             val imageInputStream = context!!.contentResolver.openInputStream(data.data!!)
             val encodedImage = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageInputStream?.readBytes())
             //val file = File(fullPhotoUri.path) //create path from uri
@@ -401,6 +451,10 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
 
             tournamentImage = fullPhotoUri.path
             imageWasEdited = true
+        } else if (requestCode == REQUEST_TXT_GET && resultCode == Activity.RESULT_OK) {
+            val fullPhotoUri: Uri = data!!.data!!
+            val text = readTextFromUri(this.context!!, fullPhotoUri)
+            editFullDescription.setText(text)
         }
     }
 
@@ -426,7 +480,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentData.fullDescription = editFullDescription.text.toString()
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
         tournamentData.countPlayersInTeam = 1
-        tournamentData.image = File(tournamentImage)
+        tournamentData.image = tournamentImage//File(tournamentImage)
         tournamentData.createdBy = (context as MainActivity).getUserData()
         tournamentData.startDate = convertDateToString(eventStartDate)
         tournamentData.finishDate = convertDateToString(eventEndDate)
@@ -660,7 +714,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentEvent.shortDescription = tournamentDTO.shortDescription
         tournamentEvent.fullDescription = tournamentDTO.fullDescription
         tournamentEvent.finishDate = eventEndDate
-        tournamentEvent.imageUri = tournamentDTO.image?.path
+        tournamentEvent.imageUri = tournamentDTO.image//?.path
         tournamentEvent.refereeId = tournamentDTO.referee?.id
         tournamentEvent.createdBy = tournamentDTO.createdBy?.id
         tournamentEvent.placeId = tournamentDTO.place?.id

@@ -45,6 +45,7 @@
     <string name="tournamentFullDescriptionHint">Полное описание</string>
     <string name="tournamentToursCount">Количество туров в турнире</string>
     <string name="tournamentToursCountHint">Количество туров</string>
+    <string name="tournamentLoadFullDescription">Кликните здесь, чтобы загрузить полное описание из текстового файла.</string>
     <string name="userSurname">Фамилия</string>
     <string name="userPatronymic">Отчество</string>
     <string name="tournamentName">Название турнира</string>
@@ -235,6 +236,7 @@
     <string name="btn_user_data_save">Сохранить данные</string>
     <string name="btn_location_delete">Удалить место проведения</string>
     <string name="avatar_btn_clicked_menu_item_select_photo">Галерея</string>
+    <string name="avatar_btn_clicked_menu_item_select_txt">Выбрать текстовый файл</string>
     <!--<string name="avatar_btn_clicked_menu_item_take_new_photo">Take new photo</string>-->
     <string name="avatar_btn_clicked_menu_item_delete_photo">Удалить фото</string>
     <string name="verification_edit_date_input">Введенная дата не соответствует требуемому формату даты!\nПожалуйста, используйте формат как: %1$s</string>
