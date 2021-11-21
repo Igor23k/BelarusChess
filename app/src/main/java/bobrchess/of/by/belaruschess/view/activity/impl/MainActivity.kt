@@ -295,10 +295,26 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         //    кнопку для всех пофиксить
     }
 
+    fun convertDateToString(date: Date?): String? {
+        if (date != null) {
+            var pattern = "dd/MM/yyyy"
+            var df = SimpleDateFormat(pattern)
+            var dateString = df.format(date)
+            return dateString
+        }
+        return null
+    }
+
+    private fun transformSecondsToDate(date: String): String? {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = date.toLong()
+        return convertDateToString(calendar.time)
+    }
+
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         IOHandler.clearSharedPrefEventData()
         tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, "dd/MM/yyyy", Locale.GERMAN), it.name!!)
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformSecondsToDate(it.startDate!!), "dd/MM/yyyy", Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
@@ -308,7 +324,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             event.refereeId = it.referee?.id
             event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
-            event.finishDate = EventDate.parseStringToDate(it.finishDate!!, "dd/MM/yyyy", Locale.GERMAN)
+            event.finishDate = EventDate.parseStringToDate(transformSecondsToDate(it.finishDate!!), "dd/MM/yyyy", Locale.GERMAN)
             EventHandler.addEvent(
                     event,
                     this,

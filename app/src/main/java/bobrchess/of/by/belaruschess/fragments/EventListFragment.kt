@@ -46,6 +46,7 @@ import bobrchess.of.by.belaruschess.view.activity.impl.AuthorizationActivity
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -549,10 +550,26 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         (context as MainActivity).toolbar.title = getString(resId)
     }
 
+    private fun transformSecondsToDate(date: String): String? {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = date.toLong()
+        return convertDateToString(calendar.time)
+    }
+
+    fun convertDateToString(date: Date?): String? {
+        if (date != null) {
+            var pattern = "dd/MM/yyyy"
+            var df = SimpleDateFormat(pattern)
+            var dateString = df.format(date)
+            return dateString
+        }
+        return null
+    }
+
     override fun showTournaments(tournaments: List<TournamentDTO>) {
         updateToolbarTitle()
         tournaments.forEach {
-            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(it.startDate!!, "dd/MM/yyyy", Locale.GERMAN), it.name!!)
+            val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformSecondsToDate(it.startDate!!), "dd/MM/yyyy", Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription!!
@@ -562,7 +579,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.refereeId = it.referee?.id
             event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
-            event.finishDate = EventDate.parseStringToDate(it.finishDate!!, "dd/MM/yyyy", Locale.GERMAN)
+            event.finishDate = EventDate.parseStringToDate(transformSecondsToDate(it.finishDate!!), "dd/MM/yyyy", Locale.GERMAN)
             EventHandler.addEvent(
                     event,
                     context!!,

@@ -102,12 +102,15 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                             )
                         }
 
-                        val date: String
-                        date = tournamentEvent.dateToPrettyString(DateFormat.FULL)
+                      /*  val date: String111
+                        date = tournamentEvent.dateToPrettyString(DateFormat.FULL)*/
 
                         tournament_full_description.text = tournamentEvent.fullDescription
 
-                        tournament_date.text = date
+                   //     tournament_date.text = date
+
+                        tournament_start_date.text =  resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament?.startDate, DateFormat.FULL)
+                        tournament_end_date.text = resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(tournament?.finishDate, DateFormat.FULL)
 
                         if (places != null) {
                             val place = places?.find { it.id == tournamentEvent.placeId }

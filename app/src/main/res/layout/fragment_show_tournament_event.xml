@@ -52,7 +52,7 @@
             app:layout_constraintTop_toBottomOf="@+id/place_name"/>
 
         <TextView
-            android:id="@+id/tournament_date"
+            android:id="@+id/tournament_start_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -64,6 +64,18 @@
             app:layout_constraintTop_toBottomOf="@+id/tournament_location"/>
 
         <TextView
+            android:id="@+id/tournament_end_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tournament_start_date"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_start_date"/>
+
+        <TextView
             android:id="@+id/tournament_short_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -72,8 +84,8 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tournament_date"
-            app:layout_constraintTop_toBottomOf="@+id/tournament_date"/>
+            app:layout_constraintStart_toStartOf="@+id/tournament_end_date"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_end_date"/>
 
         <TextView
             android:id="@+id/tournament_referee"

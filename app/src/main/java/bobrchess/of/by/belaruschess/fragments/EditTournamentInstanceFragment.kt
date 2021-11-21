@@ -44,7 +44,9 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -384,7 +386,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                     InputStreamReader(Objects.requireNonNull(inputStream))).use { reader ->
                 var line: String?
                 while (reader.readLine().also { line = it } != null) {
-                    stringBuilder.append(line)
+                    stringBuilder.append(line?.plus("\n"))
                 }
             }
         }
@@ -482,8 +484,8 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentData.countPlayersInTeam = 1
         tournamentData.image = tournamentImage//File(tournamentImage)
         tournamentData.createdBy = (context as MainActivity).getUserData()
-        tournamentData.startDate = convertDateToString(eventStartDate)
-        tournamentData.finishDate = convertDateToString(eventEndDate)
+        tournamentData.startDate = eventStartDate?.time.toString()
+        tournamentData.finishDate = eventEndDate?.time.toString()
         return tournamentData
     }
 
@@ -720,7 +722,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentEvent.placeId = tournamentDTO.place?.id
         tournamentEvent.toursCount = tournamentDTO.toursCount
 
-        //new birthday entry, just add a new entry in map
+        //new tournament entry, just add a new entry in map
         if (!isEditedTournament) {
             EventHandler.addEvent(tournamentEvent, this.context!!, true)
             Snackbar.make(
@@ -761,20 +763,20 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                 refereeId = tournament.refereeId!!.toInt()
                 placeId = tournament.placeId!!
                 this.eventStartDate = tournament.eventDate
-                if (this.eventStartDate!!.after(Calendar.getInstance().time)) {
+               /* if (this.eventStartDate!!.after(Calendar.getInstance().time)) {
                     val cal = Calendar.getInstance()
                     cal.time = this.eventStartDate
                     cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
                     this.eventStartDate = cal.time
-                }
+                }*/
 
                 this.eventEndDate = tournament.finishDate
-                if (this.eventEndDate!!.after(Calendar.getInstance().time)) {
+                /*if (this.eventEndDate!!.after(Calendar.getInstance().time)) {
                     val cal = Calendar.getInstance()
                     cal.time = this.eventEndDate
                     cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
                     this.eventEndDate = cal.time
-                }
+                }*/
 
 
                 // the value which should be assigned to the startDate edit box

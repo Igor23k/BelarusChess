@@ -6,10 +6,6 @@ import com.arellomobile.mvp.MvpView
 
 import bobrchess.of.by.belaruschess.dto.UserDTO
 
-/**
- * Created by Igor on 22.04.2018.
- */
-
 interface AuthorizationContractView : MvpView, BaseContractView, ButtonContractView {
     fun unsuccessfulTokenAuth()
     fun showIncorrectEmailText()

@@ -412,7 +412,12 @@ open class EventDate : Comparable<EventDate> {
                 dateString: String,
                 locale: Locale = Locale.getDefault()
         ): Date {
-            return parseStringToDate(dateString, "dd/MM/yyyy")
+            var newPattern = pattern
+
+            if (newPattern.isEmpty()) {
+                newPattern = "dd/MM/yyyy"
+            }
+            return parseStringToDate(dateString, newPattern)
         }
 
         const val Name: String = "EventDate"
