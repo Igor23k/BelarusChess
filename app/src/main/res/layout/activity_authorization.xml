@@ -47,7 +47,6 @@
                 android:hint="@string/password"/>
         </android.support.design.widget.TextInputLayout>
 
-
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/b_authorization"
             android:layout_width="fill_parent"
