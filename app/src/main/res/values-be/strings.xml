@@ -40,6 +40,7 @@
     <string name="passwordIfNeeded">Абнавіце пароль, калі неабходна</string>
     <string name="login">Увайсці</string>
     <string name="noAccount">Яшчэ няма ўліковага запісу? Стварыць!</string>
+    <string name="forgotPassword">Забыліся пароль?</string>
     <string name="email">Пошта</string>
     <string name="userName">Імя</string>
     <string name="tournamentFullDescriptionHint">Поўнае апісанне</string>

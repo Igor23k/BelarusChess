@@ -76,7 +76,7 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    private fun validateEmail(email: String?) {
+    fun validateEmail(email: String?) {
         if (StringUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_EMAIL))
         }

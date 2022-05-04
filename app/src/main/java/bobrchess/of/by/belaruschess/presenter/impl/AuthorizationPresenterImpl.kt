@@ -112,7 +112,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
         }
     }
 
-    public fun setPackageModel(packageModel: PackageModel) {
+    fun setPackageModel(packageModel: PackageModel) {
         this.packageModel = packageModel
     }
 

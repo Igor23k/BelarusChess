@@ -131,8 +131,8 @@ class Constants {
 
 
         //val PERSONAL_SERVER_HOST = "https://popular-ape-32.loca.lt1"
-        val PERSONAL_SERVER_HOST = "http://212.115.110.17:80"
-        //val PERSONAL_SERVER_HOST = "http://192.168.0.103:80"
+        //val PERSONAL_SERVER_HOST = "http://212.115.110.17:80"
+        val PERSONAL_SERVER_HOST = "http://192.168.219.14:80"
         //val PERSONAL_SERVER_HOST = "http://192.168.43.118:8080"
         val EXTERNAL_FIDE_API_SERVER_HOST = "https://app.fide.com"
         val EXTERNAL_FIDE_API_RELATIVE_PATH = ""

@@ -41,6 +41,7 @@
     <string name="passwordIfNeeded">Update your password if necessary</string>
     <string name="login">Login</string>
     <string name="noAccount">No account yet? Create one!</string>
+    <string name="forgotPassword">Forgot password?</string>
     <string name="email">Email</string>
     <string name="userName">Name</string>
     <string name="tournamentName">Tournament name</string>

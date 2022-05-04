@@ -89,6 +89,9 @@ dependencies {
     implementation group: 'xerces', name: 'xercesImpl', version: '2.12.0'
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.10'
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
+
+    // https://mvnrepository.com/artifact/javax.mail/mail
+    implementation group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
 }
 repositories {
     jcenter()
