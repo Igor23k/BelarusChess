@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -47,7 +46,9 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     @BindView(R.id.t_link_registration)
     TextView registrationLink;
 
-    private ScrollView view;
+    @BindView(R.id.t_link_password_reset)
+    TextView passwordResetLink;
+
     private ProgressDialog progressDialog;
     private boolean tokenAuthFailed = false;
 
@@ -87,9 +88,15 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
             authorization();
         });
 
-
         registrationLink.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+            startActivityForResult(intent, Util.Companion.getAUTHORIZATION_REQUEST());
+            finish();
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        });
+
+        passwordResetLink.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PasswordResetActivity.class);
             startActivityForResult(intent, Util.Companion.getAUTHORIZATION_REQUEST());
             finish();
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);

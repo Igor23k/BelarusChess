@@ -34,10 +34,6 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     private val countriesIndexes: MutableMap<Int, CountryDTO?> = HashMap()
     private val coachesIndexes: MutableMap<Int, String> = HashMap()
 
-    @JvmField
-    @BindView(R.id.t_link_registration)
-    var registrationLink: TextView? = null
-
     override fun loadUserById(id: Int) {
         view!!.showProgress()
         userConnection.getUserById(packageModel!!.getValue(Constants.TOKEN), id)

@@ -6,27 +6,29 @@ import bobrchess.of.by.belaruschess.dto.ErrorDTO
 import bobrchess.of.by.belaruschess.dto.UserContextDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
+import bobrchess.of.by.belaruschess.network.connection.emailSender.EmailSender
 import bobrchess.of.by.belaruschess.network.connection.internal.AuthorizationConnection
-import bobrchess.of.by.belaruschess.presenter.AuthorizationPresenter
+import bobrchess.of.by.belaruschess.presenter.PasswordResetPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAuthorization
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Validator
-import bobrchess.of.by.belaruschess.view.activity.AuthorizationContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
+import bobrchess.of.by.belaruschess.view.activity.PasswordResetContractView
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import org.springframework.util.StringUtils
 
 @InjectViewState
-class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBackAuthorization, AuthorizationPresenter {
+class PasswordResetPresenterImpl : MvpPresenter<PasswordResetContractView>(), CallBackAuthorization, PasswordResetPresenter {
 
-    private var view: AuthorizationContractView? = null
+    private var view: PasswordResetContractView? = null
     private var viewComponent: View? = null
     private var authorizationConnection: AuthorizationConnection = AuthorizationConnection()
     private var viewIsReady: Boolean? = false
     private var connectivityStatus: Int? = null
     private var packageModel: PackageModel? = null
+    private val tlsSender: EmailSender = EmailSender("bobrchess@gmail.coom", "ygauettyhijlyxud")
 
     init {
         authorizationConnection.attachPresenter(this)
@@ -116,20 +118,23 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
         this.packageModel = packageModel
     }
 
-    override fun authorization(userDTO: UserDTO) {
+    fun reset(userDTO: UserDTO) {
         view!!.disableButton()
         try {
-            Validator.validateAuthUserData(userDTO)
-            userDTO.password = Util.getEncodedPassword(userDTO.password!!)
+            Validator.validateEmail(userDTO.email)
             view!!.showProgress()
-            authorizationConnection.authorization(userDTO)
+            tlsSender.send("This is Subject", "TLS: This is test!", "support@devcolibri.com", userDTO.email)
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
             view!!.showSnackBar(viewComponent!!, e.localizedMessage)
         }
     }
 
-    override fun attachView(activity: AuthorizationContractView) {
+    override fun authorization(userDTO: UserDTO) {
+        TODO("Not yet implemented")
+    }
+
+    override fun attachView(activity: PasswordResetContractView) {
         view = activity
     }
 
