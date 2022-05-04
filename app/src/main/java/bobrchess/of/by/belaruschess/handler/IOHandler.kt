@@ -11,7 +11,6 @@ import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.Divider
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
-import bobrchess.of.by.belaruschess.util.Constants
 import java.io.File
 import java.util.*
 
@@ -309,7 +308,7 @@ object IOHandler {
                         var forename = "-"
                         var startDate = "-"
                         var finishDate = "-"
-                        var avatarImageURI: String? = null
+                        var avatarImageURI: ByteArray? = null
                         var shortDescription: String? = null
                         var toursCount: String? = null
                         var fullDescription: String? = null
@@ -343,7 +342,7 @@ object IOHandler {
                                 EventTournament.Identifier.FullDescription.toString() -> {
                                     fullDescription = property[1]
                                 }
-                                EventTournament.Identifier.AvatarUri.toString() -> {
+                                EventTournament.Identifier.Image.toString() -> {
                                     avatarImageURI = property[1]
                                 }
                                 EventTournament.Identifier.Referee.toString() -> {
@@ -369,7 +368,7 @@ object IOHandler {
                                 forename
                             )
                         if (shortDescription != null) tournament.shortDescription = shortDescription
-                        if (avatarImageURI != null) tournament.imageUri = avatarImageURI
+                        if (avatarImageURI != null) tournament.image = avatarImageURI
                         if (fullDescription != null) tournament.fullDescription = fullDescription
                         if (toursCount != null) tournament.toursCount = toursCount.toInt()
                         if (refereeId != null) tournament.refereeId = refereeId.toLong()

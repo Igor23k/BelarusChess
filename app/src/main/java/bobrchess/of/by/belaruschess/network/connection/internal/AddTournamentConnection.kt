@@ -7,14 +7,11 @@ import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddTournament
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.buildOnFailureResponse
+import bobrchess.of.by.belaruschess.util.Util.Companion.getMultipartImage
 import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-/**
- * Created by Igor on 11.04.2018.
- */
 
 class AddTournamentConnection {
 
@@ -40,8 +37,8 @@ class AddTournamentConnection {
         })
     }
 
-    fun addTournament(tournamentDTO: TournamentDTO, authorizationHeader: String) {
-        App.getPersonalServerApi().addTournament(authorizationHeader, tournamentDTO).enqueue(object : Callback<TournamentDTO> {
+    fun addTournament(tournamentDTO: TournamentDTO, tournamentImageUri: String, authorizationHeader: String) {
+        App.getPersonalServerApi().addTournament(authorizationHeader, tournamentDTO, getMultipartImage(tournamentImageUri)).enqueue(object : Callback<TournamentDTO> {
             override fun onResponse(call: Call<TournamentDTO>, response: Response<TournamentDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

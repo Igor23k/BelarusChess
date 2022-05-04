@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 
@@ -70,7 +69,7 @@ class EventUser(
     }
 
     var patronymic: String? = null
-    var imageUri: String? = null
+    var image: ByteArray? = null
     var rating: Int? = null
     var rankId: Int? = null
     var countryId: Int? = null
@@ -93,7 +92,7 @@ class EventUser(
                 getStringFromValue(Identifier.Surname, this.surname) +
                 getStringFromValue(Identifier.Patronymic, this.patronymic) +
                 getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.ImageUri, this.imageUri) +
+                getStringFromValue(Identifier.ImageUri, this.image) +
                 getStringFromValue(Identifier.Rating, this.rating) +
                 getStringFromValue(Identifier.RankId, this.rankId) +
                 getStringFromValue(Identifier.CountryId, this.countryId) +

@@ -14,9 +14,13 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.EMPTY_STRING
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import org.springframework.util.StringUtils
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,15 +31,15 @@ class Util {
         var TYPE_MOBILE = 2
         var TYPE_NOT_CONNECTED = 0
 
-        private var userImage: String? = null
+       // private var userImage: String? = null
 
-        fun setUserImage(image: String?) {
+ /*       fun setUserImage(image: String?) {
             this.userImage = image
-        }
+        }*/
 
-        fun getUserImage(): String? {
+        /*fun getUserImage(): String? {
             return userImage
-        }
+        }*/
 
         fun getConnectivityStatus(context: Context): Int {
             val cm = context
@@ -229,6 +233,27 @@ class Util {
             }
         }
 
+        fun getBitMapByByteArr(image: ByteArray?): Bitmap? {
+            if (image != null) {
+                return BitmapFactory.decodeByteArray(image, 0, image.size)
+            }
+            return null
+        }
+
+        fun getScaledBitMapByByteArr(image: ByteArray?, resources: Resources): Bitmap? {
+            if (image != null) {
+                val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
+                if (bitmap != null) {
+                    return BitmapHandler.getCircularBitmap(
+                            BitmapHandler.getScaledBitmap(
+                                    bitmap
+                            ), resources
+                    )
+                }
+            }
+            return null
+        }
+
         fun getBitMapByBase64(decodedImage: String?): Bitmap? {
             if (!StringUtils.isEmpty(decodedImage)) {
                 val strings = decodedImage!!.split(",").toTypedArray()
@@ -241,8 +266,8 @@ class Util {
             return null
         }
 
-        fun getScaledBitMapByBase64(decodedImage: String?, resources: Resources): Bitmap? {
-            var bitmap = getBitMapByBase64(decodedImage)
+       /* fun getScaledBitMapByBase64(byteArr: ByteArray, resources: Resources): Bitmap? {
+            var bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.size)
             if (bitmap != null) {
                 bitmap = BitmapHandler.getCircularBitmap(
                         BitmapHandler.getScaledBitmap(
@@ -251,6 +276,10 @@ class Util {
                 )
             }
             return bitmap
+        }*/
+
+        fun getMultipartImage(image: String?): MultipartBody.Part {
+            return MultipartBody.Part.createFormData("file", File(image).name, RequestBody.create(MediaType.parse("image/*"), File(image)))
         }
 
         /**

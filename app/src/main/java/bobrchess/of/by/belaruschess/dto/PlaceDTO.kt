@@ -13,7 +13,7 @@ open class PlaceDTO : Serializable {
     var country: CountryDTO? = null
     var approved: Boolean = false
     var createdBy: UserDTO? = null
-    var image: String? = null
+    var image: ByteArray? = null
 
     constructor(placeDTO: PlaceDTO) {
         this.id = placeDTO.id
@@ -29,7 +29,7 @@ open class PlaceDTO : Serializable {
     }
 
     constructor(id: Int?, name: String, city: String, street: String, building: String, capacity: Int?,
-                country: CountryDTO, approved: Boolean, createdBy: UserDTO, image: String) {
+                country: CountryDTO, approved: Boolean, createdBy: UserDTO, image: ByteArray) {
         this.id = id
         this.name = name
         this.city = city

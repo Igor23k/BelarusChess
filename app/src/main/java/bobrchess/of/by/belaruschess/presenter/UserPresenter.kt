@@ -8,7 +8,7 @@ import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 
 interface UserPresenter : BasePresenter {
-    fun updateUser(user: ExtendedUserDTO)
+    fun updateUser(user: ExtendedUserDTO, userImageUri: String?)
     fun loadUserById(id: Int)
     fun loadReferees()
     fun loadCoaches()

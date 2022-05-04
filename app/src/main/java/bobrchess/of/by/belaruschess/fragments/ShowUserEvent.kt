@@ -26,9 +26,6 @@ import java.util.*
 
 class ShowUserEvent : ShowEventFragment() {
 
-    /*private lateinit var recyclerView: RecyclerView
-    private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var viewAdapter: EventAdapter*/
 
     private var ranks: List<RankDTO>? = null
     private var places: List<PlaceDTO>? = null
@@ -136,7 +133,7 @@ class ShowUserEvent : ShowEventFragment() {
                 })
 
                 //only set expanded title color to white, when background is not white, background is white when no avatar image is set
-                if (userEvent.imageUri != null) {
+                if (userEvent.image != null) {
                     (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
                             ContextCompat.getColor(
                                     context!!,
@@ -160,7 +157,7 @@ class ShowUserEvent : ShowEventFragment() {
                 }*/
 
                 user_birthday.text = resources.getString(R.string.person_show_date, date)
-                updateAvatarImage(userEvent.imageUri)
+                updateAvatarImage(userEvent.image)
             }
         }
     }
@@ -170,9 +167,9 @@ class ShowUserEvent : ShowEventFragment() {
         super.onDetach()
     }
 
-    private fun updateAvatarImage(image: String?) {
+    private fun updateAvatarImage(image: ByteArray?) {
         if (this.iv_avatar != null && this.eventID >= 0 && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = Util.getBitMapByBase64(image)
+            val bitmap = Util.getBitMapByByteArr(image)
             setBitmapToToolbar(bitmap)
         }
     }
@@ -232,7 +229,7 @@ class ShowUserEvent : ShowEventFragment() {
         }
     }
 
-    /*private fun showTournamentsResults() {//вернуть, когда будет участие в турнирах реализовано
+    /*private fun showTournamentsResults() {//todo вернуть, когда будет участие в турнирах реализовано
         //IOHandler.clearSharedPrefEventData()
         //EventHandler.clearData()
         var id = 0

@@ -19,7 +19,8 @@ import bobrchess.of.by.belaruschess.model.*
 import bobrchess.of.by.belaruschess.presenter.FideApiAdapterPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.FideApiAdapterPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.TournamentsResultPresenterImpl
-import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByBase64
+import bobrchess.of.by.belaruschess.util.Util.Companion.getBitMapByByteArr
+import bobrchess.of.by.belaruschess.util.Util.Companion.getScaledBitMapByByteArr
 import bobrchess.of.by.belaruschess.view.activity.TournamentsResultContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import com.google.gson.GsonBuilder
@@ -261,27 +262,27 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tournament_event_item_date_value.setTextColor(textColor)
 
 
-                        val place = places?.find { it.id == event.placeId}
-                        var city =  place?.city
+                        val place = places?.find { it.id == event.placeId }
+                        var city = place?.city
                         if (StringUtils.isEmpty(city)) {
                             city = "-"
                         }
                         holder.itemView.tournament_event_item_city_value.text = city
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
 
-                      /*  if (event.eventAlreadyOccurred()) {
-                            holder.itemView.constraint_layout_tournament_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item_dark
-                                    )
-                        } else {*/
-                            holder.itemView.constraint_layout_tournament_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item
-                                    )
-                      //  }
+                        /*  if (event.eventAlreadyOccurred()) {
+                              holder.itemView.constraint_layout_tournament_item_view.background =
+                                      ContextCompat.getDrawable(
+                                              context!!,
+                                              R.drawable.ripple_recycler_view_item_dark
+                                      )
+                          } else {*/
+                        holder.itemView.constraint_layout_tournament_item_view.background =
+                                ContextCompat.getDrawable(
+                                        context!!,
+                                        R.drawable.ripple_recycler_view_item
+                                )
+                        //  }
 
                         //set fullDescription TextView visible
                         holder.itemView.tournament_event_item_name.visibility =
@@ -291,12 +292,12 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         //set fullDescription TextView text
                         holder.itemView.tournament_event_item_name.text = event.name
 
-                        val image = event.imageUri
+                        val image = event.image
 
                         //when context is MainActivity
                         if (context is MainActivity) {
                             if (image != null) {
-                                val bitmap = getScaledBitMapByBase64(image, context!!.resources)
+                                val bitmap = getScaledBitMapByByteArr(image, context!!.resources)
                                 holder.itemView.iv_tournament_event_item_image.setImageBitmap(
                                         bitmap
                                 )
@@ -330,7 +331,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         textColor = ContextCompat.getColor(context!!, R.color.textDark)
 
-                        val rank = ranks?.find { it.id == user.rankId}
+                        val rank = ranks?.find { it.id == user.rankId }
                         var rankName = rank?.name
                         if (StringUtils.isEmpty(rankName)) {
                             rankName = "-"
@@ -352,19 +353,19 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 textColor
                         )
 
-                       // if (user.eventAlreadyOccurred()) {
-                          /*  holder.itemView.constraint_layout_tournament_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item_dark
-                                    )
-                        } else {*/
-                            holder.itemView.constraint_layout_tournament_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item
-                                    )
-                       // }
+                        // if (user.eventAlreadyOccurred()) {
+                        /*  holder.itemView.constraint_layout_tournament_item_view.background =
+                                  ContextCompat.getDrawable(
+                                          context!!,
+                                          R.drawable.ripple_recycler_view_item_dark
+                                  )
+                      } else {*/
+                        holder.itemView.constraint_layout_tournament_item_view.background =
+                                ContextCompat.getDrawable(
+                                        context!!,
+                                        R.drawable.ripple_recycler_view_item
+                                )
+                        // }
 
                         //set forename and shortDescription invisible
                         holder.itemView.tv_birthday_event_item_forename.visibility =
@@ -378,13 +379,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         holder.itemView.user_event_item_name.text = user.name + " " + user.surname
 
-                        val image = user.imageUri
+                        val image = user.image
 
                         //when context is MainActivity
                         if (context is MainActivity) {
                             if (image != null) {
                                 holder.itemView.iv_user_event_item_image.setImageBitmap(
-                                        getScaledBitMapByBase64(image, context!!.resources)
+                                        getBitMapByByteArr(image)
                                 )
                             } else {
                                 holder.itemView.iv_user_event_item_image.setImageResource(R.drawable.ic_birthday_person)
@@ -436,19 +437,19 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 textColor
                         )
 
-                       /* if (eventTournamentResult.eventAlreadyOccurred()) {
-                            holder.itemView.constraint_layout_tournament_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item_dark
-                                    )
-                        } else {*/
-                            holder.itemView.constraint_layout_tournament_item_view.background =
-                                    ContextCompat.getDrawable(
-                                            context!!,
-                                            R.drawable.ripple_recycler_view_item
-                                    )
-                    //    }
+                        /* if (eventTournamentResult.eventAlreadyOccurred()) {
+                             holder.itemView.constraint_layout_tournament_item_view.background =
+                                     ContextCompat.getDrawable(
+                                             context!!,
+                                             R.drawable.ripple_recycler_view_item_dark
+                                     )
+                         } else {*/
+                        holder.itemView.constraint_layout_tournament_item_view.background =
+                                ContextCompat.getDrawable(
+                                        context!!,
+                                        R.drawable.ripple_recycler_view_item
+                                )
+                        //    }
 
                         holder.itemView.tournament_result_name.visibility = TextView.VISIBLE
                         holder.itemView.tournament_result_name.text = eventTournamentResult.name
@@ -457,14 +458,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tournament_result_position.visibility = TextView.VISIBLE
                         holder.itemView.tournament_result_position.text = eventTournamentResult.position.toString()
 
-                        val image = eventTournamentResult.imageUri
+                        val image = eventTournamentResult.image
 
                         //when context is MainActivity
                         if (context is MainActivity) {
                             if (image != null) {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
-                                        getScaledBitMapByBase64(image, context!!.resources)
-
+                                        getBitMapByByteArr(image)
                                 )
                             } else {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)
@@ -507,13 +507,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tv_place_event_item_name.visibility = TextView.VISIBLE
                         holder.itemView.tv_place_event_item_name.text = eventPlace.name
 
-                        val country = countries?.find { it.id == eventPlace.countryId}
-                        var countryName = country?.name
-                        if (StringUtils.isEmpty(countryName)) {
-                            countryName = "-"
-                        }
-                      /*  holder.itemView.place_event_item_country_value.text = countryName
-                        holder.itemView.place_event_item_country_value.setTextColor(textColor)*/
+                        /*    val country = countries?.find { it.id == eventPlace.countryId }
+                            var countryName = country?.name
+                            if (StringUtils.isEmpty(countryName)) {
+                                countryName = "-"
+                            }*/
+                        /*  holder.itemView.place_event_item_country_value.text = countryName
+                          holder.itemView.place_event_item_country_value.setTextColor(textColor)*/
 
                         holder.itemView.tournament_event_item_city_value.text = eventPlace.city
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
@@ -536,14 +536,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                             R.drawable.ripple_recycler_view_item
                                     )
                         }
-                        val image = eventPlace.imageUri
+                        val image = eventPlace.image
 
                         //when context is MainActivity
                         if (context is MainActivity) {
                             if (image != null) {
-                                holder.itemView.iv_place_event_item_image.setImageBitmap(
-                                        getScaledBitMapByBase64(image, context!!.resources)
-                                )
+                                val bitmap = getScaledBitMapByByteArr(image, context!!.resources)
+                                holder.itemView.iv_place_event_item_image.setImageBitmap(bitmap)
                             } else {
                                 holder.itemView.iv_place_event_item_image.setImageResource(R.drawable.ic_birthday_person)
                             }
@@ -602,7 +601,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         textColor = ContextCompat.getColor(context!!, R.color.textDark)
 
-                        //val avatarUri = worldTournament.imageUri
+                        //todo val avatarUri = worldTournament.imageUri
 
                         //set name
                         holder.itemView.world_tournament_event_item_name.text = worldTournament.name
@@ -706,21 +705,21 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
             // add arguments to fragment
             val newFragment = ShowUserEvent.newInstance()
 
-           /* val gson = GsonBuilder().setPrettyPrinting().create()
-            val coach = coach*/
+            /* val gson = GsonBuilder().setPrettyPrinting().create()
+             val coach = coach*/
             //val userTournamentsList = gson.toJson(userTournamentsResult)
 
-        /*    if (coach != null) {
-                bundle.putString(
-                        COACH,
-                        coach
-                )
-            }*/
+            /*    if (coach != null) {
+                    bundle.putString(
+                            COACH,
+                            coach
+                    )
+                }*/
 
-           /* bundle.putString(
-                    TOURNAMENTS_RESULT,
-                    userTournamentsList
-            )*/
+            /* bundle.putString(
+                     TOURNAMENTS_RESULT,
+                     userTournamentsList
+             )*/
 
             newFragment.arguments = bundle
             ft.replace(

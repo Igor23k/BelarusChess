@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
+
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -25,8 +27,6 @@ import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
-
-import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
 
 @InjectViewState
 public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContractView> implements CallBackAddTournament, AddTournamentPresenter {
@@ -88,7 +88,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     }
 
     @Override
-    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO) {
+    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO, String tournamentImageUri) {
         if (viewIsReady) {
             view.disableButton();
             try {
@@ -99,7 +99,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex - 1));
                 view.disableButton();
                 view.showProgress();
-                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), packageModel.getValue(TOKEN));
+                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), tournamentImageUri, packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
                 view.hideProgress();

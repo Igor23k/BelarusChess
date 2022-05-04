@@ -20,6 +20,7 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
+import bobrchess.of.by.belaruschess.util.Util.Companion.getBitMapByByteArr
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
@@ -86,7 +87,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                         })
 
                         //only set expanded title color to white, when background is not white, background is white when no avatar image is set
-                        if (tournamentEvent.imageUri != null) {
+                        if (tournamentEvent.image != null) {
                             (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
                                     ContextCompat.getColor(
                                             context!!,
@@ -117,7 +118,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                             tournament_location.text = place?.city + ", " + place?.country?.name
                         }
 
-                        updateAvatarImage(tournamentEvent.imageUri)
+                        updateAvatarImage(tournamentEvent.image)
                     }
                 }
             }
@@ -137,9 +138,9 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
         super.onDetach()
     }
 
-    private fun updateAvatarImage(image: String?) {
+    private fun updateAvatarImage(image: ByteArray?) {
         if (this.iv_avatar != null && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = Util.getBitMapByBase64(image)
+            val bitmap = getBitMapByByteArr(image)
             setBitmapToToolbar(bitmap)
         }
     }

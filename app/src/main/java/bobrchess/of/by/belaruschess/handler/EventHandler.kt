@@ -54,15 +54,15 @@ object EventHandler {
 
 
         if (((event is EventTournament) || (event is EventUser) || (event is EventTournamentResult)) && addBitmap) {
-            var imageUri: String? = null
+            var imageUri: ByteArray? = null
             if (event is EventTournament) {
-                imageUri = event.imageUri
+                imageUri = event.image
             }
             if (event is EventUser) {
-                imageUri = event.imageUri
+                imageUri = event.image
             }
             if (event is EventTournamentResult) {
-                imageUri = event.imageUri
+                imageUri = event.image
             }
             Thread(Runnable {
                 if (imageUri != null) {
@@ -133,9 +133,9 @@ object EventHandler {
             this.event_map[ID] = newEvent
 
             if (newEvent is EventTournament) {
-                if (newEvent.imageUri != null) {
+                if (newEvent.image != null) {
                     //remove old drawable if one exists
-                    if ((oldEvent as EventTournament).imageUri != null) {
+                    if ((oldEvent as EventTournament).image != null) {
                     }
                 }
             }

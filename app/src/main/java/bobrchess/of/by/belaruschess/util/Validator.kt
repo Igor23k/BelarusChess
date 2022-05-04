@@ -20,7 +20,6 @@ object Validator {
         val rating = userDTO?.rating
         val birthday = userDTO?.birthday
         val phoneNumber = userDTO?.phoneNumber
-        val coach = userDTO?.coach
         val rank = userDTO?.selectedRankIndex
         val country = userDTO?.selectedCountryIndex
         val isMale = userDTO?.selectedGenderIndex
@@ -105,17 +104,10 @@ object Validator {
         val shortDescription = tournamentDTO?.shortDescription
         val fullDescription = tournamentDTO?.fullDescription
         val countPlayersInTeam = tournamentDTO?.countPlayersInTeam
-        val image = tournamentDTO?.image
         val startDate = tournamentDTO?.startDate
         val finishDate = tournamentDTO?.finishDate
         val referee = tournamentDTO?.selectedRefereeIndex
         val place = tournamentDTO?.selectedPlaceIndex
-
-        if(StringUtils.isEmpty(tournamentDTO?.fullDescription)) {
-            tournamentDTO?.fullDescription = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest" +
-                    "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestvtesttesttesttesttesttesttesttest" +
-                    "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
-        }
 
         if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_NAME))
@@ -132,9 +124,9 @@ object Validator {
         if (toursCount == null || toursCount < 1) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_TOURS_COUNT))
         }
-        if (StringUtils.isEmpty(image)) {
+       /* if (StringUtils.isEmpty(tournamentImageUri)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_IMAGE))
-        }
+        }*/
         if (StringUtils.isEmpty(startDate)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_START_DATE))
         }
@@ -220,9 +212,9 @@ object Validator {
         if (country == 0) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
         }
-        if (StringUtils.isEmpty(image)) {
+        /*if (StringUtils.isEmpty(image)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_IMAGE))
-        }
+        }*/
 
         return true
     }

@@ -92,7 +92,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                     event.countryId = user.country?.id
                     event.coach = user.coach
                     event.rating = user.rating
-                    event.imageUri = user.image
+                    event.image = user.image
                     event.patronymic = user.patronymic
 
                     EventHandler.addEvent(
@@ -572,10 +572,10 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformSecondsToDate(it.startDate!!), "dd/MM/yyyy", Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
-            event.fullDescription = it.fullDescription!!
-            event.shortDescription = it.shortDescription!!
+            event.fullDescription = it.fullDescription
+            event.shortDescription = it.shortDescription
             event.toursCount = it.toursCount
-            event.imageUri = it.image//!!.path
+            event.image = it.image
             event.refereeId = it.referee?.id
             event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id
@@ -602,7 +602,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.countryId = it.country?.id
             event.coach = it.coach
             event.rating = it.rating
-            event.imageUri = it.image
+            event.image = it.image
             event.patronymic = it.patronymic
 
             EventHandler.addEvent(
@@ -714,7 +714,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.city = it.city
             event.street = it.street
             event.building = it.building
-            event.imageUri = it.image
+            event.image = it.image
             event.capacity = it.capacity
             event.createdBy = it.createdBy?.id
             event.countryId = it.country?.id

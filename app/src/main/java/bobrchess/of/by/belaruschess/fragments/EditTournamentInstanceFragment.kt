@@ -1,11 +1,13 @@
 package bobrchess.of.by.belaruschess.fragments
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -33,7 +35,6 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
-import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -41,13 +42,11 @@ import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import java.io.BufferedReader
-import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
+import android.support.v4.app.ActivityCompat
+import bobrchess.of.by.belaruschess.util.PathUtil
 
 
 /**
@@ -77,7 +76,8 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
     /**
      * tournamentAvatarUri is a string to store the user picked image for the avatar
      */
-    private var tournamentImage: String? = null
+    private var tournamentImageUri: String? = null
+    private var tournamentImageByteArr: ByteArray? = null
 
     /**
      * avatarImgWasEdited is a boolean flag to store the information whether the avatar img has been changed
@@ -275,6 +275,12 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
             } else {
                 editDate.hint = EventDate.getLocalizedDateFormatPatternFromSkeleton("ddMMYYYY")
             }
+
+            // Set Buttons on Click Listeners
+            editName.setOnClickListener {checkPermission(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    101)
+            }
         }
 
         editDate.setOnFocusChangeListener { editTextView, hasFocus ->
@@ -342,16 +348,16 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
             dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
                 this?.setOnClickListener {
                     dialog.dismiss()
-                    if (isEditedTournament && tournamentImage != null && (EventHandler.getEventToEventIndex(
+                    if (isEditedTournament && tournamentImageUri != null && (EventHandler.getEventToEventIndex(
                                     eventID
-                            ) as EventTournament).imageUri != null
+                            ) as EventTournament).image != null
                     ) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         imageWasEdited = true
-                        tournamentImage = null
+                        tournamentImageUri = null
                     } else {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        tournamentImage = null
+                        tournamentImageUri = null
                     }
                 }
             }
@@ -434,10 +440,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         //handle image/photo file choosing
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
-            val imageInputStream = context!!.contentResolver.openInputStream(data.data!!)
-            val encodedImage = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageInputStream?.readBytes())
-            //val file = File(fullPhotoUri.path) //create path from uri
-            Thread(Runnable {
+            Thread {
                 val bitmap =
                         MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
                 (context as MainActivity).runOnUiThread {
@@ -449,9 +452,8 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                             )
                     )
                 }
-            }).start()
-
-            tournamentImage = fullPhotoUri.path
+            }.start()
+            tournamentImageUri = PathUtil.getRealPath(context, fullPhotoUri)
             imageWasEdited = true
         } else if (requestCode == REQUEST_TXT_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
@@ -460,12 +462,22 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         }
     }
 
+    // Function to check and request permission.
+    private fun checkPermission(permission: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this.context!!, permission) == PackageManager.PERMISSION_DENIED) {
+            // Requesting the permission
+            ActivityCompat.requestPermissions(this.activity!!, arrayOf(permission), requestCode)
+        } else {
+            Toast.makeText(this.context, "Permission already granted", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     /**
      * acceptBtnPressed is a function which is called when the toolbars accept button is pressed
      */
     override fun acceptBtnPressed() {
         try {
-            addTournamentPresenter?.addTournament(getTournamentData())
+            tournamentImageUri?.let { addTournamentPresenter?.addTournament(getTournamentData(), it) }
         } catch (e: NumberFormatException) {
             hideProgress()
             showToast(R.string.incorrect_tours_count);
@@ -482,29 +494,19 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentData.fullDescription = editFullDescription.text.toString()
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
         tournamentData.countPlayersInTeam = 1
-        tournamentData.image = tournamentImage//File(tournamentImage)
+        tournamentData.image = tournamentImageByteArr
         tournamentData.createdBy = (context as MainActivity).getUserData()
         tournamentData.startDate = eventStartDate?.time.toString()
         tournamentData.finishDate = eventEndDate?.time.toString()
         return tournamentData
     }
 
-    fun convertDateToString(date: Date?): String? {
-        if (date != null) {
-            var pattern = USER_BIRTHDAY_FORMAT
-            var df = SimpleDateFormat(pattern)
-            var dateString = df.format(date)
-            return dateString
-        }
-        return null
-    }
-
-    private fun updateAvatarImage() {
+    private fun updateImage() {
         if (this.iv_add_avatar_btn != null && this.eventID >= 0) {
             //load maybe already existent avatar photo
             EventHandler.getEventToEventIndex(eventID)?.let { event ->
-                if (event is EventTournament && event.imageUri != null) {
-                    val bitmap = Util.getScaledBitMapByBase64(event.imageUri, resources)
+                if (event is EventTournament && event.image != null) {
+                    val bitmap = context?.let { Util.getScaledBitMapByByteArr(event.image, context!!.resources) };
                     this.iv_add_avatar_btn.setImageBitmap(bitmap)
                     this.iv_add_avatar_btn.isEnabled = true
                 }
@@ -716,7 +718,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentEvent.shortDescription = tournamentDTO.shortDescription
         tournamentEvent.fullDescription = tournamentDTO.fullDescription
         tournamentEvent.finishDate = eventEndDate
-        tournamentEvent.imageUri = tournamentDTO.image//?.path
+        tournamentEvent.image = tournamentDTO.image
         tournamentEvent.refereeId = tournamentDTO.referee?.id
         tournamentEvent.createdBy = tournamentDTO.createdBy?.id
         tournamentEvent.placeId = tournamentDTO.place?.id
@@ -763,21 +765,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                 refereeId = tournament.refereeId!!.toInt()
                 placeId = tournament.placeId!!
                 this.eventStartDate = tournament.eventDate
-               /* if (this.eventStartDate!!.after(Calendar.getInstance().time)) {
-                    val cal = Calendar.getInstance()
-                    cal.time = this.eventStartDate
-                    cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
-                    this.eventStartDate = cal.time
-                }*/
-
                 this.eventEndDate = tournament.finishDate
-                /*if (this.eventEndDate!!.after(Calendar.getInstance().time)) {
-                    val cal = Calendar.getInstance()
-                    cal.time = this.eventEndDate
-                    cal.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1)
-                    this.eventEndDate = cal.time
-                }*/
-
 
                 // the value which should be assigned to the startDate edit box
                 val startDate: String?
@@ -801,7 +789,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                 editToursCount.setText(tournament.toursCount.toString())
                 editName.setText(tournament.name)
                 switchIsYearGiven.isChecked = true
-                tournamentImage = tournament.imageUri
+                tournamentImageByteArr = tournament.image
 
 
                 if (!tournament.fullDescription.isNullOrBlank()) {
@@ -837,7 +825,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                 addTournamentPresenter!!.saveRefereesIndexes(referees)
             }
 
-            this.updateAvatarImage()
+            this.updateImage()
         }
 
         setPlaceSpinnerAdapter(places as MutableList<out PlaceDTO>?)

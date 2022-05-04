@@ -18,7 +18,6 @@ import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import butterknife.BindView
 import org.springframework.util.StringUtils
-import java.util.*
 
 class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     private var view: UserContractView? = null
@@ -65,7 +64,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
         }
     }
 
-    override fun updateUser(user: ExtendedUserDTO) {
+    override fun updateUser(user: ExtendedUserDTO, userImageUri: String?) {
         if (viewIsReady) {
             try {
                 user.selectedCoachIndex = selectedCoachIndex - 1
@@ -78,7 +77,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
                 user.rank = ranksIndexes[selectedRankIndex]
                 user.beMale = selectedGenderIndex == 0
                 view!!.showProgress()
-                userConnection.updateUser(UserDTO(user), packageModel!!.getValue(Constants.TOKEN))
+                userConnection.updateUser(UserDTO(user), userImageUri, packageModel!!.getValue(Constants.TOKEN))
             } catch (e: IncorrectDataException) {
                 view!!.showToast(e.localizedMessage)
                 view!!.hideProgress()
@@ -86,7 +85,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
         }
     }
 
-    override fun setPackageModel(packageModel: PackageModel?){
+    override fun setPackageModel(packageModel: PackageModel?) {
         this.packageModel = packageModel
     }
 
@@ -118,7 +117,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
             Constants.SERVER_UNAVAILABLE -> {
                 onServerUnavailable()
             }
-             Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
+            Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
                 when (errorDTO.message) {
                     Constants.KEY_USER_ALREADY_EXISTS -> {
                         onUserExists()

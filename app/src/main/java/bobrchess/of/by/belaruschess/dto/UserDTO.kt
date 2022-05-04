@@ -21,7 +21,7 @@ open class UserDTO : Serializable {
     var rating: Int? = null
     var coach: String? = null
     var places: List<PlaceDTO>? = null
-    var image: String? = null
+    var image: ByteArray? = null
 
     constructor(userDTO: UserDTO) {
         this.id = userDTO.id
@@ -48,7 +48,7 @@ open class UserDTO : Serializable {
                 email: String?, phoneNumber: String?, password: String?,
                 beCoach: Boolean, beOrganizer: Boolean, beAdmin: Boolean, beMale: Boolean?, rank: RankDTO?,
                 country: CountryDTO?, rating: Int?, coach: String?,
-                places: List<PlaceDTO>?, image: String) {
+                places: List<PlaceDTO>?, image: ByteArray) {
         this.id = id
         this.name = name
         this.surname = surname

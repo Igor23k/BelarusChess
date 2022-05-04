@@ -128,7 +128,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         loadCoaches()
     }
 
-    override fun registration(userDTO: ExtendedUserDTO) {
+    override fun registration(userDTO: ExtendedUserDTO, placeImageUri: String?) {
         view!!.disableButton()
         try {
             fillUserBySpinnerValues(userDTO)
@@ -136,7 +136,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
             setUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
-            userConnection.registration(UserDTO(userDTO))
+            userConnection.registration(UserDTO(userDTO), placeImageUri)
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
             view!!.showSnackBar(viewComponent!!, e.localizedMessage)

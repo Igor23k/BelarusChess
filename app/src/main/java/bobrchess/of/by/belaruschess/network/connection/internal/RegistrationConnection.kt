@@ -12,16 +12,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Igor on 11.04.2018.
- */
-
 class RegistrationConnection {
 
     private var callBack: CallBackRegistration? = null
 
-    fun registration(userDTO: UserDTO) {
-        App.getPersonalServerApi().registration(userDTO).enqueue(object : Callback<UserContextDTO> {
+    fun registration(userDTO: UserDTO, userImageUri: String?) {
+        App.getPersonalServerApi().registration(userDTO, Util.getMultipartImage(userImageUri)).enqueue(object : Callback<UserContextDTO> {
             override fun onResponse(call: Call<UserContextDTO>, response: Response<UserContextDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

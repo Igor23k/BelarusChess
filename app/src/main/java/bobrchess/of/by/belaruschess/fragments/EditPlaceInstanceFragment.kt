@@ -2,7 +2,6 @@ package bobrchess.of.by.belaruschess.fragments
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,15 +20,15 @@ import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
 import bobrchess.of.by.belaruschess.presenter.impl.AddPlacePresenterImpl
+import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_place.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.util.*
+import kotlinx.android.synthetic.main.fragment_add_new_place.frame_layout_add_avatar_image
+import kotlinx.android.synthetic.main.fragment_add_new_place.iv_add_avatar_btn
+import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 
 
 /**
@@ -56,6 +55,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
     /**
      * placeAvatarUri is a string to store the user picked image for the avatar
      */
+    private var placeImageArr: ByteArray? = null
     private var placeImageUri: String? = null
 
     /**
@@ -138,7 +138,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
 
                     editCity.setText(place.city)
                     editName.setText(place.name)
-                    placeImageUri = place.imageUri
+                    placeImageArr = place.image
                     editStreet.setText(place.street)
                     editBuilding.setText(place.building)
                     editCapacity.setText(place.capacity.toString())
@@ -195,11 +195,11 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
             dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
                 this?.setOnClickListener {
                     dialog.dismiss()
-                    if (isEditedPlace && placeImageUri != null && (EventHandler.getEventToEventIndex(eventID) as EventPlace).imageUri != null) {
+                    if (isEditedPlace && placeImageUri != null && (EventHandler.getEventToEventIndex(eventID) as EventPlace).image != null) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         avatarImgWasEdited = true
                         placeImageUri = null
-                        //BitmapHandler.removeBitmap(eventID, context!!) убрал удаление пока что
+                        //todo BitmapHandler.removeBitmap(eventID, context!!) убрал удаление пока что
                     } else {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         placeImageUri = null
@@ -249,7 +249,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
                 }
             }.start()
 
-            placeImageUri = fullPhotoUri.toString()
+            placeImageUri = PathUtil.getRealPath(context, fullPhotoUri)
             avatarImgWasEdited = true
         }
     }
@@ -259,7 +259,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
      */
     override fun acceptBtnPressed() {
         try {
-            addPlacePresenter?.addPlace(getPlaceData())
+            placeImageUri?.let { addPlacePresenter?.addPlace(getPlaceData(), it) }
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_capacity)
         }
@@ -275,7 +275,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
         placeData.building = editBuilding.text.toString()
         placeData.createdBy = (context as MainActivity).getUserData()
         placeData.capacity = editCapacity.text.toString().toInt()
-        placeData.image = placeImageUri
+        placeData.image = placeImageArr
         return placeData
     }
 
@@ -283,8 +283,8 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
         if (this.iv_add_avatar_btn != null && this.eventID >= 0) {
             //load maybe already existent avatar photo
             EventHandler.getEventToEventIndex(eventID)?.let { event ->
-                if (event is EventPlace && event.imageUri != null) {
-                    val bitmap = Util.getScaledBitMapByBase64(event.imageUri, resources)
+                if (event is EventPlace && event.image != null) {
+                    val bitmap = context?.let { Util.getScaledBitMapByByteArr(event.image, context!!.resources) };
                     this.iv_add_avatar_btn.setImageBitmap(bitmap)
                     this.iv_add_avatar_btn.isEnabled = true
                 }
@@ -377,7 +377,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
 
         placeEvent.city = placeDTO.city
         placeEvent.street = placeDTO.street
-        placeEvent.imageUri = placeDTO.image
+        placeEvent.image = placeDTO.image
         placeEvent.countryId = placeDTO.country?.id
         placeEvent.createdBy = placeDTO.createdBy?.id
         placeEvent.building = placeDTO.building
