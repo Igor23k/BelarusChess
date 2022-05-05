@@ -61,7 +61,6 @@ import bobrchess.of.by.belaruschess.util.PathUtil
 class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentContractView, UserContractView {
 
     private var progressDialog: ProgressDialog? = null
-    private var users: List<UserDTO>? = null
 
     /**
      * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventTournament
@@ -494,7 +493,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentData.fullDescription = editFullDescription.text.toString()
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
         tournamentData.countPlayersInTeam = 1
-        tournamentData.image = tournamentImageByteArr
         tournamentData.createdBy = (context as MainActivity).getUserData()
         tournamentData.startDate = eventStartDate?.time.toString()
         tournamentData.finishDate = eventEndDate?.time.toString()

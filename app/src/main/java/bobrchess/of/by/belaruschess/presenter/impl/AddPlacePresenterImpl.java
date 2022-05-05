@@ -35,7 +35,6 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     private AddPlaceContractView view;
     private AddPlaceConnection addPlaceConnection;
     private Boolean viewIsReady = false;
-    List<String> a = new ArrayList<>();
     private Integer selectedCountryIndex = 0;
     private Map<Integer, CountryDTO> countriesIndexes = new HashMap<>();
     private PackageModel packageModel;
@@ -63,6 +62,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
         saveCountriesIndexes(countries);
         view.setCountrySpinnerAdapter(countries);
         viewIsReady();
+        view.hideProgress();
     }
 
     @Override
@@ -82,12 +82,10 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     @Override
     public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, String userImageUri) {
         if (viewIsReady) {
-            view.disableButton();
             try {
                 placeDTO.setSelectedCountryIndex(selectedCountryIndex);
                 Validator.INSTANCE.validatePlaceData(placeDTO);
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
-                view.disableButton();
                 view.showProgress();
                 addPlaceConnection.addPlace(new PlaceDTO(placeDTO), userImageUri, packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {

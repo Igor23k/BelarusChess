@@ -129,13 +129,9 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     @Override
     public void startActivity(@NonNull UserDTO userDTO) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        putUserData(intent, userDTO);
+        Util.Companion.setUser(userDTO);
         startActivity(intent);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-    }
-
-    private void putUserData(Intent intent, @NonNull UserDTO userDTO) {
-        intent.putExtra(Constants.Companion.getUSER_PARAMETER(), userDTO);
     }
 
     @Override

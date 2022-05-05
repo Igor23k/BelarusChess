@@ -27,6 +27,7 @@ import bobrchess.of.by.belaruschess.presenter.impl.RankPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.SearchTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
+import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.CountryPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.PlacePresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
@@ -58,8 +59,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        userData = intent.getSerializableExtra("user") as UserDTO
-        //todo userData!!.image = Util.getUserImage()
+        userData = Util.getUser()
 
         searchTournamentPresenter = SearchTournamentPresenterImpl()
         searchTournamentPresenter!!.attachView(this)

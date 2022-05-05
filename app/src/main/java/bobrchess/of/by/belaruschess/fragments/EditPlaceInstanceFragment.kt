@@ -2,6 +2,7 @@ package bobrchess.of.by.belaruschess.fragments
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +21,7 @@ import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
 import bobrchess.of.by.belaruschess.presenter.impl.AddPlacePresenterImpl
+import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView
@@ -41,6 +43,8 @@ import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
  *
  */
 class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView {
+
+    private var progressDialog: ProgressDialog? = null
 
     /**
      * isEditedBirthday is a boolean flag to indicate whether this fragment is in "edit" mode aka. the user wants to edit an existing instance of EventPlace
@@ -275,7 +279,6 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
         placeData.building = editBuilding.text.toString()
         placeData.createdBy = (context as MainActivity).getUserData()
         placeData.capacity = editCapacity.text.toString().toInt()
-        placeData.image = placeImageArr
         return placeData
     }
 
@@ -337,9 +340,13 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
     }
 
     override fun showProgress() {
+        progressDialog = ProgressDialog.show(this.context, Constants.EMPTY_STRING, this.getString(R.string.please_wait))
     }
 
     override fun hideProgress() {
+        if (progressDialog != null) {
+            progressDialog!!.dismiss()
+        }
     }
 
     override fun setConnectionStatus(connectivityStatus: Int?) {

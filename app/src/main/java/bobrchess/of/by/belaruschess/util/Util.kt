@@ -31,15 +31,15 @@ class Util {
         var TYPE_MOBILE = 2
         var TYPE_NOT_CONNECTED = 0
 
-       // private var userImage: String? = null
+        private var user: UserDTO? = null
 
- /*       fun setUserImage(image: String?) {
-            this.userImage = image
-        }*/
+        fun setUser(image: UserDTO?) {
+            this.user = image
+        }
 
-        /*fun getUserImage(): String? {
-            return userImage
-        }*/
+        fun getUser(): UserDTO? {
+            return user
+        }
 
         fun getConnectivityStatus(context: Context): Int {
             val cm = context
