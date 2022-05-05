@@ -28,9 +28,6 @@ import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_place.*
-import kotlinx.android.synthetic.main.fragment_add_new_place.frame_layout_add_avatar_image
-import kotlinx.android.synthetic.main.fragment_add_new_place.iv_add_avatar_btn
-import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 
 
 /**

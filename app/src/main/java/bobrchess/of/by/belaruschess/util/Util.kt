@@ -21,6 +21,8 @@ import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import org.springframework.util.StringUtils
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -266,20 +268,67 @@ class Util {
             return null
         }
 
-       /* fun getScaledBitMapByBase64(byteArr: ByteArray, resources: Resources): Bitmap? {
-            var bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.size)
-            if (bitmap != null) {
-                bitmap = BitmapHandler.getCircularBitmap(
-                        BitmapHandler.getScaledBitmap(
-                                bitmap
-                        ), resources
-                )
-            }
-            return bitmap
-        }*/
+        /* fun getScaledBitMapByBase64(byteArr: ByteArray, resources: Resources): Bitmap? {
+             var bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.size)
+             if (bitmap != null) {
+                 bitmap = BitmapHandler.getCircularBitmap(
+                         BitmapHandler.getScaledBitmap(
+                                 bitmap
+                         ), resources
+                 )
+             }
+             return bitmap
+         }*/
 
-        fun getMultipartImage(image: String?): MultipartBody.Part {
-            return MultipartBody.Part.createFormData("file", File(image).name, RequestBody.create(MediaType.parse("image/*"), File(image)))
+        fun getMultipartImage(image: File?): MultipartBody.Part? {
+            return if (image != null) {
+                MultipartBody.Part.createFormData("file", image.name, RequestBody.create(MediaType.parse("image/*"), image))
+            } else null
+        }
+
+        fun compressImage(imageUri: String?): File? {
+            if (!StringUtils.isEmpty(imageUri)) {
+                return compressImage(File(imageUri))
+            }
+            return null
+        }
+
+        fun compressImage(file: File): File? {
+            return try {
+
+                // BitmapFactory options to downsize the image
+                val o = BitmapFactory.Options()
+                o.inJustDecodeBounds = true
+                o.inSampleSize = 6
+                // factor of downsizing the image
+                var inputStream = FileInputStream(file)
+                //Bitmap selectedBitmap = null;
+                BitmapFactory.decodeStream(inputStream, null, o)
+                inputStream.close()
+
+                // The new size we want to scale to
+                val REQUIRED_SIZE = 15
+
+                // Find the correct scale value. It should be the power of 2.
+                var scale = 1
+                while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                        o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                    scale *= 2
+                }
+                val o2 = BitmapFactory.Options()
+                o2.inSampleSize = scale
+                inputStream = FileInputStream(file)
+                val selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2)
+                inputStream.close()
+
+                // here i override the original image file
+                file.createNewFile()
+                val outputStream = FileOutputStream(file)
+                selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                file
+            } catch (e: java.lang.Exception) {
+                null
+            }
         }
 
         /**

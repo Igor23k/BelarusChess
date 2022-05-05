@@ -99,7 +99,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex - 1));
                 view.disableButton();
                 view.showProgress();
-                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), tournamentImageUri, packageModel.getValue(TOKEN));
+                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), Util.Companion.compressImage(tournamentImageUri), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
                 view.hideProgress();

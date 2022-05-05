@@ -77,7 +77,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
                 user.rank = ranksIndexes[selectedRankIndex]
                 user.beMale = selectedGenderIndex == 0
                 view!!.showProgress()
-                userConnection.updateUser(UserDTO(user), userImageUri, packageModel!!.getValue(Constants.TOKEN))
+                userConnection.updateUser(UserDTO(user), Util.compressImage(userImageUri), packageModel!!.getValue(Constants.TOKEN))
             } catch (e: IncorrectDataException) {
                 view!!.showToast(e.localizedMessage)
                 view!!.hideProgress()

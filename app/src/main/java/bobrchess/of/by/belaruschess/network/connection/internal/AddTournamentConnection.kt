@@ -12,6 +12,7 @@ import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class AddTournamentConnection {
 
@@ -37,8 +38,8 @@ class AddTournamentConnection {
         })
     }
 
-    fun addTournament(tournamentDTO: TournamentDTO, tournamentImageUri: String, authorizationHeader: String) {
-        App.getPersonalServerApi().addTournament(authorizationHeader, tournamentDTO, getMultipartImage(tournamentImageUri)).enqueue(object : Callback<TournamentDTO> {
+    fun addTournament(tournamentDTO: TournamentDTO, image: File?, authorizationHeader: String) {
+        App.getPersonalServerApi().addTournament(authorizationHeader, tournamentDTO, getMultipartImage(image)).enqueue(object : Callback<TournamentDTO> {
             override fun onResponse(call: Call<TournamentDTO>, response: Response<TournamentDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

@@ -5,7 +5,6 @@ import android.view.View
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
-import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.internal.RegistrationConnection
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackRegistration
@@ -17,6 +16,7 @@ import bobrchess.of.by.belaruschess.util.Constants.Companion.NOT_SELECTED_INDEX
 import bobrchess.of.by.belaruschess.util.Constants.Companion.SERVER_UNAVAILABLE
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
+import bobrchess.of.by.belaruschess.util.Util.Companion.compressImage
 import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import bobrchess.of.by.belaruschess.util.Validator
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -25,7 +25,6 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import org.springframework.util.CollectionUtils
 import org.springframework.util.StringUtils
-import java.util.*
 
 
 @InjectViewState
@@ -111,7 +110,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
 
     override fun onUnsuccessfulRequest(message: String?) {
         if (!StringUtils.isEmpty(message)) {
-            view!!.showSnackBar(viewComponent!!,  getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+            view!!.showSnackBar(viewComponent!!, getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
         }
     }
 
@@ -136,9 +135,10 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
             setUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
-            userConnection.registration(UserDTO(userDTO), placeImageUri)
-        } catch (e: IncorrectDataException) {
+            userConnection.registration(UserDTO(userDTO), compressImage(placeImageUri))
+        } catch (e: Exception) {
             view!!.enableButton()
+            view!!.hideProgress()
             view!!.showSnackBar(viewComponent!!, e.localizedMessage)
         }
     }

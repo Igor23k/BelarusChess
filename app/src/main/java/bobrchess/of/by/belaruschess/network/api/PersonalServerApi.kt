@@ -57,7 +57,7 @@ interface PersonalServerApi {
 
     @POST("/place")
     @Multipart
-    fun addPlace(@Header("Authorization") authorization: String, @Part("place") placeDTO: PlaceDTO, @Part file: MultipartBody.Part): Call<PlaceDTO>
+    fun addPlace(@Header("Authorization") authorization: String, @Part("place") placeDTO: PlaceDTO, @Part file: MultipartBody.Part?): Call<PlaceDTO>
 
     @DELETE("/place/{id}")
     fun removePlace(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<Int>
@@ -96,7 +96,7 @@ interface PersonalServerApi {
 
     @POST("/register")
     @Multipart
-    fun registration(@Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part): Call<UserContextDTO>
+    fun registration(@Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part?): Call<UserContextDTO>
 
     //Tournament
     @GET("/tournament/{id}")
@@ -111,11 +111,11 @@ interface PersonalServerApi {
 
     @POST("/tournament")
     @Multipart
-    fun addTournament(@Header("Authorization") authorization: String, @Part("tournament") tournamentDTO: TournamentDTO, @Part file: MultipartBody.Part): Call<TournamentDTO>
+    fun addTournament(@Header("Authorization") authorization: String, @Part("tournament") tournamentDTO: TournamentDTO, @Part file: MultipartBody.Part?): Call<TournamentDTO>
 
     @POST("/updateUser")
     @Multipart
-    fun updateUser(@Header("Authorization") authorization: String, @Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part): Call<UserDTO>
+    fun updateUser(@Header("Authorization") authorization: String, @Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part?): Call<UserDTO>
 
     //Game
     @GET("/game/{id}")

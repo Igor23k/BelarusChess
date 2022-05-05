@@ -26,6 +26,7 @@ import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util.Companion.REGISTRATION_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Util.Companion.genders
+import bobrchess.of.by.belaruschess.util.Util.Companion.setUser
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 import butterknife.BindView
@@ -236,16 +237,10 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
 
     override fun startActivity(userDTO: UserDTO) {
         val intent = Intent(applicationContext, MainActivity::class.java)
-        //putUserData(intent, userDTO)
+        setUser(userDTO)
         startActivityForResult(intent, REGISTRATION_REQUEST)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
     }
-
-    /*  private fun putUserData(intent: Intent, userDTO: UserDTO) {
-          setUserImage(userDTO.image)
-          userDTO.image = null
-          intent.putExtra(USER_PARAMETER, userDTO)
-      }*/
 
     override fun showIncorrectEmailText() {
         emailText!!.error = this.getString(R.string.incorrect_email)

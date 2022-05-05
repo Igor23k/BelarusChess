@@ -8,13 +8,14 @@ import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class SearchUserConnection {
 
     private var callBack: CallBackSearchUser? = null
 
-    fun updateUser(userDTO: UserDTO, userImageUri: String?, authorizationHeader: String) {
-        App.getPersonalServerApi().updateUser(authorizationHeader, userDTO, Util.getMultipartImage(userImageUri)).enqueue(object : Callback<UserDTO> {
+    fun updateUser(userDTO: UserDTO, image: File?, authorizationHeader: String) {
+        App.getPersonalServerApi().updateUser(authorizationHeader, userDTO, Util.getMultipartImage(image)).enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

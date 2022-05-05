@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
+
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -7,7 +9,6 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,6 @@ import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
-
-import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
-import static javax.xml.bind.JAXBIntrospector.getValue;
 
 @InjectViewState
 public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> implements CallBackAddPlace, AddPlacePresenter {
@@ -80,14 +78,14 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     }
 
     @Override
-    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, String userImageUri) {
+    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, String placeImageUri) {
         if (viewIsReady) {
             try {
                 placeDTO.setSelectedCountryIndex(selectedCountryIndex);
                 Validator.INSTANCE.validatePlaceData(placeDTO);
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
                 view.showProgress();
-                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), userImageUri, packageModel.getValue(TOKEN));
+                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageUri), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
             } finally {
