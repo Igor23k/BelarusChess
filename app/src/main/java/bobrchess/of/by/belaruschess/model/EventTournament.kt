@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 
@@ -33,7 +32,7 @@ class EventTournament(
         Id {
             override fun Identifier(): Int = 5
         },
-        AvatarUri {
+        Image {
             override fun Identifier(): Int = 6
         },
         Referee {
@@ -58,7 +57,7 @@ class EventTournament(
 
     var finishDate: Date? = null
 
-    var imageUri: String? = null
+    var image: ByteArray? = null
 
     var refereeId: Long? = null
 
@@ -81,7 +80,7 @@ class EventTournament(
                 getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
                 getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.AvatarUri, this.imageUri) +
+                getStringFromValue(Identifier.Image, this.image) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +
                 getStringFromValue(Identifier.CreatedBy, this.createdBy) +
                 getStringFromValue(Identifier.Place, this.placeId) +

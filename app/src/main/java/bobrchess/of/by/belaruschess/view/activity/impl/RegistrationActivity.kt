@@ -22,11 +22,10 @@ import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
-import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
+import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util.Companion.REGISTRATION_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Util.Companion.genders
-import bobrchess.of.by.belaruschess.util.Util.Companion.setUserImage
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 import butterknife.BindView
@@ -92,6 +91,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     private var rankSpinner: Spinner? = null
     private var countrySpinner: Spinner? = null
     private var birthday: String? = null
+    private var userImageUri: String? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,14 +106,14 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         registerInternetCheckReceiver()
         emailText = findViewById(R.id.e_email_input)
         genderSpinner = findViewById(R.id.s_genderSpinner)
-        genderSpinner!!.setOnItemSelectedListener(GenderItemSelectedListener())
+        genderSpinner!!.onItemSelectedListener = GenderItemSelectedListener()
         setGenderSpinnerAdapter(genders)
         coachSpinner = findViewById(R.id.s_coachSpinner)
-        coachSpinner!!.setOnItemSelectedListener(CoachItemSelectedListener())
+        coachSpinner!!.onItemSelectedListener = CoachItemSelectedListener()
         rankSpinner = findViewById(R.id.s_rankSpinner)
-        rankSpinner!!.setOnItemSelectedListener(RankItemSelectedListener())
+        rankSpinner!!.onItemSelectedListener = RankItemSelectedListener()
         countrySpinner = findViewById(R.id.s_countrySpinner)
-        countrySpinner!!.setOnItemSelectedListener(CountryItemSelectedListener())
+        countrySpinner!!.onItemSelectedListener = CountryItemSelectedListener()
         presenter.setPackageModel(PackageModel(this))
     }
 
@@ -172,7 +172,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
                 this?.setOnClickListener {
                     dialog.dismiss()
                     iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                    avatarImage = null
+                    userImageUri = null
                 }
             }
 
@@ -236,16 +236,16 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
 
     override fun startActivity(userDTO: UserDTO) {
         val intent = Intent(applicationContext, MainActivity::class.java)
-        putUserData(intent, userDTO)
+        //putUserData(intent, userDTO)
         startActivityForResult(intent, REGISTRATION_REQUEST)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
     }
 
-    private fun putUserData(intent: Intent, userDTO: UserDTO) {
-        setUserImage(userDTO.image)
-        userDTO.image = null
-        intent.putExtra(USER_PARAMETER, userDTO)
-    }
+    /*  private fun putUserData(intent: Intent, userDTO: UserDTO) {
+          setUserImage(userDTO.image)
+          userDTO.image = null
+          intent.putExtra(USER_PARAMETER, userDTO)
+      }*/
 
     override fun showIncorrectEmailText() {
         emailText!!.error = this.getString(R.string.incorrect_email)
@@ -257,7 +257,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
 
     override fun registration() {
         try {
-            presenter.registration(userData)
+            presenter.registration(userData, userImageUri)
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_rating)
             enableButton()
@@ -298,7 +298,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
             userData.reEnterPassword = reEnterPasswordText!!.text.toString()
             userData.rating = ratingText!!.text.toString().toInt()
             userData.birthday = birthday
-            userData.image = avatarImage
             return userData
         }
 
@@ -440,10 +439,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         //handle image/photo file choosing
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
-
-            val imageInputStream = this.contentResolver.openInputStream(data.data!!)
-            val encodedImage = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageInputStream?.readBytes())
-
             Thread(Runnable {
                 val bitmap =
                         MediaStore.Images.Media.getBitmap(this.contentResolver, fullPhotoUri)
@@ -458,9 +453,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
                 }
             }).start()
 
-            avatarImage = encodedImage
+            userImageUri = PathUtil.getRealPath(this.applicationContext, fullPhotoUri)
         }
     }
-
-    private var avatarImage: String? = null
 }

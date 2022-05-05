@@ -25,12 +25,11 @@ import bobrchess.of.by.belaruschess.dto.RankDTO
 import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
-import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventDate
-import bobrchess.of.by.belaruschess.model.EventUser
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
+import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.EditUserContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -64,7 +63,8 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
     /**
      * userAvatarUri is a string to store the user picked image for the avatar
      */
-    private var userAvatar: String? = null
+    private var userImageByteArr: ByteArray? = null
+    private var userImageUri: String? = null
 
     /**
      * avatarImgWasEdited is a boolean flag to store the information whether the avatar img has been changed
@@ -327,7 +327,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
                     dialog.dismiss()
                     iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                     imageWasEdited = true
-                    userAvatar = null
+                    userImageByteArr = null
                 }
             }
 
@@ -361,12 +361,8 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
 
-            val imageInputStream = context!!.contentResolver.openInputStream(data.data!!)
-            val encodedImage = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageInputStream?.readBytes())
-
-            Thread(Runnable {
-                val bitmap =
-                        MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
+            Thread {
+                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
                 (context as MainActivity).runOnUiThread {
                     iv_add_avatar_btn.setImageBitmap(
                             BitmapHandler.getCircularBitmap(
@@ -376,9 +372,8 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
                             )
                     )
                 }
-            }).start()
-
-            userAvatar = encodedImage
+            }.start()
+            userImageUri = PathUtil.getRealPath(context, fullPhotoUri)
             imageWasEdited = true
         }
     }
@@ -388,7 +383,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
      */
     override fun acceptBtnPressed() {
         try {
-            userPresenterImpl?.updateUser(getUserData())
+            userPresenterImpl?.updateUser(getUserData(), userImageUri)
         } catch (e: NumberFormatException) {
             hideProgress()
             showToast(R.string.incorrect_tours_count);
@@ -415,7 +410,6 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
         userData.phoneNumber = editPhoneNumber.text.toString()
         userData.rating = editRating.text.toString().toInt()
-        userData.image = userAvatar
         userData.birthday = convertDateToString(eventStartDate)
         userData.beAdmin = user?.beAdmin!!
         userData.beCoach = user?.beCoach!!
@@ -436,8 +430,8 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
     private fun updateAvatarImage() {
         if (this.iv_add_avatar_btn != null && this.eventID >= 0) {
             //load maybe already existent avatar photo
-            if (userAvatar != null) {
-                val bitmap = Util.getScaledBitMapByBase64(userAvatar, resources)
+            if (userImageByteArr != null) {
+                val bitmap = Util.getScaledBitMapByByteArr(userImageByteArr, context!!.resources)
                 this.iv_add_avatar_btn.setImageBitmap(bitmap)
                 this.iv_add_avatar_btn.isEnabled = true
             }
@@ -526,7 +520,6 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
     }
 
     override fun setGenderSpinnerAdapter(genders: MutableList<String>) {
-        //genders.add(0, getString(R.string.chooseGender))
         val adapter = ArrayAdapter(this.context!!,
                 android.R.layout.simple_spinner_dropdown_item, genders)
         genderSpinner.adapter = adapter
@@ -699,22 +692,15 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
         startDate = EventDate.getLocalizedDayMonthYearString(this.eventStartDate)
 
-        /* if (!isCalendarViewSelected) {
-             editBirthday.setText(startDate)
-             editBirthday.hint = startDate
-         } else {*/
         editBirthdayCalendarview.text = startDate
         editBirthdayCalendarview.hint = startDate
-        //  }
-
-
         editName.setText(user!!.name)
         editSurname.setText(user!!.surname)
         editPatronymic.setText(user!!.patronymic)
         editRating.setText(user!!.rating.toString())
         editEmail.setText(user!!.email.toString())
         editPhoneNumber.setText(user!!.phoneNumber.toString())
-        userAvatar = user!!.image
+        userImageByteArr = user!!.image
 
         btn_user_edit_fragment.setOnClickListener {
             val alertBuilder = AlertDialog.Builder(context)

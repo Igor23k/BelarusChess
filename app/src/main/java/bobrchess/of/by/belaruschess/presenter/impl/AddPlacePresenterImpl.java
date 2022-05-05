@@ -80,7 +80,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     }
 
     @Override
-    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO) {
+    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, String userImageUri) {
         if (viewIsReady) {
             view.disableButton();
             try {
@@ -89,7 +89,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
                 view.disableButton();
                 view.showProgress();
-                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), packageModel.getValue(TOKEN));
+                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), userImageUri, packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
             } finally {

@@ -36,8 +36,8 @@ class AddPlaceConnection {
     }
 
 
-    fun addPlace(placeDTO: PlaceDTO, authorizationHeader: String) {
-        App.getPersonalServerApi().addPlace(authorizationHeader, placeDTO).enqueue(object : Callback<PlaceDTO> {
+    fun addPlace(placeDTO: PlaceDTO, userImageUri: String, authorizationHeader: String) {
+        App.getPersonalServerApi().addPlace(authorizationHeader, placeDTO, Util.getMultipartImage(userImageUri)).enqueue(object : Callback<PlaceDTO> {
             override fun onResponse(call: Call<PlaceDTO>, response: Response<PlaceDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

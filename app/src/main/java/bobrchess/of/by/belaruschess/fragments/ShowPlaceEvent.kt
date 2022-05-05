@@ -13,7 +13,6 @@ import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
-import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -78,7 +77,7 @@ class ShowPlaceEvent : ShowEventFragment() {
                 })
 
                 //only set expanded title color to white, when background is not white, background is white when no avatar image is set
-                if (place.imageUri != null) {
+                if (place.image != null) {
                     (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
                             ContextCompat.getColor(
                                     context!!,
@@ -95,7 +94,7 @@ class ShowPlaceEvent : ShowEventFragment() {
                 }
 
                 place_capacity.text = "" + resources.getString(R.string.capacity) + ":" + place.capacity
-                updateAvatarImage(place.imageUri)
+                updateAvatarImage(place.image)
             }
         }
     }
@@ -105,9 +104,9 @@ class ShowPlaceEvent : ShowEventFragment() {
         super.onDetach()
     }
 
-    private fun updateAvatarImage(image: String?) {
+    private fun updateAvatarImage(image: ByteArray?) {
         if (this.iv_avatar != null && this.eventID >= 0 && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = Util.getBitMapByBase64(image)
+            val bitmap = Util.getBitMapByByteArr(image)
             setBitmapToToolbar(bitmap)
         }
     }

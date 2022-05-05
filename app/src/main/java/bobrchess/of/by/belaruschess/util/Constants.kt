@@ -151,6 +151,8 @@ class Constants {
 
         val REQUEST_CODE = "requestCode"
         val USER_BIRTHDAY_FORMAT = "dd/MM/yyyy"
+
+        val IMAGE_PREFIX = "data:image/jpeg;base64,"
     }
 
 }

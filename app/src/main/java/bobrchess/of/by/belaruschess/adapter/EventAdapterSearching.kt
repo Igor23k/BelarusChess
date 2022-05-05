@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.handler.EventHandler
-import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.Divider
+import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.event_month_view_divider.view.*
@@ -115,22 +115,22 @@ class EventAdapterSearching(private val context: Context, private val eventIDs: 
                             true
                         }
 
-                        val avatarUri = tournamentEvent.imageUri
+                        val imageUri = tournamentEvent.image
 
                         //when called from MainActivity
                         if (context is MainActivity) {
-                            if (avatarUri != null) {
+                            if (imageUri != null) {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
-                                        Util.getScaledBitMapByBase64(tournamentEvent.imageUri, context.resources)
+                                        Util.getBitMapByByteArr(imageUri)
                                 )
                             } else {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)
                             }
                         } else {
                             //called from search activity
-                            if (avatarUri != null) {
-                                 holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
-                                         Util.getScaledBitMapByBase64(tournamentEvent.imageUri, context.resources)
+                            if (imageUri != null) {
+                                holder.itemView.iv_tournament_result_event_item_image.setImageBitmap(
+                                        Util.getBitMapByByteArr(imageUri)
                                 )
                             } else {
                                 holder.itemView.iv_tournament_result_event_item_image.setImageResource(R.drawable.ic_birthday_person)

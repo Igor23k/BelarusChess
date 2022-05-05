@@ -1,8 +1,11 @@
 package bobrchess.of.by.belaruschess.network.api
 
 import bobrchess.of.by.belaruschess.dto.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.File
 
 
 interface PersonalServerApi {
@@ -53,7 +56,8 @@ interface PersonalServerApi {
     fun getPlace(@Path("id") id: Int): Call<PlaceDTO>
 
     @POST("/place")
-    fun addPlace(@Header("Authorization") authorization: String, @Body placeDTO: PlaceDTO): Call<PlaceDTO>
+    @Multipart
+    fun addPlace(@Header("Authorization") authorization: String, @Part("place") placeDTO: PlaceDTO, @Part file: MultipartBody.Part): Call<PlaceDTO>
 
     @DELETE("/place/{id}")
     fun removePlace(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<Int>
@@ -91,7 +95,8 @@ interface PersonalServerApi {
     fun refreshToken(@Header("Authorization") authorization: String): Call<TokenDTO>
 
     @POST("/register")
-    fun registration(@Body userDTO: UserDTO): Call<UserContextDTO>
+    @Multipart
+    fun registration(@Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part): Call<UserContextDTO>
 
     //Tournament
     @GET("/tournament/{id}")
@@ -105,10 +110,12 @@ interface PersonalServerApi {
     fun searchTournaments(@Query("text") text: String): Call<List<TournamentDTO>>
 
     @POST("/tournament")
-    fun addTournament(@Header("Authorization") authorization: String, @Body tournamentDTO: TournamentDTO): Call<TournamentDTO>
+    @Multipart
+    fun addTournament(@Header("Authorization") authorization: String, @Part("tournament") tournamentDTO: TournamentDTO, @Part file: MultipartBody.Part): Call<TournamentDTO>
 
     @POST("/updateUser")
-    fun updateUser(@Body userDTO: UserDTO, @Header("Authorization") authorization: String): Call<UserDTO>
+    @Multipart
+    fun updateUser(@Header("Authorization") authorization: String, @Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part): Call<UserDTO>
 
     //Game
     @GET("/game/{id}")

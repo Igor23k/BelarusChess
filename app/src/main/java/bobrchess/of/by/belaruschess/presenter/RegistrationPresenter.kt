@@ -6,7 +6,7 @@ import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 
 interface RegistrationPresenter : BasePresenter {
-    fun registration(userDTO: ExtendedUserDTO)
+    fun registration(userDTO: ExtendedUserDTO, userImageUri: String?)
     fun loadCoaches()
     fun loadRanks()
     fun loadCountries()

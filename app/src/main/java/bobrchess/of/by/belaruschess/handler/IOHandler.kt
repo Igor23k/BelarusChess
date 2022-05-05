@@ -11,7 +11,6 @@ import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.Divider
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
-import bobrchess.of.by.belaruschess.util.Constants
 import java.io.File
 import java.util.*
 
@@ -300,7 +299,7 @@ object IOHandler {
      * @param objectString : String
      * @return EventDay?
      */
-    fun convertStringToEventDate(context: Context, objectString: String): EventDate? {
+    private fun convertStringToEventDate(context: Context, objectString: String): EventDate? {
         objectString.split(tournamentDivider_properties).let { stringArray ->
             if (stringArray.isNotEmpty()) {
                 when (stringArray[0]) {
@@ -309,7 +308,7 @@ object IOHandler {
                         var forename = "-"
                         var startDate = "-"
                         var finishDate = "-"
-                        var avatarImageURI: String? = null
+                        var avatarImageURI: ByteArray? = null
                         var shortDescription: String? = null
                         var toursCount: String? = null
                         var fullDescription: String? = null
@@ -343,9 +342,9 @@ object IOHandler {
                                 EventTournament.Identifier.FullDescription.toString() -> {
                                     fullDescription = property[1]
                                 }
-                                EventTournament.Identifier.AvatarUri.toString() -> {
+                              /*  EventTournament.Identifier.Image.toString() -> {
                                     avatarImageURI = property[1]
-                                }
+                                }*/
                                 EventTournament.Identifier.Referee.toString() -> {
                                     refereeId = property[1]
                                 }
@@ -369,7 +368,7 @@ object IOHandler {
                                 forename
                             )
                         if (shortDescription != null) tournament.shortDescription = shortDescription
-                        if (avatarImageURI != null) tournament.imageUri = avatarImageURI
+                        if (avatarImageURI != null) tournament.image = avatarImageURI
                         if (fullDescription != null) tournament.fullDescription = fullDescription
                         if (toursCount != null) tournament.toursCount = toursCount.toInt()
                         if (refereeId != null) tournament.refereeId = refereeId.toLong()
@@ -497,63 +496,5 @@ object IOHandler {
             }
         }
         return false
-    }
-
-    fun importEventsFromExternalStorage(context: Context): Boolean {
-        //check if external storage is available for reading
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            val storagePath = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                "belaruschess"
-            )
-            //when folder finding did not succeed
-            if (!storagePath.exists()) {
-                Log.e("IOHANDLER", "Directory not existent/ readable")
-                Toast.makeText(context, R.string.permissions_toast_import_error, Toast.LENGTH_LONG)
-                    .show()
-                return false
-            } else {
-                try {
-                    val data = File(storagePath.absolutePath + "/events.txt")
-                    data.readLines().apply {
-                        this.forEach {
-                            convertStringToEventDate(context, it).let { event ->
-                                if (event != null) {
-
-                                    //only add onetimevents which are not expired
-                                    if (!(event is OneTimeEvent && event.dateIsExpired())) {
-                                        EventHandler.addEvent(
-                                            event,
-                                            context,
-                                            writeAfterAdd = true,
-                                            addNewNotification = true,
-                                            //only update EventList sorting when last line reached
-                                            updateEventList = (it == this.last())
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.e("IOHANDLER", e.localizedMessage)
-                    Toast.makeText(
-                        context,
-                        R.string.permissions_toast_import_error,
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Toast.makeText(context, R.string.error_retry_save_file, Toast.LENGTH_LONG)
-                        .show()
-
-                    // try again writing all current events
-                    writeAllEventsToExternalStorage(context)
-                    return false
-                }
-                return true
-            }
-        } else {
-            Toast.makeText(context, R.string.permissions_toast_no_sd, Toast.LENGTH_LONG).show()
-            return false
-        }
     }
 }

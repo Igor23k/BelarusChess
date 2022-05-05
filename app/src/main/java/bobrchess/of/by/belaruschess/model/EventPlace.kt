@@ -56,7 +56,7 @@ class EventPlace(
 
     var approved: Boolean? = null
 
-    var imageUri: String? = null
+    var image: ByteArray? = null
 
     var createdBy: Long? = null
 
@@ -71,7 +71,7 @@ class EventPlace(
                 getStringFromValue(Identifier.Capacity, this.capacity) +
                 getStringFromValue(Identifier.CreatedBy, this.createdBy) +
                 getStringFromValue(Identifier.Approved, this.approved) +
-                getStringFromValue(Identifier.ImageUri, this.imageUri)
+                getStringFromValue(Identifier.ImageUri, this.image)
     }
 
     companion object {

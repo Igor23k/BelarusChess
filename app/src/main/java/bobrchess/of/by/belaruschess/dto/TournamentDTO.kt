@@ -1,6 +1,5 @@
 package bobrchess.of.by.belaruschess.dto
 
-import java.io.File
 import java.io.Serializable
 
 open class TournamentDTO : Serializable {
@@ -16,7 +15,7 @@ open class TournamentDTO : Serializable {
     var place: PlaceDTO? = null
     var referee: UserDTO? = null
     var createdBy: UserDTO? = null
-    var image: String? = null
+    var image: ByteArray? = null
 
     constructor(tournamentDTO: TournamentDTO) {
         this.id = tournamentDTO.id
@@ -34,7 +33,7 @@ open class TournamentDTO : Serializable {
     }
 
     constructor(id: Long, toursCount: Int, name: String, shortDescription: String, fullDescription: String, startDate: String,
-                finishDate: String, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO, createdBy: UserDTO, image: String) {
+                finishDate: String, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO, createdBy: UserDTO, imageUri: ByteArray) {
         this.id = id
         this.toursCount = toursCount
         this.name = name
@@ -46,7 +45,7 @@ open class TournamentDTO : Serializable {
         this.place = place
         this.referee = referee
         this.createdBy = createdBy
-        this.image = image
+        this.image = imageUri
     }
 
     constructor()

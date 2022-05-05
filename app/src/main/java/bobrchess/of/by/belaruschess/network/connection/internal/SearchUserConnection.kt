@@ -13,8 +13,8 @@ class SearchUserConnection {
 
     private var callBack: CallBackSearchUser? = null
 
-    fun updateUser(userDTO: UserDTO, authorizationHeader: String) {
-        App.getPersonalServerApi().updateUser(userDTO, authorizationHeader).enqueue(object : Callback<UserDTO> {
+    fun updateUser(userDTO: UserDTO, userImageUri: String?, authorizationHeader: String) {
+        App.getPersonalServerApi().updateUser(authorizationHeader, userDTO, Util.getMultipartImage(userImageUri)).enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

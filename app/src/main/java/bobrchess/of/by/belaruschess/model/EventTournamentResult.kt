@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 
@@ -37,7 +36,7 @@ class EventTournamentResult(
 
     var position: Int? = null
     var points: Double? = null
-    var imageUri: String? = null
+    var image: ByteArray? = null
 
     /**
      * toString returns EventTournament as string representation
@@ -56,7 +55,7 @@ class EventTournamentResult(
                 getStringFromValue(Identifier.Position, this.position) +
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.Points, this.points) +
-                getStringFromValue(Identifier.Image, this.imageUri)
+                getStringFromValue(Identifier.Image, this.image)
     }
 
     companion object {

@@ -76,7 +76,7 @@ object BitmapHandler {
                 e.printStackTrace()
                 val event = EventHandler.getEventToEventIndex(id)
                 if (event is EventTournament) {
-                    event.imageUri = null
+                    event.image = null
                     EventHandler.changeEventAt(
                             id,
                             event,
@@ -114,7 +114,7 @@ object BitmapHandler {
         var success = true
         for (i in 0 until EventHandler.getList().size) {
             if (EventHandler.getList()[i] is EventTournament) {
-                if ((EventHandler.getList()[i] as EventTournament).imageUri != null) {
+               /* if ((EventHandler.getList()[i] as EventTournament).imageUri != null) {
                     success =
                             addDrawable(
                                     EventHandler.getList()[i].eventID,
@@ -122,9 +122,9 @@ object BitmapHandler {
                                     context,
                                     readBitmapFromGallery = false
                             )
-                }
+                }*///todo
             } else if (EventHandler.getList()[i] is EventUser) {
-                if ((EventHandler.getList()[i] as EventUser).imageUri != null) {
+                /*if ((EventHandler.getList()[i] as EventUser).imageUri != null) {
                     success =
                             addDrawable(
                                     EventHandler.getList()[i].eventID,
@@ -132,9 +132,9 @@ object BitmapHandler {
                                     context,
                                     readBitmapFromGallery = false
                             )
-                }
+                }*///todo
             } else if (EventHandler.getList()[i] is EventTournamentResult) {
-                if ((EventHandler.getList()[i] as EventTournamentResult).imageUri != null) {
+                /*if ((EventHandler.getList()[i] as EventTournamentResult).imageUri != null) {
                     success =
                             addDrawable(
                                     EventHandler.getList()[i].eventID,
@@ -142,7 +142,7 @@ object BitmapHandler {
                                     context,
                                     readBitmapFromGallery = false
                             )
-                }
+                }*///todo
             }
         }
         return success
