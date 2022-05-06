@@ -182,13 +182,13 @@ object Validator {
     }/*турс каунт перенести везде из места в турнир*/
 
     @Throws(IncorrectDataException::class)
-    fun validatePlaceData(placeDTO: ExtendedPlaceDTO?): Boolean {
+    fun validatePlaceData(placeDTO: ExtendedPlaceDTO?, placeImageUri: String?): Boolean {
         val name = placeDTO?.name
         val capacity = placeDTO?.capacity
         val building = placeDTO?.building
         val city = placeDTO?.city
         val street = placeDTO?.street
-        val image = placeDTO?.image
+        val image = placeImageUri
         val country = placeDTO?.selectedCountryIndex
 
         if (StringUtils.isEmpty(name) || name!!.isEmpty() || name.length > 100) {
@@ -212,9 +212,9 @@ object Validator {
         if (country == 0) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
         }
-        /*if (StringUtils.isEmpty(image)) {
+        if (StringUtils.isEmpty(image)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_IMAGE))
-        }*/
+        }
 
         return true
     }

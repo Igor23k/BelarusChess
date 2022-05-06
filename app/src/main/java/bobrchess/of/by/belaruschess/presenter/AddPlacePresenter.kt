@@ -5,7 +5,7 @@ import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView
 
 interface AddPlacePresenter : BasePresenter {
     fun removePlace(id: Int?)
-    fun addPlace(placeDTO: ExtendedPlaceDTO, userImageUri: String)
+    fun addPlace(placeDTO: ExtendedPlaceDTO, userImageUri: String?)
     fun loadCountries()
     fun attachView(activity: AddPlaceContractView)
     fun setSelectedCountryIndex(selectedCountryIndex: Int?)

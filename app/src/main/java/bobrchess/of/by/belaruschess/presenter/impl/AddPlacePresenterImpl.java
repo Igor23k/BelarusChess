@@ -70,6 +70,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
         } else {
             view.showToast(Constants.Companion.getINTERNAL_SERVER_ERROR());
         }
+        view.hideProgress();
     }
 
     @Override
@@ -82,7 +83,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
         if (viewIsReady) {
             try {
                 placeDTO.setSelectedCountryIndex(selectedCountryIndex);
-                Validator.INSTANCE.validatePlaceData(placeDTO);
+                Validator.INSTANCE.validatePlaceData(placeDTO, placeImageUri);
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
                 view.showProgress();
                 addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageUri), packageModel.getValue(TOKEN));

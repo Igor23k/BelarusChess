@@ -311,10 +311,10 @@ class Util {
 
                 // Find the correct scale value. It should be the power of 2.
                 var scale = 1
-                while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+             /*   while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
                         o.outHeight / scale / 2 >= REQUIRED_SIZE) {
                     scale *= 2
-                }
+                }*/
                 val o2 = BitmapFactory.Options()
                 o2.inSampleSize = scale
                 inputStream = FileInputStream(file)
@@ -324,7 +324,7 @@ class Util {
                 // here i override the original image file
                 file.createNewFile()
                 val outputStream = FileOutputStream(file)
-                selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
                 file
             } catch (e: java.lang.Exception) {
                 null

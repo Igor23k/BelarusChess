@@ -239,19 +239,25 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
             val fullPhotoUri: Uri = data!!.data!!
             Thread {
                 val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
-                (context as MainActivity).runOnUiThread {
-                    iv_add_avatar_btn.setImageBitmap(
-                            BitmapHandler.getCircularBitmap(
-                                    BitmapHandler.getScaledBitmap(
-                                            bitmap
-                                    ), resources
-                            )
-                    )
+
+                if (bitmap != null) {
+                    (context as MainActivity).runOnUiThread {
+                        iv_add_avatar_btn.setImageBitmap(
+                                BitmapHandler.getCircularBitmap(
+                                        BitmapHandler.getScaledBitmap(
+                                                bitmap
+                                        ), resources
+                                )
+                        )
+                    }
+                    placeImageUri = PathUtil.getRealPath(context, fullPhotoUri)
+                    avatarImgWasEdited = true
+                } else {
+                    (context as MainActivity).runOnUiThread {
+                        this.showToast(R.string.incorrect_image)
+                    }
                 }
             }.start()
-
-            placeImageUri = PathUtil.getRealPath(context, fullPhotoUri)
-            avatarImgWasEdited = true
         }
     }
 
@@ -260,7 +266,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
      */
     override fun acceptBtnPressed() {
         try {
-            placeImageUri?.let { addPlacePresenter?.addPlace(getPlaceData(), it) }
+            addPlacePresenter?.addPlace(getPlaceData(), placeImageUri)
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_capacity)
         }

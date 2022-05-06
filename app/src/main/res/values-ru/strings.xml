@@ -82,6 +82,7 @@
     <string name="incorrect_tours_count">Неверное количество туров! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_capacity">Неверная вместимость! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_data">Неверные данные! Пожалуйста, попробуйте еще раз.</string>
+    <string name="incorrect_image">Изображение не соответствует параметрам. Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_tournament_name">Неверное имя турнира! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_password">Неверный пароль! Пожалуйста, введите более 4 символов.</string>
     <string name="nick">Ник</string>

@@ -82,6 +82,7 @@
     <string name="incorrect_tours_count">Няправільная колькасць тураў! Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_capacity">Няправільная ўмяшчальнасць! Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_data">Няслушныя дадзеныя! Калі ласка, паспрабуйце яшчэ раз.</string>
+    <string name="incorrect_image">Выява не адпавядае параметрам. Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_tournament_name">Няправільнае імя турніру! Калі ласка, паспрабуйце яшчэ раз.</string>
     <string name="incorrect_password">Няслушны пароль! Калі ласка, увядзіце больш за 4 знакаў.</string>
     <string name="nick">Нік</string>

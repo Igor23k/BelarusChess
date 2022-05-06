@@ -83,6 +83,7 @@
     <string name="incorrect_tours_count">Incorrect tours count! Please, try again.</string>
     <string name="incorrect_capacity">Incorrect capacity! Please, try again.</string>
     <string name="incorrect_data">Incorrect data! Please, try again.</string>
+    <string name="incorrect_image">The image does not match the parameters! Please, try again.</string>
     <string name="incorrect_tournament_name">Incorrect tournament name! Please, try again.</string>
     <string name="incorrect_password">Incorrect password! Please, enter more than 4 characters.</string>
     <string name="description">Description</string>

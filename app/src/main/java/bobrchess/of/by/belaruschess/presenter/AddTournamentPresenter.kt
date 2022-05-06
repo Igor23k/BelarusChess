@@ -7,7 +7,7 @@ import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 
 interface AddTournamentPresenter : BasePresenter {
     fun removeTournament(id: Long?)
-    fun addTournament(tournamentDTO: ExtendedTournamentDTO, tournamentImageUri: String)
+    fun addTournament(tournamentDTO: ExtendedTournamentDTO, tournamentImageUri: String?)
     fun loadPlaces()
     fun loadReferees()
     fun attachView(activity: AddTournamentContractView)

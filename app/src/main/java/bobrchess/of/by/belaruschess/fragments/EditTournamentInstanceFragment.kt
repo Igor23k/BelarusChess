@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
@@ -35,6 +36,7 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
+import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -45,8 +47,6 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
-import android.support.v4.app.ActivityCompat
-import bobrchess.of.by.belaruschess.util.PathUtil
 
 
 /**
@@ -276,9 +276,10 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
             }
 
             // Set Buttons on Click Listeners
-            editName.setOnClickListener {checkPermission(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    101)
+            editName.setOnClickListener {
+                checkPermission(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        101)
             }
         }
 
@@ -397,6 +398,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         }
         return stringBuilder.toString()
     }
+
     /**
      * getImageFromFiles opens an intent to request a photo from the gallery
      * This function is called after the user clicks on the iv_add_avatar_btn
@@ -442,18 +444,25 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
             Thread {
                 val bitmap =
                         MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
-                (context as MainActivity).runOnUiThread {
-                    iv_add_avatar_btn.setImageBitmap(
-                            BitmapHandler.getCircularBitmap(
-                                    BitmapHandler.getScaledBitmap(
-                                            bitmap
-                                    ), resources
-                            )
-                    )
+
+                if (bitmap != null) {
+                    (context as MainActivity).runOnUiThread {
+                        iv_add_avatar_btn.setImageBitmap(
+                                BitmapHandler.getCircularBitmap(
+                                        BitmapHandler.getScaledBitmap(
+                                                bitmap
+                                        ), resources
+                                )
+                        )
+                    }
+                    tournamentImageUri = PathUtil.getRealPath(context, fullPhotoUri)
+                    imageWasEdited = true
+                } else {
+                    (context as MainActivity).runOnUiThread {
+                        this.showToast(R.string.incorrect_image)
+                    }
                 }
             }.start()
-            tournamentImageUri = PathUtil.getRealPath(context, fullPhotoUri)
-            imageWasEdited = true
         } else if (requestCode == REQUEST_TXT_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
             val text = readTextFromUri(this.context!!, fullPhotoUri)
@@ -476,7 +485,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
      */
     override fun acceptBtnPressed() {
         try {
-            tournamentImageUri?.let { addTournamentPresenter?.addTournament(getTournamentData(), it) }
+            addTournamentPresenter?.addTournament(getTournamentData(), tournamentImageUri)
         } catch (e: NumberFormatException) {
             hideProgress()
             showToast(R.string.incorrect_tours_count);

@@ -97,6 +97,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 Validator.INSTANCE.validateTournamentData(tournamentDTO);
                 tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex - 1));
                 tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex - 1));
+                removeRedundantImages(tournamentDTO);
                 view.disableButton();
                 view.showProgress();
                 addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), Util.Companion.compressImage(tournamentImageUri), packageModel.getValue(TOKEN));
@@ -107,6 +108,16 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
             }
         }
     }
+
+    private void removeRedundantImages(ExtendedTournamentDTO tournamentDTO) {
+        if (tournamentDTO.getPlace() != null) {
+            tournamentDTO.getPlace().setImage(null);
+        }
+        if (tournamentDTO.getReferee() != null) {
+            tournamentDTO.getReferee().setImage(null);
+        }
+    }
+
 
     public void attachView(@NonNull AddTournamentContractView activity) {
         view = activity;
