@@ -15,7 +15,6 @@ interface PasswordResetContractView : MvpView, BaseContractView, ButtonContractV
     fun showSnackBar(componentView: View, message: Int?, buttonText: Int?)
     fun showSnackBar(componentView: View, text: Int)
     fun showSnackBar(componentView: View, message: String)
-    fun authorization()
     fun tokenAuthorization()
     fun initActivityData()
 }
