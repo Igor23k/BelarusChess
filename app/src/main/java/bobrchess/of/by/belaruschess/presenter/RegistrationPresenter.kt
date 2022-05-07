@@ -4,9 +4,10 @@ import android.view.View
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
+import java.io.File
 
 interface RegistrationPresenter : BasePresenter {
-    fun registration(userDTO: ExtendedUserDTO, userImageUri: String?)
+    fun registration(userDTO: ExtendedUserDTO, userImageFile: File?)
     fun loadCoaches()
     fun loadRanks()
     fun loadCountries()

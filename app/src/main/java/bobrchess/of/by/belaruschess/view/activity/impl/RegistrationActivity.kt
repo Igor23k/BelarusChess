@@ -22,16 +22,17 @@ import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
-import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util.Companion.REGISTRATION_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Util.Companion.genders
 import bobrchess.of.by.belaruschess.util.Util.Companion.setUser
+import bobrchess.of.by.belaruschess.util.Util.Companion.transformUriToFile
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 import butterknife.BindView
 import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -88,7 +89,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     private var rankSpinner: Spinner? = null
     private var countrySpinner: Spinner? = null
     private var birthday: String? = null
-    private var userImageUri: String? = null
+    private var userImageFile: File? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,7 +169,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
                 this?.setOnClickListener {
                     dialog.dismiss()
                     iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                    userImageUri = null
+                    userImageFile = null
                 }
             }
 
@@ -247,7 +248,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
 
     override fun registration() {
         try {
-            presenter.registration(userData, userImageUri)
+            presenter.registration(userData, userImageFile)
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_rating)
             enableButton()
@@ -428,21 +429,28 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         //handle image/photo file choosing
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
-            Thread(Runnable {
-                val bitmap =
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, fullPhotoUri)
-                this.runOnUiThread {
-                    iv_add_avatar_btn.setImageBitmap(
-                            BitmapHandler.getCircularBitmap(
-                                    BitmapHandler.getScaledBitmap(
-                                            bitmap
-                                    ), resources
-                            )
-                    )
+            Thread {
+                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, fullPhotoUri)
+                if (bitmap != null) {
+                    this.runOnUiThread {
+                        iv_add_avatar_btn.setImageBitmap(
+                                BitmapHandler.getCircularBitmap(
+                                        BitmapHandler.getScaledBitmap(
+                                                bitmap
+                                        ), resources
+                                )
+                        )
+                    }
+                } else {
+                    this.runOnUiThread {
+                        this.showToast(R.string.incorrect_image)
+                    }
                 }
-            }).start()
+            }.start()
 
-            userImageUri = PathUtil.getRealPath(this.applicationContext, fullPhotoUri)
+            userImageFile = transformUriToFile(this.applicationContext, fullPhotoUri)
         }
     }
+
+
 }

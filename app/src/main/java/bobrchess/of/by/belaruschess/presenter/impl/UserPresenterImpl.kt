@@ -18,6 +18,7 @@ import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import butterknife.BindView
 import org.springframework.util.StringUtils
+import java.io.File
 
 class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     private var view: UserContractView? = null
@@ -64,7 +65,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
         }
     }
 
-    override fun updateUser(user: ExtendedUserDTO, userImageUri: String?) {
+    override fun updateUser(user: ExtendedUserDTO, userImageFile: File?) {
         if (viewIsReady) {
             try {
                 user.selectedCoachIndex = selectedCoachIndex - 1
@@ -77,7 +78,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
                 user.rank = ranksIndexes[selectedRankIndex]
                 user.beMale = selectedGenderIndex == 0
                 view!!.showProgress()
-                userConnection.updateUser(UserDTO(user), Util.compressImage(userImageUri), packageModel!!.getValue(Constants.TOKEN))
+                userConnection.updateUser(UserDTO(user), Util.compressImage(userImageFile), packageModel!!.getValue(Constants.TOKEN))
             } catch (e: IncorrectDataException) {
                 view!!.showToast(e.localizedMessage)
                 view!!.hideProgress()

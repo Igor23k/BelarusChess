@@ -9,6 +9,7 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     }
 
     @Override
-    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO, String tournamentImageUri) {
+    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO, File tournamentImageFile) {
         if (viewIsReady) {
             view.disableButton();
             try {
@@ -100,7 +101,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 removeRedundantImages(tournamentDTO);
                 view.disableButton();
                 view.showProgress();
-                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), Util.Companion.compressImage(tournamentImageUri), packageModel.getValue(TOKEN));
+                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), Util.Companion.compressImage(tournamentImageFile), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
                 view.hideProgress();

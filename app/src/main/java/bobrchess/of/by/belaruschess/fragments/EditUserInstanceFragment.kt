@@ -29,7 +29,6 @@ import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
-import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.EditUserContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
@@ -37,6 +36,7 @@ import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_edit_user.*
 import org.springframework.util.StringUtils
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,7 +64,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
      * userAvatarUri is a string to store the user picked image for the avatar
      */
     private var userImageByteArr: ByteArray? = null
-    private var userImageUri: String? = null
+    private var userImageFile: File? = null
 
     /**
      * avatarImgWasEdited is a boolean flag to store the information whether the avatar img has been changed
@@ -359,17 +359,24 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
             Thread {
                 val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, fullPhotoUri)
-                (context as MainActivity).runOnUiThread {
-                    iv_add_avatar_btn.setImageBitmap(
-                            BitmapHandler.getCircularBitmap(
-                                    BitmapHandler.getScaledBitmap(
-                                            bitmap
-                                    ), resources
-                            )
-                    )
+
+                if (bitmap != null) {
+                    (context as MainActivity).runOnUiThread {
+                        iv_add_avatar_btn.setImageBitmap(
+                                BitmapHandler.getCircularBitmap(
+                                        BitmapHandler.getScaledBitmap(
+                                                bitmap
+                                        ), resources
+                                )
+                        )
+                    }
+                } else {
+                    (context as MainActivity).runOnUiThread {
+                        this.showToast(R.string.incorrect_image)
+                    }
                 }
             }.start()
-            userImageUri = PathUtil.getRealPath(context, fullPhotoUri)
+            userImageFile = this.context?.let { Util.transformUriToFile(it, fullPhotoUri) }
             imageWasEdited = true
         }
     }
@@ -379,7 +386,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
      */
     override fun acceptBtnPressed() {
         try {
-            userPresenterImpl?.updateUser(getUserData(), userImageUri)
+            userPresenterImpl?.updateUser(getUserData(), userImageFile)
         } catch (e: NumberFormatException) {
             hideProgress()
             showToast(R.string.incorrect_tours_count);
@@ -542,7 +549,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         userPresenterImpl?.saveCoachesIndexes(updatedCoaches)
     }
 
-    fun removeCurrentUserFromList(coaches: MutableList<out UserDTO>?):MutableList<out UserDTO>? {
+    fun removeCurrentUserFromList(coaches: MutableList<out UserDTO>?): MutableList<out UserDTO>? {
         if (user != null) {
             val id = user!!.id
             coaches?.removeIf { coach ->

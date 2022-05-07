@@ -25,6 +25,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import org.springframework.util.CollectionUtils
 import org.springframework.util.StringUtils
+import java.io.File
 
 
 @InjectViewState
@@ -127,7 +128,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         loadCoaches()
     }
 
-    override fun registration(userDTO: ExtendedUserDTO, placeImageUri: String?) {
+    override fun registration(userDTO: ExtendedUserDTO, userImageFile: File?) {
         view!!.disableButton()
         try {
             fillUserBySpinnerValues(userDTO)
@@ -135,7 +136,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
             setUserData(userDTO)
             userDTO.password = Util.getEncodedPassword(userDTO.password!!)
             view!!.showProgress()
-            userConnection.registration(UserDTO(userDTO), compressImage(placeImageUri))
+            userConnection.registration(UserDTO(userDTO), compressImage(userImageFile))
         } catch (e: Exception) {
             view!!.enableButton()
             view!!.hideProgress()

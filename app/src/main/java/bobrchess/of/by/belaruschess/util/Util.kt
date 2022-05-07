@@ -1,12 +1,22 @@
 package bobrchess.of.by.belaruschess.util
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.ContentUris
 import android.content.Context
 import android.content.res.Resources
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.DocumentsContract
+import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.support.v4.content.CursorLoader
 import android.util.Base64
 import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.handler.BitmapHandler
@@ -20,11 +30,11 @@ import okhttp3.RequestBody
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import org.springframework.util.StringUtils
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
+import java.net.URISyntaxException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class Util {
 
@@ -268,32 +278,13 @@ class Util {
             return null
         }
 
-        /* fun getScaledBitMapByBase64(byteArr: ByteArray, resources: Resources): Bitmap? {
-             var bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.size)
-             if (bitmap != null) {
-                 bitmap = BitmapHandler.getCircularBitmap(
-                         BitmapHandler.getScaledBitmap(
-                                 bitmap
-                         ), resources
-                 )
-             }
-             return bitmap
-         }*/
-
         fun getMultipartImage(image: File?): MultipartBody.Part? {
             return if (image != null) {
                 MultipartBody.Part.createFormData("file", image.name, RequestBody.create(MediaType.parse("image/*"), image))
             } else null
         }
 
-        fun compressImage(imageUri: String?): File? {
-            if (!StringUtils.isEmpty(imageUri)) {
-                return compressImage(File(imageUri))
-            }
-            return null
-        }
-
-        fun compressImage(file: File): File? {
+        fun compressImage(file: File?): File? {
             return try {
 
                 // BitmapFactory options to downsize the image
@@ -311,10 +302,10 @@ class Util {
 
                 // Find the correct scale value. It should be the power of 2.
                 var scale = 1
-             /*   while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
-                        o.outHeight / scale / 2 >= REQUIRED_SIZE) {
-                    scale *= 2
-                }*/
+                /*   while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                           o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                       scale *= 2
+                   }*/
                 val o2 = BitmapFactory.Options()
                 o2.inSampleSize = scale
                 inputStream = FileInputStream(file)
@@ -322,7 +313,7 @@ class Util {
                 inputStream.close()
 
                 // here i override the original image file
-                file.createNewFile()
+                file?.createNewFile()
                 val outputStream = FileOutputStream(file)
                 selectedBitmap?.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
                 file
@@ -331,11 +322,95 @@ class Util {
             }
         }
 
-        /**
-         * REQUEST_IMAGE_GET is an intent code used for open the photo gallery
-         */
-        private val REQUEST_IMAGE_GET = 1
+        @Throws(IOException::class)
+        fun transformUriToFile(context: Context, uri: Uri): File? {
+            val inputStream: InputStream? = context.getContentResolver().openInputStream(uri)
+            val fileName = getFileName(context, uri)
+            val splitName = splitFileName(fileName)
+            var tempFile: File = File.createTempFile(splitName[0], splitName[1])
+            tempFile = rename(tempFile, fileName)
+            tempFile.deleteOnExit()
+            var out: FileOutputStream? = null
+            try {
+                out = FileOutputStream(tempFile)
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            }
+            if (inputStream != null) {
+                if (out != null) {
+                    copy(inputStream, out)
+                }
+                inputStream.close()
+            }
+            if (out != null) {
+                out.close()
+            }
+            return tempFile
+        }
 
+        private fun splitFileName(fileName: String?): Array<String?> {
+            var name = fileName
+            var extension: String? = ""
+            val i = fileName!!.lastIndexOf(".")
+            if (i != -1) {
+                name = fileName.substring(0, i)
+                extension = fileName.substring(i)
+            }
+            return arrayOf(name, extension)
+        }
+
+        private fun getFileName(context: Context, uri: Uri): String? {
+            var result: String? = null
+            if (uri.scheme == "content") {
+                val cursor: Cursor? = context.getContentResolver().query(uri, null, null, null, null)
+                try {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                    }
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                } finally {
+                    if (cursor != null) {
+                        cursor.close()
+                    }
+                }
+            }
+            if (result == null) {
+                result = uri.path
+                val cut: Int = result!!.lastIndexOf(File.separator)
+                if (cut != -1) {
+                    result = result.substring(cut + 1)
+                }
+            }
+            return result
+        }
+
+        private fun rename(file: File, newName: String?): File {
+            val newFile = File(file.getParent(), newName)
+            if (!newFile.equals(file)) {
+                if (newFile.exists() && newFile.delete()) {
+                    //  Log.d("FileUtil", "Delete old $newName file")
+                }
+                if (file.renameTo(newFile)) {
+                    //   Log.d("FileUtil", "Rename file to $newName")
+                }
+            }
+            return newFile
+        }
+
+        private val EOF = -1
+
+        @Throws(IOException::class)
+        private fun copy(input: InputStream, output: OutputStream): Long {
+            var count: Long = 0
+            var n: Int = 0
+            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+            while (EOF !== input.read(buffer).also({ n = it })) {
+                output.write(buffer, 0, n)
+                count += n.toLong()
+            }
+            return count
+        }
     }
 
 }

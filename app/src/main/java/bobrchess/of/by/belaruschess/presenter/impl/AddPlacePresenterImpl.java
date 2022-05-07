@@ -9,6 +9,7 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,14 +80,14 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     }
 
     @Override
-    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, String placeImageUri) {
+    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, File placeImageFile) {
         if (viewIsReady) {
             try {
                 placeDTO.setSelectedCountryIndex(selectedCountryIndex);
-                Validator.INSTANCE.validatePlaceData(placeDTO, placeImageUri);
+                Validator.INSTANCE.validatePlaceData(placeDTO, placeImageFile);
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
                 view.showProgress();
-                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageUri), packageModel.getValue(TOKEN));
+                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageFile), packageModel.getValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
             } finally {

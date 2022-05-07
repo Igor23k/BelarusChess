@@ -22,12 +22,12 @@ import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
 import bobrchess.of.by.belaruschess.presenter.impl.AddPlacePresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
-import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_place.*
+import java.io.File
 
 
 /**
@@ -57,7 +57,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
      * placeAvatarUri is a string to store the user picked image for the avatar
      */
     private var placeImageArr: ByteArray? = null
-    private var placeImageUri: String? = null
+    private var placeImageFile: File? = null
 
     /**
      * avatarImgWasEdited is a boolean flag to store the information whether the avatar img has been changed
@@ -196,14 +196,14 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
             dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
                 this?.setOnClickListener {
                     dialog.dismiss()
-                    if (isEditedPlace && placeImageUri != null && (EventHandler.getEventToEventIndex(eventID) as EventPlace).image != null) {
+                    if (isEditedPlace && placeImageFile != null && (EventHandler.getEventToEventIndex(eventID) as EventPlace).image != null) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         avatarImgWasEdited = true
-                        placeImageUri = null
+                        placeImageFile = null
                         //todo BitmapHandler.removeBitmap(eventID, context!!) убрал удаление пока что
                     } else {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        placeImageUri = null
+                        placeImageFile = null
                     }
                 }
             }
@@ -250,7 +250,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
                                 )
                         )
                     }
-                    placeImageUri = PathUtil.getRealPath(context, fullPhotoUri)
+                    placeImageFile = this.context?.let { Util.transformUriToFile(it, fullPhotoUri) }
                     avatarImgWasEdited = true
                 } else {
                     (context as MainActivity).runOnUiThread {
@@ -266,7 +266,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
      */
     override fun acceptBtnPressed() {
         try {
-            addPlacePresenter?.addPlace(getPlaceData(), placeImageUri)
+            addPlacePresenter?.addPlace(getPlaceData(), placeImageFile)
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_capacity)
         }

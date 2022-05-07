@@ -36,14 +36,15 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.AddTournamentPresenterImpl
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
-import bobrchess.of.by.belaruschess.util.PathUtil
 import bobrchess.of.by.belaruschess.util.Util
+import bobrchess.of.by.belaruschess.util.Util.Companion.transformUriToFile
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
 import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
@@ -75,7 +76,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
     /**
      * tournamentAvatarUri is a string to store the user picked image for the avatar
      */
-    private var tournamentImageUri: String? = null
+    private var tournamentImageFile: File? = null
     private var tournamentImageByteArr: ByteArray? = null
 
     /**
@@ -348,16 +349,16 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
             dialog.findViewById<ConstraintLayout>(R.id.layout_bottom_sheet_delete).apply {
                 this?.setOnClickListener {
                     dialog.dismiss()
-                    if (isEditedTournament && tournamentImageUri != null && (EventHandler.getEventToEventIndex(
+                    if (isEditedTournament && tournamentImageFile != null && (EventHandler.getEventToEventIndex(
                                     eventID
                             ) as EventTournament).image != null
                     ) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
                         imageWasEdited = true
-                        tournamentImageUri = null
+                        tournamentImageFile = null
                     } else {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        tournamentImageUri = null
+                        tournamentImageFile = null
                     }
                 }
             }
@@ -455,7 +456,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                                 )
                         )
                     }
-                    tournamentImageUri = PathUtil.getRealPath(context, fullPhotoUri)
+                    tournamentImageFile = this.context?.let { transformUriToFile(it, fullPhotoUri) }
                     imageWasEdited = true
                 } else {
                     (context as MainActivity).runOnUiThread {
@@ -485,7 +486,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
      */
     override fun acceptBtnPressed() {
         try {
-            addTournamentPresenter?.addTournament(getTournamentData(), tournamentImageUri)
+            addTournamentPresenter?.addTournament(getTournamentData(), tournamentImageFile)
         } catch (e: NumberFormatException) {
             hideProgress()
             showToast(R.string.incorrect_tours_count);

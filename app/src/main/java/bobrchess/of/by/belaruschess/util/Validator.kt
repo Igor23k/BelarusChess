@@ -7,6 +7,7 @@ import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import org.springframework.util.StringUtils
+import java.io.File
 
 object Validator {
     @Throws(IncorrectDataException::class)
@@ -175,16 +176,15 @@ object Validator {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_MATCH_DATE))
         }
         return true
-    }/*турс каунт перенести везде из места в турнир*/
+    }
 
     @Throws(IncorrectDataException::class)
-    fun validatePlaceData(placeDTO: ExtendedPlaceDTO?, placeImageUri: String?): Boolean {
+    fun validatePlaceData(placeDTO: ExtendedPlaceDTO?, image: File?): Boolean {
         val name = placeDTO?.name
         val capacity = placeDTO?.capacity
         val building = placeDTO?.building
         val city = placeDTO?.city
         val street = placeDTO?.street
-        val image = placeImageUri
         val country = placeDTO?.selectedCountryIndex
 
         if (StringUtils.isEmpty(name) || name!!.isEmpty() || name.length > 100) {
@@ -208,7 +208,7 @@ object Validator {
         if (country == 0) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
         }
-        if (StringUtils.isEmpty(image)) {
+        if (image == null) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_IMAGE))
         }
 
