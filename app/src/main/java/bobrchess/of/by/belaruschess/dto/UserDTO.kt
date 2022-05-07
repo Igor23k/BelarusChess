@@ -10,7 +10,6 @@ open class UserDTO : Serializable {
     var patronymic: String? = null
     var birthday: String? = null
     var email: String? = null
-    var phoneNumber: String? = null
     var password: String? = null
     var beCoach: Boolean = false
     var beAdmin: Boolean = false
@@ -30,7 +29,6 @@ open class UserDTO : Serializable {
         this.patronymic = userDTO.patronymic
         this.birthday = userDTO.birthday
         this.email = userDTO.email
-        this.phoneNumber = userDTO.phoneNumber
         this.password = userDTO.password
         this.beCoach = userDTO.beCoach
         this.beAdmin = userDTO.beAdmin
@@ -45,7 +43,7 @@ open class UserDTO : Serializable {
     }
 
     constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?,
-                email: String?, phoneNumber: String?, password: String?,
+                email: String?, password: String?,
                 beCoach: Boolean, beOrganizer: Boolean, beAdmin: Boolean, beMale: Boolean?, rank: RankDTO?,
                 country: CountryDTO?, rating: Int?, coach: String?,
                 places: List<PlaceDTO>?, image: ByteArray) {
@@ -55,7 +53,6 @@ open class UserDTO : Serializable {
         this.patronymic = patronymic
         this.birthday = birthday
         this.email = email
-        this.phoneNumber = phoneNumber
         this.password = password
         this.beCoach = beCoach
         this.beOrganizer = beOrganizer

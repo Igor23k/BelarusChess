@@ -65,7 +65,6 @@
     <string name="userAddress">Адрас</string>
     <string name="userRating">Рэйтынг</string>
     <string name="userEmail">Электронная пошта</string>
-    <string name="phoneNumber">Мабільны нумар</string>
     <string name="renterPassword">Паўторны ўвод пароля</string>
     <string name="createAccount">Рэгістрацыя</string>
     <string name="addTournament">Дадаць турнір</string>

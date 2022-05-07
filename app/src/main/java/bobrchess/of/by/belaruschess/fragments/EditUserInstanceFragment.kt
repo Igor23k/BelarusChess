@@ -105,10 +105,6 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         view!!.findViewById<EditText>(R.id.e_edit_re_enter_password)
     }
 
-    private val editPhoneNumber: EditText by lazy {
-        view!!.findViewById<EditText>(R.id.e_edit_phone_number)
-    }
-
     private val editRating: EditText by lazy {
         view!!.findViewById<EditText>(R.id.e_edit_rating)
     }
@@ -408,7 +404,6 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
             userData.reEnterPassword = user?.password
         }
 
-        userData.phoneNumber = editPhoneNumber.text.toString()
         userData.rating = editRating.text.toString().toInt()
         userData.birthday = convertDateToString(eventStartDate)
         userData.beAdmin = user?.beAdmin!!
@@ -624,38 +619,6 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
     }
 
-    /*override fun userUpdated(userDTO: UserDTO?) {
-        //create new instance from edit fields
-        val userEvent = EventUser(
-                userDTO!!.id!!.toInt(),
-                this.eventStartDate!!,
-                userDTO.name!!,
-                userDTO.surname!!
-        )
-
-        userEvent.imageUri = userDTO.image
-        userEvent.patronymic = userDTO.patronymic
-        userEvent.phoneNumber = userDTO.phoneNumber
-        userEvent.rating = userDTO.rating
-        userEvent.coach = userDTO.coach
-        userEvent.countryId = userDTO.country?.id
-        userEvent.rankId = userDTO.rank?.id
-        userEvent.beMale = userDTO.beMale //userEvent.genderId = userDTO.get?.id // coach тоже
-                //и остальных проверить
-        EventHandler.getEventToEventIndex(eventID)?.let { event ->
-            if (event is EventUser) {
-                EventHandler.changeEventAt(eventID, userEvent, context!!, true)
-                Snackbar.make(
-                        view!!,
-                        context!!.resources.getString(R.string.user_edited_notification),
-                        Snackbar.LENGTH_LONG
-                ).show()
-            }
-            closeBtnPressed()
-        }
-        //}
-    }*/
-
     override fun showUsers(coaches: List<UserDTO>?) {
         this.coaches = coaches
         updateUI()
@@ -699,7 +662,6 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
         editPatronymic.setText(user!!.patronymic)
         editRating.setText(user!!.rating.toString())
         editEmail.setText(user!!.email.toString())
-        editPhoneNumber.setText(user!!.phoneNumber.toString())
         userImageByteArr = user!!.image
 
         btn_user_edit_fragment.setOnClickListener {

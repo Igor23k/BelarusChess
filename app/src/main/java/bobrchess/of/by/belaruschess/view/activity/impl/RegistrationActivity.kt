@@ -61,10 +61,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     var emailText: EditText? = null
 
     @JvmField
-    @BindView(R.id.e_number_input)
-    var mobileText: EditText? = null
-
-    @JvmField
     @BindView(R.id.e_password_input)
     var passwordText: EditText? = null
 
@@ -130,7 +126,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         patronymicText = findViewById(R.id.e_patronymic_input)
         ratingText = findViewById(R.id.e_rating_input)
         emailText = findViewById(R.id.e_email_input)
-        mobileText = findViewById(R.id.e_number_input)
         passwordText = findViewById(R.id.e_password_input)
         reEnterPasswordText = findViewById(R.id.e_reEnterPassword_input)
         registrationButton = findViewById(R.id.b_registration)
@@ -288,7 +283,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
             userData.surname = surnameText!!.text.toString()
             userData.patronymic = patronymicText!!.text.toString()
             userData.email = emailText!!.text.toString()
-            userData.phoneNumber = mobileText!!.text.toString()
             userData.password = passwordText!!.text.toString()
             userData.reEnterPassword = reEnterPasswordText!!.text.toString()
             userData.rating = ratingText!!.text.toString().toInt()

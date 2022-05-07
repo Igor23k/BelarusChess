@@ -56,7 +56,6 @@ class Constants {
         val KEY_INCORRECT_USER_RE_ENTER_PASSWORD = "incorrect_user_re_enter_password"
         val KEY_INCORRECT_USER_RATING_BIG = "incorrect_user_rating_big"
         val KEY_INCORRECT_USER_RATING_SMALL = "incorrect_user_rating_small"
-        val KEY_INCORRECT_USER_PHONE_NUMBER = "incorrect_user_phone_number"
         val KEY_RANK_IS_NOT_SELECTED = "rank_is_not_selected"
         val KEY_GENDER_IS_NOT_SELECTED = "gender_is_not_selected"
         val KEY_COUNTRY_IS_NOT_SELECTED = "country_is_not_selected"

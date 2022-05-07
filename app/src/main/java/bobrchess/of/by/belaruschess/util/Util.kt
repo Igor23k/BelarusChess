@@ -324,7 +324,7 @@ class Util {
                 // here i override the original image file
                 file.createNewFile()
                 val outputStream = FileOutputStream(file)
-                selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
+                selectedBitmap?.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
                 file
             } catch (e: java.lang.Exception) {
                 null

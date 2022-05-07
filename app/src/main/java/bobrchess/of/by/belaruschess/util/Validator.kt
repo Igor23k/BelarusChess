@@ -19,7 +19,6 @@ object Validator {
         val patronymic = userDTO?.patronymic
         val rating = userDTO?.rating
         val birthday = userDTO?.birthday
-        val phoneNumber = userDTO?.phoneNumber
         val rank = userDTO?.selectedRankIndex
         val country = userDTO?.selectedCountryIndex
         val isMale = userDTO?.selectedGenderIndex
@@ -44,9 +43,6 @@ object Validator {
         }
         if (StringUtils.isEmpty(birthday)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_BIRTHDAY))
-        }
-        if (StringUtils.isEmpty(phoneNumber) || phoneNumber!!.length < 5 || phoneNumber.length > 20) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PHONE_NUMBER))
         }
 
         if (checkIndexes) {
