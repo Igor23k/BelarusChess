@@ -695,7 +695,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
 
     override fun hideProgress() {
         if (progressDialog != null) {
-            progressDialog!!.dismiss()
+            progressDialog?.dismiss()
         }
     }
 

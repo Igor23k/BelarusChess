@@ -24,8 +24,8 @@ interface PersonalServerApi {
     @GET("/api/allUsers")
     fun users(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
-    @GET("/api/coaches")
-    fun coaches(@Header("Authorization") authorization: String): Call<List<UserDTO>>
+    @GET("/coaches")
+    fun coaches(): Call<List<UserDTO>>
 
     @GET("/api/referees")
     fun referees(@Header("Authorization") authorization: String): Call<List<UserDTO>>
@@ -113,7 +113,7 @@ interface PersonalServerApi {
     @Multipart
     fun addTournament(@Header("Authorization") authorization: String, @Part("tournament") tournamentDTO: TournamentDTO, @Part file: MultipartBody.Part?): Call<TournamentDTO>
 
-    @POST("/updateUser")
+    @POST("/api/updateUser")
     @Multipart
     fun updateUser(@Header("Authorization") authorization: String, @Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part?): Call<UserDTO>
 

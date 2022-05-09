@@ -2,15 +2,14 @@ package bobrchess.of.by.belaruschess.presenter.impl
 
 import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
-import bobrchess.of.by.belaruschess.dto.CountryDTO
-import bobrchess.of.by.belaruschess.dto.ErrorDTO
-import bobrchess.of.by.belaruschess.dto.RankDTO
-import bobrchess.of.by.belaruschess.dto.UserDTO
+import bobrchess.of.by.belaruschess.dto.*
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.network.connection.internal.SearchUserConnection
+import bobrchess.of.by.belaruschess.network.connection.internal.TokenConnection
 import bobrchess.of.by.belaruschess.presenter.UserPresenter
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackSearchUser
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackToken
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Validator.validateUserData
@@ -20,9 +19,10 @@ import butterknife.BindView
 import org.springframework.util.StringUtils
 import java.io.File
 
-class UserPresenterImpl : CallBackSearchUser, UserPresenter {
+class UserPresenterImpl : CallBackSearchUser, CallBackToken, UserPresenter {
     private var view: UserContractView? = null
-    private val userConnection: SearchUserConnection
+    private var userConnection: SearchUserConnection = SearchUserConnection()
+    private var tokenConnection: TokenConnection = TokenConnection()
     private var viewIsReady = false
     private var packageModel: PackageModel? = null
     private var connectivityStatus: Int? = 0
@@ -33,6 +33,8 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     private val ranksIndexes: MutableMap<Int, RankDTO?> = HashMap()
     private val countriesIndexes: MutableMap<Int, CountryDTO?> = HashMap()
     private val coachesIndexes: MutableMap<Int, String> = HashMap()
+    var updatedUser: UserDTO? = null
+    var updatedUserImage: File? = null
 
     @JvmField
     @BindView(R.id.t_link_registration)
@@ -40,32 +42,32 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
 
     override fun loadUserById(id: Int) {
         view!!.showProgress()
-        userConnection.getUserById(packageModel!!.getValue(Constants.TOKEN), id)
+        userConnection.getUserById(packageModel!!.getSharePrefValue(Constants.TOKEN), id)
     }
 
     override fun loadReferees() {
-        view!!.showProgress()
-        userConnection.getReferees(packageModel!!.getValue(Constants.TOKEN))
+        //view!!.showProgress()
+        userConnection.getReferees(packageModel!!.getSharePrefValue(Constants.TOKEN))
     }
 
     override fun loadCoaches() {
-        view!!.showProgress()
-        userConnection.getCoaches(packageModel!!.getValue(Constants.TOKEN))
+      //  view!!.showProgress()
+        userConnection.getCoaches()
     }
 
     override fun loadUsers(count: Int?) {
         view!!.showProgress()
-        userConnection.getUsers(count, packageModel!!.getValue(Constants.TOKEN))
+        userConnection.getUsers(count, packageModel!!.getSharePrefValue(Constants.TOKEN))
     }
 
     override fun searchUsers(text: String) {
         if (viewIsReady) {
             view!!.showProgress()
-            userConnection.searchUsers(text, packageModel!!.getValue(Constants.TOKEN))
+            userConnection.searchUsers(text, packageModel!!.getSharePrefValue(Constants.TOKEN))
         }
     }
 
-    override fun updateUser(user: ExtendedUserDTO, userImageFile: File?) {
+    override fun updateUser(user: ExtendedUserDTO, userImage: File?) {
         if (viewIsReady) {
             try {
                 user.selectedCoachIndex = selectedCoachIndex - 1
@@ -78,7 +80,11 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
                 user.rank = ranksIndexes[selectedRankIndex]
                 user.beMale = selectedGenderIndex == 0
                 view!!.showProgress()
-                userConnection.updateUser(UserDTO(user), Util.compressImage(userImageFile), packageModel!!.getValue(Constants.TOKEN))
+
+                updatedUser = user
+                updatedUserImage = Util.compressImage(userImage)
+
+                userConnection.updateUser(updatedUser!!, updatedUserImage, packageModel!!.getSharePrefValue(Constants.TOKEN))
             } catch (e: IncorrectDataException) {
                 view!!.showToast(e.localizedMessage)
                 view!!.hideProgress()
@@ -112,6 +118,17 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
         view!!.hideProgress()
     }
 
+    override fun onResponse(tokenDTO: TokenDTO) {
+        packageModel!!.addSharePref(Constants.TOKEN, tokenDTO.token)
+
+        if (updatedUser != null) {
+            userConnection.updateUser(updatedUser!!, updatedUserImage, packageModel!!.getSharePrefValue(Constants.TOKEN))
+        } else {
+            loadReferees()
+            loadCoaches()
+        }
+    }
+
     override fun onFailure(errorDTO: ErrorDTO) {
         view!!.hideProgress()
         when (errorDTO.error) {
@@ -130,8 +147,25 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
 
             }
             else -> {
-                onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+                when (errorDTO.message) {
+                    Constants.TOKEN_IS_EXPIRED_MESSAGE -> {
+                        view!!.showProgress()
+                        refreshToken()
+                    }
+                    else -> {
+                        onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+                    }
+                }
             }
+        }
+    }
+
+    private fun refreshToken() {
+        val refreshToken = packageModel!!.getSharePrefValue(Constants.REFRESH_TOKEN)
+        if (!StringUtils.isEmpty(refreshToken)) {
+            tokenConnection.refreshToken(refreshToken)
+        } else {
+            onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
         }
     }
 
@@ -198,7 +232,7 @@ class UserPresenterImpl : CallBackSearchUser, UserPresenter {
     }
 
     init {
-        userConnection = SearchUserConnection()
         userConnection.attachPresenter(this)
+        tokenConnection.attachPresenter(this)
     }
 }

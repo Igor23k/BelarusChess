@@ -55,7 +55,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     }
 
     override fun onResponse(userContextDTO: UserContextDTO) {
-        packageModel?.putTokenMap(userContextDTO.tokenMap)
+        packageModel?.addSharePref(userContextDTO.tokenMap)
         view!!.hideProgress()
         view!!.enableButton()
         view!!.startActivity(userContextDTO.user)
@@ -164,9 +164,6 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
         if (selectedGenderIndex != NOT_SELECTED_INDEX) {
             userDTO.beMale = isMale(selectedGenderIndex - 1)
         }
-        userDTO.beCoach = false
-        userDTO.beOrganizer = false
-        userDTO.beAdmin = false
     }
 
     override fun setConnectivityStatus(status: Int?) {
@@ -182,7 +179,7 @@ class RegistrationPresenterImpl : MvpPresenter<RegistrationContractView>(), Call
     }
 
     override fun loadCoaches() {
-        userConnection.getCoaches(packageModel!!.getValue(Constants.TOKEN))
+        userConnection.getCoaches()
     }
 
     override fun loadRanks() {
