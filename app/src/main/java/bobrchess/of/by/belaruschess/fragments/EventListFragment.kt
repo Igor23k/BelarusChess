@@ -48,7 +48,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class EventListFragment : AbstractFragment(), SearchTournamentContractView, FideApiContractView, UserContractView, SearchPlaceContractView {
 
@@ -137,6 +136,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         searchPlacePresenter!!.attachView(this)
         searchPlacePresenter!!.viewIsReady()
 
+        packageModel = PackageModel(this.context!!)
         setHasOptionsMenu(true)
         (context as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         (context as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
@@ -148,7 +148,7 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         isFABOpen = false
 
         if (userData != null) {
-            fabIsVisible = userData!!.beOrganizer || userData!!.beAdmin
+            fabIsVisible = userData!!.isAdmin() || userData!!.isOrganizer()
         }
         if (!fabIsVisible) {
             view.findViewById<FloatingActionButton>(R.id.fab_show_fab_menu).hide()
@@ -230,10 +230,10 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         fab_show_fab_menu.isClickable = false
         //show layouts
         if (fabIsVisible) {
-            if (userData!!.beAdmin) {
+            if (userData!!.isAdmin()) {
                 fab_layout_add_place.visibility = ConstraintLayout.VISIBLE
             }
-            if (userData!!.beOrganizer) {
+            if (userData!!.isOrganizer() || userData!!.isAdmin()) {
                 fab_layout_add_tournament.visibility = ConstraintLayout.VISIBLE
             }
             fab_layout_add_one_time.visibility = ConstraintLayout.VISIBLE
@@ -382,11 +382,11 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
                 searchTournamentPresenter?.loadTournaments()
             }
 
-         /*   R.id.item_show_users -> {
-                EventHandler.clearData()
-                entityType = USER
-                userPresenter?.loadUsers(10)
-            }*/
+            /*   R.id.item_show_users -> {
+                   EventHandler.clearData()
+                   entityType = USER
+                   userPresenter?.loadUsers(10)
+               }*/
 
             R.id.item_show_places -> {
                 EventHandler.clearData()
@@ -450,10 +450,11 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
         // Set a positive button and its click listener on alert dialog
         alertBuilder.setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
             EventHandler.clearData()
-            val intent = Intent(this.context, AuthorizationActivity::class.java)
-            startActivity(intent)
             val activity: MainActivity? = activity as MainActivity?
             activity?.clearUserData(null)
+            packageModel?.clearSharePref()
+            val intent = Intent(this.context, AuthorizationActivity::class.java)
+            startActivity(intent)
             this.activity?.finish()
         }
 

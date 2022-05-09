@@ -130,8 +130,8 @@ class Constants {
 
 
         //val PERSONAL_SERVER_HOST = "https://popular-ape-32.loca.lt1"
-        val PERSONAL_SERVER_HOST = "http://212.115.110.17:80"
-        //val PERSONAL_SERVER_HOST = "http://192.168.0.103:80"
+        //val PERSONAL_SERVER_HOST = "http://212.115.110.17:80"
+        val PERSONAL_SERVER_HOST = "http://192.168.185.14:80"
         //val PERSONAL_SERVER_HOST = "http://192.168.43.118:8080"
         val EXTERNAL_FIDE_API_SERVER_HOST = "https://app.fide.com"
         val EXTERNAL_FIDE_API_RELATIVE_PATH = ""
@@ -151,7 +151,13 @@ class Constants {
         val REQUEST_CODE = "requestCode"
         val USER_BIRTHDAY_FORMAT = "dd/MM/yyyy"
 
-        val IMAGE_PREFIX = "data:image/jpeg;base64,"
+        val ROLE_USER_ID = 1
+        val ROLE_COACH_ID = 2
+        val ROLE_ORGANIZER_ID = 3
+        val ROLE_ADMIN_ID = 4
+
+
+
     }
 
 }

@@ -56,7 +56,7 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
     }
 
     override fun onResponse(tokenDTO: TokenDTO) {
-        packageModel!!.putValue(TOKEN, tokenDTO.token)
+        packageModel!!.addSharePref(TOKEN, tokenDTO.token)
         tokenAuthorization()
     }
 
@@ -84,7 +84,8 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
                 }
             }
             else -> {
-                onServerUnavailable()
+               // onServerUnavailable()
+                refreshToken()
             }
 
         }
@@ -95,16 +96,16 @@ class TokenAuthPresenterImpl : MvpPresenter<AuthorizationContractView>(), CallBa
     }
 
     override fun isAuthenticated(): Boolean {
-        return !StringUtils.isEmpty(packageModel!!.getValue(TOKEN))
+        return !StringUtils.isEmpty(packageModel!!.getSharePrefValue(TOKEN))
     }
 
     override fun tokenAuthorization() {
-        val token = packageModel!!.getValue(TOKEN)
+        val token = packageModel!!.getSharePrefValue(TOKEN)
         authorizationConnection.authorization(token)
     }
 
     private fun refreshToken() {
-        val refreshToken = packageModel!!.getValue(REFRESH_TOKEN)
+        val refreshToken = packageModel!!.getSharePrefValue(REFRESH_TOKEN)
         if (!StringUtils.isEmpty(refreshToken)) {
             tokenConnection.refreshToken(refreshToken)
         } else {

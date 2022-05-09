@@ -413,9 +413,7 @@ class EditUserInstanceFragment : EventInstanceFragment(), EditUserContractView, 
 
         userData.rating = editRating.text.toString().toInt()
         userData.birthday = convertDateToString(eventStartDate)
-        userData.beAdmin = user?.beAdmin!!
-        userData.beCoach = user?.beCoach!!
-        userData.beOrganizer = user?.beOrganizer!!
+        userData.roles = user?.roles
         return userData
     }
 

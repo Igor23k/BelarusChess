@@ -267,8 +267,8 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        val isAdmin = (context as MainActivity).getUserData()?.beAdmin
-        val isOrganizer = (context as MainActivity).getUserData()?.beOrganizer
+        val isAdmin = (context as MainActivity).getUserData()?.isAdmin()
+        val isOrganizer = (context as MainActivity).getUserData()?.isOrganizer()
         val id = (context as MainActivity).getUserData()?.id
         if (isAdmin == true || (isOrganizer == true && id == tournament?.createdBy)) {
             inflater?.inflate(R.menu.toolbar_show_event_full, menu)

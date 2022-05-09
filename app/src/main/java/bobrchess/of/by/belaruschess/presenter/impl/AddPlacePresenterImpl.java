@@ -87,7 +87,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
                 Validator.INSTANCE.validatePlaceData(placeDTO, placeImageFile);
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
                 view.showProgress();
-                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageFile), packageModel.getValue(TOKEN));
+                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageFile), packageModel.getSharePrefValue(TOKEN));
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
             } finally {
@@ -113,7 +113,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     public void removePlace(Integer id) {
         if (viewIsReady) {
             view.showProgress();
-            addPlaceConnection.removePlace(id, packageModel.getValue(TOKEN));
+            addPlaceConnection.removePlace(id, packageModel.getSharePrefValue(TOKEN));
         }
     }
 

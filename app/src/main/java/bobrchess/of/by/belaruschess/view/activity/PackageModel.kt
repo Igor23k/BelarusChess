@@ -8,34 +8,35 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.Gravity
 import android.widget.Toast
-import bobrchess.of.by.belaruschess.util.Constants.Companion.REFRESH_TOKEN
-import bobrchess.of.by.belaruschess.util.Constants.Companion.REFRESH_TOKEN_DEFAULT
-import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN
-import bobrchess.of.by.belaruschess.util.Constants.Companion.TOKEN_DEFAULT
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PREFERENCES
 
 class PackageModel(private val context: Context) {
 
-    fun putTokenMap(tokenMap: Map<String, String>?) {
+    fun addSharePref(tokenMap: Map<String, String>?) {
         val editor = context.getSharedPreferences(USER_PREFERENCES, MODE_PRIVATE).edit()
         tokenMap?.entries?.forEach { entry -> editor.putString(entry.key, entry.value) }
         editor.apply()
     }
 
-    fun putValue(propertyName: String, propertyValue: String?) {
+    fun addSharePref(propertyName: String, propertyValue: String?) {
         val editor = context.getSharedPreferences(USER_PREFERENCES, MODE_PRIVATE).edit()
         editor.putString(propertyName, propertyValue)
         editor.apply()
     }
 
-    fun getValue(propertyName: String): String {
-          if (propertyName == TOKEN) {//todo закомментить эти 2 проверки видимо нужно
-              return TOKEN_DEFAULT
-          } else if (propertyName == REFRESH_TOKEN) {
-              return REFRESH_TOKEN_DEFAULT
-          }
-        val prefs = context.getSharedPreferences(USER_PREFERENCES, MODE_PRIVATE)
-        return prefs.getString(propertyName, "")
+    fun clearSharePref() {
+        val editor = context.getSharedPreferences(USER_PREFERENCES, MODE_PRIVATE).edit()
+        editor.clear()
+        editor.apply()
+    }
+
+    fun getSharePrefValue(propertyName: String): String {
+        val value = context.getSharedPreferences(USER_PREFERENCES, MODE_PRIVATE).getString(propertyName, "")!!
+        return if (value.isEmpty()) {
+            value
+        } else {
+            "Bearer $value"
+        }
     }
 
     fun showToast(resId: Int?) {
