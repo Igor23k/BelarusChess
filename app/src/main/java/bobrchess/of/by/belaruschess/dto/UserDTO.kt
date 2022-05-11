@@ -15,7 +15,7 @@ open class UserDTO : Serializable {
     var beMale: Boolean? = null
     var rank: RankDTO? = null
     var country: CountryDTO? = null
-    var roles: List<RoleDTO>? = null
+    var roles: List<UserRoleDTO>? = null
     var rating: Int? = null
     var coach: String? = null
     var places: List<PlaceDTO>? = null
@@ -41,7 +41,7 @@ open class UserDTO : Serializable {
 
     constructor(id: Long?, name: String?, surname: String?, patronymic: String?, birthday: String?,
                 email: String?, password: String?, beMale: Boolean?, rank: RankDTO?, country: CountryDTO?,
-                role: List<RoleDTO>?, rating: Int?, coach: String?, places: List<PlaceDTO>?, image: ByteArray) {
+                roles: List<UserRoleDTO>?, rating: Int?, coach: String?, places: List<PlaceDTO>?, image: ByteArray) {
         this.id = id
         this.name = name
         this.surname = surname
@@ -52,7 +52,7 @@ open class UserDTO : Serializable {
         this.beMale = beMale
         this.rank = rank
         this.country = country
-        this.roles = role
+        this.roles = roles
         this.rating = rating
         this.coach = coach
         this.places = places
@@ -62,14 +62,14 @@ open class UserDTO : Serializable {
     constructor()
 
     fun isAdmin(): Boolean {
-        return roles?.stream()?.filter { role ->role.id!! == Constants.ROLE_ADMIN_ID }?.findFirst()?.isPresent == true
+        return roles?.stream()?.filter { userRole ->userRole.role?.id!! == Constants.ROLE_ADMIN_ID }?.findFirst()?.isPresent == true
     }
 
     fun isCoach(): Boolean {
-        return roles?.stream()?.filter { role ->role.id!! == Constants.ROLE_COACH_ID }?.findFirst()?.isPresent == true
+        return roles?.stream()?.filter { userRole ->userRole.role?.id!! == Constants.ROLE_COACH_ID }?.findFirst()?.isPresent == true
     }
 
     fun isOrganizer(): Boolean {
-        return roles?.stream()?.filter { role ->role.id!! == Constants.ROLE_ORGANIZER_ID }?.findFirst()?.isPresent == true
+        return roles?.stream()?.filter { userRole ->userRole.role?.id!! == Constants.ROLE_ORGANIZER_ID }?.findFirst()?.isPresent == true
     }
 }
