@@ -50,7 +50,6 @@
     <string name="userPatronymic">Імя па бацьку</string>
     <string name="tournamentName">Назва турніру</string>
     <string name="locationName">Назва</string>
-    <string name="tournamentShortDescription">Кароткае апісанне турніру</string>
     <string name="tournamentFullDescription">Поўнае апісанне турніру</string>
     <string name="locationCity">Горад месца правядзення</string>
     <string name="locationCityHint">Горад</string>
@@ -127,8 +126,6 @@
     <string name="noInternetConnection">Злучэнне адсутнічае</string>
     <string name="noInternetConnectionMessage">Калі ласка, праверце доступ да інтэрнэту і паспрабуйце зноў</string>
     <string name="incorrectData">Няслушныя дадзеныя! Паспрабуйце зноў</string>
-
-    <string name="tournamentShortDescriptionHint">Кароткае апісанне</string>
 
     <string name="time">Час</string>
     <string name="date">Дата</string>

@@ -45,8 +45,6 @@
     <string name="userName">Name</string>
     <string name="tournamentName">Tournament name</string>
     <string name="locationName">Location name</string>
-    <string name="tournamentShortDescription">Tournament short description</string>
-    <string name="tournamentShortDescriptionHint">Short description</string>
     <string name="tournamentFullDescription">Tournament full description</string>
     <string name="tournamentFullDescriptionHint">Full description</string>
     <string name="tournamentToursCount">Tournament tours count</string>

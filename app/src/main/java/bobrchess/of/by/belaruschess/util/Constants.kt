@@ -97,7 +97,6 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_NAME = "incorrect_tournament_name"
         val KEY_INCORRECT_TOURNAMENT_PLACE = "incorrect_tournament_place"
         val KEY_INCORRECT_TOURNAMENT_TOURS_COUNT = "incorrect_tournament_tours_count"
-        val KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION = "incorrect_tournament_short_description"
         val KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION = "incorrect_tournament_full_description"
         val KEY_INCORRECT_TOURNAMENT_IMAGE = "incorrect_tournament_image"
         val KEY_INCORRECT_TOURNAMENT_START_DATE = "incorrect_tournament_start_date"

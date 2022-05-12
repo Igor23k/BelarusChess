@@ -574,7 +574,6 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.name = it.name!!
             event.toursCount = it.toursCount
             event.fullDescription = it.fullDescription
-            event.shortDescription = it.shortDescription
             event.toursCount = it.toursCount
             event.image = it.image
             event.refereeId = it.referee?.id

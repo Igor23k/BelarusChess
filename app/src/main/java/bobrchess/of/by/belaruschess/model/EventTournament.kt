@@ -23,35 +23,30 @@ class EventTournament(
         Name {
             override fun Identifier(): Int = 2
         },
-        ShortDescription {
+        FullDescription {
             override fun Identifier(): Int = 3
         },
-        FullDescription {
+        Id {
             override fun Identifier(): Int = 4
         },
-        Id {
+        Image {
             override fun Identifier(): Int = 5
         },
-        Image {
+        Referee {
             override fun Identifier(): Int = 6
         },
-        Referee {
+        CreatedBy {
             override fun Identifier(): Int = 7
         },
-        CreatedBy {
+        Place {
             override fun Identifier(): Int = 8
         },
-        Place {
-            override fun Identifier(): Int = 9
-        },
         ToursCount {
-            override fun Identifier(): Int = 10
+            override fun Identifier(): Int = 9
         }
     }
 
     var toursCount: Int? = null
-
-    var shortDescription: String? = null
 
     var fullDescription: String? = null
 
@@ -67,17 +62,20 @@ class EventTournament(
 
     override fun toString(): String {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
-                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
-                        this.eventDate,
-                        DateFormat.DEFAULT,
-                        Locale.GERMAN
-                )}${IOHandler.tournamentDivider_properties}" +
-                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
-                        this.eventDate,
-                        DateFormat.DEFAULT,
-                        Locale.GERMAN
-                )}" +
-                getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
+                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${
+                    parseDateToString(
+                            this.eventDate,
+                            DateFormat.DEFAULT,
+                            Locale.GERMAN
+                    )
+                }${IOHandler.tournamentDivider_properties}" +
+                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${
+                    parseDateToString(
+                            this.eventDate,
+                            DateFormat.DEFAULT,
+                            Locale.GERMAN
+                    )
+                }" +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.Image, this.image) +
@@ -95,17 +93,20 @@ class EventTournament(
      */
     fun toStringWithoutImage(): String {
         return "$Name${IOHandler.tournamentDivider_properties}${Identifier.Name}${IOHandler.tournamentDivider_values}${this.name}${IOHandler.tournamentDivider_properties}" +
-                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${parseDateToString(
-                        this.eventDate,
-                        DateFormat.DEFAULT,
-                        Locale.GERMAN
-                )}${IOHandler.tournamentDivider_properties}" +
-                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${parseDateToString(
-                        this.finishDate!!,
-                        DateFormat.DEFAULT,
-                        Locale.GERMAN
-                )}" +
-                getStringFromValue(Identifier.ShortDescription, this.shortDescription) +
+                "${Identifier.StartDate}${IOHandler.tournamentDivider_values}${
+                    parseDateToString(
+                            this.eventDate,
+                            DateFormat.DEFAULT,
+                            Locale.GERMAN
+                    )
+                }${IOHandler.tournamentDivider_properties}" +
+                "${Identifier.FinishDate}${IOHandler.tournamentDivider_values}${
+                    parseDateToString(
+                            this.finishDate!!,
+                            DateFormat.DEFAULT,
+                            Locale.GERMAN
+                    )
+                }" +
                 getStringFromValue(Identifier.Id, this.id) +
                 getStringFromValue(Identifier.FullDescription, this.fullDescription) +
                 getStringFromValue(Identifier.Referee, this.refereeId) +

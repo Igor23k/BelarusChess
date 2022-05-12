@@ -116,14 +116,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
     }
 
     /**
-     * editShortDescription is the TextEdit used for editing/ showing the shortDescription of the birthday
-     * It is lazy initialized
-     */
-    private val editShortDescription: EditText by lazy {
-        view!!.findViewById<EditText>(R.id.e_add_tournament_short_description)
-    }
-
-    /**
      * editStartDateCalendarview is the TextEdit used for editing/ showing the startDate of the birthday but reprensented by the android calendar view
      * It is lazy initialized
      */
@@ -499,7 +491,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         val tournamentData = ExtendedTournamentDTO()
         tournamentData.id = eventID.toLong()
         tournamentData.name = editName.text.toString()
-        tournamentData.shortDescription = editShortDescription.text.toString()
         tournamentData.fullDescription = editFullDescription.text.toString()
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
         tournamentData.countPlayersInTeam = 1
@@ -723,7 +714,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         )
 
 
-        tournamentEvent.shortDescription = tournamentDTO.shortDescription
         tournamentEvent.fullDescription = tournamentDTO.fullDescription
         tournamentEvent.finishDate = eventEndDate
         tournamentEvent.image = tournamentDTO.image
@@ -792,8 +782,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
                     editEndDateCalendarview.hint = endDate
                 }
 
-
-                editShortDescription.setText(tournament.shortDescription)
                 editToursCount.setText(tournament.toursCount.toString())
                 editName.setText(tournament.name)
                 switchIsYearGiven.isChecked = true

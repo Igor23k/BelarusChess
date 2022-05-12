@@ -42,19 +42,15 @@ object SearchHandler {
      */
     private fun processData(eventData: EventDate): Pair<Int, List<String>>? {
         when (eventData) {
-            //has forename, shortDescription, fullDescription
+            //has forename, fullDescription
             is EventTournament -> {
                 //all names which are separated by whitespaces/ minus char should be handled as independent words
                 val forenames = splitStringToList(eventData.name)
-                val surnames = splitStringToList(eventData.shortDescription)
                 val nicknames = splitStringToList(eventData.fullDescription)
 
                 val nameList = emptyList<String>().toMutableList().apply {
                     if (forenames != null) {
                         addAll(forenames)
-                    }
-                    if (surnames != null) {
-                        addAll(surnames)
                     }
                     if (nicknames != null) {
                         addAll(nicknames)

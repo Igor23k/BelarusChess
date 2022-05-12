@@ -62,8 +62,6 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                 EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
                     if (tournamentEvent is EventTournament) {
                         setToolbarTitle(tournamentEvent.name)
-                        this.tournament_short_description.visibility = TextView.VISIBLE
-                        this.tournament_short_description.text = tournamentEvent.shortDescription
                         this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + referee?.name + " " + referee?.surname
 
                         var scrollRange = -1

@@ -7,7 +7,6 @@ open class TournamentDTO : Serializable {
     var id: Long = 0
     var toursCount: Int = 0
     var name: String? = null
-    var shortDescription: String? = null
     var fullDescription: String? = null
     var startDate: String? = null
     var finishDate: String? = null
@@ -21,7 +20,6 @@ open class TournamentDTO : Serializable {
         this.id = tournamentDTO.id
         this.toursCount = tournamentDTO.toursCount
         this.name = tournamentDTO.name
-        this.shortDescription = tournamentDTO.shortDescription
         this.fullDescription = tournamentDTO.fullDescription
         this.startDate = tournamentDTO.startDate
         this.finishDate = tournamentDTO.finishDate
@@ -32,12 +30,11 @@ open class TournamentDTO : Serializable {
         this.image = tournamentDTO.image
     }
 
-    constructor(id: Long, toursCount: Int, name: String, shortDescription: String, fullDescription: String, startDate: String,
+    constructor(id: Long, toursCount: Int, name: String, fullDescription: String, startDate: String,
                 finishDate: String, countPlayersInTeam: Int?, place: PlaceDTO, referee: UserDTO, createdBy: UserDTO, imageUri: ByteArray) {
         this.id = id
         this.toursCount = toursCount
         this.name = name
-        this.shortDescription = shortDescription
         this.fullDescription = fullDescription
         this.startDate = startDate
         this.finishDate = finishDate

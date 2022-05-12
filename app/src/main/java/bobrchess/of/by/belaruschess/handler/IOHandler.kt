@@ -309,7 +309,6 @@ object IOHandler {
                         var startDate = "-"
                         var finishDate = "-"
                         var avatarImageURI: ByteArray? = null
-                        var shortDescription: String? = null
                         var toursCount: String? = null
                         var fullDescription: String? = null
                         var refereeId: String? = null
@@ -332,9 +331,6 @@ object IOHandler {
                                 }
                                 EventTournament.Identifier.Name.toString() -> {
                                     forename = property[1]
-                                }
-                                EventTournament.Identifier.ShortDescription.toString() -> {
-                                    shortDescription = property[1]
                                 }
                                 EventTournament.Identifier.ToursCount.toString() -> {
                                     toursCount = property[1]
@@ -367,7 +363,6 @@ object IOHandler {
                                 EventDate.parseStringToDate(startDate, "dd/MM/yyyy"),
                                 forename
                             )
-                        if (shortDescription != null) tournament.shortDescription = shortDescription
                         if (avatarImageURI != null) tournament.image = avatarImageURI
                         if (fullDescription != null) tournament.fullDescription = fullDescription
                         if (toursCount != null) tournament.toursCount = toursCount.toInt()

@@ -156,13 +156,6 @@ class AlarmReceiver : BroadcastReceiver() {
                                     event.fullDescription
                             )
                     )
-                } else if (event.shortDescription != null) {
-                    builder.setContentTitle(
-                            context.getString(
-                                    R.string.notification_title_tournament,
-                                    "${event.name} ${event.shortDescription}"
-                            )
-                    )
                 } else {
                     builder.setContentTitle(
                             context.getString(

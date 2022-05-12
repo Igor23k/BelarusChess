@@ -367,7 +367,7 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 )
                         // }
 
-                        //set forename and shortDescription invisible
+                        //set forename invisible
                         holder.itemView.tv_birthday_event_item_forename.visibility =
                                 TextView.GONE
                         holder.itemView.tv_birthday_event_item_surname.visibility =
@@ -507,21 +507,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                         holder.itemView.tv_place_event_item_name.visibility = TextView.VISIBLE
                         holder.itemView.tv_place_event_item_name.text = eventPlace.name
 
-                        /*    val country = countries?.find { it.id == eventPlace.countryId }
-                            var countryName = country?.name
-                            if (StringUtils.isEmpty(countryName)) {
-                                countryName = "-"
-                            }*/
-                        /*  holder.itemView.place_event_item_country_value.text = countryName
-                          holder.itemView.place_event_item_country_value.setTextColor(textColor)*/
-
                         holder.itemView.tournament_event_item_city_value.text = eventPlace.city
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)
-
-                        holder.itemView.place_event_item_capacity_value.text = eventPlace.capacity.toString()
-                        holder.itemView.place_event_item_capacity_value.setTextColor(
-                                textColor
-                        )
 
                         if (eventPlace.eventAlreadyOccurred()) {
                             holder.itemView.constraint_layout_place_item_view.background =

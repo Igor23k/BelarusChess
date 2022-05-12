@@ -50,7 +50,6 @@
     <string name="userPatronymic">Отчество</string>
     <string name="tournamentName">Название турнира</string>
     <string name="locationName">Название</string>
-    <string name="tournamentShortDescription">Краткое описание турнира</string>
     <string name="tournamentFullDescription">Полное описание турнира</string>
     <string name="locationCity">Город места проведения</string>
     <string name="locationCityHint">Город</string>
@@ -127,8 +126,6 @@
     <string name="noInternetConnection">Соединение отсутствует</string>
     <string name="noInternetConnectionMessage">Пожалуйста, проверьте доступ к интернету и попробуйте снова</string>
     <string name="incorrectData">Неверные данные! Попробуйте снова</string>
-
-    <string name="tournamentShortDescriptionHint">Краткое описание</string>
 
     <string name="time">Время</string>
     <string name="date">Дата</string>
