@@ -478,7 +478,7 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
      */
     override fun acceptBtnPressed() {
         try {
-            addTournamentPresenter?.addTournament(getTournamentData(), tournamentImageFile)
+            addTournamentPresenter?.addTournament(getTournamentData(), tournamentImageFile, imageWasEdited)
         } catch (e: NumberFormatException) {
             hideProgress()
             showToast(R.string.incorrect_tours_count);

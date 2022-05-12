@@ -8,7 +8,7 @@ import java.io.File
 
 interface AddTournamentPresenter : BasePresenter {
     fun removeTournament(id: Long?)
-    fun addTournament(tournamentDTO: ExtendedTournamentDTO, tournamentImageFile: File?)
+    fun addTournament(tournamentDTO: ExtendedTournamentDTO, tournamentImageFile: File?, imageUpdated: Boolean)
     fun loadPlaces()
     fun loadReferees()
     fun attachView(activity: AddTournamentContractView)

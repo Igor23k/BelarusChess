@@ -62,7 +62,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
     /**
      * avatarImgWasEdited is a boolean flag to store the information whether the avatar img has been changed
      */
-    private var avatarImgWasEdited = false
+    private var imageWasEdited = false
 
     /**
      * REQUEST_IMAGE_GET is an intent code used for open the photo gallery
@@ -198,7 +198,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
                     dialog.dismiss()
                     if (isEditedPlace && placeImageFile != null && (EventHandler.getEventToEventIndex(eventID) as EventPlace).image != null) {
                         iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                        avatarImgWasEdited = true
+                        imageWasEdited = true
                         placeImageFile = null
                         //todo BitmapHandler.removeBitmap(eventID, context!!) убрал удаление пока что
                     } else {
@@ -251,7 +251,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
                         )
                     }
                     placeImageFile = this.context?.let { Util.transformUriToFile(it, fullPhotoUri) }
-                    avatarImgWasEdited = true
+                    imageWasEdited = true
                 } else {
                     (context as MainActivity).runOnUiThread {
                         this.showToast(R.string.incorrect_image)
@@ -266,7 +266,7 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
      */
     override fun acceptBtnPressed() {
         try {
-            addPlacePresenter?.addPlace(getPlaceData(), placeImageFile)
+            addPlacePresenter?.addPlace(getPlaceData(), placeImageFile, imageWasEdited)
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_capacity)
         }

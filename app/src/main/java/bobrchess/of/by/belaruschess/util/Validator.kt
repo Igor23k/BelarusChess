@@ -93,7 +93,6 @@ object Validator {
         }
     }
 
-
     @Throws(IncorrectDataException::class)
     fun validateTournamentData(tournamentDTO: ExtendedTournamentDTO?): Boolean {
         val name = tournamentDTO?.name
@@ -175,7 +174,7 @@ object Validator {
     }
 
     @Throws(IncorrectDataException::class)
-    fun validatePlaceData(placeDTO: ExtendedPlaceDTO?, image: File?): Boolean {
+    fun validatePlaceData(placeDTO: ExtendedPlaceDTO?): Boolean {
         val name = placeDTO?.name
         val capacity = placeDTO?.capacity
         val building = placeDTO?.building
@@ -203,9 +202,6 @@ object Validator {
         }
         if (country == 0) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
-        }
-        if (image == null) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_IMAGE))
         }
 
         return true

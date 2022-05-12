@@ -80,14 +80,14 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     }
 
     @Override
-    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, File placeImageFile) {
+    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, File placeImageFile, boolean isImageUpdated) {
         if (viewIsReady) {
             try {
                 placeDTO.setSelectedCountryIndex(selectedCountryIndex);
-                Validator.INSTANCE.validatePlaceData(placeDTO, placeImageFile);
+                Validator.INSTANCE.validatePlaceData(placeDTO);
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
                 view.showProgress();
-                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageFile), packageModel.getSharePrefValue(TOKEN));
+                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageFile), packageModel.getSharePrefValue(TOKEN), isImageUpdated);
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
             } finally {

@@ -57,7 +57,7 @@ interface PersonalServerApi {
 
     @POST("/place")
     @Multipart
-    fun addPlace(@Header("Authorization") authorization: String, @Part("place") placeDTO: PlaceDTO, @Part file: MultipartBody.Part?): Call<PlaceDTO>
+    fun addPlace(@Header("Authorization") authorization: String, @Part("place") placeDTO: PlaceDTO, @Part file: MultipartBody.Part?, @Part("isImageUpdated") isImageUpdated: Boolean): Call<PlaceDTO>
 
     @DELETE("/place/{id}")
     fun removePlace(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<Int>
@@ -111,7 +111,7 @@ interface PersonalServerApi {
 
     @POST("/tournament")
     @Multipart
-    fun addTournament(@Header("Authorization") authorization: String, @Part("tournament") tournamentDTO: TournamentDTO, @Part file: MultipartBody.Part?): Call<TournamentDTO>
+    fun addTournament(@Header("Authorization") authorization: String, @Part("tournament") tournamentDTO: TournamentDTO, @Part file: MultipartBody.Part?, @Part("isImageUpdated") isImageUpdated: Boolean): Call<TournamentDTO>
 
     @POST("/api/updateUser")
     @Multipart

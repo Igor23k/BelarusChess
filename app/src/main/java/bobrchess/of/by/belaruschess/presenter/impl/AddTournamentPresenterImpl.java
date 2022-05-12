@@ -51,6 +51,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     private Integer connectivityStatus = 0;
     private TournamentDTO updatedTournament = null;
     private File updatedTournamentImage = null;
+    private Boolean isImageUpdated = null;
 
     public AddTournamentPresenterImpl() {
     }
@@ -97,7 +98,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     @Override
     public void onResponse(@NotNull TokenDTO tokenDTO) {
         packageModel.addSharePref(TOKEN, tokenDTO.getToken());
-        addTournamentConnection.addTournament(new TournamentDTO(updatedTournament), Util.Companion.compressImage(updatedTournamentImage), packageModel.getSharePrefValue(TOKEN));
+        addTournamentConnection.addTournament(new TournamentDTO(updatedTournament), Util.Companion.compressImage(updatedTournamentImage), packageModel.getSharePrefValue(TOKEN), isImageUpdated);
     }
 
     @Override
@@ -111,7 +112,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     }
 
     @Override
-    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO, File tournamentImage) {
+    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO, File tournamentImage, boolean isImageUpdated) {
         if (viewIsReady) {
             view.disableButton();
             try {
@@ -126,8 +127,9 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
 
                 updatedTournament = new TournamentDTO(tournamentDTO);
                 updatedTournamentImage = Util.Companion.compressImage(tournamentImage);
+                this.isImageUpdated = isImageUpdated;
 
-                addTournamentConnection.addTournament(updatedTournament, updatedTournamentImage, packageModel.getSharePrefValue(TOKEN));
+                addTournamentConnection.addTournament(updatedTournament, updatedTournamentImage, packageModel.getSharePrefValue(TOKEN), isImageUpdated);
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
                 view.hideProgress();

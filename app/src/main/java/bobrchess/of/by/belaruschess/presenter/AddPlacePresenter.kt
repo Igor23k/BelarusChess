@@ -6,7 +6,7 @@ import java.io.File
 
 interface AddPlacePresenter : BasePresenter {
     fun removePlace(id: Int?)
-    fun addPlace(placeDTO: ExtendedPlaceDTO, userImageUri: File?)
+    fun addPlace(placeDTO: ExtendedPlaceDTO, userImageUri: File?, imageUpdated: Boolean)
     fun loadCountries()
     fun attachView(activity: AddPlaceContractView)
     fun setSelectedCountryIndex(selectedCountryIndex: Int?)
