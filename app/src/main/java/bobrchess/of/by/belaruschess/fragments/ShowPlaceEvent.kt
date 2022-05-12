@@ -8,7 +8,6 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
@@ -51,16 +50,13 @@ class ShowPlaceEvent : ShowEventFragment() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
         EventHandler.getEventToEventIndex(eventID)?.let { place ->
             if (place is EventPlace) {
-                val country = countries?.find { it.id == place.countryId}
+                val country = countries?.find { it.id == place.countryId }
                 var countryName = country?.name
                 if (StringUtils.isEmpty(countryName)) {
-                    countryName =  resources.getString(R.string.country_absence)
+                    countryName = resources.getString(R.string.country_absence)
                 }
-                this.place_country_and_city.text = "${countryName}, ${place.city}"
-
-
-                this.place_street_and_building.visibility = TextView.VISIBLE
-                this.place_street_and_building.text = "${place.street}, ${place.building}"
+                this.tournament_name.text = "${place.name}"
+                this.place_address.text = "${countryName}, ${place.city}, ${place.street}, ${place.building}"
 
                 var scrollRange = -1
                 (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
@@ -68,11 +64,11 @@ class ShowPlaceEvent : ShowEventFragment() {
                         scrollRange = appbarLayout.totalScrollRange
                     }
                     if (context != null) {
-                       // if (scrollRange + verticalOffset == 0) {
-                        //    setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                      //  } else {
-                            setToolbarTitle(place.name)
-                     //   }
+                        if (scrollRange + verticalOffset == 0) {
+                            setToolbarTitle(context!!.resources.getString(R.string.app_name))
+                        } else {
+                            setToolbarTitle("")
+                        }
                     }
                 })
 
@@ -93,7 +89,7 @@ class ShowPlaceEvent : ShowEventFragment() {
                     )
                 }
 
-                place_capacity.text = "" + resources.getString(R.string.capacity) + ":" + place.capacity
+                place_capacity.text = "" + resources.getString(R.string.capacity) + ": " + place.capacity
                 updateAvatarImage(place.image)
             }
         }
@@ -143,11 +139,11 @@ class ShowPlaceEvent : ShowEventFragment() {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
 
-                var shareBirthdayMsg = resources.getString(R.string.location) + ": " + place.name
-                shareBirthdayMsg += "\n" + resources.getString(R.string.address) + ": " + countries?.first { it.id!! == place.countryId!! }?.name + ", " + place.city + ", " + place.street + ", " + place.building
-                shareBirthdayMsg += "\n" + resources.getString(R.string.capacity) + ": " + place.capacity
+                var sharePlaceMsg = resources.getString(R.string.location) + ": " + place.name
+                sharePlaceMsg += "\n" + resources.getString(R.string.address) + ": " + countries?.first { it.id!! == place.countryId!! }?.name + ", " + place.city + ", " + place.street + ", " + place.building
+                sharePlaceMsg += "\n" + resources.getString(R.string.capacity) + ": " + place.capacity
 
-                intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
+                intent.putExtra(Intent.EXTRA_TEXT, sharePlaceMsg)
                 startActivity(
                         Intent.createChooser(
                                 intent,

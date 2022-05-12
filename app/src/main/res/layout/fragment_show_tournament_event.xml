@@ -26,7 +26,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/place_name"
+            android:id="@+id/tournament_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -48,8 +48,8 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/place_name"
-            app:layout_constraintTop_toBottomOf="@+id/place_name" />
+            app:layout_constraintStart_toStartOf="@+id/tournament_name"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_name" />
 
         <TextView
             android:id="@+id/tournament_start_date"

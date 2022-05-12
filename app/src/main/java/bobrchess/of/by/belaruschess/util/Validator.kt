@@ -105,7 +105,7 @@ object Validator {
         val referee = tournamentDTO?.selectedRefereeIndex
         val place = tournamentDTO?.selectedPlaceIndex
 
-        if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
+        if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 100) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_NAME))
         }
         if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 10000) {

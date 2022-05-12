@@ -284,13 +284,16 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                                 )
                         //  }
 
-                        //set fullDescription TextView visible
                         holder.itemView.tournament_event_item_name.visibility =
                                 TextView.VISIBLE
                         holder.itemView.tournament_event_item_name.setTextColor(textColor)
 
-                        //set fullDescription TextView text
-                        holder.itemView.tournament_event_item_name.text = event.name
+                        var name = event.name
+
+                        if (name.length > 15) {
+                            name = name.substring(0, 15) + "..."
+                        }
+                        holder.itemView.tournament_event_item_name.text = name
 
                         val image = event.image
 
@@ -504,8 +507,13 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         textColor = ContextCompat.getColor(context!!, R.color.textDark)
 
+                        var name = eventPlace.name
+
+                        if (name.length > 15) {
+                            name = name.substring(0, 15) + "..."
+                        }
                         holder.itemView.tv_place_event_item_name.visibility = TextView.VISIBLE
-                        holder.itemView.tv_place_event_item_name.text = eventPlace.name
+                        holder.itemView.tv_place_event_item_name.text = name
 
                         holder.itemView.tournament_event_item_city_value.text = eventPlace.city
                         holder.itemView.tournament_event_item_city_value.setTextColor(textColor)

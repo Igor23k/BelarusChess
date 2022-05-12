@@ -9,7 +9,6 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.PlaceDTO
@@ -61,7 +60,6 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                 (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
                 EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
                     if (tournamentEvent is EventTournament) {
-                        setToolbarTitle(tournamentEvent.name)
                         this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + referee?.name + " " + referee?.surname
 
                         var scrollRange = -1
@@ -70,17 +68,11 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                                 scrollRange = appbarLayout.totalScrollRange
                             }
                             if (context != null) {
-                                /*if (scrollRange + verticalOffset == 0) {
+                                if (scrollRange + verticalOffset == 0) {
                                     setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                                } else {*/
-                                    if (places != null) {
-                                        val place = places?.find { it.id == tournamentEvent.placeId }
-
-                                        if (place != null && this.place_name!= null) {
-                                            this.place_name.text = place.name
-                                        }
-                                    }
-                               // }
+                                } else {
+                                    setToolbarTitle("")
+                                }
                             }
                         })
 
@@ -100,20 +92,22 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                                     )
                             )
                         }
-
-                      /*  val date: String111
-                        date = tournamentEvent.dateToPrettyString(DateFormat.FULL)*/
+                        this.tournament_name.text = tournamentEvent.name
 
                         tournament_full_description.text = tournamentEvent.fullDescription
 
-                   //     tournament_date.text = date
-
-                        tournament_start_date.text =  resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament?.startDate, DateFormat.FULL)
+                        tournament_start_date.text = resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament?.startDate, DateFormat.FULL)
                         tournament_end_date.text = resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(tournament?.finishDate, DateFormat.FULL)
 
                         if (places != null) {
                             val place = places?.find { it.id == tournamentEvent.placeId }
-                            tournament_location.text = place?.city + ", " + place?.country?.name
+
+                            var placeName = ""
+
+                            if (place != null && this.tournament_name != null) {
+                                placeName = ", " + place.name
+                            }
+                            tournament_location.text = place?.country?.name + ", " + place?.city + placeName
                         }
 
                         updateAvatarImage(tournamentEvent.image)
