@@ -718,7 +718,6 @@ class EventListFragment : AbstractFragment(), SearchTournamentContractView, Fide
             event.capacity = it.capacity
             event.createdBy = it.createdBy?.id
             event.countryId = it.country?.id
-            event.approved = it.approved
             EventHandler.addEvent(
                     event,
                     context!!,

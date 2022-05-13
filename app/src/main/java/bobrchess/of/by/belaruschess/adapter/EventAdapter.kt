@@ -290,8 +290,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         var name = event.name
 
-                        if (name.length > 15) {
-                            name = name.substring(0, 15) + "..."
+                        if (name.length > 20) {
+                            name = name.substring(0, 20) + "..."
                         }
                         holder.itemView.tournament_event_item_name.text = name
 
@@ -503,14 +503,12 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
                             }
                         }
 
-                        val textColor: Int
-
-                        textColor = ContextCompat.getColor(context!!, R.color.textDark)
+                        val textColor: Int = ContextCompat.getColor(context!!, R.color.textDark)
 
                         var name = eventPlace.name
 
-                        if (name.length > 15) {
-                            name = name.substring(0, 15) + "..."
+                        if (name.length > 20) {
+                            name = name.substring(0, 20) + "..."
                         }
                         holder.itemView.tv_place_event_item_name.visibility = TextView.VISIBLE
                         holder.itemView.tv_place_event_item_name.text = name

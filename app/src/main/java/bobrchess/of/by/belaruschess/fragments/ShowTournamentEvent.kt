@@ -60,7 +60,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                 (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
                 EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
                     if (tournamentEvent is EventTournament) {
-                        this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + referee?.name + " " + referee?.surname
+                        this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + " " + referee?.name + " " + referee?.surname
 
                         var scrollRange = -1
                         (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->

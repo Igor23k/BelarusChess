@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="70dp"
+        android:layout_marginEnd="40dp"
         android:text="@string/location_property_city"
         android:textColor="@color/brightGrey"
         app:layout_constraintEnd_toEndOf="parent"

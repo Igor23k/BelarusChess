@@ -26,7 +26,6 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="2dp"
             android:gravity="center|start"
-            android:text="@string/tournament_name"
             android:textColor="@color/textDark"
             android:textSize="15sp"
             android:textStyle="bold"

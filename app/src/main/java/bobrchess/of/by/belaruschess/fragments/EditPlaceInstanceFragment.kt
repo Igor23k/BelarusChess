@@ -392,7 +392,6 @@ class EditPlaceInstanceFragment : EventInstanceFragment(), AddPlaceContractView 
         placeEvent.createdBy = placeDTO.createdBy?.id
         placeEvent.building = placeDTO.building
         placeEvent.capacity = placeDTO.capacity
-        placeEvent.approved = placeDTO.approved
 
         //new place entry, just add a new entry in map
         if (!isEditedPlace) {
