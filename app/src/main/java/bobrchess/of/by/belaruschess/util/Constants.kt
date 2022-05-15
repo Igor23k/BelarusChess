@@ -101,7 +101,6 @@ class Constants {
         val KEY_INCORRECT_TOURNAMENT_IMAGE = "incorrect_tournament_image"
         val KEY_INCORRECT_TOURNAMENT_START_DATE = "incorrect_tournament_start_date"
         val KEY_INCORRECT_TOURNAMENT_FINISH_DATE = "incorrect_tournament_finish_date"
-        val KEY_INCORRECT_TOURNAMENT_COUNT_PLAYERS_IN_TEAM = "incorrect_tournament_count_players_in_team"
 
         val KEY_INCORRECT_TEAM_ID = "incorrect_team_id"
         val KEY_INCORRECT_TEAM_NAME = "incorrect_team_name"
@@ -130,7 +129,7 @@ class Constants {
 
         //val PERSONAL_SERVER_HOST = "https://popular-ape-32.loca.lt1"
         //val PERSONAL_SERVER_HOST = "http://212.115.110.17:80"
-        val PERSONAL_SERVER_HOST = "http://192.168.185.14:80"
+        val PERSONAL_SERVER_HOST = "http://192.168.240.14:80"
         //val PERSONAL_SERVER_HOST = "http://192.168.43.118:8080"
         val EXTERNAL_FIDE_API_SERVER_HOST = "https://app.fide.com"
         val EXTERNAL_FIDE_API_RELATIVE_PATH = ""

@@ -18,7 +18,6 @@ open class UserDTO : Serializable {
     var roles: List<UserRoleDTO>? = null
     var rating: Int? = null
     var coach: String? = null
-    var places: List<PlaceDTO>? = null
     var image: ByteArray? = null
 
     constructor(userDTO: UserDTO) {
@@ -35,7 +34,6 @@ open class UserDTO : Serializable {
         this.roles = userDTO.roles
         this.rating = userDTO.rating
         this.coach = userDTO.coach
-        this.places = userDTO.places
         this.image = userDTO.image
     }
 
@@ -55,7 +53,6 @@ open class UserDTO : Serializable {
         this.roles = roles
         this.rating = rating
         this.coach = coach
-        this.places = places
         this.image = image
     }
 

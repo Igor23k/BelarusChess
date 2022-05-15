@@ -493,7 +493,6 @@ class EditTournamentInstanceFragment : EventInstanceFragment(), AddTournamentCon
         tournamentData.name = editName.text.toString()
         tournamentData.fullDescription = editFullDescription.text.toString()
         tournamentData.toursCount = Integer.parseInt(e_add_tournament_toursCount.text.toString())
-        tournamentData.countPlayersInTeam = 1
         tournamentData.createdBy = (context as MainActivity).getUserData()
         tournamentData.startDate = eventStartDate?.time.toString()
         tournamentData.finishDate = eventEndDate?.time.toString()

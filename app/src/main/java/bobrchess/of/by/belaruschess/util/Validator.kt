@@ -7,7 +7,6 @@ import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException
 import bobrchess.of.by.belaruschess.util.Util.Companion.getInternalizedMessage
 import org.springframework.util.StringUtils
-import java.io.File
 
 object Validator {
     @Throws(IncorrectDataException::class)
@@ -98,7 +97,6 @@ object Validator {
         val name = tournamentDTO?.name
         val toursCount = tournamentDTO?.toursCount
         val fullDescription = tournamentDTO?.fullDescription
-        val countPlayersInTeam = tournamentDTO?.countPlayersInTeam
         val startDate = tournamentDTO?.startDate
         val finishDate = tournamentDTO?.finishDate
         val referee = tournamentDTO?.selectedRefereeIndex
@@ -110,15 +108,12 @@ object Validator {
         if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 10000) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION))
         }
-        if (countPlayersInTeam == null || countPlayersInTeam > 20) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_COUNT_PLAYERS_IN_TEAM))
-        }
         if (toursCount == null || toursCount < 1) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_TOURS_COUNT))
         }
-       /* if (StringUtils.isEmpty(tournamentImageUri)) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_IMAGE))
-        }*/
+        /* if (StringUtils.isEmpty(tournamentImageUri)) {
+             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_IMAGE))
+         }*/
         if (StringUtils.isEmpty(startDate)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_START_DATE))
         }

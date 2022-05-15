@@ -290,8 +290,8 @@ class EventAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Tourname
 
                         var name = event.name
 
-                        if (name.length > 20) {
-                            name = name.substring(0, 20) + "..."
+                        if (name.length > 17) {
+                            name = name.substring(0, 17) + "..."
                         }
                         holder.itemView.tournament_event_item_name.text = name
 
