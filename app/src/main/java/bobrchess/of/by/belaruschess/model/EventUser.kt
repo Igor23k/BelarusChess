@@ -1,7 +1,6 @@
 package bobrchess.of.by.belaruschess.model
 
 import bobrchess.of.by.belaruschess.handler.IOHandler
-import bobrchess.of.by.belaruschess.util.Constants
 import java.text.DateFormat
 import java.util.*
 
@@ -49,20 +48,17 @@ class EventUser(
         Email {
             override fun Identifier(): Int = 10
         },
-        PhoneNumber {
+        BeCoach {
             override fun Identifier(): Int = 11
         },
-        BeCoach {
+        BeAdmin {
             override fun Identifier(): Int = 12
         },
-        BeAdmin {
+        BeOrganizer {
             override fun Identifier(): Int = 13
         },
-        BeOrganizer {
-            override fun Identifier(): Int = 14
-        },
         BeMale {
-            override fun Identifier(): Int = 15
+            override fun Identifier(): Int = 14
         }/*,
         Places {
             override fun Identifier(): Int = 16
@@ -70,13 +66,12 @@ class EventUser(
     }
 
     var patronymic: String? = null
-    var imageUri: String? = null
+    var image: ByteArray? = null
     var rating: Int? = null
     var rankId: Int? = null
     var countryId: Int? = null
     var coach: String? = null
     var email: String? = null
-    var phoneNumber: String? = null
     var beCoach: Boolean? = null
     var beAdmin: Boolean? = null
     var beOrganizer: Boolean? = null
@@ -93,12 +88,11 @@ class EventUser(
                 getStringFromValue(Identifier.Surname, this.surname) +
                 getStringFromValue(Identifier.Patronymic, this.patronymic) +
                 getStringFromValue(Identifier.Id, this.id) +
-                getStringFromValue(Identifier.ImageUri, this.imageUri) +
+                getStringFromValue(Identifier.ImageUri, this.image) +
                 getStringFromValue(Identifier.Rating, this.rating) +
                 getStringFromValue(Identifier.RankId, this.rankId) +
                 getStringFromValue(Identifier.CountryId, this.countryId) +
                 getStringFromValue(Identifier.Coach, this.coach) +
-                getStringFromValue(Identifier.PhoneNumber, this.phoneNumber) +
                 getStringFromValue(Identifier.BeCoach, this.beCoach) +
                 getStringFromValue(Identifier.BeAdmin, this.beAdmin) +
                 getStringFromValue(Identifier.BeOrganizer, this.beOrganizer) +

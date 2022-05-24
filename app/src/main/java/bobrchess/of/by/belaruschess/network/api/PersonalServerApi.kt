@@ -1,11 +1,24 @@
 package bobrchess.of.by.belaruschess.network.api
 
 import bobrchess.of.by.belaruschess.dto.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.File
 
 
 interface PersonalServerApi {
+
+    // Lite
+    @GET("/tournaments-lite")
+    fun tournamentsLite(@Query("upcomingOnly") upcomingOnly: Boolean): Call<List<TournamentDTO>>
+
+    @get:GET("/places-lite")
+    val placesLite: Call<List<PlaceDTO>>
+
+    @GET("/api/allUsers-lite")
+    fun usersLite(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
     @get:GET("/places")
     val places: Call<List<PlaceDTO>>
@@ -21,8 +34,8 @@ interface PersonalServerApi {
     @GET("/api/allUsers")
     fun users(@Header("Authorization") authorization: String): Call<List<UserDTO>>
 
-    @GET("/api/coaches")
-    fun coaches(@Header("Authorization") authorization: String): Call<List<UserDTO>>
+    @GET("/coaches")
+    fun coaches(): Call<List<UserDTO>>
 
     @GET("/api/referees")
     fun referees(@Header("Authorization") authorization: String): Call<List<UserDTO>>
@@ -53,7 +66,8 @@ interface PersonalServerApi {
     fun getPlace(@Path("id") id: Int): Call<PlaceDTO>
 
     @POST("/place")
-    fun addPlace(@Header("Authorization") authorization: String, @Body placeDTO: PlaceDTO): Call<PlaceDTO>
+    @Multipart
+    fun addPlace(@Header("Authorization") authorization: String, @Part("place") placeDTO: PlaceDTO, @Part file: MultipartBody.Part?, @Part("isImageUpdated") isImageUpdated: Boolean): Call<PlaceDTO>
 
     @DELETE("/place/{id}")
     fun removePlace(@Header("Authorization") authorization: String, @Path("id") id: Int): Call<Int>
@@ -94,7 +108,8 @@ interface PersonalServerApi {
     fun refreshToken(@Header("Authorization") authorization: String): Call<TokenDTO>
 
     @POST("/register")
-    fun registration(@Body userDTO: UserDTO): Call<UserContextDTO>
+    @Multipart
+    fun registration(@Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part?): Call<UserContextDTO>
 
     //Tournament
     @GET("/tournament/{id}")
@@ -108,10 +123,12 @@ interface PersonalServerApi {
     fun searchTournaments(@Query("text") text: String): Call<List<TournamentDTO>>
 
     @POST("/tournament")
-    fun addTournament(@Header("Authorization") authorization: String, @Body tournamentDTO: TournamentDTO): Call<TournamentDTO>
+    @Multipart
+    fun addTournament(@Header("Authorization") authorization: String, @Part("tournament") tournamentDTO: TournamentDTO, @Part file: MultipartBody.Part?, @Part("isImageUpdated") isImageUpdated: Boolean): Call<TournamentDTO>
 
-    @POST("/updateUser")
-    fun updateUser(@Body userDTO: UserDTO, @Header("Authorization") authorization: String): Call<UserDTO>
+    @POST("/api/updateUser")
+    @Multipart
+    fun updateUser(@Header("Authorization") authorization: String, @Part("user") userDTO: UserDTO, @Part file: MultipartBody.Part?): Call<UserDTO>
 
     //Game
     @GET("/game/{id}")

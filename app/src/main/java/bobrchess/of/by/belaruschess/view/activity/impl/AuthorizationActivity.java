@@ -60,7 +60,7 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
 
         registerInternetCheckReceiver();
 
-        if (!tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном
+        if (tokenAuthPresenter.isAuthenticated()) {//тут можно отключить авторизацию токеном
             tokenAuthPresenter.tokenAuthorization();
         } else {
             initActivityData();
@@ -136,15 +136,9 @@ public class AuthorizationActivity extends AbstractActivity implements Authoriza
     @Override
     public void startActivity(@NonNull UserDTO userDTO) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        Util.Companion.setUserImage(userDTO.getImage());
-        userDTO.setImage(null);
-        putUserData(intent, userDTO);
+        Util.Companion.setUser(userDTO);
         startActivity(intent);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-    }
-
-    private void putUserData(Intent intent, @NonNull UserDTO userDTO) {
-        intent.putExtra(Constants.Companion.getUSER_PARAMETER(), userDTO);
     }
 
     @Override

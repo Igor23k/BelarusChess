@@ -1,5 +1,7 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
+
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -7,7 +9,7 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,16 +28,12 @@ import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddPlaceContractView;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 
-import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
-import static javax.xml.bind.JAXBIntrospector.getValue;
-
 @InjectViewState
 public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> implements CallBackAddPlace, AddPlacePresenter {
 
     private AddPlaceContractView view;
     private AddPlaceConnection addPlaceConnection;
     private Boolean viewIsReady = false;
-    List<String> a = new ArrayList<>();
     private Integer selectedCountryIndex = 0;
     private Map<Integer, CountryDTO> countriesIndexes = new HashMap<>();
     private PackageModel packageModel;
@@ -63,6 +61,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
         saveCountriesIndexes(countries);
         view.setCountrySpinnerAdapter(countries);
         viewIsReady();
+        view.hideProgress();
     }
 
     @Override
@@ -72,6 +71,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
         } else {
             view.showToast(Constants.Companion.getINTERNAL_SERVER_ERROR());
         }
+        view.hideProgress();
     }
 
     @Override
@@ -80,16 +80,14 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     }
 
     @Override
-    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO) {
+    public void addPlace(@NonNull ExtendedPlaceDTO placeDTO, File placeImageFile, boolean isImageUpdated) {
         if (viewIsReady) {
-            view.disableButton();
             try {
                 placeDTO.setSelectedCountryIndex(selectedCountryIndex);
                 Validator.INSTANCE.validatePlaceData(placeDTO);
                 placeDTO.setCountry(countriesIndexes.get(selectedCountryIndex - 1));
-                view.disableButton();
                 view.showProgress();
-                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), packageModel.getValue(TOKEN));
+                addPlaceConnection.addPlace(new PlaceDTO(placeDTO), Util.Companion.compressImage(placeImageFile), packageModel.getSharePrefValue(TOKEN), isImageUpdated);
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
             } finally {
@@ -115,7 +113,7 @@ public class AddPlacePresenterImpl extends MvpPresenter<AddPlaceContractView> im
     public void removePlace(Integer id) {
         if (viewIsReady) {
             view.showProgress();
-            addPlaceConnection.removePlace(id, packageModel.getValue(TOKEN));
+            addPlaceConnection.removePlace(id, packageModel.getSharePrefValue(TOKEN));
         }
     }
 

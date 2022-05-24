@@ -6,9 +6,10 @@ import bobrchess.of.by.belaruschess.dto.UserDTO
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedUserDTO
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
+import java.io.File
 
 interface UserPresenter : BasePresenter {
-    fun updateUser(user: ExtendedUserDTO)
+    fun updateUser(user: ExtendedUserDTO, userImage: File?)
     fun loadUserById(id: Int)
     fun loadReferees()
     fun loadCoaches()

@@ -49,7 +49,7 @@ class AuthorizationPresenterImpl : MvpPresenter<AuthorizationContractView>(), Ca
 
     override fun onResponse(userContextDTO: UserContextDTO) {
         if (userContextDTO.tokenMap != null && userContextDTO.user != null) {
-            packageModel?.putTokenMap(userContextDTO.tokenMap)
+            packageModel?.addSharePref(userContextDTO.tokenMap)
             view!!.hideProgress()
             view!!.enableButton()
             view!!.startActivity(userContextDTO.user)

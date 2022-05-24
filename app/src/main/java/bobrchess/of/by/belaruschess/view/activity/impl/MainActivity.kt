@@ -34,7 +34,6 @@ import bobrchess.of.by.belaruschess.view.activity.RankPresenterCallBack
 import bobrchess.of.by.belaruschess.view.activity.SearchTournamentContractView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_event_list.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -60,8 +59,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        userData = intent.getSerializableExtra("user") as UserDTO
-        userData!!.image = Util.getUserImage()
+        userData = Util.getUser()
 
         searchTournamentPresenter = SearchTournamentPresenterImpl()
         searchTournamentPresenter!!.attachView(this)
@@ -283,12 +281,7 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
         }
     }
 
-    fun loadTournamentsFromLocalStorage() {
-        IOHandler.readAll(this)
-        tournamentsAreLoaded = true
-    }
-
-    override fun onBackPressed() {//https://stackoverflow.com/questions/54481633/how-to-disable-back-press-action-for-an-intent
+    override fun onBackPressed() {//todo https://stackoverflow.com/questions/54481633/how-to-disable-back-press-action-for-an-intent
 
         //remove call to the super class
         //super.onBackPressed();
@@ -317,10 +310,9 @@ class MainActivity : AbstractActivity(), SearchTournamentContractView, PlacePres
             val event = EventTournament(it.id.toInt(), EventDate.parseStringToDate(transformSecondsToDate(it.startDate!!), "dd/MM/yyyy", Locale.GERMAN), it.name!!)
             event.name = it.name!!
             event.toursCount = it.toursCount
-            event.fullDescription = it.fullDescription!!
-            event.shortDescription = it.shortDescription!!
+            event.fullDescription = it.fullDescription
             event.toursCount = it.toursCount
-            event.imageUri = it.image//!!.path
+            event.image = it.image
             event.refereeId = it.referee?.id
             event.createdBy = it.createdBy?.id
             event.placeId = it.place?.id

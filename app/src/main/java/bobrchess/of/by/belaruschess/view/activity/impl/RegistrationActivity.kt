@@ -22,16 +22,17 @@ import bobrchess.of.by.belaruschess.handler.BitmapHandler
 import bobrchess.of.by.belaruschess.presenter.RegistrationPresenter
 import bobrchess.of.by.belaruschess.presenter.impl.RegistrationPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_BIRTHDAY_FORMAT
-import bobrchess.of.by.belaruschess.util.Constants.Companion.USER_PARAMETER
 import bobrchess.of.by.belaruschess.util.Util.Companion.REGISTRATION_REQUEST
 import bobrchess.of.by.belaruschess.util.Util.Companion.TYPE_NOT_CONNECTED
 import bobrchess.of.by.belaruschess.util.Util.Companion.genders
-import bobrchess.of.by.belaruschess.util.Util.Companion.setUserImage
+import bobrchess.of.by.belaruschess.util.Util.Companion.setUser
+import bobrchess.of.by.belaruschess.util.Util.Companion.transformUriToFile
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.RegistrationContractView
 import butterknife.BindView
 import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.fragment_add_new_tournament.*
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,10 +62,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     var emailText: EditText? = null
 
     @JvmField
-    @BindView(R.id.e_number_input)
-    var mobileText: EditText? = null
-
-    @JvmField
     @BindView(R.id.e_password_input)
     var passwordText: EditText? = null
 
@@ -92,6 +89,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
     private var rankSpinner: Spinner? = null
     private var countrySpinner: Spinner? = null
     private var birthday: String? = null
+    private var userImageFile: File? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,14 +104,14 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         registerInternetCheckReceiver()
         emailText = findViewById(R.id.e_email_input)
         genderSpinner = findViewById(R.id.s_genderSpinner)
-        genderSpinner!!.setOnItemSelectedListener(GenderItemSelectedListener())
+        genderSpinner!!.onItemSelectedListener = GenderItemSelectedListener()
         setGenderSpinnerAdapter(genders)
         coachSpinner = findViewById(R.id.s_coachSpinner)
-        coachSpinner!!.setOnItemSelectedListener(CoachItemSelectedListener())
+        coachSpinner!!.onItemSelectedListener = CoachItemSelectedListener()
         rankSpinner = findViewById(R.id.s_rankSpinner)
-        rankSpinner!!.setOnItemSelectedListener(RankItemSelectedListener())
+        rankSpinner!!.onItemSelectedListener = RankItemSelectedListener()
         countrySpinner = findViewById(R.id.s_countrySpinner)
-        countrySpinner!!.setOnItemSelectedListener(CountryItemSelectedListener())
+        countrySpinner!!.onItemSelectedListener = CountryItemSelectedListener()
         presenter.setPackageModel(PackageModel(this))
     }
 
@@ -129,7 +127,6 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         patronymicText = findViewById(R.id.e_patronymic_input)
         ratingText = findViewById(R.id.e_rating_input)
         emailText = findViewById(R.id.e_email_input)
-        mobileText = findViewById(R.id.e_number_input)
         passwordText = findViewById(R.id.e_password_input)
         reEnterPasswordText = findViewById(R.id.e_reEnterPassword_input)
         registrationButton = findViewById(R.id.b_registration)
@@ -172,7 +169,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
                 this?.setOnClickListener {
                     dialog.dismiss()
                     iv_add_avatar_btn.setImageResource(R.drawable.ic_birthday_person)
-                    avatarImage = null
+                    userImageFile = null
                 }
             }
 
@@ -236,15 +233,9 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
 
     override fun startActivity(userDTO: UserDTO) {
         val intent = Intent(applicationContext, MainActivity::class.java)
-        putUserData(intent, userDTO)
+        setUser(userDTO)
         startActivityForResult(intent, REGISTRATION_REQUEST)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
-    }
-
-    private fun putUserData(intent: Intent, userDTO: UserDTO) {
-        setUserImage(userDTO.image)
-        userDTO.image = null
-        intent.putExtra(USER_PARAMETER, userDTO)
     }
 
     override fun showIncorrectEmailText() {
@@ -257,7 +248,7 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
 
     override fun registration() {
         try {
-            presenter.registration(userData)
+            presenter.registration(userData, userImageFile)
         } catch (e: NumberFormatException) {
             showToast(R.string.incorrect_rating)
             enableButton()
@@ -293,12 +284,10 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
             userData.surname = surnameText!!.text.toString()
             userData.patronymic = patronymicText!!.text.toString()
             userData.email = emailText!!.text.toString()
-            userData.phoneNumber = mobileText!!.text.toString()
             userData.password = passwordText!!.text.toString()
             userData.reEnterPassword = reEnterPasswordText!!.text.toString()
             userData.rating = ratingText!!.text.toString().toInt()
             userData.birthday = birthday
-            userData.image = avatarImage
             return userData
         }
 
@@ -440,27 +429,28 @@ class RegistrationActivity : AbstractActivity(), RegistrationContractView {
         //handle image/photo file choosing
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             val fullPhotoUri: Uri = data!!.data!!
-
-            val imageInputStream = this.contentResolver.openInputStream(data.data!!)
-            val encodedImage = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageInputStream?.readBytes())
-
-            Thread(Runnable {
-                val bitmap =
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, fullPhotoUri)
-                this.runOnUiThread {
-                    iv_add_avatar_btn.setImageBitmap(
-                            BitmapHandler.getCircularBitmap(
-                                    BitmapHandler.getScaledBitmap(
-                                            bitmap
-                                    ), resources
-                            )
-                    )
+            Thread {
+                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, fullPhotoUri)
+                if (bitmap != null) {
+                    this.runOnUiThread {
+                        iv_add_avatar_btn.setImageBitmap(
+                                BitmapHandler.getCircularBitmap(
+                                        BitmapHandler.getScaledBitmap(
+                                                bitmap
+                                        ), resources
+                                )
+                        )
+                    }
+                } else {
+                    this.runOnUiThread {
+                        this.showToast(R.string.incorrect_image)
+                    }
                 }
-            }).start()
+            }.start()
 
-            avatarImage = encodedImage
+            userImageFile = transformUriToFile(this.applicationContext, fullPhotoUri)
         }
     }
 
-    private var avatarImage: String? = null
+
 }

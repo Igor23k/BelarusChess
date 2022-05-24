@@ -10,6 +10,7 @@ import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class AddPlaceConnection {
 
@@ -36,8 +37,8 @@ class AddPlaceConnection {
     }
 
 
-    fun addPlace(placeDTO: PlaceDTO, authorizationHeader: String) {
-        App.getPersonalServerApi().addPlace(authorizationHeader, placeDTO).enqueue(object : Callback<PlaceDTO> {
+    fun addPlace(placeDTO: PlaceDTO, image: File?, authorizationHeader: String, isImageUpdated: Boolean) {
+        App.getPersonalServerApi().addPlace(authorizationHeader, placeDTO, Util.getMultipartImage(image), isImageUpdated).enqueue(object : Callback<PlaceDTO> {
             override fun onResponse(call: Call<PlaceDTO>, response: Response<PlaceDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

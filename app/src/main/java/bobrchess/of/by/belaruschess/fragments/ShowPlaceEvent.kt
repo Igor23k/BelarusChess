@@ -8,12 +8,10 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.handler.EventHandler
 import bobrchess.of.by.belaruschess.model.EventPlace
-import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -52,16 +50,13 @@ class ShowPlaceEvent : ShowEventFragment() {
         (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
         EventHandler.getEventToEventIndex(eventID)?.let { place ->
             if (place is EventPlace) {
-                val country = countries?.find { it.id == place.countryId}
+                val country = countries?.find { it.id == place.countryId }
                 var countryName = country?.name
                 if (StringUtils.isEmpty(countryName)) {
-                    countryName =  resources.getString(R.string.country_absence)
+                    countryName = resources.getString(R.string.country_absence)
                 }
-                this.place_country_and_city.text = "${countryName}, ${place.city}"
-
-
-                this.place_street_and_building.visibility = TextView.VISIBLE
-                this.place_street_and_building.text = "${place.street}, ${place.building}"
+                this.tournament_name.text = "${place.name}"
+                this.place_address.text = "${countryName}, ${place.city}, ${place.street}, ${place.building}"
 
                 var scrollRange = -1
                 (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
@@ -69,16 +64,16 @@ class ShowPlaceEvent : ShowEventFragment() {
                         scrollRange = appbarLayout.totalScrollRange
                     }
                     if (context != null) {
-                       // if (scrollRange + verticalOffset == 0) {
-                        //    setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                      //  } else {
-                            setToolbarTitle(place.name)
-                     //   }
+                        if (scrollRange + verticalOffset == 0) {
+                            setToolbarTitle(context!!.resources.getString(R.string.app_name))
+                        } else {
+                            setToolbarTitle("")
+                        }
                     }
                 })
 
                 //only set expanded title color to white, when background is not white, background is white when no avatar image is set
-                if (place.imageUri != null) {
+                if (place.image != null) {
                     (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
                             ContextCompat.getColor(
                                     context!!,
@@ -94,8 +89,8 @@ class ShowPlaceEvent : ShowEventFragment() {
                     )
                 }
 
-                place_capacity.text = "" + resources.getString(R.string.capacity) + ":" + place.capacity
-                updateAvatarImage(place.imageUri)
+                place_capacity.text = "" + resources.getString(R.string.capacity) + ": " + place.capacity
+                updateAvatarImage(place.image)
             }
         }
     }
@@ -105,9 +100,9 @@ class ShowPlaceEvent : ShowEventFragment() {
         super.onDetach()
     }
 
-    private fun updateAvatarImage(image: String?) {
+    private fun updateAvatarImage(image: ByteArray?) {
         if (this.iv_avatar != null && this.eventID >= 0 && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = Util.getBitMapByBase64(image)
+            val bitmap = Util.getBitMapByByteArr(image)
             setBitmapToToolbar(bitmap)
         }
     }
@@ -144,11 +139,11 @@ class ShowPlaceEvent : ShowEventFragment() {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
 
-                var shareBirthdayMsg = resources.getString(R.string.location) + ": " + place.name
-                shareBirthdayMsg += "\n" + resources.getString(R.string.address) + ": " + countries?.first { it.id!! == place.countryId!! }?.name + ", " + place.city + ", " + place.street + ", " + place.building
-                shareBirthdayMsg += "\n" + resources.getString(R.string.capacity) + ": " + place.capacity
+                var sharePlaceMsg = resources.getString(R.string.location) + ": " + place.name
+                sharePlaceMsg += "\n" + resources.getString(R.string.address) + ": " + countries?.first { it.id!! == place.countryId!! }?.name + ", " + place.city + ", " + place.street + ", " + place.building
+                sharePlaceMsg += "\n" + resources.getString(R.string.capacity) + ": " + place.capacity
 
-                intent.putExtra(Intent.EXTRA_TEXT, shareBirthdayMsg)
+                intent.putExtra(Intent.EXTRA_TEXT, sharePlaceMsg)
                 startActivity(
                         Intent.createChooser(
                                 intent,
@@ -193,8 +188,8 @@ class ShowPlaceEvent : ShowEventFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        val isAdmin = (context as MainActivity).getUserData()?.beAdmin
-        val isOrganizer = (context as MainActivity).getUserData()?.beOrganizer
+        val isAdmin = (context as MainActivity).getUserData()?.isAdmin()
+        val isOrganizer = (context as MainActivity).getUserData()?.isOrganizer()
         val id = (context as MainActivity).getUserData()?.id
         if (isAdmin == true || (isOrganizer == true && id == place?.createdBy)) {
             inflater?.inflate(R.menu.toolbar_show_event_full, menu)

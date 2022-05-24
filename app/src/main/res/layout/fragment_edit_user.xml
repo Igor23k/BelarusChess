@@ -128,19 +128,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/e_edit_rating" />
 
             <EditText
-                android:id="@+id/e_edit_phone_number"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/phoneNumber"
-                android:inputType="phone"
-                android:textColor="@color/dark"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/e_edit_email"
-                app:layout_constraintStart_toStartOf="@+id/e_edit_email"
-                app:layout_constraintTop_toBottomOf="@+id/e_edit_email" />
-
-            <EditText
                 android:id="@+id/e_edit_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -149,9 +136,9 @@
                 android:inputType="textPassword"
                 android:textColor="@color/dark"
                 android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/e_edit_phone_number"
-                app:layout_constraintStart_toStartOf="@+id/e_edit_phone_number"
-                app:layout_constraintTop_toBottomOf="@+id/e_edit_phone_number" />
+                app:layout_constraintEnd_toEndOf="@+id/e_edit_email"
+                app:layout_constraintStart_toStartOf="@+id/e_edit_email"
+                app:layout_constraintTop_toBottomOf="@+id/e_edit_email" />
 
             <EditText
                 android:id="@+id/e_edit_re_enter_password"

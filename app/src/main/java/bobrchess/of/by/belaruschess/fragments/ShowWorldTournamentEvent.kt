@@ -40,7 +40,7 @@ class ShowWorldTournamentEvent : ShowEventFragment() {
 
     private fun getConcatStringValueWithEnding(hardcodedText: String, valueText: String?, defaultValue: String): String {
         if (!StringUtils.isEmpty(valueText)) {
-            return hardcodedText + valueText + defaultValue
+            return "$hardcodedText $valueText$defaultValue"
         }
         return defaultValue
     }

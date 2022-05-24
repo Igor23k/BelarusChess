@@ -1,12 +1,17 @@
 package bobrchess.of.by.belaruschess.presenter.impl;
 
+import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
+
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.util.StringUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,25 +19,28 @@ import java.util.Map;
 import bobrchess.of.by.belaruschess.R;
 import bobrchess.of.by.belaruschess.dto.ErrorDTO;
 import bobrchess.of.by.belaruschess.dto.PlaceDTO;
+import bobrchess.of.by.belaruschess.dto.TokenDTO;
 import bobrchess.of.by.belaruschess.dto.TournamentDTO;
 import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.dto.extended.ExtendedTournamentDTO;
 import bobrchess.of.by.belaruschess.exception.IncorrectDataException;
 import bobrchess.of.by.belaruschess.network.connection.internal.AddTournamentConnection;
+import bobrchess.of.by.belaruschess.network.connection.internal.TokenConnection;
 import bobrchess.of.by.belaruschess.presenter.AddTournamentPresenter;
 import bobrchess.of.by.belaruschess.presenter.callback.CallBackAddTournament;
+import bobrchess.of.by.belaruschess.presenter.callback.CallBackToken;
+import bobrchess.of.by.belaruschess.util.Constants;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.util.Validator;
 import bobrchess.of.by.belaruschess.view.activity.AddTournamentContractView;
 import bobrchess.of.by.belaruschess.view.activity.PackageModel;
 
-import static bobrchess.of.by.belaruschess.util.Constants.TOKEN;
-
 @InjectViewState
-public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContractView> implements CallBackAddTournament, AddTournamentPresenter {
+public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContractView> implements CallBackAddTournament, CallBackToken, AddTournamentPresenter {
 
     private AddTournamentContractView view;
     private AddTournamentConnection addTournamentConnection;
+    private TokenConnection tokenConnection;
     private Boolean viewIsReady = false;
     private Integer selectedPlaceIndex = 0;
     private Integer selectedRefereeIndex = 0;
@@ -41,13 +49,18 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
     private Map<Integer, UserDTO> refereesIndexes = new HashMap<>();
     private PackageModel packageModel;
     private Integer connectivityStatus = 0;
+    private TournamentDTO updatedTournament = null;
+    private File updatedTournamentImage = null;
+    private Boolean isImageUpdated = null;
 
     public AddTournamentPresenterImpl() {
     }
 
     public AddTournamentPresenterImpl(AddTournamentContractView view) {
         addTournamentConnection = new AddTournamentConnection();
+        tokenConnection = new TokenConnection();
         addTournamentConnection.attachPresenter(this);
+        tokenConnection.attachPresenter(this);
         attachView(view);
     }
 
@@ -81,14 +94,25 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
         view.hideProgress();
     }
 
+
     @Override
-    public void onFailure(@NonNull ErrorDTO errorDTO) {
-        view.showToast(errorDTO.getError());
-        view.hideProgress();
+    public void onResponse(@NotNull TokenDTO tokenDTO) {
+        packageModel.addSharePref(TOKEN, tokenDTO.getToken());
+        addTournamentConnection.addTournament(new TournamentDTO(updatedTournament), Util.Companion.compressImage(updatedTournamentImage), packageModel.getSharePrefValue(TOKEN), isImageUpdated);
     }
 
     @Override
-    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO) {
+    public void onFailure(@NonNull ErrorDTO errorDTO) {
+        if (Constants.Companion.getTOKEN_IS_EXPIRED_MESSAGE().equals(errorDTO.getMessage())) {
+            refreshToken();
+        } else {
+            view.showToast(errorDTO.getError());
+            view.hideProgress();
+        }
+    }
+
+    @Override
+    public void addTournament(@NonNull ExtendedTournamentDTO tournamentDTO, File tournamentImage, boolean isImageUpdated) {
         if (viewIsReady) {
             view.disableButton();
             try {
@@ -97,9 +121,15 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
                 Validator.INSTANCE.validateTournamentData(tournamentDTO);
                 tournamentDTO.setPlace(placesIndexes.get(selectedPlaceIndex - 1));
                 tournamentDTO.setReferee(refereesIndexes.get(selectedRefereeIndex - 1));
+                removeRedundantImages(tournamentDTO);
                 view.disableButton();
                 view.showProgress();
-                addTournamentConnection.addTournament(new TournamentDTO(tournamentDTO), packageModel.getValue(TOKEN));
+
+                updatedTournament = new TournamentDTO(tournamentDTO);
+                updatedTournamentImage = Util.Companion.compressImage(tournamentImage);
+                this.isImageUpdated = isImageUpdated;
+
+                addTournamentConnection.addTournament(updatedTournament, updatedTournamentImage, packageModel.getSharePrefValue(TOKEN), isImageUpdated);
             } catch (IncorrectDataException e) {
                 view.showToast(e.getLocalizedMessage());
                 view.hideProgress();
@@ -107,6 +137,25 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
             }
         }
     }
+
+    private void refreshToken() {
+        String refreshToken = packageModel.getSharePrefValue(Constants.REFRESH_TOKEN);
+        if (!StringUtils.isEmpty(refreshToken)) {
+            tokenConnection.refreshToken(refreshToken);
+        } else {
+            onUnsuccessfulRequest(Util.Companion.getInternalizedMessage(Constants.Companion.getKEY_INTERNAL_SERVER_ERROR()));
+        }
+    }
+
+    private void removeRedundantImages(ExtendedTournamentDTO tournamentDTO) {
+        if (tournamentDTO.getPlace() != null) {
+            tournamentDTO.getPlace().setImage(null);
+        }
+        if (tournamentDTO.getReferee() != null) {
+            tournamentDTO.getReferee().setImage(null);
+        }
+    }
+
 
     public void attachView(@NonNull AddTournamentContractView activity) {
         view = activity;
@@ -130,7 +179,7 @@ public class AddTournamentPresenterImpl extends MvpPresenter<AddTournamentContra
 
     @Override
     public void loadReferees() {
-        addTournamentConnection.getReferees(packageModel.getValue(TOKEN));
+        addTournamentConnection.getReferees(packageModel.getSharePrefValue(TOKEN));
     }
 
     @Override

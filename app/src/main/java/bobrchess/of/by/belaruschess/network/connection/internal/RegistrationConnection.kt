@@ -11,17 +11,14 @@ import org.apache.commons.httpclient.HttpStatus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-/**
- * Created by Igor on 11.04.2018.
- */
+import java.io.File
 
 class RegistrationConnection {
 
     private var callBack: CallBackRegistration? = null
 
-    fun registration(userDTO: UserDTO) {
-        App.getPersonalServerApi().registration(userDTO).enqueue(object : Callback<UserContextDTO> {
+    fun registration(userDTO: UserDTO, image: File?) {
+        App.getPersonalServerApi().registration(userDTO, Util.getMultipartImage(image)).enqueue(object : Callback<UserContextDTO> {
             override fun onResponse(call: Call<UserContextDTO>, response: Response<UserContextDTO>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {
@@ -40,8 +37,8 @@ class RegistrationConnection {
         })
     }
 
-    fun getCoaches(authorizationHeader: String) {
-        App.getPersonalServerApi().coaches(authorizationHeader).enqueue(object : Callback<List<UserDTO>> {
+    fun getCoaches() {
+        App.getPersonalServerApi().coaches().enqueue(object : Callback<List<UserDTO>> {
             override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

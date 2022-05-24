@@ -19,8 +19,6 @@ object Validator {
         val patronymic = userDTO?.patronymic
         val rating = userDTO?.rating
         val birthday = userDTO?.birthday
-        val phoneNumber = userDTO?.phoneNumber
-        val coach = userDTO?.coach
         val rank = userDTO?.selectedRankIndex
         val country = userDTO?.selectedCountryIndex
         val isMale = userDTO?.selectedGenderIndex
@@ -45,9 +43,6 @@ object Validator {
         }
         if (StringUtils.isEmpty(birthday)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_BIRTHDAY))
-        }
-        if (StringUtils.isEmpty(phoneNumber) || phoneNumber!!.length < 5 || phoneNumber.length > 20) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_USER_PHONE_NUMBER))
         }
 
         if (checkIndexes) {
@@ -97,44 +92,28 @@ object Validator {
         }
     }
 
-
     @Throws(IncorrectDataException::class)
     fun validateTournamentData(tournamentDTO: ExtendedTournamentDTO?): Boolean {
         val name = tournamentDTO?.name
         val toursCount = tournamentDTO?.toursCount
-        val shortDescription = tournamentDTO?.shortDescription
         val fullDescription = tournamentDTO?.fullDescription
-        val countPlayersInTeam = tournamentDTO?.countPlayersInTeam
-        val image = tournamentDTO?.image
         val startDate = tournamentDTO?.startDate
         val finishDate = tournamentDTO?.finishDate
         val referee = tournamentDTO?.selectedRefereeIndex
         val place = tournamentDTO?.selectedPlaceIndex
 
-        if(StringUtils.isEmpty(tournamentDTO?.fullDescription)) {
-            tournamentDTO?.fullDescription = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest" +
-                    "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestvtesttesttesttesttesttesttesttest" +
-                    "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
-        }
-
-        if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 50) {
+        if (StringUtils.isEmpty(name) || name!!.length < 8 || name.length > 100) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_NAME))
-        }
-        if (StringUtils.isEmpty(shortDescription) || shortDescription!!.length < 20 || shortDescription.length > 100) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_SHORT_DESCRIPTION))
         }
         if (StringUtils.isEmpty(fullDescription) || fullDescription!!.length < 100 || fullDescription.length > 10000) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_FULL_DESCRIPTION))
         }
-        if (countPlayersInTeam == null || countPlayersInTeam > 20) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_COUNT_PLAYERS_IN_TEAM))
-        }
         if (toursCount == null || toursCount < 1) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_TOURS_COUNT))
         }
-        if (StringUtils.isEmpty(image)) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_IMAGE))
-        }
+        /* if (StringUtils.isEmpty(tournamentImageUri)) {
+             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_IMAGE))
+         }*/
         if (StringUtils.isEmpty(startDate)) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_TOURNAMENT_START_DATE))
         }
@@ -187,7 +166,7 @@ object Validator {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_MATCH_DATE))
         }
         return true
-    }/*турс каунт перенести везде из места в турнир*/
+    }
 
     @Throws(IncorrectDataException::class)
     fun validatePlaceData(placeDTO: ExtendedPlaceDTO?): Boolean {
@@ -196,7 +175,6 @@ object Validator {
         val building = placeDTO?.building
         val city = placeDTO?.city
         val street = placeDTO?.street
-        val image = placeDTO?.image
         val country = placeDTO?.selectedCountryIndex
 
         if (StringUtils.isEmpty(name) || name!!.isEmpty() || name.length > 100) {
@@ -219,9 +197,6 @@ object Validator {
         }
         if (country == 0) {
             throw IncorrectDataException(getInternalizedMessage(Constants.KEY_COUNTRY_IS_NOT_SELECTED))
-        }
-        if (StringUtils.isEmpty(image)) {
-            throw IncorrectDataException(getInternalizedMessage(Constants.KEY_INCORRECT_PLACE_IMAGE))
         }
 
         return true

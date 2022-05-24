@@ -51,7 +51,6 @@
     <string name="userPatronymic">Отчество</string>
     <string name="tournamentName">Название турнира</string>
     <string name="locationName">Название</string>
-    <string name="tournamentShortDescription">Краткое описание турнира</string>
     <string name="tournamentFullDescription">Полное описание турнира</string>
     <string name="locationCity">Город места проведения</string>
     <string name="locationCityHint">Город</string>
@@ -66,7 +65,6 @@
     <string name="userAddress">Адрес</string>
     <string name="userRating">Рейтинг</string>
     <string name="userEmail">Электронная почта</string>
-    <string name="phoneNumber">Мобильный номер</string>
     <string name="renterPassword">Повторный ввод пароля</string>
     <string name="createAccount">Регистрация</string>
     <string name="addTournament">Добавить турнир</string>
@@ -83,6 +81,7 @@
     <string name="incorrect_tours_count">Неверное количество туров! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_capacity">Неверная вместимость! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_data">Неверные данные! Пожалуйста, попробуйте еще раз.</string>
+    <string name="incorrect_image">Изображение не соответствует параметрам. Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_tournament_name">Неверное имя турнира! Пожалуйста, попробуйте еще раз.</string>
     <string name="incorrect_password">Неверный пароль! Пожалуйста, введите более 4 символов.</string>
     <string name="nick">Ник</string>
@@ -128,8 +127,6 @@
     <string name="noInternetConnection">Соединение отсутствует</string>
     <string name="noInternetConnectionMessage">Пожалуйста, проверьте доступ к интернету и попробуйте снова</string>
     <string name="incorrectData">Неверные данные! Попробуйте снова</string>
-
-    <string name="tournamentShortDescriptionHint">Краткое описание</string>
 
     <string name="time">Время</string>
     <string name="date">Дата</string>

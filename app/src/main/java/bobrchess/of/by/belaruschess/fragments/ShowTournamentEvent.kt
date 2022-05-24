@@ -9,7 +9,6 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import bobrchess.of.by.belaruschess.R
 import bobrchess.of.by.belaruschess.dto.CountryDTO
 import bobrchess.of.by.belaruschess.dto.PlaceDTO
@@ -20,6 +19,7 @@ import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.presenter.impl.UserPresenterImpl
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
+import bobrchess.of.by.belaruschess.util.Util.Companion.getBitMapByByteArr
 import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.UserContractView
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
@@ -60,10 +60,7 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                 (context as MainActivity).scrollable_toolbar.isTitleEnabled = true
                 EventHandler.getEventToEventIndex(eventID)?.let { tournamentEvent ->
                     if (tournamentEvent is EventTournament) {
-                        setToolbarTitle(tournamentEvent.name)
-                        this.tournament_short_description.visibility = TextView.VISIBLE
-                        this.tournament_short_description.text = tournamentEvent.shortDescription
-                        this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + referee?.name + " " + referee?.surname
+                        this.tournament_referee.text = Util.getInternalizedMessage(Constants.REFEREES_TOURNAMENT_TEXT) + " " + referee?.name + " " + referee?.surname
 
                         var scrollRange = -1
                         (context as MainActivity).app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbarLayout, verticalOffset ->
@@ -71,22 +68,16 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                                 scrollRange = appbarLayout.totalScrollRange
                             }
                             if (context != null) {
-                                /*if (scrollRange + verticalOffset == 0) {
+                                if (scrollRange + verticalOffset == 0) {
                                     setToolbarTitle(context!!.resources.getString(R.string.app_name))
-                                } else {*/
-                                    if (places != null) {
-                                        val place = places?.find { it.id == tournamentEvent.placeId }
-
-                                        if (place != null && this.place_name!= null) {
-                                            this.place_name.text = place.name
-                                        }
-                                    }
-                               // }
+                                } else {
+                                    setToolbarTitle("")
+                                }
                             }
                         })
 
                         //only set expanded title color to white, when background is not white, background is white when no avatar image is set
-                        if (tournamentEvent.imageUri != null) {
+                        if (tournamentEvent.image != null) {
                             (context as MainActivity).scrollable_toolbar.setExpandedTitleColor(
                                     ContextCompat.getColor(
                                             context!!,
@@ -101,23 +92,25 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
                                     )
                             )
                         }
-
-                      /*  val date: String111
-                        date = tournamentEvent.dateToPrettyString(DateFormat.FULL)*/
+                        this.tournament_name.text = tournamentEvent.name
 
                         tournament_full_description.text = tournamentEvent.fullDescription
 
-                   //     tournament_date.text = date
-
-                        tournament_start_date.text =  resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament?.startDate, DateFormat.FULL)
+                        tournament_start_date.text = resources.getString(R.string.tournament_start_date) + ": " + EventDate.parseDateToString(tournament?.startDate, DateFormat.FULL)
                         tournament_end_date.text = resources.getString(R.string.tournament_end_date) + ": " + EventDate.parseDateToString(tournament?.finishDate, DateFormat.FULL)
 
                         if (places != null) {
                             val place = places?.find { it.id == tournamentEvent.placeId }
-                            tournament_location.text = place?.city + ", " + place?.country?.name
+
+                            var placeName = ""
+
+                            if (place != null && this.tournament_name != null) {
+                                placeName = ", " + place.name
+                            }
+                            tournament_location.text = place?.country?.name + ", " + place?.city + placeName
                         }
 
-                        updateAvatarImage(tournamentEvent.imageUri)
+                        updateAvatarImage(tournamentEvent.image)
                     }
                 }
             }
@@ -137,9 +130,9 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
         super.onDetach()
     }
 
-    private fun updateAvatarImage(image: String?) {
+    private fun updateAvatarImage(image: ByteArray?) {
         if (this.iv_avatar != null && (context as MainActivity).collapsable_toolbar_iv != null) {
-            val bitmap = Util.getBitMapByBase64(image)
+            val bitmap = getBitMapByByteArr(image)
             setBitmapToToolbar(bitmap)
         }
     }
@@ -266,8 +259,8 @@ class ShowTournamentEvent : ShowEventFragment(), UserContractView {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        val isAdmin = (context as MainActivity).getUserData()?.beAdmin
-        val isOrganizer = (context as MainActivity).getUserData()?.beOrganizer
+        val isAdmin = (context as MainActivity).getUserData()?.isAdmin()
+        val isOrganizer = (context as MainActivity).getUserData()?.isOrganizer()
         val id = (context as MainActivity).getUserData()?.id
         if (isAdmin == true || (isOrganizer == true && id == tournament?.createdBy)) {
             inflater?.inflate(R.menu.toolbar_show_event_full, menu)

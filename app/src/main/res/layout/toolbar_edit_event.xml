@@ -20,7 +20,7 @@
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/textVeryDark"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_edit_event_close"
         app:layout_constraintEnd_toStartOf="@+id/btn_edit_event_accept"
         app:layout_constraintStart_toEndOf="@+id/btn_edit_event_close"

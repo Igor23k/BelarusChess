@@ -16,7 +16,6 @@ import bobrchess.of.by.belaruschess.handler.NotificationHandler
 import bobrchess.of.by.belaruschess.model.EventDate
 import bobrchess.of.by.belaruschess.model.EventTournament
 import bobrchess.of.by.belaruschess.model.OneTimeEvent
-import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.view.activity.impl.MainActivity
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -134,8 +133,8 @@ class AlarmReceiver : BroadcastReceiver() {
             is EventTournament -> {
                 var bitmap: Bitmap? = null
 
-                if (event.imageUri != null) {
-                    bitmap = Util.getScaledBitMapByBase64(event.imageUri, context.resources)
+                if (event.image != null) {
+                    //bitmap = Util.getScaledBitMapByBase64(event.imageUri, context.resources)
                 }
 
                 var defaults = Notification.DEFAULT_ALL
@@ -155,13 +154,6 @@ class AlarmReceiver : BroadcastReceiver() {
                             context.getString(
                                     R.string.notification_title_tournament,
                                     event.fullDescription
-                            )
-                    )
-                } else if (event.shortDescription != null) {
-                    builder.setContentTitle(
-                            context.getString(
-                                    R.string.notification_title_tournament,
-                                    "${event.name} ${event.shortDescription}"
                             )
                     )
                 } else {
