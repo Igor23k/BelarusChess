@@ -10,6 +10,16 @@ import java.io.File
 
 interface PersonalServerApi {
 
+    // Lite
+    @GET("/tournaments-lite")
+    fun tournamentsLite(@Query("upcomingOnly") upcomingOnly: Boolean): Call<List<TournamentDTO>>
+
+    @get:GET("/places-lite")
+    val placesLite: Call<List<PlaceDTO>>
+
+    @GET("/api/allUsers-lite")
+    fun usersLite(@Header("Authorization") authorization: String): Call<List<UserDTO>>
+
     @get:GET("/places")
     val places: Call<List<PlaceDTO>>
 
