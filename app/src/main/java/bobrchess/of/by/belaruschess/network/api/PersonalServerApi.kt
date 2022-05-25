@@ -101,8 +101,8 @@ interface PersonalServerApi {
     @POST("/api/auth/login")
     fun authorization(@Body userDTO: UserDTO): Call<UserContextDTO>
 
-    @POST("/api/resetPassword")
-    fun passwordReset(@Header("Authorization") authorization: String, @Body email: String): Call<Boolean>
+    @POST("/resetPassword")
+    fun passwordReset(@Body email: String): Call<Boolean>
 
     @GET("/api/auth/token")
     fun refreshToken(@Header("Authorization") authorization: String): Call<TokenDTO>

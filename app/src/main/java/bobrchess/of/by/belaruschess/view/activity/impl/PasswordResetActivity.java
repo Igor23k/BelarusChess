@@ -18,8 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import bobrchess.of.by.belaruschess.R;
-import bobrchess.of.by.belaruschess.dto.UserDTO;
 import bobrchess.of.by.belaruschess.presenter.impl.PasswordResetPresenterImpl;
+import bobrchess.of.by.belaruschess.util.Constants;
 import bobrchess.of.by.belaruschess.util.Util;
 import bobrchess.of.by.belaruschess.view.activity.PasswordResetContractView;
 import butterknife.BindView;
@@ -42,12 +42,10 @@ public class PasswordResetActivity extends AbstractActivity implements PasswordR
     TextView authorizationLink;
 
     private ProgressDialog progressDialog;
-    private boolean tokenAuthFailed = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.setPackageModel(getPackageModel());
         initComponents();
         registerInternetCheckReceiver();
         initActivityData();
@@ -68,7 +66,7 @@ public class PasswordResetActivity extends AbstractActivity implements PasswordR
             reset();
         });
 
-        authorizationLink.setOnClickListener (v -> {
+        authorizationLink.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
             startActivityForResult(intent, Util.Companion.getAUTHORIZATION_REQUEST());
             finish();
@@ -102,32 +100,29 @@ public class PasswordResetActivity extends AbstractActivity implements PasswordR
 
     @Override
     public void showProgress() {
-
+        progressDialog = ProgressDialog.show(this, Constants.Companion.getEMPTY_STRING(), this.getString(R.string.please_wait));
     }
 
     @Override
     public void hideProgress() {
-
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override
     public void setConnectionStatus(Integer connectivityStatus) {
-
+        presenter.setConnectivityStatus(connectivityStatus);
     }
 
     @Override
     public void enableButton() {
-
+        resetButton.setEnabled(true);
     }
 
     @Override
     public void disableButton() {
-
-    }
-
-    @Override
-    public void unsuccessfulTokenAuth() {
-
+        resetButton.setEnabled(false);
     }
 
     @Override
@@ -136,23 +131,10 @@ public class PasswordResetActivity extends AbstractActivity implements PasswordR
     }
 
     @Override
-    public void showIncorrectPasswordText() {
-
-    }
-
-    @Override
-    public void tokenAuthorization() {
-
-    }
-
-    @Override
     public void dialogConfirmButtonClicked() {
-
-    }
-
-    @Override
-    public void startActivity(@NotNull UserDTO userDTO) {
-
+        if (presenter.isConnected(getConnectivityStatus())) {
+            dismissAlertDialog();
+        }
     }
 
     @Override
@@ -179,11 +161,26 @@ public class PasswordResetActivity extends AbstractActivity implements PasswordR
 
     @Override
     public void showSnackBar(@NotNull View componentView, @NotNull String message, @Nullable Integer buttonText) {
-
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_LONG);
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
     }
 
     @Override
     public void showSnackBar(@NotNull View componentView, @Nullable Integer message, @Nullable Integer buttonText) {
-
+        snackbar = Snackbar
+                .make(componentView, message, Snackbar.LENGTH_LONG)
+                .setAction(buttonText, view -> {
+                    snackbar.dismiss();
+                });
+        snackbar.setActionTextColor(Color.WHITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
     }
 }

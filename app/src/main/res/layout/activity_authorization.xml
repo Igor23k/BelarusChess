@@ -48,10 +48,10 @@
             <TextView android:id="@+id/t_link_password_reset"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="4dp"
                 android:text="@string/forgotPassword"
                 android:gravity="left"
-                android:textSize="16dp"/>
+                android:textSize="16sp"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton

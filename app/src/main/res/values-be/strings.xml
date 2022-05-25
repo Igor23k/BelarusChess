@@ -39,6 +39,8 @@
     <string name="password">Пароль</string>
     <string name="passwordIfNeeded">Абнавіце пароль, калі неабходна</string>
     <string name="login">Увайсці</string>
+    <string name="sendNewPassword">Адправіць новы пароль</string>
+    <string name="backToAuth">Вярнуцца да аўтарызацыі</string>
     <string name="noAccount">Яшчэ няма ўліковага запісу? Стварыць!</string>
     <string name="forgotPassword">Забыліся пароль?</string>
     <string name="email">Пошта</string>

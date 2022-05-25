@@ -10,7 +10,6 @@ import bobrchess.of.by.belaruschess.presenter.callback.CallBackPasswordReset
 import bobrchess.of.by.belaruschess.util.Constants
 import bobrchess.of.by.belaruschess.util.Util
 import bobrchess.of.by.belaruschess.util.Validator
-import bobrchess.of.by.belaruschess.view.activity.PackageModel
 import bobrchess.of.by.belaruschess.view.activity.PasswordResetContractView
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -24,7 +23,6 @@ class PasswordResetPresenterImpl : MvpPresenter<PasswordResetContractView>(), Ca
     private var passwordResetConnection: PasswordResetConnection = PasswordResetConnection()
     private var viewIsReady: Boolean? = false
     private var connectivityStatus: Int? = null
-    private var packageModel: PackageModel? = null
 
     init {
         passwordResetConnection.attachPresenter(this)
@@ -35,9 +33,6 @@ class PasswordResetPresenterImpl : MvpPresenter<PasswordResetContractView>(), Ca
         if (!Util.isConnected(status)) {
             view?.dismissAlertDialog()
             view?.showAlertDialog(R.string.noInternetConnection, R.string.noInternetConnectionMessage, R.string.retry, false)
-        } else {//todo
-            //view?.dismissAlertDialog()
-            //view?.tokenAuthorization()
         }
     }
 
@@ -49,11 +44,11 @@ class PasswordResetPresenterImpl : MvpPresenter<PasswordResetContractView>(), Ca
         if (result) {
             view!!.hideProgress()
             view!!.enableButton()
-            //view!!.startActivity(userContextDTO.user)
+            onNewPasswordSent()
         } else {
             view!!.hideProgress()
             view!!.enableButton()
-            onServerUnavailable()
+            onEmailNotFound()
         }
     }
 
@@ -61,33 +56,17 @@ class PasswordResetPresenterImpl : MvpPresenter<PasswordResetContractView>(), Ca
         view!!.hideProgress()
         view!!.enableButton()
 
-        if (errorDTO.status == 401) {
-            onInvalidEmailOrPassword()
-        } else {
-
-            when (errorDTO.error) {
-                Constants.SERVER_UNAVAILABLE -> {
-                    onServerUnavailable()
-                }
-                Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
-                    onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
-                }
-                else -> {
-                    when (errorDTO.message) {
-                        Constants.KEY_INVALID_EMAIL_OR_PASSWORD -> {
-                            onInvalidEmailOrPassword()
-                        }
-                        else -> {
-                            onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
-                        }
-                    }
-                }
+        when (errorDTO.error) {
+            Constants.SERVER_UNAVAILABLE -> {
+                onServerUnavailable()
+            }
+            Constants.KEY_UNSUCCESSFUL_REQUEST, Constants.INTERNAL_SERVER_ERROR -> {
+                onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
+            }
+            else -> {
+                onUnsuccessfulRequest(Util.getInternalizedMessage(Constants.KEY_INTERNAL_SERVER_ERROR))
             }
         }
-    }
-
-    private fun onInvalidEmailOrPassword() {
-        view!!.showSnackBar(viewComponent!!, R.string.incorrectEmailOrPassword)
     }
 
     override fun onUnsuccessfulRequest(message: String?) {
@@ -103,8 +82,12 @@ class PasswordResetPresenterImpl : MvpPresenter<PasswordResetContractView>(), Ca
         }
     }
 
-    fun setPackageModel(packageModel: PackageModel) {
-        this.packageModel = packageModel
+    override fun onEmailNotFound() {
+        view!!.showSnackBar(viewComponent!!, Util.getInternalizedMessage(Constants.EMAIL_NOT_FOUND))
+    }
+
+    override fun onNewPasswordSent() {
+        view!!.showSnackBar(viewComponent!!, Util.getInternalizedMessage(Constants.NEW_PASSWORD_SENT))
     }
 
     override fun reset(userEmail: String) {
@@ -112,7 +95,7 @@ class PasswordResetPresenterImpl : MvpPresenter<PasswordResetContractView>(), Ca
         try {
             Validator.validateEmail(userEmail)
             view!!.showProgress()
-            passwordResetConnection.passwordReset(packageModel!!.getValue(Constants.TOKEN), userEmail)
+            passwordResetConnection.passwordReset(userEmail)
         } catch (e: IncorrectDataException) {
             view!!.enableButton()
             view!!.showSnackBar(viewComponent!!, e.localizedMessage)

@@ -13,8 +13,8 @@ class PasswordResetConnection {
 
     private var callBack: CallBackPasswordReset? = null
 
-    fun passwordReset(passwordResetHeader: String, email: String) {
-        App.getPersonalServerApi().passwordReset(passwordResetHeader, email).enqueue(object : Callback<Boolean> {
+    fun passwordReset(email: String) {
+        App.getPersonalServerApi().passwordReset(email).enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 if (response.isSuccessful) {
                     if (response.raw().code() == HttpStatus.SC_OK && response.body() != null) {

@@ -39,7 +39,9 @@
     <string name="action_tournaments_search">Tournaments</string>
     <string name="password">Password</string>
     <string name="passwordIfNeeded">Update your password if necessary</string>
+    <string name="backToAuth">Back to authorization</string>
     <string name="login">Login</string>
+    <string name="sendNewPassword">Send new password</string>
     <string name="noAccount">No account yet? Create one!</string>
     <string name="forgotPassword">Forgot password?</string>
     <string name="email">Email</string>

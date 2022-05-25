@@ -14,6 +14,8 @@ class Constants {
         val KEY_SERVER_UNAVAILABLE = "server_is_unavailable"
         val INTERNAL_SERVER_ERROR = "Internal Server Error"
         val KEY_INTERNAL_SERVER_ERROR = "internal_server_error"
+        val EMAIL_NOT_FOUND = "email_not_found"
+        val NEW_PASSWORD_SENT = "new_password_sent"
         val KEY_SERVER_UNAVAILABLE_JSON_FORMAT = "server_unavailable_json_format"
         val KEY_GENDER_MALE = "male"
         val KEY_GENDER_FEMALE = "female"
@@ -126,11 +128,9 @@ class Constants {
 
 
 
-
         //val PERSONAL_SERVER_HOST = "https://popular-ape-32.loca.lt1"
-        //val PERSONAL_SERVER_HOST = "http://212.115.110.17:80"
+        //val PERSONAL_SERVER_HOST = "http://113.30.191.95:80"
         val PERSONAL_SERVER_HOST = "http://192.168.240.14:80"
-        //val PERSONAL_SERVER_HOST = "http://192.168.43.118:8080"
         val EXTERNAL_FIDE_API_SERVER_HOST = "https://app.fide.com"
         val EXTERNAL_FIDE_API_RELATIVE_PATH = ""
 
